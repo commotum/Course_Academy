@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Standalone, deterministic inverse reciprocal trig differentiation practice."""
+import argparse
+import hashlib
+import itertools
+import json
+from pathlib import Path
+import random
+import re
+import uuid
+import sympy as sp
+from math_format import normalize_prose, normalize_tex, validate_generated_record
+
+KP = {'db_id':17592186115398, 'id':'b34b7ab4-a17b-5667-bd2b-5ed53e43afb6',
+      'title':'Differentiating Inverse Reciprocal Trigonometric Functions'}
+VERSION = '1.0.1'
+NS = uuid.UUID('b34b7ab4-a17b-5667-bd2b-5ed53e43afb6')
+x = sp.Symbol('x', real=True)
+SIGNS = {'arcsec':1, 'arccsc':-1, 'arccot':-1}
+SOURCES = {'sqrt':['df356eaf-6e61-57d5-a6b9-0f0386234268','077baa93-9f9f-5780-986d-77a93ca959f7'],
+ 'log':['75fdefb6-9025-5f7e-8537-d9b67757e76d'],
+ 'cot-slope':['3d8da40e-cfdf-5c60-a36a-cdb26f7bb8fa'],
+ 'reciprocal-slope':['9b98c70c-6a88-51cb-9877-b27cf2c2def7']}
+
+def uid(s): return str(uuid.uuid5(NS,s))
+def tex(v): return normalize_tex(sp.latex(sp.simplify(v)))
+def inv(k): return r'\operatorname{'+k+'}x'
+def denominator(k): return r'1+x^2' if k=='arccot' else r'|x|\sqrt{x^2-1}'
+def multiple(c, term):
+    c = sp.Rational(c)
+    if c==0: return '0'
+    sign = '-' if c<0 else ''
+    return sign + ('' if abs(c)==1 else tex(abs(c))) + term
+
+def combine(*terms):
+    terms=[v for v in terms if v!='0']
+    if not terms: return '0'
+    return terms[0]+''.join(v if v.startswith('-') else '+'+v for v in terms[1:])
+
+def fraction(c, d):
+    c=sp.Rational(c)
+    if not c:return '0'
+    numerator=sp.latex(abs(c.p))
+    den = (str(c.q) if c.q!=1 else '')+d
+    return ('-' if c<0 else '')+r'\frac{'+numerator+'}{'+den+'}'
+
+def display(rows):
+    return '$$\n'+r'\begin{aligned}'+'\n'+('\\\\\n'.join(rows))+'\n'+r'\end{aligned}'+'\n$$'
+
+def build(level, family, k, a, b, n=None, sign=1, constant=0):
+    """Build the learner derivation before constructing a question or identity."""
+    s=SIGNS[k]
+    if family=='sqrt':
+        f=combine(multiple(a,r'\sqrt{x}'),multiple(b,inv(k)))
+        companion=fraction(sp.Rational(a,2),r'\sqrt{x}')
+        final=combine(companion,fraction(s*b,denominator(k)))
+        expanded=combine(str(a)+r'\left(\frac{1}{2\sqrt{x}}\right)',
+                         str(b)+r'\left('+fraction(s,denominator(k))+r'\right)')
+        domain=r'x>1'
+    elif family=='log':
+        f=combine(multiple(b,inv(k)), multiple(a,r'\ln(1+x^2)'))
+        expanded=combine(fraction(-b,'1+x^2'),r'\frac{'+str(2*a)+r'x}{1+x^2}')
+        final=r'\frac{'+tex(2*a*x-b)+r'}{1+x^2}'
+        domain=r'x\in\mathbb{R}'
+    else:
+        f=combine(multiple(a,'x'),multiple(b,inv(k)))
+        expanded=combine(tex(a),str(b)+r'\left('+fraction(s,denominator(k))+r'\right)')
+        final=combine(tex(a),fraction(s*b,denominator(k)))
+        domain=r'x\in\mathbb{R}' if k=='arccot' else r'|x|>1'
+    if constant: f=combine(f,tex(constant))
+    formula=fraction(s,denominator(k))
+    solution='Recall the derivative of the inverse function:\n\n$$\n'+r'\frac{\mathrm{d}}{\mathrm{d}x}('+inv(k)+')='+formula+'.\n$$\n\n'
+    solution+='Apply the sum and constant multiple rules'
+    solution+=', with the power rule for the square root' if family=='sqrt' else ', and differentiate the logarithm' if family=='log' else ''
+    solution+=':\n\n'+display([r"f'(x)&="+expanded, '&='+final])+ '\n\n'
+    derivative=final
+    if family in ('sqrt','log'):
+        problem="Calculate $f'(x)$ if $f(x)="+f+".$\n\n$f'(x)=$\n{{field-1}}"
+        solution+='This derivative is valid for $'+domain+'$.'
+        answer=final
+        conversions=['power rule; simplify rational coefficient'] if family=='sqrt' else ['differentiate ln(1+x^2); combine common denominator']
+    else:
+        t=sign*sp.sqrt(n) if k!='arccot' else sp.Integer(n)
+        tt=tex(t)
+        denom=1+t*t if k=='arccot' else sp.Abs(t)*sp.sqrt(t*t-1)
+        result=sp.simplify(a+s*b/denom)
+        answer=tex(result)
+        problem='Find the slope $m$ of the tangent line to the curve $y='+f+'$ at $x='+tt+'.$\n\n$m=$\n{{field-1}}'
+        rawden='1+('+tt+')^2' if k=='arccot' else '|'+tt+r'|\sqrt{('+tt+r')^2-1}'
+        raw=combine(tex(a),fraction(s*b,rawden))
+        simplified=combine(tex(a),fraction(s*b,tex(denom)))
+        solution+='The tangent slope is the derivative at the given input:\n\n'
+        solution+=display(["m=f'("+tt+')&='+raw, '&='+simplified,'&='+answer])+ '\n\n'
+        if k!='arccot':
+            solution+='Here $|'+tt+'|='+tex(sp.Abs(t))+'$ and $('+tt+')^2-1='+tex(t*t-1)+'$. '
+            solution+='The radical product is simplified and any radical denominator is rationalized in the last equality. '
+        solution+='The input is in the interior of the real domain, so the derivative exists.'
+        conversions=['evaluate derivative at input','resolve absolute value' if k!='arccot' else 'integer arithmetic','simplify radicals and rationalize denominator' if k!='arccot' else 'combine rational terms']
+    return {'level':level,'family':family,'inverse':k,'a':a,'b':b,'n':n,'sign':sign,'constant':constant,
+            'function':f,'derivative':derivative,'answer':answer,'problem':problem,'solution':solution,
+            'domain':domain,'conversions':conversions}
+
+def record(instance, seed=None):
+    p=instance
+    problem=normalize_prose(p['problem']);solution=normalize_prose(p['solution']);value=normalize_tex(p['answer'])
+    ident=hashlib.sha256(json.dumps([VERSION,p['level'],problem,solution,value],ensure_ascii=False).encode()).hexdigest()
+    answer={':answer/id':uid(ident+':answer'),':answer/type':':answer.type/math',':answer/value':value}
+    field={':answer-field/id':uid(ident+':field'),':answer-field/key':'field-1',':answer-field/type':':answer-field.type/blank',':answer-field/choices':[answer],':answer-field/correct':[':answer/id',answer[':answer/id']]}
+    refs=SOURCES.get(p['family'],SOURCES['reciprocal-slope'])
+    r={'knowledge_point':KP,'question':{':question/id':uid(ident),':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+p['level'],':question/answer-fields':[field]},
+       'generation':{'generator':VERSION,'seed':seed,'parameters':{k:p[k] for k in ['family','inverse','a','b','n','sign','constant']},'source_question_ids':refs,'domain':p['domain'],'conversion_steps':p['conversions']}}
+    return validate_generated_record(r)
+
+def sample(level,count,seed):
+    if count<0:raise ValueError('count must be nonnegative')
+    rng=random.Random(seed)
+    groups=[]
+    signed=[i for i in range(-6,7) if i]
+    if level=='easy':
+        groups=[[(level,'sqrt',k,a,b,None,1) for k,a,b in itertools.product(['arcsec','arccsc'],[1,2],signed)],
+                [(level,'log','arccot',a,b,None,1) for a,b in itertools.product([1,2],[-3,-2,-1,1,2,3])]]
+    elif level=='moderate':
+        groups=[[(level,'cot-slope','arccot',a,b,n,1) for a,b,n in itertools.product([-3,-2,-1,1,2,3],signed,[-2,-1,0,1,2])],
+                [(level,'reciprocal-slope',k,0,b,n,1) for k,b,n in itertools.product(['arcsec','arccsc'],signed,[2,3,5])]]
+    elif level=='hard':
+        groups=[[(level,'reciprocal-slope',k,a,b,n,sgn) for k,a,b,n,sgn in itertools.product(['arcsec','arccsc'],[-3,-2,-1,1,2,3],signed,[2,3,5,6],[-1,1])]]
+    else:raise ValueError('difficulty must be easy, moderate, or hard')
+    for group in groups:rng.shuffle(group)
+    records=[];seen=set()
+    while len(records)<count:
+        eligible=[g for g in groups if g]
+        if not eligible:raise ValueError('Requested count exceeds distinct main calculations in this band')
+        group=rng.choice(eligible);args=group.pop()
+        # An evaluation-only change is not a fresh main calculation in one batch.
+        # arcsec and arccsc have opposite derivatives: flipping both the
+        # function and its coefficient repeats the same main calculation.
+        # Keep that contrast eligible across practice, without repeating it
+        # inside one batch. Changing the evaluation point alone still does
+        # not count as new derivative work.
+        _, family, inverse, a, b, *_ = args
+        signature=(family, 'cot' if inverse=='arccot' else 'reciprocal',
+                   a, SIGNS[inverse]*b)
+        if signature in seen:continue
+        seen.add(signature)
+        records.append(record(build(*args),seed))
+    return records
+
+def replay_sources():
+    return json.loads((Path(__file__).resolve().parent/'source-replay.json').read_text())
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='easy')
+    parser.add_argument('--count',type=int,default=5)
+    parser.add_argument('--seed',type=int,default=0)
+    parser.add_argument('--format',choices=['json'],default='json')
+    parser.add_argument('--replay-source',action='store_true',help='Validation only: replay complete source banks, not ordinary sampling')
+    args=parser.parse_args()
+    print(json.dumps(replay_sources() if args.replay_source else sample('easy' if args.difficulty=='unclassified' else args.difficulty,args.count,args.seed),ensure_ascii=False,indent=2))
+
+if __name__=='__main__':main()

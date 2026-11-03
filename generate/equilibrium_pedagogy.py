@@ -6,6 +6,11 @@ from scripts.question_capture.math_format import normalize_prose
 KP = 17592186166788
 
 
+def _flat_display(text):
+    text = re.sub(r'\\(?:begin|end)\{(?:gathered|aligned)\}', '', text)
+    return re.sub(r'\s+', '', text.replace('\\\\', '').replace('&', ''))
+
+
 def validate_delivery_batch(records, kp_id):
     if int(kp_id) != KP:
         return
@@ -33,14 +38,17 @@ def validate_delivery_batch(records, kp_id):
         expected = S.latex(residual, ln_notation=True, order='lex').replace('y', 'c')
         # Compare normalized display text: the normalizer may escape inline TeX.
         visible = normalize_prose('$$\n'+expected+'\n$$').split('$$')[1].strip()
-        if not any('f(c)' in block and visible in block for block in re.findall(r'\$\$(.*?)\$\$', solution, re.S)):
+        if not any('f(c)' in block and _flat_display(visible) in _flat_display(block)
+                   for block in re.findall(r'\$\$(.*?)\$\$', solution, re.S)):
             raise ValueError('The solution must retain the useful residual structure before substitution')
         # Derive the original domain from the actual expression, before cancellation.
         domain = []
         for expr in (lhs, rhs):
             domain += [('positive', f.args[0]) for f in expr.atoms(S.log)]
             domain += [('nonzero', p.base) for p in expr.atoms(S.Pow) if p.exp.is_negative]
-        candidates = [read(c) for c in g['parameters']['candidates']]
+        # Constants may be normalized freely; preserve unevaluated structure
+        # only for the equation, where cancellation could erase a domain hole.
+        candidates = [S.sympify(c) for c in g['parameters']['candidates']]
         fields = q[':question/answer-fields']
         if len(candidates) != len(fields) or len(set(candidates)) != len(candidates):
             raise ValueError('Equilibrium candidates must be distinct and match their fields')

@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+"""Seeded source-grounded inverse-reciprocal quotient practice; no I/O except CLI JSON."""
+import argparse, copy, hashlib, itertools, json, math, random, uuid
+from pathlib import Path
+from math_format import normalize_prose, normalize_tex, validate_generated_record
+KP={'db_id':17592186115399,'id':'20a5f15e-8a26-57af-a867-8f8ae02a91c1','title':'Differentiating Inverse Reciprocal Trigonometric Functions Using the Quotient Rule'}
+SOURCES={
+ 'linear_top':['38b4af68-0025-52ba-bd14-db0e00b51e5d'],
+ 'linear_bottom':['fde98232-ad33-5093-b3ee-9574c7c7e230'],
+ 'power_bottom':['d426c97a-392b-5a03-bca2-ec79aac9b21d','fde98232-ad33-5093-b3ee-9574c7c7e230'],
+ 'quadratic_radio':['698df1fd-5fd3-5825-8b74-4170ba6ffbf1'],
+ 'quadratic_split':['a21be179-3e67-5f75-b560-ed7e4e4d7e25','502f4ebf-c0f9-5903-bfe4-266a31796084'],
+ 'exponential_split':['61288950-c35e-5f57-a1be-6d007672017d'],
+ 'exponential_bottom':['f1d541e8-a8d8-5346-9cfd-53646530c168','8cf05a97-506b-5c88-bd49-6cfd4b6110a1']}
+FAMILIES={'easy':['linear_top','linear_bottom'],'moderate':['power_bottom','quadratic_radio','quadratic_split'],'hard':['exponential_bottom','exponential_split']}
+POINTS=(-3.7,-2.3,-1.4,1.3,2.2,3.4)
+def frac(a,b):return r'\frac{'+a+'}{'+b+'}'
+def par(a):return r'\left('+a+r'\right)'
+def prod(a,b):
+ if a=='1':return b
+ if b=='1':return a
+ return par(a)+r'\,'+par(b)
+def power(a,n):
+ if n==0:return '1'
+ if n==1:return a
+ return par(a)+'^{'+str(n)+'}'
+def poly(a,b,c):
+ terms=[]
+ for k,var in [(a,'x^2'),(b,'x'),(c,'')]:
+  if k:
+   mag=(str(abs(k)) if not var or abs(k)!=1 else '')+var
+   terms.append(('-' if k<0 else ('+' if terms else ''))+mag)
+ return ''.join(terms) or '0'
+def signed(t):return (-1,t[1:]) if t.startswith('-') else (1,t)
+def deriv(s,t):return {'sign':s,'tex':t}
+def dt(d):return ('-' if d['sign']<0 else '')+d['tex']
+def inv(name):return r'\operatorname{'+name+'}x'
+def inverse_derivative(name,variant='correct'):
+ sign=1 if name=='arcsec' else -1
+ if variant=='omit':return deriv(1,'1')
+ if name=='arccot':den='1-x^2' if variant=='plus' else '1+x^2'
+ else:den=('x' if variant=='noabs' else '|x|')+r'\sqrt{x^2'+('+' if variant=='plus' else '-')+'1}'
+ return deriv(-sign if variant=='sign' else sign,frac('1',den))
+def inverse_values(name,x,variant='correct'):
+ y={'arccot':lambda:math.atan2(1,x),'arcsec':lambda:math.acos(1/x),'arccsc':lambda:math.asin(1/x)}[name]()
+ sg=1 if name=='arcsec' else -1
+ if variant=='omit':return y,1
+ if name=='arccot':d=sg/(1-x*x if variant=='plus' else 1+x*x)
+ else:d=sg/((x if variant=='noabs' else abs(x))*math.sqrt(x*x+(1 if variant=='plus' else -1)))
+ return y,-d if variant=='sign' else d
+
+def make_model(p):
+ f=p['family'];name=p['inverse'];I=inv(name);ID=inverse_derivative(name)
+ if f.startswith('linear'):
+  P=poly(0,p['a'],p['b']);PD=deriv(*signed(str(p['a'])))
+ elif f=='power_bottom':
+  n=p['n'];a=p.get('a',1);P=(str(a) if a!=1 else '')+('x' if n==1 else 'x^{'+str(n)+'}');PD=deriv(1,str(a) if n==1 else str(a*n)+('x' if n==2 else 'x^{'+str(n-1)+'}'))
+ elif f.startswith('quadratic'):
+  P=poly(1,p['b'],p['c']);PD=deriv(*signed(poly(0,2,p['b'])))
+ elif f=='exponential_split':
+  P=str(p['base'])+'^x';PD=deriv(1,P+r'\ln '+str(p['base']))
+ else:
+  E='e^{'+str(p['k'])+'x}';P=E+('+' if p['c']>0 else '')+str(p['c']);PD=deriv(1,str(p['k'])+E if p['k']!=1 else E)
+ invtop=f.endswith('bottom')
+ return {'u':I if invtop else P,'v':P if invtop else I,'du':ID if invtop else PD,'dv':PD if invtop else ID,'inverse_top':invtop,'other':P,'other_d':PD}
+
+def values(p,x,recipe='correct'):
+ f=p['family'];I,ID=inverse_values(p['inverse'],x,{'inverse-sign':'sign','inverse-plus':'plus','no-abs':'noabs','inverse-omit':'omit'}.get(recipe,'correct'))
+ if f.startswith('linear'):P=p['a']*x+p['b'];PD=p['a']
+ elif f=='power_bottom':P=p.get('a',1)*x**p['n'];PD=p.get('a',1)*p['n']*x**(p['n']-1)
+ elif f.startswith('quadratic'):P=x*x+p['b']*x+p['c'];PD=2*x+p['b']
+ elif f=='exponential_split':P=p['base']**x;PD=P*math.log(p['base'])
+ else:P=math.exp(p['k']*x)+p['c'];PD=p['k']*math.exp(p['k']*x)
+ invtop=f.endswith('bottom')
+ u,v,du,dv=(I,P,ID,PD) if invtop else (P,I,PD,ID)
+ if recipe=='du-original':du=u
+ if recipe=='dv-original':dv=v
+ if recipe=='miss-factor':
+  factor=(p.get('n') or p.get('k') or (math.log(p['base']) if 'base' in p else abs(p.get('a',2))))
+  if invtop:dv/=factor
+  else:du/=factor
+ exponent={'denominator-linear':1,'denominator-cubed':3}.get(recipe,2)
+ a,b=(-1,1) if recipe=='reverse' else (1,1) if recipe=='add' else (1,-1)
+ return (a*du*v+b*u*dv)/v**exponent
+
+def components(p,recipe='correct'):
+ m=copy.deepcopy(make_model(p));du,dv=m['du'],m['dv']
+ if recipe in ('inverse-sign','inverse-plus','no-abs','inverse-omit'):
+  d=inverse_derivative(p['inverse'],{'inverse-sign':'sign','inverse-plus':'plus','no-abs':'noabs','inverse-omit':'omit'}[recipe])
+  if m['inverse_top']:du=d
+  else:dv=d
+ if recipe=='du-original':du=deriv(1,m['u'])
+ if recipe=='dv-original':dv=deriv(1,m['v'])
+ if recipe=='miss-factor':
+  f=p['family']
+  if f=='power_bottom':d=deriv(1,str(p.get('a',1)) if p['n']==1 else (str(p.get('a',1)) if p.get('a',1)!=1 else '')+('x' if p['n']==2 else 'x^{'+str(p['n']-1)+'}'))
+  elif f=='exponential_bottom':d=deriv(1,'e^{'+str(p['k'])+'x}')
+  elif f=='exponential_split':d=deriv(1,str(p['base'])+'^x')
+  elif f.startswith('linear'):d=deriv(1 if p['a']>0 else -1,'1')
+  else:d=deriv(1,'x'+('+'+str(p['b']/2) if p['b'] else ''))
+  if m['inverse_top']:dv=d
+  else:du=d
+ return m,du,dv
+
+def expression(p,recipe='correct'):
+ m,du,dv=components(p,recipe);n={'denominator-linear':1,'denominator-cubed':3}.get(recipe,2)
+ a,b=(-1,1) if recipe=='reverse' else (1,1) if recipe=='add' else (1,-1)
+ t1=du['tex'] if n==1 else frac(du['tex'],power(m['v'],n-1))
+ t2=frac(prod(m['u'],dv['tex']),power(m['v'],n))
+ return ('-' if a*du['sign']<0 else '')+t1+('+' if b*dv['sign']>0 else '-')+t2
+
+def sample_parameters(rng,f):
+ p={'family':f,'inverse':'arccot' if f in ('linear_top','linear_bottom','power_bottom') else 'arcsec' if f=='quadratic_split' else 'arccsc'}
+ if f.startswith('linear'):p.update(a=rng.choice([-5,-4,-3,-2,-1,1,2,3,4,5]),b=rng.randint(-8,8))
+ elif f=='power_bottom':p.update(n=rng.choice([1,2,3,4]),a=rng.randint(1,9))
+ elif f.startswith('quadratic'):
+  b,c=rng.choice([(0,c) for c in [-5,-4,-3,-2,-1,1,2,3,4,5]]+[(b,0) for b in [-5,-4,-3,-2,-1,1,2,3,4,5]])
+  p.update(b=b,c=c)
+ elif f=='exponential_split':p['base']=rng.randint(2,49)
+ else:p.update(inverse=rng.choice(['arcsec','arccsc']),k=rng.choice([1,2,3,4]),c=rng.choice([-2,-1,1,2]))
+ return p
+
+def bank_points(p):
+ # Collision witnesses are verification inputs, not restrictions on practice.
+ # Replace a point at a legitimate pole instead of discarding the function.
+ points=[]
+ for x in POINTS+(-4.1,4.3):
+  try:values(p,x)
+  except (ZeroDivisionError,OverflowError,ValueError):continue
+  points.append(x)
+  if len(points)==len(POINTS):return points
+ raise RuntimeError('Insufficient nonsingular collision witnesses')
+
+def bank(p,rng):
+ recipes=['add','reverse','denominator-linear','denominator-cubed','du-original','dv-original','inverse-sign','inverse-plus','inverse-omit']
+ if p['inverse']!='arccot':recipes.append('no-abs')
+ if p['family'] in ('power_bottom','exponential_bottom','exponential_split','linear_top','linear_bottom'):recipes.append('miss-factor')
+ # Select a whole profile, then validate its complete bank. Do not greedily fill.
+ points=bank_points(p)
+ for _ in range(500):
+  selected=['correct']+rng.sample(recipes,4)
+  vectors=[[values(p,x,r) for x in points] for r in selected]
+  if any(all(abs(a-b)<1e-9*(1+abs(a)+abs(b)) for a,b in zip(vectors[i],vectors[j])) for i in range(5) for j in range(i)):continue
+  # A sole opposite pair containing the key is an incidental bank cue.
+  paired=[i for i in range(5) if any(i!=j and all(abs(a+b)<1e-9*(1+abs(a)+abs(b)) for a,b in zip(vectors[i],vectors[j])) for j in range(5))]
+  if len(paired)==2 and 0 in paired:continue
+  rng.shuffle(selected);return selected
+ raise RuntimeError('No distinct plausible error bank')
+
+def uid(text):return str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy/inverse-quotient/v1/'+text))
+def field(identity,key,kind,vals,correct=0):
+ fid=uid(identity+'/'+key)
+ choices=[{':answer/id':uid(fid+'/'+str(i)+'/'+normalize_tex(v)),':answer/type':':answer.type/math',':answer/value':normalize_tex(v)} for i,v in enumerate(vals)]
+ return {':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[correct][':answer/id']]}
+
+def build(p,band,rng=None):
+ rng=rng or random.Random(0);m=make_model(p);final=expression(p);split=p['family'].endswith('split')
+ problem="Find $f'(x)$ for $f(x)="+frac(m['u'],m['v'])+'.$'
+ solution="Let $u(x)="+m['u']+'$ and $v(x)='+m['v']+'.$ Their derivatives are\n\n$$\n'+r"u'(x)="+dt(m['du'])+r",\qquad v'(x)="+dt(m['dv'])+'.\n$$\n\nApplying the quotient rule gives\n\n$$\n'+r'\begin{aligned}'+"\nf'(x)&="+r"\frac{u'(x)v(x)-u(x)v'(x)}{[v(x)]^2}"+r'\\'+'\n&='+frac(prod(dt(m['du']),m['v'])+'-'+prod(m['u'],dt(m['dv'])),power(m['v'],2))+r'\\'+'\n&='+final+'.\n'+r'\end{aligned}'+'\n$$\n\n'
+ domain=r'The derivative applies where $|x|>1$ and the original denominator is nonzero.' if p['inverse']!='arccot' else 'The derivative applies wherever the original denominator is nonzero.'
+ solution+=domain
+ if split:
+  I=inv(p['inverse']);sg='-' if p['inverse']=='arcsec' else '+'
+  fragment1=dt(m['du']);fragment2=frac(m['u'],r'\sqrt{x^2-1}')
+  problem+='\n\n'+"$f'(x)=$ {{field-1}} $"+frac('1',I)+r'\,'+sg+r'\,$ {{field-2}} $'+frac('1','|x|'+power(I,2))+'$'
+  splitfinal=r'\begin{aligned}'+"f'(x)&="+prod(fragment1,frac('1',I))+r'\\'+'\n'+r'&\quad '+sg+prod(fragment2,frac('1','|x|'+power(I,2)))+r'\end{aligned}'
+  solution+='\n\nSeparate the supplied reciprocal factors:\n\n$$\n'+splitfinal+'.\n$$\n\nThe first blank is $'+fragment1+'$ and the second is $'+fragment2+'.$ The factor $|x|$ is already supplied outside the second blank.'
+  vals=[fragment1,fragment2];recipes=[]
+ else:
+  recipes=bank(p,rng);vals=[expression(p,r) for r in recipes]
+ problem=normalize_prose(problem);solution=normalize_prose(solution)
+ identity=json.dumps([band,problem,solution,vals],sort_keys=True)
+ qid=uid(identity)
+ fields=([field(qid,'field-'+str(i+1),'blank',[v]) for i,v in enumerate(vals)] if split else [field(qid,'selection','radio',vals,recipes.index('correct'))])
+ r={'knowledge_point':KP.copy(),'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+band,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':'1.0.0','template':p['family'],'parameters':p.copy(),'source_question_ids':SOURCES[p['family']],'bank_profile':recipes,'domain':'real; original denominator nonzero; |x|>1 for arcsec/arccsc','final_expression':normalize_tex(final)}}
+ return validate_generated_record(r)
+
+def essential(p):
+ # Offsets never count as fresh main work inside the recent short-batch window.
+ return tuple((k,v) for k,v in sorted(p.items()) if k != 'c' and (k != 'b' or p['family'].startswith('quadratic')))
+def generate(difficulty,count,seed):
+ if difficulty=='unclassified':difficulty='moderate'
+ rng=random.Random(seed);out=[];seen=set();recent=[];schedule=[]
+ for _ in range(count):
+  if not schedule:schedule=FAMILIES[difficulty].copy();rng.shuffle(schedule)
+  f=schedule.pop()
+  for attempt in range(5000):
+   p=sample_parameters(rng,f);fp=json.dumps(p,sort_keys=True);e=essential(p)
+   # A family's finite derivative coefficients are allowed to recur after other work.
+   if fp in seen or e in recent[-4:]:continue
+   # Invalid constructions may resample; ordinary domain poles remain eligible.
+   try:r=build(p,difficulty,rng)
+   except (ZeroDivisionError,OverflowError,ValueError):continue
+   seen.add(fp);recent.append(e);r['generation'].update(seed=seed,index=len(out));out.append(r);break
+  else:raise ValueError('Requested batch exceeds available distinct calculations for this family')
+ return out
+
+def replay():
+ return json.loads(Path(__file__).with_name('source-replay.json').read_text())
+def main():
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json'],default='json');ap.add_argument('--replay-source',action='store_true');a=ap.parse_args()
+ if a.count<0:ap.error('--count must be nonnegative')
+ print(json.dumps(replay() if a.replay_source else generate(a.difficulty,a.count,a.seed),ensure_ascii=False,indent=2))
+if __name__=='__main__':main()

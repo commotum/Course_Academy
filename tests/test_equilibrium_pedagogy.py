@@ -83,6 +83,16 @@ class EquilibriumPedagogyTests(unittest.TestCase):
     def test_other_kps_unaffected(self):
         validate_delivery_batch([{'question': {}}], KP+1)
 
+    def test_valid_wrapped_residuals_survive_delivery(self):
+        y = g.Y
+        m = g.model(y-1, 2*S.sin(y-1)+S.pi, [1, 1+S.pi, 1-S.pi], 'trigonometric')
+        validate_delivery_batch([g.render(m, 'moderate')], KP)
+        for band in ('easy', 'moderate', 'hard'):
+            for family in g.FAMILIES[band]:
+                for seed in (0, 1):
+                    record = g.render(g.sampled_model(random.Random(seed), band, family), band)
+                    validate_delivery_batch([record], KP)
+
 
 if __name__ == '__main__':
     unittest.main()
