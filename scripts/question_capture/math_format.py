@@ -1218,6 +1218,73 @@ def normalize_inverse_trig_operators(text):
     return ''.join(out)
 
 
+NAMED_FUNCTION_OPERATORS = (
+    'arcsinh','arccosh','arctanh','arcsech','arccsch','arccoth',
+    'arsinh','arcosh','artanh','arsech','arcsch','arcoth',
+    'arcsin','arccos','arctan','arcsec','arccsc','arccot',
+    'sinh','cosh','tanh','sech','csch','coth','sin','cos','tan','sec','csc','cot',
+    'asin','acos','atan','asec','acsc','acot',
+    'limsup','liminf','lim','inf','sup','min','max','det','gcd','lcm','dim','ker',
+    'rank','trace','tr','diag','sgn','arg','exp','ln','log','lg','cis','mean',
+    'curl','div','grad','mod','Var','Cov','Pr','Re','Im','Exp',
+)
+_BUILTIN_OPERATORS = frozenset(('arcsin','arccos','arctan','sin','cos','tan','sec','csc','cot',
+    'sinh','cosh','tanh','coth','ln','log','lg','exp','arg','lim','limsup','liminf',
+    'min','max','inf','sup','det','gcd','dim','ker','Pr','Re','Im'))
+
+
+def normalize_function_operators(text):
+    """Restore named operators at explicit function/application boundaries.
+
+    Preserve literal text, already-authored commands and unrelated variable
+    products. A MathML application marker, a function argument, or a known
+    joined legacy command establishes the recoverable function boundary.
+    """
+    text=normalize_inverse_trig_operators(text)
+    # The escaped spelling is an old JSON capture artifact, not a TeX command.
+    text=text.replace(r'\u2061','\u2061')
+    names=sorted(NAMED_FUNCTION_OPERATORS,key=len,reverse=True)
+    def operator(name):
+        if name=='mod':return r'\bmod '
+        return ('\\'+name+' ') if name in _BUILTIN_OPERATORS else r'\operatorname{'+name+'} '
+    def closing_group(start):
+        if start>=len(text) or text[start]!='{':return None
+        depth,end=1,start+1
+        while end<len(text) and depth:
+            if text[end]=='\\':end+=2;continue
+            depth+=(text[end]=='{')-(text[end]=='}');end+=1
+        return end if not depth else None
+    out=[];i=0
+    while i<len(text):
+        if text[i]=='\\':
+            command=re.match(r'\\([A-Za-z]+)\*?',text[i:])
+            if not command:out.append(text[i:i+2]);i+=2;continue
+            name=command[1];end=i+command.end()
+            if name in ('operatorname','text','textrm','mathrm','mathit','mathbf','mathtt','mathsf'):
+                start=end
+                while start<len(text) and text[start].isspace():start+=1
+                closing=closing_group(start)
+                if closing:out.append(text[i:closing]);i=closing;continue
+            # Do not mistake valid coth/sech/csch for cot(h)/sec(h)/csc(h).
+            joined=None if name in NAMED_FUNCTION_OPERATORS else next(
+                (op for op in names if name.startswith(op) and name[len(op):] in ('x','y','z','t','u','v','w')),None)
+            out.append(operator(joined)+name[len(joined):] if joined else text[i:end]);i=end;continue
+        name=next((op for op in names if text.startswith(op,i)),None)
+        if name:
+            before=text[i-1] if i else '';suffix=text[i+len(name):]
+            marked=bool(re.match(r'\}?(?:[_^]\{[^{}]*\})*\u2061',suffix))
+            adjacent=before in 'xyztuvre' and (i<2 or not text[i-2].isalpha())
+            boundary=not before.isalpha() or adjacent
+            stripped=suffix.lstrip()
+            call=bool(stripped) and (stripped[0] in '({[\\' or stripped.startswith(r'\left'))
+            single=bool(suffix) and (suffix[0] in 'xyztuvwABCDEFGHIJKLMNOPQRSTUVWXYZαβγδθλμρσωπ' or suffix[0].isdigit()) and (len(suffix)==1 or not suffix[1].isalpha())
+            scripted=name in ('min','max','sup','inf','lim','limsup','liminf') and bool(re.match(r'[_^]\{',suffix))
+            if boundary and (marked or call or single or scripted):
+                out.append(operator(name));i+=len(name);continue
+        out.append(text[i]);i+=1
+    return ''.join(out)
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
@@ -1230,7 +1297,7 @@ def normalize_tex(value):
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
-    text = normalize_inverse_trig_operators(text)
+    text = normalize_function_operators(text)
     text = normalize_piecewise_cases(normalize_sized_bars(normalize_limit_operators(_label_row_spacing(text))))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
@@ -1433,8 +1500,8 @@ def validate_math_structure(value, *, bare_math=False):
             size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
             span = span[size:-size]
         validate_tex(span)
-        if normalize_inverse_trig_operators(span) != span:
-            raise ValueError('Inverse trigonometric function needs explicit operator notation')
+        if normalize_function_operators(span) != span:
+            raise ValueError('Named mathematical function needs explicit operator notation')
         if normalize_limit_operators(span) != span:
             raise ValueError('Malformed limit operator; normalize the tendency condition')
         if normalize_sized_bars(span) != span:

@@ -78,9 +78,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         if ["tutorial/content", "question/problem", "question/worked-solution", "answer/value", "answer/feedback", "answer-field/key", "multistep/context"].contains(&name.as_str()) {
             *content_counts.entry(name.clone()).or_default() += 1;
-            if let Value::String(text) = &datom.value {
-                if !["arc", "sin", "cos", "tan", "sec", "csc", "cot", "ln", "log", "exp", "lim", "det", "min", "max", "arg"].iter().any(|name| text.contains(name)) { continue; }
-            }
         }
         let value_edn = write_edn(&value_to_edn(&datom.value)?)?;
         let ref_eid = match &datom.value {
