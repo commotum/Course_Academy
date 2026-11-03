@@ -532,6 +532,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   };
   let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
   let targetsView = false;
+  let assignmentScope = null;
   let colorCodeEnabled = true;
   let targetTopicId = null;
   const targetControls = createTargetControls({
@@ -659,7 +660,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
   function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
   // Displayed layers are one-based: L30 is the first retained target layer.
-  function targetTopicVisible(id) { return nodeById.get(id)?.layer >= 29; }
+  function targetTopicVisible(id) { return assignmentScope ? nodeById.has(id) : nodeById.get(id)?.layer >= 29; }
   function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
   function resetSelection() {
     state.followTargets=targetsView;
@@ -885,7 +886,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     const active=buildActiveSet(),scoped=isScoped();
     const activeNodes=NODES.filter(n=>active.nodeIds.has(n.id));
     const activeLinks=LINKS.map((e,i)=>({...e,index:i})).filter(e=>active.edgeSet.has(e.index));
-    const courseBands=targetsView && splitTargetsByCourse?targetCourseBands(active.nodeIds):[];
+    const courseBands=targetsView && !assignmentScope && splitTargetsByCourse?targetCourseBands(active.nodeIds):[];
     const layoutKey=targetsView+'|'+scoped+'|'+activeNodes.map(n=>n.id+':'+active.columns.get(n.id)).join(',')+'|'+courseBands.map(band=>band.key+':'+[...band.nodeIds].join(',')).join(';');
     const cached=layoutCache.get(layoutKey);
     if(cached){
@@ -1296,6 +1297,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function selectedTitle() {
     const n = state.selected && nodeById.get(state.selected);
+    if(!n && assignmentScope)return assignmentScope.title;
     return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : (snapshot?.learner.targets?.length || snapshot?.learner.queue?.length) ? 'No matching targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
   }
 
@@ -1328,7 +1330,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   }
   function nodeAppearance(nodeOrId) {
     const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
-    const target=(snapshot?.learner.targets || []).some(value=>String(value)===String(id));
+    const target=assignmentScope ? courseTopics.has(id) : (snapshot?.learner.targets || []).some(value=>String(value)===String(id));
     const queued=(snapshot?.learner.queue || []).some(value=>String(value)===String(id));
     const appearance={...competencyFor(nodeOrId),target,queued};
     const learned=snapshot?.learned?.[id];
@@ -1445,7 +1447,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
             ? 'Hold Shift and scroll to change prerequisite depth. Expansion follows prerequisites only.'
             : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
       : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? ((snapshot?.learner.targets?.length || snapshot?.learner.queue?.length) ? (targetWeekSelection.kind==='range'?'No targets are due in the selected weeks for the enabled courses and queue. Choose another week or All.':targetWeekSelection.kind==='unscheduled'?'No unscheduled targets match the enabled courses and queue. Choose All to see dated targets.':'No topics match the enabled courses and queue. Turn on another course or Queue to show its topics.') : 'Add topics to your targets or queue from a lesson or the graph to see them here.') : 'This course does not have topics assigned yet. Browse another course or open all topics.');
-    $('infoCopy').textContent = copy;
+    $('infoCopy').textContent = assignmentScope && !courseTopics.size ? 'No target topics are linked to this assignment yet.' : copy;
     const crumbs = $('breadcrumbs');
     titleReaderboards.clear(crumbs);
     crumbs.innerHTML = '';
@@ -2000,9 +2002,11 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function targetWeekScope() {return targetScopeSelectors().targetWeekScope();}
   function weekFilteredTargetIds(selection,scope) {return filterScheduledTargets(scope.targets,targetCalendar,selection,scope.courses);}
   function targetIdsForWeek(selection,scope=targetWeekScope()) {return targetScopeSelectors().targetIdsForWeek(selection,scope);}
-  function filteredTargetIds() {return targetIdsForWeek(targetWeekSelection);}
+  function filteredTargetIds() {
+    return assignmentScope ? assignmentScope.topicIds.filter(id=>nodeById.has(id)) : targetIdsForWeek(targetWeekSelection);
+  }
   function setTargetWeekSelection(selection) {
-    if(!targetsView || !snapshot || loading)return;
+    if(!targetsView || assignmentScope || !snapshot || loading)return;
     targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,selection);
     persistGraphPreferences({weeks:targetWeekSelection});
     // Changing weeks starts from the newly filtered roots; old focus/history
@@ -2013,9 +2017,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     setTargetWeekSelection(selectTargetWeek(targetCalendar,targetWeekSelection,startDay,extend));
   }
   function renderTargetWeekStrip() {
-    $('targetWeekStrip').hidden=!targetsView;
-    document.querySelector('.app').classList.toggle('targets-page',targetsView);
-    if(!targetsView)return;
+    $('targetWeekStrip').hidden=!targetsView || Boolean(assignmentScope);
+    document.querySelector('.app').classList.toggle('targets-page',targetsView && !assignmentScope);
+    if(!targetsView || assignmentScope)return;
     // Reuse the local membership projection for all week counts.
     const scope=targetWeekScope(), count=weekFilteredTargetIds(targetWeekSelection,scope).length;
     const countLabel=targetWeekSelection.kind==='range'?'due':'target'+(count===1?'':'s');
@@ -2064,7 +2068,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   $('targetWeeksAll').addEventListener('click',()=>setTargetWeekSelection({kind:'all'}));
   $('targetWeeksUnscheduled').addEventListener('click',()=>setTargetWeekSelection({kind:'unscheduled'}));
   function renderTargetCourseFilters() {
-    $('targetCourseFilters').hidden=!targetsView;
+    $('targetCourseFilters').hidden=!targetsView || Boolean(assignmentScope);
     $('targetSplitToggle').setAttribute('aria-checked',String(splitTargetsByCourse));
     $('targetSplitToggle').disabled=loading || !snapshot;
     $('targetQueueToggle').setAttribute('aria-checked',String(targetQueueEnabled));
@@ -2076,7 +2080,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     }
   }
   function setTargetSplit(enabled) {
-    if(!targetsView || !snapshot || loading || splitTargetsByCourse===enabled)return;
+    if(!targetsView || assignmentScope || !snapshot || loading || splitTargetsByCourse===enabled)return;
     splitTargetsByCourse=enabled;
     persistGraphPreferences({splitByCourse:enabled});
     if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
@@ -2087,7 +2091,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     $('targetSplitToggle').dataset.animate='true';setTargetSplit(!splitTargetsByCourse);
   });
   function setTargetCourseEnabled(code, enabled) {
-    if(!targetsView || !snapshot || loading || !targetCourseCodes.includes(code))return;
+    if(!targetsView || assignmentScope || !snapshot || loading || !targetCourseCodes.includes(code))return;
     if(enabledTargetCourses.has(code)===enabled)return;
     if(enabled)enabledTargetCourses.add(code);else enabledTargetCourses.delete(code);
     persistGraphPreferences({courses:[...enabledTargetCourses]});
@@ -2096,7 +2100,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     changeCourse(null,true,'targets',state.depth);
   }
   function setTargetQueueEnabled(enabled) {
-    if(!targetsView || !snapshot || loading || targetQueueEnabled===enabled)return;
+    if(!targetsView || assignmentScope || !snapshot || loading || targetQueueEnabled===enabled)return;
     targetQueueEnabled=enabled;
     persistGraphPreferences({includeQueue:enabled});
     changeCourse(null,true,'targets',state.depth);
@@ -2129,6 +2133,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function changeCourse(id, updateURL=true, view='course', depth=null) {
     if(!snapshot)return;
     targetsView=view==='targets';
+    if(!targetsView)assignmentScope=null;
     courseId=!targetsView&&snapshot.courses.some(c=>c.id===id)?id:null;
     const course=selectedCourse();
     courseTopics=new Set(targetsView
@@ -2139,10 +2144,11 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     renderTargetCourseFilters();renderTargetWeekStrip();
     stackOrderCache.clear();
     $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
-    document.title=targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
+    document.title=assignmentScope?assignmentScope.title+' · Assignment targets · Course Academy':targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
     if(targetsView)$('targetsLink').setAttribute('aria-current','page');
     else $('targetsLink').removeAttribute('aria-current');
     $('overviewBtn').textContent=targetsView?(targetWeekSelection.kind==='all'?(enabledTargetCourses.size===targetCourseCodes.length && targetQueueEnabled?'All targets':'Filtered targets'):targetWeekSelectionLabel(targetCalendar,targetWeekSelection).split(' - ')[0]+' targets'):course?'Course overview':'Full graph';
+    if(assignmentScope)$('overviewBtn').textContent=assignmentScope.title+' targets';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
     const members=NODES.filter(n=>courseTopics.has(n.id));
     const preferred=STARTER_TOPIC_IDS.map(id=>members.find(n=>n.mathAcademyId===id)).filter(Boolean);
@@ -2157,6 +2163,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       const url=new URL(location.href);
       if(targetsView){url.searchParams.set('view','targets');url.searchParams.delete('course');}
       else {url.searchParams.delete('view');url.searchParams.set('course',courseId||'all');}
+      if(!assignmentScope)url.searchParams.delete('assignment');
       url.searchParams.delete('topic');history.replaceState(null,'',url);
     }
     resize();redraw(true);
@@ -2199,10 +2206,10 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     splitTargetsByCourse=value.splitByCourse;targetWeekSelection=weeks;
     if(colorCodeEnabled!==value.colorCode)setColorCode(value.colorCode,false);
     if(!snapshot || loading)return;
-    if(targetsView && scopeChanged)changeCourse(null,false,'targets',state.depth);
+    if(targetsView && !assignmentScope && scopeChanged)changeCourse(null,false,'targets',state.depth);
     else {
       renderTargetCourseFilters();renderTargetWeekStrip();
-      if(targetsView && splitChanged)redraw(true);
+      if(targetsView && !assignmentScope && splitChanged)redraw(true);
     }
   }
   function refreshGraphPreferences() {
@@ -2244,13 +2251,17 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       await graphPreferences.refresh();
       const response=await readRequest('/api/graph-explorer');
       if(!response.ok)throw new Error('The database could not be loaded. Check the local explorer server and retry.');
-      const data=await response.json();installSnapshot(data);
+      const data=await response.json();
       const params=new URL(location.href).searchParams;
+      const assignmentId=params.get('assignment');
+      assignmentScope=assignmentId?(data.targetSchedule || []).find(assignment=>assignment.assignmentId===assignmentId):null;
+      if(assignmentId && !assignmentScope)throw new Error('This assignment is not available for the current learner.');
+      installSnapshot(data);
       const requested=params.get('course');
       // Browsing is URL state only. Never assign or change learner/course here.
       const initial=requested==='all'?null:requested||data.learner.courseId||null;
-      const initialView=params.get('view')==='targets'?'targets':'course';
-      changeCourse(initial,false,initialView,initialView==='targets'?String(data.studyDefaults?.targetPrerequisiteDepth ?? 2):null);
+      const initialView=assignmentScope || params.get('view')==='targets'?'targets':'course';
+      changeCourse(initial,false,initialView,initialView==='targets'?String(assignmentScope?0:data.studyDefaults?.targetPrerequisiteDepth ?? 2):null);
       $('learnerName').textContent=data.learner.name||'Profile';
       const requestedTopic=Number(new URL(location.href).searchParams.get('topic'));
       if(nodeById.has(requestedTopic))exploreTopic(nodeById.get(requestedTopic));

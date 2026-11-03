@@ -43,7 +43,7 @@ function fixture() {
     mctx: { clearRect() {}, drawImage() {}, strokeRect() {} },
     localStorage: { setItem() { throw Error('Browser storage is unavailable'); } },
     persistGraphPreferences: changes => { for(const [key,value] of Object.entries(changes))storage.set(key,value); },
-    targetsView: false, loading: false, targetTopicId: null,
+    targetsView: false, assignmentScope: null, loading: false, targetTopicId: null,
     // This fixture models focused exploration; full root changes are covered
     // by targets-graph.test.mjs.
     refreshTargetScope() { c.refreshTargetColors(); },

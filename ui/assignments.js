@@ -46,6 +46,10 @@ function button(text, className, action) {
 }
 function short(value) { return String(value || '').split('/').at(-1); }
 function assignmentURL(id) { return '/assignments?assignment=' + encodeURIComponent(id); }
+function assignmentGraphActions(assignment) {
+  return [{ id: 'assignment-targets-graph', label: 'View assignment targets in graph',
+    href: '/?view=targets&assignment=' + encodeURIComponent(assignment.id) }];
+}
 function routeIdentity() { const url = new URL(location.href); return url.pathname + url.search; }
 function topicURL(topic) { return '/topic?topic=' + encodeURIComponent(topic.uuid || topic.mathAcademyId || topic.id); }
 function updateHeader(data) {
@@ -577,7 +581,8 @@ function assignmentGroups(assignments, sort) {
 }
 function assignmentRow(assignment, index, showCourse = false) {
   const row = el('article', 'queue-card');
-  attachStepMenu(row, assignment.entityId, null, { kind: 'activity' });
+  attachStepMenu(row, assignment.entityId, null, { kind: 'activity', title: assignment.title,
+    actions: () => assignmentGraphActions(assignment) });
   const info = el('div');
   const meta = el('div', 'queue-meta'); meta.append(dueBadge(assignment.due), el('span', '', problemCount(assignment.problemCount)));
   if (showCourse && assignment.course?.title) meta.append(el('span', 'assignment-course-name', assignment.course.title));
@@ -646,7 +651,8 @@ function renderAssignment(data) {
   const topline = el('div', 'lesson-topline'); topline.append(link('← Assignments', '/assignments', 'text-button'));
   if (data.preview) topline.append(el('span', '', 'Developer mode · Nothing recorded'));
   const heading = el('header', 'assignment-heading');
-  attachStepMenu(heading, assignment.entityId, null, { kind: 'activity' });
+  attachStepMenu(heading, assignment.entityId, null, { kind: 'activity', title: assignment.title,
+    actions: () => assignmentGraphActions(assignment) });
   heading.append(el('p', 'eyebrow', 'Assignment'), el('h1', '', assignment.title));
   const facts = el('div', 'assignment-facts'); facts.append(dueBadge(assignment.due), el('span', '', problemCount(assignment.problemCount ?? assignment.steps?.filter(step => short(step.content?.kind) === 'assigned-problem').length)));
   heading.append(facts);

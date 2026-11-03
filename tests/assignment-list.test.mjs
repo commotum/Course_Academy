@@ -28,7 +28,7 @@ function fixture(storage = new Map()) {
   const main = new Element('main'), announcement = new Element('div');
   const document = { createElement: tag => new Element(tag), getElementById: id => ({ main, announcement })[id] };
   const f = { main, document, loads: 0, storage, location: { href: 'http://127.0.0.1:8765/assignments' } };
-  const context = vm.createContext({ document, Event, URL, attachStepMenu: () => {}, location: f.location, isDeveloperMode: () => false,
+  const context = vm.createContext({ document, Event, URL, attachStepMenu: (node, _id, _ma, options) => { node.menuOptions = options; }, location: f.location, isDeveloperMode: () => false,
     localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
     load(options) { f.loads++; f.loadOptions = options; },
   });
@@ -47,6 +47,20 @@ function fixture(storage = new Map()) {
 const math = { id: 'math', title: 'Calculus' }, chemistry = { id: 'chemistry', title: 'Chemistry' };
 const assignment = (id, course, due, status = null) => ({ id, title: id, course, due, status, problemCount: 2 });
 const rows = node => node.querySelectorAll('.queue-card').map(row => row.querySelector('h2').textContent);
+
+test('every assignment row offers a graph scoped to its own stable assignment ID', () => {
+  const f = fixture();
+  f.render([assignment('schoolwork / one', math, null), assignment('completed', chemistry, null, 'completed')]);
+  const cards = f.main.querySelectorAll('.queue-card');
+  assert.equal(cards.length, 2);
+  for (const card of cards) {
+    const action = card.menuOptions.actions()[0];
+    assert.equal(action.label, 'View assignment targets in graph');
+    const url = new URL(action.href, 'http://example.test');
+    assert.equal(url.searchParams.get('view'), 'targets');
+    assert.equal(url.searchParams.get('assignment'), card.querySelector('h2').textContent);
+  }
+});
 
 test('default list groups by activity course, then deadline, with unassigned and undated entries last', () => {
   const f = fixture();

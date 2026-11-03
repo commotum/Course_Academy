@@ -47,7 +47,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
     inMap: new Map(nodes.map(n => [n.id, links.filter(e => e.target === n.id).map(e => e.source)])),
     outMap: new Map(nodes.map(n => [n.id, links.filter(e => e.source === n.id).map(e => e.target)])),
     nodeById: new Map(nodes.map(n => [n.id, n])),
-    courseId: null, targetsView: false, courseTopics: new Set(), loading: false, targetTopicId: null,
+    courseId: null, targetsView: false, assignmentScope: null, courseTopics: new Set(), loading: false, targetTopicId: null,
     state: { activeIds: new Set(), selected: null }, pendingDepthFrame: 0, MAX_DEPTH: 10,
     stackOrderCache: new Map(), STARTER_TOPIC_IDS: [],
     nodeGeometryCache: new Map(), layoutCache: new Map(),
@@ -65,6 +65,32 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
   vm.runInContext(`splitTargetsByCourse=${splitSaved === true};targetQueueEnabled=${queueSaved !== false};`, context);
   return context;
 }
+
+test('assignment graph starts with only its roots and expands upstream including lower-layer prerequisites', () => {
+  const c = fixture([3]);
+  c.assignmentScope = { assignmentId: 'work-one', title: 'Assignment one', topicIds: [2] };
+  c.location.href = 'http://example.test/?view=targets&assignment=work-one';
+  c.snapshot.learner.queue = [6];
+  c.nodeById.get(4).layer = 0;
+  c.changeCourse(null, false, 'targets', '0');
+  assert.deepEqual([...c.state.activeIds], [2]);
+  assert.deepEqual([...c.buildActiveSet().nodeIds], [2]);
+  c.setDepth(1, true);
+  assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2]);
+  c.setDepth(2, true);
+  assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2, 4]);
+  assert.equal(c.elements, undefined);
+  c.setTargetQueueEnabled(false);
+  c.setTargetCourseEnabled('255', false);
+  c.setTargetWeekSelection({ kind: 'unscheduled' });
+  assert.equal(Object.keys(c.preferences).length, 0);
+  assert.deepEqual([...c.state.activeIds], [2]);
+  c.changeCourse(null, true, 'targets', '2');
+  assert.equal(new URL(c.location.href).searchParams.get('assignment'), 'work-one');
+  c.changeCourse('course-a', true);
+  assert.equal(c.assignmentScope, null);
+  assert.equal(new URL(c.location.href).searchParams.has('assignment'), false);
+});
 
 test('indexed track placement preserves nearest clear routes and stable ties under dense skipping links', () => {
   const c = fixture();
