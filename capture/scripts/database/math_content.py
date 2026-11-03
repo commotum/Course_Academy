@@ -32,7 +32,7 @@ def notation():
 def operator_identity(value):
     """Keep equivalent operator typography from allocating new answer IDs."""
     import re
-    names='|'.join(sorted(formatter().NAMED_FUNCTION_OPERATORS,key=len,reverse=True))
+    names='|'.join(sorted((n for n in formatter().NAMED_FUNCTION_OPERATORS if n not in ('div','mod')),key=len,reverse=True))
     if re.search(r'\\(?:operatorname\{(?:'+names+r')\}|(?:'+names+r')\b)',value):
         return ('named-operator',notation().identity(value,preserve_form=True))
     return value

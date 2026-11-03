@@ -1,5 +1,6 @@
 import importlib.util
 from pathlib import Path
+from types import SimpleNamespace
 import sys
 import unittest
 from bs4 import BeautifulSoup
@@ -85,6 +86,21 @@ class InverseOperatorNotationTests(unittest.TestCase):
             self.assertEqual(choice_signature('math',left),choice_signature('math',right))
         self.assertNotEqual(choice_signature('math',r'x\cot x'),choice_signature('math',r'\operatorname{xcot}x'))
         self.assertNotEqual(choice_signature('math',r'\sin x^2'),choice_signature('math',r'\sin^2x'))
+        self.assertNotEqual(choice_signature('math',r'6\div4'),choice_signature('math',r'6\operatorname{div}4'))
+
+    def test_delivery_repairs_old_generator_helpers_before_identity_assignment(self):
+        from scripts.generator_publish import localize_record
+        record={'question':{':question/id':'keep-question',':question/problem':'Find $arccscx$.',
+            ':question/worked-solution':'Use ${sin}^{2}⁡x$.',':question/answer-fields':[
+                {':answer-field/type':':answer-field.type/checkbox',':answer-field/key':'$det(A)=1$',':answer-field/choices':[]},
+                {':answer-field/type':':answer-field.type/blank',':answer-field/key':'field-1',
+                 ':answer-field/choices':[{':answer/type':':answer.type/math',':answer/value':'arsech(x)'}]}]}}
+        result=localize_record(record,Path('/tmp'),Path('/tmp'),library=SimpleNamespace(text=lambda x:x,saved={}))['question']
+        self.assertEqual(result[':question/id'],'keep-question')
+        self.assertIn(r'\operatorname{arccsc}',result[':question/problem'])
+        self.assertIn(r'\sin',result[':question/worked-solution'])
+        self.assertIn(r'\det',result[':question/answer-fields'][0][':answer-field/key'])
+        self.assertIn(r'\operatorname{arsech}',result[':question/answer-fields'][1][':answer-field/choices'][0][':answer/value'])
 
 
 if __name__=='__main__':unittest.main()

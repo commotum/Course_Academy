@@ -18,7 +18,7 @@ OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log'
              'exp','arcsin','arccos','arctan','arcsec','arccsc','arccot','arg','lim','min','max',
              'sech','csch','coth','arsinh','arcosh','artanh','arsech','arcsch','arcoth',
              'arcsinh','arccosh','arctanh','arcsech','arccsch','arccoth','det','gcd','lcm',
-             'dim','ker','rank','trace','tr','diag','sgn','cis','mean','curl','div','grad',
+             'dim','ker','rank','trace','tr','diag','sgn','cis','mean','curl','grad',
              'Var','Cov','Pr','Re','Im','Exp','sup','inf','limsup','liminf'}
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
