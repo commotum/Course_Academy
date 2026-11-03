@@ -340,6 +340,31 @@ test('reload restores previously revealed steps as read-only and separates task 
   assert.equal(restored.h.view.feed.children.length, 1);
 });
 
+test('checkbox statements shuffle by attempt and keep that order through grading, refresh and saved IDs', async () => {
+  const fields = Array.from({ length: 8 }, (_, n) => ({ id: n + 10, key: 'Statement ' + n, type: 'checkbox',
+    choices: [{ id: 100 + n * 2, type: 'text', value: 'true' }, { id: 101 + n * 2, type: 'text', value: 'false' }] }));
+  const orders = new Set();
+  for (let item = 1; item <= 12; item++) {
+    const f = fixture();
+    await f.h.render(activity(item, 1, { step: { ...question(item), fields } }));
+    orders.add(f.h.view.current.querySelectorAll('.answer-field').map(node => node.dataset.fieldId).join(','));
+  }
+  assert.ok(orders.size > 1, 'different attempts must not all use a fixed field order');
+  const localItem = 4_000_000_000_000_042, f = fixture();
+  const step = { ...question(localItem), fields };
+  await f.h.render(activity(localItem, 1, { step }));
+  const content = f.h.view.current;
+  const order = content.querySelectorAll('.answer-field').map(node => node.dataset.fieldId);
+  f.h.reconcileStudyIds({ saveState: { status: 'saved' }, idAliases: { [localItem]: 52 } });
+  const graded = { ...step, itemId: 52, status: 'incorrect', canContinue: true,
+    fields: [...fields].reverse().map(field => ({ ...field, response: field.choices[1], correctAnswer: field.choices[0] })) };
+  await f.h.render(activity(52, 1, { step: graded }));
+  assert.equal(f.h.view.current, content);
+  assert.deepEqual(content.querySelectorAll('.answer-field').map(node => node.dataset.fieldId), order);
+  await f.h.render(activity(52, 1, { step: graded }));
+  assert.deepEqual(content.querySelectorAll('.answer-field').map(node => node.dataset.fieldId), order);
+});
+
 test('resuming in a fresh session restores the database presentation chain as read-only history', async () => {
   const f = fixture();
   const first = { order: 1, number: 1, total: 3, step: question(11, 'correct') };
