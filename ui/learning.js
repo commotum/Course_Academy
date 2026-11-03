@@ -882,7 +882,7 @@ function questionLayout(step) {
     [field.id, field.key, field.type, field.answerType, [...(field.choices || [])].sort((a, b) => a.id - b.id)])]);
 }
 function answerResult(data, step) {
-  return JSON.stringify([data.status, step.status, step.canContinue, step.feedback, step.solution, step.unanswered,
+  return JSON.stringify([data.status, step.status, step.canContinue, step.practiceShortage, step.feedback, step.solution, step.unanswered,
     orderedFields(step.fields).map(field => [field.id, field.response, field.correctAnswer, field.grade])]);
 }
 function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
@@ -1257,7 +1257,7 @@ function taskContent(data, step, number, total, archived = false) {
 
 function updateAnswerFeedback(view, data, step, number, total) {
   const content = view.current;
-  if (!content || String(studyId(view.currentId)) !== String(studyId(step.itemId))
+  if (!content || document.hidden || view.needsFocus || String(studyId(view.currentId)) !== String(studyId(step.itemId))
     || data.type === 'assessment' || short(step.kind) !== 'question'
     || !answered(short(step.status))
     || content.questionLayout !== questionLayout(step)) return false;
@@ -1288,10 +1288,12 @@ function updateAnswerFeedback(view, data, step, number, total) {
   ++renderGeneration;
   for (const node of [feedback, solution]) if (node) void typeset(node);
   const heading = feedback?.querySelector('.feedback-heading');
+  if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
   const rect = heading?.getBoundingClientRect?.();
+  const toolbarBottom = document.querySelector('.lesson-toolbar')?.getBoundingClientRect?.().bottom ?? 80;
   // Usually the result replaces Check answer at the same spot. Enter from an
   // earlier field in a tall form may need to reveal the result explicitly.
-  if (rect && (rect.top < 80 || rect.bottom > window.innerHeight)) {
+  if (rect && (rect.top < toolbarBottom || rect.bottom > window.innerHeight)) {
     heading.scrollIntoView({ block: 'nearest', behavior: 'instant' });
   }
   return true;

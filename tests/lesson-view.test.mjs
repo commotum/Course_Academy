@@ -50,6 +50,7 @@ function fixture(storage = new Map()) {
     addEventListener() {}, removeEventListener() {},
   };
   document.querySelectorAll = selector => document.body.querySelectorAll(selector);
+  document.querySelector = selector => document.body.querySelector(selector);
   document.getElementById = id => [document.body, ...document.body.querySelectorAll('main,button,a,span,div')].find(node => node.id === id) || null;
   for (const id of ['main', 'learnerName', 'courseLink', 'errorText', 'errorBanner', 'retryButton', 'announcement']) {
     const node = new Element(id === 'main' ? 'main' : 'div'); node.id = id; document.body.append(node);
