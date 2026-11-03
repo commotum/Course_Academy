@@ -32,7 +32,7 @@ def fraction(n,d):
     return S.Mul(n, S.Pow(d,-1,evaluate=False), evaluate=False)
 
 def model(lhs, rhs, candidates, family, restrictions=(), independent='t', source=None):
-    return {'lhs':lhs,'rhs':rhs,'candidates':list(candidates),'family':family,
+    return {'lhs':S.sympify(lhs),'rhs':S.sympify(rhs),'candidates':list(map(S.sympify,candidates)),'family':family,
             'restrictions':list(restrictions),'independent':independent,'source':source}
 
 def valid(m,c):
