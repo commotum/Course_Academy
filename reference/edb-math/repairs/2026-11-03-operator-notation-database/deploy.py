@@ -1,11 +1,22 @@
 """Bounded operator-only CAS batches with exact durable recovery/readback."""
-import json,sys
+import json,sys,subprocess
 from collections import defaultdict
 from pathlib import Path
 H=Path(__file__).resolve().parent;ROOT=H.parents[3];sys.path.insert(0,str(ROOT))
 from scripts.generator_publish import Publisher,StaleBasis,digest,dumps,loads,kw,file_lock
 from capture.scripts.database.commit import Committer
 from capture.scripts.storage import atomic_json
+
+def read_entities(p,work,label,ids,basis):
+    # Direct Pull avoids multiplying large content strings by every matching
+    # datom in a Datalog query, which can exceed its intermediate-value budget.
+    assert str(p.config.database)=='math'
+    directory=work/label;directory.mkdir(parents=True,exist_ok=True)
+    (directory/'native-pulls.edn').write_text(dumps([['entities','[*]',ids]])+'\n')
+    binary=ROOT/'reference/mathacademy/repairs/2026-10-17-import-source-bulk/native_read'
+    result=subprocess.run([str(binary),str(directory),str(basis)],env=p.client.environment,capture_output=True,text=True,timeout=180)
+    (directory/'read.log').write_text(result.stderr);result.check_returncode()
+    return loads((directory/'entities.edn').read_text())
 
 def plan():
     proposals=json.loads((H/'proposals.json').read_text());groups=defaultdict(list)
@@ -20,8 +31,8 @@ def plan():
 
 def prepare(p,work,rows,schema):
     status=p.client.status();basis=status['basis'];ids=sorted({r['entity'] for r in rows})
-    result=p.client.query('[:find (pull ?e [*]) :in $ [?e ...] :where [?e ?a ?v]]',[ids],work,'before',basis)
-    before={r[0][':db/id']:r[0] for r in result};assert set(before)==set(ids)
+    result=read_entities(p,work,'native-before',ids,basis)
+    before={r[':db/id']:r for r in result};assert set(before)==set(ids)
     forms=[];adds=[];removes=[];changed=[];already=[]
     for r in rows:
         value=before[r['entity']][':'+r['attribute']]
@@ -37,8 +48,8 @@ def prepare(p,work,rows,schema):
 def apply(p,work,prepared,c,request):
     assert request['content_sha256']==digest(prepared)
     receipt=c.submit(request);proof=c.verify_receipt(request,receipt);basis=receipt[':edb/db-after-t'];before=loads(prepared['before_edn'])
-    result=p.client.query('[:find (pull ?e [*]) :in $ [?e ...] :where [?e ?a ?v]]',[[r[':db/id'] for r in before]],work,'after',basis)
-    now={r[0][':db/id']:r[0] for r in result};expected={r[':db/id']:r for r in before}
+    result=read_entities(p,work,'native-after',[r[':db/id'] for r in before],basis)
+    now={r[':db/id']:r for r in result};expected={r[':db/id']:r for r in before}
     for row in prepared['changed']:expected[row['entity']][kw(row['attribute'])]=row['after']
     assert now==expected
     result={'passed':True,'committed':True,'basis_before':request['basis'],'basis_after':basis,
