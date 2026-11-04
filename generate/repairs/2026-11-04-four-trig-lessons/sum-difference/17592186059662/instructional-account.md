@@ -1,0 +1,5 @@
+# Instructional account
+
+The learner chooses and applies a sine sum/difference formula to one degree shift and recalls the signed unit-circle values. Imported q-141278/q-274570 establish axis shifts; q-329179/q-332169/q-332175 establish single non-axis shifts and signed coefficient blanks. There is no imported hard band. Hard is an authored overlapping band of single quadrant-II-IV non-axis shifts with exact coefficient entry. It keeps the same target operation, without a second sine expansion or radical collection. Moderate may use a printed minus only when its second entry is nonnegative, matching the imported response convention. Easy omits full-turn shifts. Finite decks use fixed x and exhaust mathematical shifts before replay. The old generated prototype 17592186701660 is not imported calibration and is removed from served source references.
+
+This account was written before runtime edits. Source capture remains read-only in the audit directory. No database or registration changes are part of this package repair.

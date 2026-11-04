@@ -1,0 +1,5 @@
+# Instructional account
+
+The learner independently chooses and applies a cosine sum/difference formula to one degree shift, recalls exact special-angle values, and resolves signs. Imported q-274499/q-141366 support easy axis shifts; q-332509/q-332505/q-332516 support single non-axis shifts and exact coefficient entry. There is no imported hard band. Hard is therefore an authored overlapping band of single non-axis shifts in quadrants II-IV, with exact coefficient entry and the same one-forward-identity task. It does not add weighted functions, a second expansion, or collection of unrelated radicals. Moderate retains radio and coefficient formats; a printed minus is allowed only when its second entry is nonnegative, as in the imports. No response frame creates a decorative double negative. Each batch exhausts distinct mathematical shifts before replay; all shifts remain within one turn and avoid zero/full-turn cases.
+
+This account was written before runtime edits. Source capture remains read-only in the audit directory. No database or registration changes are part of this package repair.
