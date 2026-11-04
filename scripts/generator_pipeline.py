@@ -69,6 +69,26 @@ def inside(root, name):
     return path
 
 
+def generation_limits(source, manifest):
+    """Read optional, package-bound limits; undeclared workspace files do nothing."""
+    name = 'generation-limits.json'
+    if name not in manifest['files']:
+        return {}
+    try:
+        value = read(inside(source, name))
+    except (OSError, ValueError) as error:
+        raise ValueError('Invalid generation-limits.json: ' + str(error)) from error
+    if (not isinstance(value, dict)
+            or value.get('format') != 'course-academy-generator-limits-v1'
+            or not isinstance(value.get('maximum_distinct_batch'), dict)):
+        raise ValueError('Invalid generation-limits.json format or maximum_distinct_batch')
+    limits = value['maximum_distinct_batch']
+    if any(band not in VERIFICATION_BANDS or type(count) is not int or count < 1
+           for band, count in limits.items()):
+        raise ValueError('generation-limits.json needs easy/moderate/hard bands and positive integer limits')
+    return limits
+
+
 def asset_hashes(records, runtime, math_root):
     """Bind reviewed diagrams and image answer choices to their actual bytes."""
     references = set()
@@ -276,7 +296,8 @@ class Pipeline:
                 **{key: self.state.get(key) for key in
                    ('package_hash', 'batch_hash', 'source_hash', 'inventory_hash', 'assets', 'effective_difficulty')},
                 **({'engine_hash': self.state['engine_hash']} if 'engine_hash' in self.state else {}),
-                'verification_batches': {band: {key: row[key] for key in ('batch_hash', 'assets', 'seed', 'count')}
+                'verification_batches': {band: {key: row[key] for key in
+                    ('batch_hash', 'assets', 'seed', 'count', 'requested_count', 'maximum_distinct_batch') if key in row}
                     for band, row in self.state.get('verification_batches', {}).items()}}
 
     def ensure_inventory(self):
@@ -427,7 +448,9 @@ class Pipeline:
                 'interrupted_review': self.interrupted_review_evidence(evidence), 'evidence_root': str(evidence),
                 'package_root': str((self.directory / 'workspace' / self.state.get('manifest', 'package.json')).parent),
                 'manifest_file': str(self.directory / 'workspace' / self.state.get('manifest', 'package.json')),
-                'requested_difficulty': self.state.get('effective_difficulty', request['difficulty']), 'count': request['count'],
+                'requested_difficulty': self.state.get('effective_difficulty', request['difficulty']),
+                'count': self.state.get('batch_metadata', {}).get('count', request['count']),
+                'requested_count': request['count'], 'batch_metadata': self.state.get('batch_metadata', {}),
                 'sample_seed': self.state['seed'],
                 'knowledge_point': request['kp'], 'python': python_executable(self.root, self.environment),
                 'review_policy_version': REVIEW_POLICY_VERSION, 'review_binding': self.review_binding(),
@@ -747,9 +770,15 @@ class Pipeline:
                      assets_directory=primary['assets_directory'], assets=primary['assets'],
                      engine_hash=self.engine_identity(), verification_batches={} if self.is_refill else batches,
                      sampling_errors=errors,
+                     batch_metadata={key: primary[key] for key in
+                         ('count', 'requested_count', 'maximum_distinct_batch') if key in primary},
                      report_repair_directory=None, review_report_error=None, review_report_result_file=None)
 
     def sample_band(self, source, manifest, difficulty, count, seed, suffix):
+        requested_count = count
+        maximum = generation_limits(source, manifest).get(difficulty)
+        if maximum is not None:
+            count = min(count, maximum)
         runtime = self.directory / f'runtime-{self.state["attempt"]}{suffix}'
         if runtime.exists():
             shutil.rmtree(runtime)
@@ -800,6 +829,8 @@ class Pipeline:
         save(batch_file, records)
         return {'batch_file': str(batch_file), 'batch_hash': digest(records),
                 'runtime': str(runtime), 'assets_directory': str(output), 'seed': seed, 'count': count,
+                'requested_count': requested_count,
+                **({'maximum_distinct_batch': maximum} if maximum is not None else {}),
                 'assets': asset_hashes(records, output, self.math_root)}
 
     def verify_approval_inputs(self, *, allow_draft_package_change=False):
