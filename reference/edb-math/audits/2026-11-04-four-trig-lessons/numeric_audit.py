@@ -46,17 +46,26 @@ class Numeric:
         elif kind=='group':return self.sub(n[1])
         elif kind=='frac':return self.sub(n[1])/self.sub(n[2])
         elif kind=='root':return self.sub(n[2])**(1/(self.sub(n[1]) if n[1] else 2))
-        elif kind=='operator' and n[1] in FUN:return FUN[n[1]](self.unary())
+        elif kind=='operator' and n[1] in FUN:return FUN[n[1]](self.function_argument())
         elif kind=='script':
-            if n[1][0]=='operator' and n[1][1] in FUN:v=FUN[n[1][1]](self.unary())
+            if n[1][0]=='operator' and n[1][1] in FUN:v=FUN[n[1][1]](self.function_argument())
             else:v=self.atom(n[1])
             if n[2]:raise ValueError('subscript')
             if n[3] in [(('command','circ'),),(('char','∘'),),(('char','°'),)]:return v*math.pi/180
             return v**self.sub(n[3]) if n[3] else v
         raise ValueError('unsupported atom '+str(n))
+    def function_argument(self):
+        first=self.peek();v=self.unary();following=self.peek()
+        if first and (first[0]=='frac' or first[0]=='char' and first[1].replace('.','').isdigit()):
+            if following and (following[0]=='char' and following[1] in self.bindings or following==('command','pi')):v*=self.unary()
+        return v
 
 def nodes(tex):
-    tex=tex.strip().strip('$').strip().rstrip('.,;').split('=')[0]
+    tex=tex.strip().strip('$').strip().rstrip('.,;?').split('=')[0]
+    tex=re.sub(r'\\(?:begin|end)\{aligned\}','',tex).replace(r'\\','').replace('&','')
+    # Audit the intended function in legacy source spelling, while retaining
+    # those missing operator wrappers as a separate formatting finding.
+    tex=re.sub(r'\{(cos|sin)\}(?=\s*\^)',lambda m:'\\'+m[1],tex)
     tex=normalize_function_operators(tex)
     return Parser(tokens(tex)).sequence()
 
@@ -70,7 +79,7 @@ def field_key(f):
 def target(q):
     for match in MATH.finditer(q[':question/problem']):
         s=match[0]
-        if re.search(r'\\(?:sin|cos|tan|cot|sec|csc|operatorname)',s):return s
+        if re.search(r'\\(?:sin|cos|tan|cot|sec|csc|operatorname)|\b(?:sin|cos|tan|cot|sec|csc)\b',s):return s
     raise ValueError('No expression')
 
 def key_expression(q,keys):
