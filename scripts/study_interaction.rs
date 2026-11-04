@@ -974,6 +974,32 @@ pub(super) fn prepare(
         return Ok(());
     };
     reuse_ids(forms, &queued["generated"]);
+    if body["action"] == "continue" {
+        // Old acknowledgements selected with a provisional numeric task ID.
+        // Keep the exact question already shown rather than redraw at replay.
+        let activity = s.reference(required(body, "taskId")?, "learner-task/activity")?;
+        if retrieval::kind(s, activity)? == "lesson" {
+            let item_identity = &queued["generated"]["new-item|task-item/id"];
+            let admitted = queued["locals"].as_object().into_iter().flat_map(|m| m.values())
+                .find(|key| key["attribute"] == "task-item/id" && key["value"] == *item_identity)
+                .and_then(|key| key["content"].as_u64());
+            if let Some(admitted) = admitted {
+                if let Some(item) = forms.iter_mut().find(|form| form.get("db/id") == Some(&json!("new-item"))) {
+                    let planned = item["task-item/content"].as_u64().ok_or("Invalid next study content")?;
+                    if admitted != planned {
+                        let same_stage = learning::lesson_steps(s, activity)?.iter().any(|step|
+                            step.kind == "knowledge-point" && step.questions.contains(&planned) && step.questions.contains(&admitted));
+                        if !same_stage || !s.is_ordinary_question(admitted)? || !s.is_ordinary_question(planned)?
+                            || learning::unavailable_questions(s, l)?.contains(&admitted) {
+                            return Err("Accepted study question is no longer eligible; accepted work retained".into());
+                        }
+                        learning::validate_practice_question(s, admitted)?;
+                        item["task-item/content"] = json!(admitted);
+                    }
+                }
+            }
+        }
+    }
     if let Some(id) = queued["generated"]["new-task|learner-task/id"]["$uuid"].as_str() {
         if result.get("taskUuid").is_some() {
             result["taskUuid"] = json!(id);

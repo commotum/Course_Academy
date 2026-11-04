@@ -645,8 +645,10 @@ fn position_with_deferral(
                                 .transpose()?
                                 .and_then(|o| o.first().copied())
                                 .unwrap_or(activity);
-                            let seed =
-                                format!("task-{task}/kp-{}/slot-{}", step.content, outcomes.len());
+                            let task_identity = s.entity(task)?.get("learner-task/id")
+                                .map(crate::schema::value_id_string).transpose()?
+                                .unwrap_or_else(|| task.to_string());
+                            let seed = format!("task-{task_identity}/kp-{}/slot-{}", step.content, outcomes.len());
                             let next =
                                 crate::question_selection::select(s, &candidates, weights, &seed)?;
                             return Ok(current(next, None, false, &deferred));

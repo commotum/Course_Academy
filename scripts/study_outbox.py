@@ -17,6 +17,10 @@ import time
 import uuid
 
 
+class StudySyncBlocked(ValueError):
+    """Accepted local work needs reconciliation; this is not a connection error."""
+
+
 class StudyOutbox:
     ACTIONS = {'queue', 'answer', 'continue', 'pause', 'resume', 'skip', 'start', 'study-topic',
                'review-topic', 'profile-settings', 'daily-xp-goal', 'target', 'queue-topic',
@@ -324,7 +328,7 @@ class StudyOutbox:
                 raise ValueError('Request ID already used for another study interaction')
             return copy.deepcopy(prior['response'])
         if state.get('error'):
-            raise ValueError('Study saving needs attention: ' + state['error'])
+            raise StudySyncBlocked('Your progress is saved locally, but syncing needs attention: ' + state['error'])
         return None
 
     def capture_request(self, state):

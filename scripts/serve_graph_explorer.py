@@ -36,6 +36,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
 from study_outbox_compat import CompatibleStudyOutbox
+from study_outbox import StudySyncBlocked
 from read_cache import ReadCache
 from graph_preferences import read_preferences, update_preferences
 
@@ -631,6 +632,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     self.send_bytes(503 if response.get("code") == "unavailable" else 409, json.dumps({"error": response.get("error", "The request could not be completed."), "code": response.get("code", "validation")}).encode(), "application/json; charset=utf-8")
                 if body.get('action') in MUTATING_ACTIONS:
                     print(f"Learning request {body.get('action')} {body.get('requestId', '')}: admission={(admitted-request_started)*1000:.1f} ms worker={(finished-admitted)*1000:.1f} ms total={(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
+            except StudySyncBlocked as error:
+                self.send_bytes(409, json.dumps({'error': str(error), 'code': 'study-sync-blocked'}).encode(), 'application/json')
             except (subprocess.SubprocessError, OSError, ValueError) as error:
                 self.log_error("Learning request failed (%s)", type(error).__name__)
                 self.log_error("Learning %s request ended after %.1f ms", body.get('action'), (time.monotonic()-request_started)*1000)
