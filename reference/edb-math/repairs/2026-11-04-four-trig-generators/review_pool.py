@@ -88,6 +88,9 @@ def main():
                                          if kp.get(':knowledge-point/canonical-example') else []))
             localized, duplicate_count = prepare_records(candidates, int(kid), kp[':knowledge-point/id'],
                                                          seen, Path('/tmp'), H)
+            sample_folder = H / 'samples' / kid
+            sample_folder.mkdir(parents=True, exist_ok=True)
+            (sample_folder / f'{band}.json').write_text(json.dumps(localized, indent=2) + '\n')
             def stem(r):
                 q = r['question']
                 return (numeric.target(q).replace(' ', ''), tuple(enum(f[':answer-field/type']) for f in q[':question/answer-fields']))

@@ -29,7 +29,10 @@ def tex(value):
 
 def angle(degrees, unit):
     if unit == 'degrees':
-        return tex(s.Rational(degrees)) + r'^{\circ}'
+        d = s.Rational(degrees)
+        # All sampled degree values are integers or terminating half-degrees.
+        numeral = str(d.p) if d.q == 1 else format(float(d), '.12g')
+        return numeral + r'^{\circ}'
     return tex(s.Rational(degrees, 180)*s.pi)
 
 

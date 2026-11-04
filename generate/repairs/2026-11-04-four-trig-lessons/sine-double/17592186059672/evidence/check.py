@@ -53,6 +53,9 @@ def main():
                 else:sig=(gen['template'],params['doubled_degrees'],params['multiplier'],params['square_sign'] if gen['template']=='square' else None)
                 signature.append(sig)
                 prompt=r['question'][':question/problem']
+                if gen.get('symbolic_terminal'):
+                    assert params['unit']=='radians',params
+                    assert r'\circ' not in prompt,prompt
                 assert not re.search(r'\b(?:Use|Recall|first with|then with|using the sine of twice)\b',prompt),prompt
                 # A printed 1 function/product multiplier is not useful arithmetic.
                 content=prompt+'\n'+r['question'][':question/worked-solution']

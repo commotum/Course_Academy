@@ -213,6 +213,7 @@ def generate(difficulty, count, seed):
         for attempt in range(300):
             unit=rng.choice(('degrees','radians'))
             if symbolic:
+                unit='radians'
                 end=rng.choice([sp.Rational(45,2),sp.Rational(135,2),sp.Rational(225,2),sp.Rational(315,2)])
                 c=rng.choice((2,4,6,8))
             elif family=='cancellation':

@@ -25,6 +25,17 @@ def grade(args):
     return {'question': qid, 'expected': expected, 'actual': out['status']}
 
 
+def response_key(q):
+    responses = []
+    for f in q[':question/answer-fields']:
+        row = {'fieldId': f[':db/id']}
+        if str(f[':answer-field/type'][':db/ident']).endswith(('/radio', '/select')):
+            row['choiceId'] = f[':answer-field/correct'][':db/id']
+        else: row['value'] = f[':answer-field/correct'][':answer/value']
+        responses.append(row)
+    return responses
+
+
 def main():
     proof = json.loads((H / 'verification.json').read_text()); assert proof['passed']
     p = Publisher.from_environment(source=':agent/codex'); basis = p.client.status()['basis']
@@ -46,13 +57,7 @@ def main():
         for published in publication['new_questions']:
             q = questions[published['entity']]; new_ids.append(q[':db/id'])
             assert not q.get(':question/retired') and not q.get(':question/math-academy-id')
-            fields = q[':question/answer-fields']; correct = []
-            for f in fields:
-                row = {'fieldId': f[':db/id']}
-                if str(f[':answer-field/type'][':db/ident']).endswith(('/radio', '/select')):
-                    row['choiceId'] = f[':answer-field/correct'][':db/id']
-                else: row['value'] = f[':answer-field/correct'][':answer/value']
-                correct.append(row)
+            fields = q[':question/answer-fields']; correct = response_key(q)
             tasks.append((topic, q[':db/id'], correct, 'correct'))
             for i, f in enumerate(fields):
                 if 'choiceId' in correct[i]:
@@ -65,6 +70,9 @@ def main():
                     wrong[i]['value'] = '1' if correct[i]['value'] == '0' else '0'
                     tasks.append((topic, q[':db/id'], wrong, 'incorrect'))
         history_questions += publication['retired_with_preserved_task_items']
+        if publication['retired_with_preserved_task_items']:
+            q = questions[publication['retired_with_preserved_task_items'][0]]
+            tasks.append((topic, q[':db/id'], response_key(q), 'correct'))
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor: checks = list(executor.map(grade, tasks))
     result = {'passed': True, 'basis': basis, 'generators_registered': len(proof['kps']),
         'retired_from_future_practice': proof['retired'], 'new_questions': len(new_ids),

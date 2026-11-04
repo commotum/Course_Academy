@@ -48,6 +48,11 @@ def value(spec,a,unit):
     x=float(F(a))* (math.pi/180 if unit=='deg' else math.pi)*float(freq)
     return float(offset)+float(c)*getattr(math,fun)(x)
 
+def quotient(c,numerator,denominator):
+    # Keep rational coefficients out of the fraction's numerator.
+    c=F(c)
+    return r'\frac{'+term(c.numerator,numerator)+'}{'+term(c.denominator,denominator)+'}'
+
 def aligned(rows):
     return '$$\n'+r'\begin{aligned}'+'\n'+r' \\ '.join(rows)+'\n'+r'\end{aligned}'+'\n$$'
 
@@ -79,10 +84,10 @@ def make(level,family,a,unit,k=2,sign=1,order=False,profile='mixed',rng=None,ban
             solution+=' Multiply both terms by $'+frac(k)+'$.'
     elif family=='quotient':
         key=(k/2,'tan',2,0)
-        printed=r'\frac{'+term(k,product)+'}{'+trig('cos',2*a,unit)+'}'
+        printed=quotient(k,product,trig('cos',2*a,unit))
         problem='Simplify.\n\n$$\n'+printed+'\n$$'
         solution=put+' '+intro+'\n\n'+aligned([
-            r'\frac{'+term(k,common)+r'}{\cos(2x)} &='+term(k/2,r'\frac{2\sin x\cos x}{\cos(2x)}'),
+            quotient(k,common,r'\cos(2x)')+' &='+term(k/2,r'\frac{2\sin x\cos x}{\cos(2x)}'),
             '&='+term(k/2,r'\frac{\sin(2x)}{\cos(2x)}'),
             '&='+term(k/2,r'\tan(2x)')])+'\n\n'+r'The denominator is nonzero, and $\tan(2x)=\sin(2x)/\cos(2x)$.'
     else:raise ValueError(family)

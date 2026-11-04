@@ -16,3 +16,5 @@ Reproduce from repository root:
 ```
 
 Limits: numeric witnesses are independent checks, not universal symbolic proofs. Root owner performs actual UI rendering, native learner grading, inventory filtering and publication. No imported question, live registration, database or shared implementation was changed.
+
+Final presentation refinement verified by the current CLI: `evidence/presentation-refinement.json`. The relevant full CLI regression, numeric/choice/solution checks, controlled pairs, and choice observations were regenerated.
