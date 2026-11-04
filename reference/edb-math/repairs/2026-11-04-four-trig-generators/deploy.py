@@ -14,7 +14,7 @@ H = Path(__file__).resolve().parent
 ROOT = H.parents[3]
 sys.path.insert(0, str(ROOT))
 from scripts.generator_publish import (Publisher, GeneratorCommitter, StaleBasis, digest,
-    dumps, loads, kw, file_lock, normalized_question)
+    dumps, loads, kw, file_lock, normalized_question, content_fingerprint)
 from scripts.generator_packages import publish_package, build_manifest, manifest_digest, verify_package, check_dependencies
 from capture.scripts.storage import atomic_json
 
@@ -25,11 +25,25 @@ def prepare(p, kid, package, capture):
         package.reference, package.digest, work,
         source_snapshot=json.loads((H / 'source' / kid / 'source.json').read_text()), assets_directory=H,
         expected_registered_generator=capture['kps'][kid][':knowledge-point/question-generator'][':question-generator/script'])
-    # A duplicate means the pool plan must be reviewed, never silently reduced.
-    assert prepared['duplicates'] == 0, (kid, prepared['duplicates'])
     before, batch = loads(prepared['before_edn']), loads(prepared['batch_edn'])
+    # Retain a sound existing instance instead of retiring and recreating it.
+    # Reuse is allowed only after checking its actual key and full derivation.
+    reused, reuse_checks = [], []
+    if prepared['duplicates']:
+        from review_pool import numeric, solution_scope
+        existing = {content_fingerprint(q): q for q in before[':knowledge-point/questions']}
+        for record in json.loads((H / 'pools' / f'{kid}.json').read_text()):
+            q = existing.get(content_fingerprint(record['question']))
+            if q is None: continue
+            assert not q.get(':question/math-academy-id') and not q.get(':question/retired'), (kid, q[':db/id'])
+            key = numeric.audit(q, str(q[':db/id']), kid)
+            solution = solution_scope['check'](q, str(q[':db/id']), kid)
+            assert key['status'] == 'match' and not key['choice_ambiguities'], key
+            assert not solution.get('suspected_bad_equalities') and not solution.get('unparsed_equalities'), solution
+            reused.append(q[':db/id']); reuse_checks.append({'key': key, 'solution': solution})
+        assert len(reused) == prepared['duplicates'], (kid, prepared['duplicates'], reused)
     old = [q for q in before[':knowledge-point/questions']
-           if not q.get(':question/math-academy-id') and not q.get(':question/retired')]
+           if not q.get(':question/math-academy-id') and not q.get(':question/retired') and q[':db/id'] not in reused]
     retired = []
     for q in old:
         eid = q[':db/id']; previous = q.get(':question/retired'); retired.append(eid)
@@ -39,6 +53,7 @@ def prepare(p, kid, package, capture):
     usage = p.client.query('[:find (pull ?q [:db/id {:task-item/_content [:db/id]}]) :in $ [?q ...] :where [?q :question/id _]]',
                            [retired], work, 'retired-history', prepared['basis']) if retired else []
     prepared.update(batch_edn=dumps(batch), retired_questions=sorted(retired),
+        valid_existing_instances_reused=reused, reused_instance_checks=reuse_checks,
         retired_with_preserved_task_items=[r[0][':db/id'] for r in usage if r[0].get(':task-item/_content')])
     atomic_json(work / 'preparation.json', prepared)
     committer = GeneratorCommitter(p.config, p.client, work)
@@ -72,6 +87,7 @@ def apply(p, kid, prepared, committer, request):
     result = {'passed': True, 'committed': True, 'kp': int(kid), 'basis_before': request['basis'], 'basis_after': basis,
               'package_sha256': prepared['package_sha256'], 'generator': prepared['generator_path'],
               'retired': prepared['retired_questions'], 'new_questions': new,
+              'valid_existing_instances_reused': prepared.get('valid_existing_instances_reused', []),
               'retired_with_preserved_task_items': prepared['retired_with_preserved_task_items'],
               'originals_canonical_keys_ids_and_saved_history_preserved': True,
               'request_key': request['request_key'], **proof}
