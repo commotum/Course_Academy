@@ -368,6 +368,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
     validate_parametric_layout(accepted, kp_id)
     from generate.equilibrium_pedagogy import validate_delivery_batch as validate_equilibrium
     validate_equilibrium(accepted, kp_id)
+    from generate.trig_question_pedagogy import validate_delivery_batch as validate_trig_practice
+    validate_trig_practice(accepted, kp_id)
     return accepted, duplicate_count
 
 

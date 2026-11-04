@@ -34,6 +34,10 @@ for band in ('easy','moderate','hard'):
     arg=re.search(r'\\(?:cos|sin)(?:\^\{?\d\}?)?\\left\((.*?)\\right\)',target(q)).group(1)
     degrees=Numeric(nodes(arg),{}).evaluate()*180/math.pi
     assert abs(degrees/30-round(degrees/30))>1e-8 and abs(degrees/45-round(degrees/45))>1e-8,('original standard-angle bypass',degrees)
+    if band=='hard':
+     visible=nodes(target(q))
+     proper=any(n[0]=='frac' and 0<Numeric((n,),{}).evaluate()<1 for n in visible)
+     assert proper or visible[0]==('char','-'),('hard adds no fractional/reordering demand',target(q))
    if KP.endswith('671'):
     expr=target(q); numeric_nodes=nodes(expr)
     # Visible original angle extracted independently: evaluate first sin/cos argument using parser structure.

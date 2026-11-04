@@ -79,6 +79,8 @@ def construct(difficulty,form,x,unit,kind='rational',n=F(1),profile=None,rng=Non
     """A single source-supported identity application, with an optional factor."""
     x=F(x); rng=rng or random.Random(0)
     if difficulty=='easy': kind,n='rational',F(1)
+    if difficulty=='hard' and not reordered and not (kind=='rational' and 0<F(n)<1):
+        raise ValueError('Hard continuation requires a proper fractional common factor or reordered terms')
     a=coefficient(kind,n); twoa=coefficient(kind,n,F(2))
     t=trig(x,unit,form,2)
     pattern=('2'+t+'-1') if form=='cos' else ('1-2'+t)
@@ -193,8 +195,8 @@ def generate(difficulty,count,seed):
                 ('rational',F(5)),('rational',F(1,2)),('rational',F(1,3)),('rational',F(1,4)),
                 ('sqrt',2),('sqrt',3),('sqrt',5)])
         if difficulty=='hard':
-            kind,n=rng.choice([('rational',F(3,2)),('rational',F(2,3)),('rational',F(5,3)),('rational',F(3,4)),('sqrt',2),('sqrt',3)])
-        reordered=difficulty=='hard' and rng.choice([False,True])
+            kind,n=rng.choice([('rational',F(2,3)),('rational',F(3,4)),('rational',F(3,5)),('rational',F(4,5)),('sqrt',2),('sqrt',3)])
+        reordered=difficulty=='hard' and (kind=='sqrt' or rng.choice([False,True]))
         profile=rng.choice(PROFILES)
         for attempt in range(1000):
             try: rec=construct(difficulty,form,x,unit,kind,n,profile,rng,reordered)
