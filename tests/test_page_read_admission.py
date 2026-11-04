@@ -15,6 +15,24 @@ from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_blocked_study_sync_is_reported_as_reconciliation_not_connection_failure(self):
+        from serve_graph_explorer import save_json
+        with tempfile.TemporaryDirectory() as directory:
+            save_json(Path(directory) / 'study-outbox/learner/study.json', {
+                'error': 'Study route changed before saving; accepted work retained',
+                'operations': [], 'overlay': None, 'views': {}, 'aliases': {}, 'retryAt': 0})
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                request = cls.__new__(cls)
+                replies = []
+                request.send_bytes = lambda status, body, ctype: replies.append((status, json.loads(body)))
+                request.learning_request({'action': 'study-topic', 'topicId': 1, 'requestId': 'blocked-sync-test'})
+                self.assertEqual(replies[0][0], 409)
+                self.assertEqual(replies[0][1]['code'], 'study-sync-blocked')
+                self.assertIn('saved locally', replies[0][1]['error'])
+                workers.return_value.request.assert_not_called()
+
     def test_task_and_profile_reads_do_not_share_the_blocked_write_worker(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}

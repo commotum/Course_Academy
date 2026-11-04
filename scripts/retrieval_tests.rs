@@ -2814,15 +2814,33 @@ fn study_projection_lesson_backlog_replays_exact_route_and_logical_clocks() -> R
     }
     assert_eq!(final_view["status"],"completed");
     if let Ok(path)=std::env::var("STUDY_BROWSER_FIXTURE"){std::fs::write(path,serde_json::to_vec(&json!({"initial":home(&base,f.learner)?,"sequence":browser_sequence}))?)?;}
+    let mut replayed_frozen_draws=0;
     for (n,operation) in queued.iter().enumerate(){
         let s=f.snapshot()?;
         let op=study_interaction::bind(&s,operation)?;
         let at=DateTime::from_timestamp_millis(f.now+30_000+n as i64*100).unwrap();
         let work_at=DateTime::from_timestamp_millis(op["_queuedStudy"]["at"].as_i64().unwrap()).unwrap();
         let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,work_at)?;
+        if op["action"]=="continue" {
+            if let Some(index)=forms.iter().position(|form|form.get("db/id")==Some(&json!("new-item"))) {
+                let admitted=forms[index]["task-item/content"].as_u64().unwrap();
+                if s.is_ordinary_question(admitted)? {
+                    let unavailable=learning::unavailable_questions(&s,f.learner)?;
+                    let alternative=learning::lesson_steps(&s,activity)?.iter()
+                        .find(|step|step.questions.contains(&admitted)).unwrap().questions.iter().copied()
+                        .find(|q|*q!=admitted && !unavailable.contains(q)).unwrap();
+                    // Simulate a legacy numeric-ID draw changing at replay.
+                    forms[index]["task-item/content"]=json!(alternative);
+                    let mut retired=s.clone();retired.entities.get_mut(&admitted).unwrap().insert("question/retired".into(),json!(true));
+                    assert!(study_interaction::prepare(&retired,&f.db.database_value(),f.learner,&op,&mut forms.clone(),&mut result.clone(),at).is_err());
+                    replayed_frozen_draws+=1;
+                }
+            }
+        }
         study_interaction::prepare(&s,&f.db.database_value(),f.learner,&op,&mut forms,&mut result,at)?;
         f.tx(forms,at.timestamp_millis())?;
     }
+    assert!(replayed_frozen_draws>0);
     let saved=f.snapshot()?;
     let task=saved.refs(f.learner,"learner/activity")?.into_iter().find(|t|saved.reference(*t,"learner-task/activity").ok()==Some(activity)).unwrap();
     let durable=task_json(&saved,f.learner,task)?;

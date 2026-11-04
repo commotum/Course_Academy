@@ -3404,6 +3404,23 @@ pub(crate) mod tests {
         s.refs(9, "learner-task/items").unwrap()
     }
 
+    #[test]
+    fn adaptive_question_draw_uses_task_uuid_across_entity_id_resolution() {
+        let mut s = fixture();
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        let chain = items(&s);
+        let expected = next_content(&s, 20, &chain).unwrap();
+        for eid in 4_000_000_000_000_001..4_000_000_000_000_033 {
+            let mut records: BTreeMap<u64, crate::schema::Record> = s.entities.clone().into();
+            let task = records.remove(&9).unwrap();
+            records.insert(eid, task);
+            records.get_mut(&1).unwrap().insert("learner/activity".into(), json!([eid]));
+            let remapped = EntitySnapshot::new(records, s.basis_t).unwrap();
+            assert_eq!(next_content(&remapped, 20, &chain).unwrap(), expected);
+        }
+    }
+
     fn multistep_parts(s: &mut EntitySnapshot, questions: &[u64]) {
         let mut steps = vec![];
         for (index, question) in questions.iter().enumerate() {
