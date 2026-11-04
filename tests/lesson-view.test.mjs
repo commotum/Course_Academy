@@ -6,6 +6,7 @@ import vm from 'node:vm';
 // Run the actual lesson renderer and visibility logic with a DOM and API stand-in.
 // No live learner, attempts, or database are used.
 const source = await readFile(new URL('../ui/learning.js', import.meta.url), 'utf8');
+const pendingIdCapture = JSON.parse(await readFile(new URL('./fixtures/answer-pending-id-transition.json', import.meta.url), 'utf8'));
 const controllers = source.slice(source.indexOf('const $'), source.indexOf("$('retryButton').addEventListener"));
 const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf("document.addEventListener('visibilitychange'"));
 const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
@@ -304,6 +305,23 @@ test('answer feedback updates the same presentation without duplicating history 
   assert.equal(f.scrolls.length, 1);
   assert.match(f.h.view.current.textContent, /Correct/);
   assert.ok(f.h.view.current.querySelector('.lesson-controls'));
+});
+
+test('captured radio submission retains its options when an item becomes durable while the answer is pending', async () => {
+  const f = fixture();
+  await f.h.render(structuredClone(pendingIdCapture.before));
+  const card = f.h.view.current;
+  const options = card.querySelectorAll('input');
+  const order = options.map(input => input.value);
+  f.server = structuredClone(pendingIdCapture.after);
+  const field = f.server.step.fields[0];
+  await f.h.mutation('/api/answer', { taskId: f.server.taskId,
+    itemId: pendingIdCapture.before.step.itemId, responses: [{ fieldId: field.id, choiceId: field.response.choiceId }] });
+  assert.equal(f.h.view.current, card);
+  assert.deepEqual(card.querySelectorAll('input'), options);
+  assert.deepEqual(card.querySelectorAll('input').map(input => input.value), order);
+  assert.equal(f.scrolls.length, 1);
+  assert.equal(f.h.view.currentId, String(f.server.step.itemId));
 });
 
 test('unordered field sets retain deterministic positions and mounted controls after grading and refresh', async () => {

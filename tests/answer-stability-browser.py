@@ -78,7 +78,20 @@ const {chromium}=require('/home/jake/.cache/codex-runtimes/codex-primary-runtime
    await page.locator('form').evaluate(form=>form.requestSubmit(form.querySelector('button[type="submit"]')));
    await page.waitForSelector('.feedback-heading');await page.evaluate(()=>window.whenRendered());
    const heading=await page.locator('.feedback-heading').boundingBox();assert.ok(heading.y>=0&&heading.y+heading.height<=800,JSON.stringify({width,heading,y:await page.evaluate(()=>scrollY)}));
-   assert.deepEqual(errors,[]);results.push({width,stableFields:true,retainedMathAndInputs:true,scrollDelta:after.y-before.y,feedbackVisible:true,enterRevealsFeedback:true});
+   // Replay the actual radio response pair reported with screenshots. Its
+   // presentation is committed while the newly submitted answer is pending.
+   const captured=CAPTURED;
+   await page.unroute('**/api/answer');
+   await page.route('**/api/answer',route=>route.fulfill({json:captured.after}));
+   await page.reload();await page.waitForFunction(()=>window.ready);
+   await page.evaluate(data=>window.render(data),captured.before);
+   const selected=captured.after.step.fields[0].response.choiceId;
+   await page.locator('label.choice:has(input[value="'+selected+'"])').click();
+   const order=await page.locator('input[type="radio"]').evaluateAll(nodes=>{window.radioCard=document.querySelector('.lesson-content');window.radioInputs=nodes;return nodes.map(n=>n.value);});
+   await page.locator('.answer-actions button').click();await page.waitForSelector('.feedback-heading');await page.evaluate(()=>window.whenRendered());
+   assert.deepEqual(await page.locator('input[type="radio"]').evaluateAll(nodes=>nodes.map(n=>n.value)),order);
+   assert.equal(await page.evaluate(()=>radioCard===document.querySelector('.lesson-content')&&radioInputs.every(n=>n.isConnected)),true);
+   assert.deepEqual(errors,[]);results.push({width,stableFields:true,retainedMathAndInputs:true,scrollDelta:after.y-before.y,feedbackVisible:true,enterRevealsFeedback:true,capturedPendingRadioStable:true});
    await page.close();
   }
   console.log(JSON.stringify({passed:true,results}));
@@ -98,6 +111,7 @@ server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
 threading.Thread(target=server.serve_forever,daemon=True).start()
 try:
     with tempfile.TemporaryDirectory(prefix='answer-stability-') as tmp:
-        script=Path(tmp)/'test.cjs';script.write_text(javascript.replace('ORIGIN',json.dumps(f'http://127.0.0.1:{server.server_port}')))
+        captured=json.loads((ROOT/'tests/fixtures/answer-pending-id-transition.json').read_text())
+        script=Path(tmp)/'test.cjs';script.write_text(javascript.replace('ORIGIN',json.dumps(f'http://127.0.0.1:{server.server_port}')).replace('CAPTURED',json.dumps(captured)))
         subprocess.run(['/home/jake/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node',str(script)],check=True,timeout=100)
 finally: server.shutdown()

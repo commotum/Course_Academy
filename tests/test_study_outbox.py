@@ -50,6 +50,16 @@ class StudyOutboxTest(unittest.TestCase):
         return self.queue.request({'action': action, 'taskId': 4000000000000001,
                                    'itemId': 4000000000000002, 'requestId': request}, 1000)
 
+    def test_pending_answer_publishes_already_committed_id_mappings_only(self):
+        self.request('answer')
+        state = self.queue.load()
+        state['aliases'] = {'6004722897651144': 17592186748579, '4000000000000002': 101}
+        # The old question was committed before this answer; another local
+        # overlay entity is still in flight and must retain its local ID.
+        view = self.queue.with_status(state, {'step': {'itemId': 17592186748579}})
+        self.assertEqual(view['saveState']['status'], 'pending')
+        self.assertEqual(view['idAliases'], {'6004722897651144': 17592186748579})
+
     def test_start_answer_next_and_other_reads_do_not_wait_for_writer(self):
         first = self.request()
         entered, release = threading.Event(), threading.Event()

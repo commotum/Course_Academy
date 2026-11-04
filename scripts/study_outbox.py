@@ -108,8 +108,10 @@ class StudyOutbox:
         gate = self.acknowledged_gate_fields(state, aliases).get('acknowledgedStudyGate')
         if gate is not None:
             value['studyGate'] = gate
-        if not self.pending(state):
-            value['idAliases'] = copy.deepcopy(state['aliases'])
+        # A new answer can already use a committed item ID while that answer
+        # itself is pending. Publish the same safe mappings used for reads;
+        # otherwise the player mistakes ID resolution for a new presentation.
+        value['idAliases'] = copy.deepcopy(aliases)
         return value
 
     def home_gate(self, state, home):

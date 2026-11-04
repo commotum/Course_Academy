@@ -90,9 +90,9 @@ function studyChoiceId(id) {
   return id;
 }
 function reconcileStudyIds(data) {
-  // Provisional IDs remain stable throughout admission. Once the whole stream
-  // is committed, migrate local-only UI state to the database entity IDs.
-  if (data?.saveState?.status !== 'saved' || !data.idAliases) return;
+  // Earlier presentations can commit while later answers are still pending.
+  // Migrate UI state whenever the server supplies a safe committed mapping.
+  if (!data?.idAliases) return;
   for (const [local, durable] of Object.entries(data.idAliases)) {
     if (Number.isSafeInteger(durable) && durable > 0 && local !== String(durable)) studyIdAliases.set(local, durable);
   }
