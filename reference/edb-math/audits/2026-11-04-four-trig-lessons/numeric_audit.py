@@ -58,6 +58,7 @@ class Numeric:
         first=self.peek();v=self.unary();following=self.peek()
         if first and (first[0]=='frac' or first[0]=='char' and first[1].replace('.','').isdigit()):
             if following and (following[0]=='char' and following[1] in self.bindings or following==('command','pi')):v*=self.unary()
+            elif following==('command','cdot'):self.take();v*=self.unary()
         return v
 
 def nodes(tex):

@@ -9,24 +9,26 @@ def check(q,label,kid):
     if not solution.strip():return {'label':label,'kp':kid,'status':'missing','checks':0}
     checked=0;bad=[];unparsed=[]
     for point in [.371,.823,1.197]:
-        bind={n:point+off for n,off in [('x',0),('y',.17),('t',.23),('w',.31),('theta',.43),('u',.51),('v',.63),('A',.71),('B',.83)]}
+        bind={n:point+off for n,off in [('x',0),('y',.17),('t',.23),('w',.31),('theta',.43),('u',.51),('v',.63),('A',.71),('B',.83),('a',.91),('b',1.03)]}
         try:bind['E']=Numeric(nodes(target(q)),bind).evaluate()
         except Exception:pass
         for span in MATH.finditer(solution):
             body=span[0].strip('$').strip()
             if '=' not in body:continue
             body=re.sub(r'\\(?:begin|end)\{aligned\}','',body)
+            body=re.sub(r'\\cancel(?![A-Za-z])','',body)
+            body=re.sub(r'\\color\{[^{}]+\}','',body)
             body=body.replace('&','').replace(r'\qquad','').replace(r'\quad','')
-            lines=[s.strip().rstrip('.,;') for s in body.split(r'\\')];combined=[]
+            lines=[s.strip().rstrip('.,;:') for s in re.split(r'\\\\|(?<!\\),',body)];combined=[]
             for line in lines:
                 if not line:continue
                 if '=' not in line and combined:combined[-1]+=line
                 else:combined.append(line)
             previous=None
             for line in combined:
-                parts=[p.strip().rstrip('.,;') for p in line.split('=')]
+                parts=[p.strip().rstrip('.,;:') for p in line.split('=')]
                 if len(parts)<2:continue
-                if parts[0] in ('x','y','t','w','u','v','s','c','A','B') and len(parts)==2:
+                if parts[0] in ('x','y','t','w','u','v','s','c','a','b','A','B') and len(parts)==2:
                     try:bind[parts[0]]=Numeric(nodes(parts[1]),bind).evaluate()
                     except Exception:pass
                     continue
