@@ -126,7 +126,7 @@ def make_record(p,q,s,unit,difficulty,shape,profile='formula-and-signs',rng=None
               'calibration':'authored overlapping supplied-split band; no imported hard anchor' if difficulty=='hard' else 'imported same-skill family',
               'bank_profile':profile if shape=='radio' else None,
               'choice_recipes':{c[':answer/id']:recipe for c,(_,recipe) in zip(choices,bank)},
-              'source_question_ids':source_ids or (['c338ba7e-729f-5c5d-97ab-549fb226cb62','7f15816e-a4ea-5e54-ac29-0fac8d7bc4b0'] if difficulty=='easy' and shape=='radio' else ['b67c309d-f1ce-5ff4-97dc-3605a30b0439','e4605c71-e2bc-5367-b6ca-7ac14bd5654c'] if difficulty=='easy' else ['9b9e46d2-105c-587e-ad59-8da071cc7eea','c456fc7d-3362-5f0f-892b-2dc7d01dc677'] if shape=='radio' else ['252126f0-142c-514f-8cc9-9ddbe81844d9','cb9a138e-76d2-528f-b913-b0fc66fe6f14']),
+              'source_question_ids':source_ids or (['9b896832-365a-53e2-87c9-f14f4fb24d89','7f15816e-a4ea-5e54-ac29-0fac8d7bc4b0'] if difficulty=='easy' and shape=='radio' else ['b67c309d-f1ce-5ff4-97dc-3605a30b0439','e4605c71-e2bc-5367-b6ca-7ac14bd5654c'] if difficulty=='easy' else ['9b9e46d2-105c-587e-ad59-8da071cc7eea','c456fc7d-3362-5f0f-892b-2dc7d01dc677'] if shape=='radio' else ['9be8168c-23d9-5e9e-9448-c2a71491be02','cb9a138e-76d2-528f-b913-b0fc66fe6f14']),
               'domain':'real fixed angles; exact radical arithmetic',
               'ordered_path':{'displayed_final':key,'key':key,'steps':['cosine identity','signed special-angle substitution','radical products','fraction combination'],
               'conversions':[],'support':['lesson a9114a20-3220-5a44-b0ed-4e405d4317a4','unit-circle prerequisites','radical product prerequisite']}}}
@@ -150,55 +150,42 @@ def catalog(difficulty,sign,unit,shape,profile):
     return tuple(items)
 
 
+def semantic(p,q,sign):
+    # Commuting a supplied sum does not create a new mathematical problem.
+    return (min(p,q),max(p,q),sign) if sign==1 else (p,q,sign)
+
+
 def generate(difficulty,count,seed):
-    rng=random.Random(seed); out=[]; seen=set(); profiles=list(PROFILES); family_hits={}; profile_hits={}; used_values={}; last_rank={}
-    # Decision cases are selected before compatible numerical pairs. Each cycle
-    # spans both identity cases; shape/unit phase rotates independently per cycle.
-    phase=rng.randrange(2);start=rng.randrange(len(profiles));shape_phase=rng.randrange(4)
-    for i in range(count):
-        sign=1 if (i+phase)%2==0 else -1
-        unit='radians' if (i//2+phase)%2==0 else 'degrees'
-        minority=i%4==(i//4+shape_phase)%4
-        shape='blank' if difficulty=='hard' or (difficulty=='moderate' and not minority) or (difficulty=='easy' and minority) else 'radio'
-        role=(sign,shape)
-        occurrence=family_hits.get(role,0);family_hits[role]=occurrence+1
-        family=('acute' if occurrence%2==0 else 'signed') if difficulty=='easy' and shape=='radio' else 'any'
-        profile_role=(sign,shape,family)
-        bank_occurrence=profile_hits.get(profile_role,0);profile_hits[profile_role]=bank_occurrence+1
-        unit='radians' if (bank_occurrence+phase)%2==0 else 'degrees'
-        preferred=(bank_occurrence+start+(sign==-1))%len(profiles)
-        # Select an entire authored bank profile, never fill from a pooled list.
-        # Adjacent instances in the same visible family must not teach a fixed
-        # numerical-rank strategy when plausible complete profiles can vary it.
-        for offset in range(len(profiles)):
-            profile=profiles[(preferred+offset)%len(profiles)]
-            candidates=list(catalog(difficulty,sign,unit,shape,profile))
-            if family!='any':candidates=[(p,q) for p,q in candidates if ((p<90 and q<90)==(family=='acute'))]
-            candidates=[(p,q) for p,q in candidates if (p,q,sign) not in seen]
-            if shape=='radio' and profile_role in last_rank:
-                candidates=[(p,q) for p,q in candidates if bank_rank(p,q,sign,profile)!=last_rank[profile_role]]
-            if candidates:break
-        else:raise ValueError('No complete plausible profile varies the incidental bank rank')
-        groups={}
-        for p,q in candidates:groups.setdefault(values(p,q,sign)[-1],[]).append((p,q))
-        used=used_values.setdefault(profile_role,set())
-        available=sorted(set(groups)-used,key=str)
-        if not available:used.clear();available=sorted(groups,key=str)
-        outcome=rng.choice(available);used.add(outcome)
-        candidates=groups[outcome]
-        rng.shuffle(candidates)
-        for p,q in candidates:
-            target=p+sign*q;outer=None
-            r=make_record(p,q,sign,unit,difficulty,shape,profile,rng,outer)
-            # Angle roles plus resulting target distinguish semantic instances;
-            # shuffled options and different UUIDs do not create new instances.
-            sem=(p,q,sign)
-            if sem in seen:continue
-            seen.add(sem)
-            if shape=='radio':last_rank[profile_role]=bank_rank(p,q,sign,profile)
-            r['generation'].update(seed=seed,sample_index=i)
-            out.append(r);break
-        else: raise ValueError('Requested count exceeds this finite decision-case cycle; reduce count')
+    if count<0:raise ValueError('count must be nonnegative')
+    rng=random.Random(seed);groups={}
+    shapes=('blank',) if difficulty=='hard' else ('radio','blank')
+    for sign in (-1,1):
+        for shape in shapes:
+            for profile in PROFILES:
+                for p,q in catalog(difficulty,sign,'degrees',shape,profile):
+                    groups.setdefault(semantic(p,q,sign),[]).append((p,q,shape,profile))
+    capacity=len(groups)
+    if count>capacity:raise ValueError(f'{difficulty} supports {capacity} mathematical decompositions; requested {count}')
+    decks={sign:[key for key in groups if key[2]==sign] for sign in (-1,1)}
+    for deck in decks.values():rng.shuffle(deck)
+    sign=rng.choice((-1,1));out=[];last_rank={}
+    while len(out)<count:
+        if not decks[sign]:sign=-sign
+        sem=decks[sign].pop();candidates=groups[sem]
+        # Response demand is source-supported and never adds a mathematical task.
+        available_shapes=sorted({c[2] for c in candidates})
+        shape=rng.choice(available_shapes)
+        candidates=[c for c in candidates if c[2]==shape]
+        if shape=='radio':
+            role=(sign,shape)
+            varied=[c for c in candidates if bank_rank(c[0],c[1],sign,c[3])!=last_rank.get(role)]
+            if varied:candidates=varied
+        p,q,shape,profile=rng.choice(candidates)
+        unit='radians' if rng.randrange(2) else 'degrees'
+        record=make_record(p,q,sign,unit,difficulty,shape,profile,rng)
+        record['generation'].update(seed=seed,sample_index=len(out),mathematical_capacity=capacity)
+        if shape=='radio':last_rank[(sign,shape)]=bank_rank(p,q,sign,profile)
+        out.append(record);sign=-sign
     return out
 
 

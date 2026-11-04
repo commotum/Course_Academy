@@ -45,9 +45,9 @@ def semantic(r,kid):
  if kid=='17592186059820':return (p['n'],p['d'],p['operator'])
  if kid=='17592186059821':return (p['sign'],p['angle'])
  if kid=='17592186059662':return p['t']
- if kid=='17592186059666':return (p['p'],p['q'],p['s'])
+ if kid=='17592186059666':return (min(p['p'],p['q']),max(p['p'],p['q']),p['s']) if p['s']==1 else (p['p'],p['q'],p['s'])
  if r['question'][':question/difficulty'].endswith('hard'):return p['target']
- return (p['a'],p['b'],p['op'])
+ return (min(p['a'],p['b']),max(p['a'],p['b']),p['op']) if p['op']==1 else (p['a'],p['b'],p['op'])
 
 def run():
  failures=[];summary=[];results=[]
@@ -62,7 +62,12 @@ def run():
     for i,r in enumerate(records):
      label=f'{band}-seed-{seed}/{i}';q=r['question']
      n=audit(q,label,kid);s=check_solution(q,label,kid);p=purpose(q,kid,band)
-     result={'label':label,'kp':kid,'numeric':n,'solution':s,'purpose_errors':p}
+     anchors=json.loads((folder/'source-anchors.json').read_text())
+     allowed={value for source in anchors['imports']+[anchors['canonical']] for key,value in source.items() if key in (':question/id',':question/math-academy-id')}
+     lineage={key:values for key,values in r['generation'].items() if key in ('source_ids','source_question_ids','source_refs','source_support')}
+     bad_lineage=[value for values in lineage.values() for value in values if value not in allowed]
+     if bad_lineage:p.append('non-imported source provenance: '+str(bad_lineage))
+     result={'label':label,'kp':kid,'numeric':n,'solution':s,'purpose_errors':p,'source_lineage':lineage}
      results.append(result)
      if n['status']!='match' or n.get('choice_ambiguities') or s.get('suspected_bad_equalities') or s.get('unparsed_equalities') or p:failures.append(result)
    # Determinism uses original complete records, including IDs and banks.

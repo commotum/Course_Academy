@@ -5,3 +5,5 @@ The learner must recognize cos²(a) − sin²(a), retain a common coefficient wh
 Runtime closure and executed validation results are recorded beside this account after implementation. Live sources and registrations are outside this repair workspace.
 
 Executed validation: `python3 check_repair.py` passed. Thirty records across all three bands (seeds 71 and 204, five each) passed independent visible-TeX key/choice checks and 330 numeric worked-equality witnesses; 9 controlled/replayed source cases passed. All three bands reproduced byte-for-byte after relocation with only the manifest runtime files. Separate CLI edge counts 0, 1 and 2 passed with seed 913. Runtime closure: `generator.py`, `math_format.py`. Actual native grading, UI rendering and publication remain root review work.
+
+New-practice sampling additionally rejects original standard angles (multiples of 30 or 45 degrees), because evaluating their known sine/cosine values can bypass the identity. Doubled standard angles remain eligible. Source-family comparison fixtures deliberately retain original source parameters; they are verification controls, not new practice batches.

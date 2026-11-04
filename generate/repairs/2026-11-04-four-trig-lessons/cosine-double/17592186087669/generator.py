@@ -111,9 +111,16 @@ def construct(difficulty,form,x,unit,kind='rational',n=F(1),profile=None,rng=Non
 
 
 def sample_angle(difficulty,unit,rng):
-    if unit=='deg': return F(rng.randint(10,170))
-    d=rng.choice([5,6,7,8,9,10,11,12,15,16,18,20,24])
-    return F(rng.randint(1,2*d-1),d)
+    # Standard original angles permit direct known-value evaluation and bypass
+    # recognizing the target identity. Doubled standard angles remain useful.
+    while True:
+        if unit=='deg':
+            x=F(rng.randint(10,170)); degrees=x
+        else:
+            d=rng.choice([5,6,7,8,9,10,11,12,15,16,18,20,24])
+            x=F(rng.randint(1,2*d-1),d); degrees=180*x
+        if degrees % 30 and degrees % 45:
+            return x
 
 
 def bank_predictions(record):
@@ -177,7 +184,6 @@ def generate(difficulty,count,seed):
     rng.shuffle(strata)
     for i in range(count):
         form,unit=strata[i%len(strata)]
-        profile=rng.choice(PROFILES)
         x=sample_angle(difficulty,unit,rng)
         kind,n='rational',F(1)
         if difficulty in ('moderate','hard'):
@@ -187,6 +193,7 @@ def generate(difficulty,count,seed):
         if difficulty=='hard':
             kind,n=rng.choice([('rational',F(3,2)),('rational',F(2,3)),('rational',F(5,3)),('rational',F(3,4)),('sqrt',2),('sqrt',3)])
         reordered=difficulty=='hard' and rng.choice([False,True])
+        profile=rng.choice(PROFILES)
         for attempt in range(1000):
             try: rec=construct(difficulty,form,x,unit,kind,n,profile,rng,reordered)
             except ValueError:

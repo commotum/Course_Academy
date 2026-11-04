@@ -148,12 +148,17 @@ def source_values(inst,profile):
     raise ValueError(profile)
 
 
+def semantic(it):
+    a,b,op=it['a'],it['b'],it['op']
+    return (min(a,b),max(a,b),op) if op==1 else (a,b,op)
+
+
 def generate(difficulty,count,seed):
     if count<0: raise ValueError('count must be nonnegative')
     rng=random.Random(seed); all_items=catalog()
     if difficulty=='easy':
         all_items=[it for it in all_items if (it['a']<90 and it['b']<90) or (it['a']==210 and it['b']==45 and it['op']==-1)]
-    capacity=len({it['target'] for it in all_items}) if difficulty=='hard' else len({(it['a'],it['b'],it['op']) for it in all_items})
+    capacity=len({it['target'] for it in all_items}) if difficulty=='hard' else len({semantic(it) for it in all_items})
     if count>capacity:raise ValueError(f'{difficulty} supports {capacity} mathematical instances; requested {count}')
     cases=sorted({it['case'] for it in all_items});rng.shuffle(cases)
     records=[]; used=set(); cursor=0
@@ -178,7 +183,7 @@ def generate(difficulty,count,seed):
             case=cases[(cursor+offset)%len(cases)]
             shape=('blank' if (len(records)//4+len(records)%4)%2==0 else 'radio') if difficulty=='moderate' else 'radio'
             def signature(it):
-                return (it['target'],) if difficulty=='hard' else (it['a'],it['b'],it['op'])
+                return (it['target'],) if difficulty=='hard' else semantic(it)
             pool=[it for it in all_items if it['case']==case and signature(it) not in used]
             if pool:
                 if shape=='radio':
@@ -218,7 +223,7 @@ def generate(difficulty,count,seed):
             answer=next(choice for choice in choices if choice[':answer/id']==correct)
             choices.remove(answer);choices.insert(slot,answer)
             for group in groups: last_slots[group]=slot
-        record['generation'].update({'seed':seed,'index':len(records)})
+        record['generation'].update({'seed':seed,'index':len(records),'mathematical_capacity':capacity,'calibration':'imported unhinted single-identity family' if difficulty=='hard' else 'imported supplied-split family; overlapping arithmetic demand'})
         records.append(record)
     return records
 

@@ -7,8 +7,7 @@ AUDIT=ROOT/'reference/edb-math/audits/2026-11-04-four-trig-lessons'
 sys.path.insert(0,str(AUDIT));sys.path.insert(0,str(H))
 from numeric_audit import audit,Numeric,nodes,target,field_key
 # Reuse the independent audit's equality reader without its top-level database-snapshot runner.
-namespace={};code=(AUDIT/'solutions_audit.py').read_text().split('\nresults=[]')[0];exec(compile(code,str(AUDIT/'solutions_audit.py'),'exec'),{'__file__':str(AUDIT/'solutions_audit.py')},namespace)
-# Its function globals must share imports from exec.
+code=(AUDIT/'solutions_audit.py').read_text().split('\nresults=[]')[0]
 namespace={'__file__':str(AUDIT/'solutions_audit.py')};exec(compile(code,str(AUDIT/'solutions_audit.py'),'exec'),namespace)
 solution_check=namespace['check']
 import generator as g
@@ -29,7 +28,12 @@ for band in ('easy','moderate','hard'):
    f=q[':question/answer-fields'][0]; vals=[Numeric(nodes(a[':answer/value']),{}).evaluate() for a in f[':answer-field/choices']]
    assert len(vals)==1 or all(abs(x-y)>1e-9 for j,x in enumerate(vals) for y in vals[:j]),'equal-valued choices'
    assert not any(w in q[':question/problem'].lower() for w in ('use the','recall','identity','substitute'))
-   if KP.endswith(('669','670')):assert '^4' not in q[':question/problem'] and '^{4}' not in q[':question/problem']
+   if KP.endswith(('669','670')):
+    assert '^4' not in q[':question/problem'] and '^{4}' not in q[':question/problem']
+    import re
+    arg=re.search(r'\\(?:cos|sin)(?:\^\{?\d\}?)?\\left\((.*?)\\right\)',target(q)).group(1)
+    degrees=Numeric(nodes(arg),{}).evaluate()*180/math.pi
+    assert abs(degrees/30-round(degrees/30))>1e-8 and abs(degrees/45-round(degrees/45))>1e-8,('original standard-angle bypass',degrees)
    if KP.endswith('671'):
     expr=target(q); numeric_nodes=nodes(expr)
     # Visible original angle extracted independently: evaluate first sin/cos argument using parser structure.

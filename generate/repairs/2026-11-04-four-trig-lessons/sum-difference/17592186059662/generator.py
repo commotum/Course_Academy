@@ -138,7 +138,7 @@ def generate(level,count,seed):
             shape=rng.choice(('blank','radio')) if level!='hard' else 'blank'
             e=-1 if shape=='blank' and level!='easy' and not positive(pair(t)[1]) and rng.randrange(2) else 1
             r=instance(level,t,shape,e,bank_sign=rng.choice((-1,1)),order_seed=rng.getrandbits(64))
-            r['generation'].update(seed=seed,index=len(out),catalog_cycle=cycle,
+            r['generation'].update(seed=seed,index=len(out),catalog_cycle=cycle,mathematical_capacity=capacity,
                 calibration='authored overlapping single-shift band' if level=='hard' else 'imported same-skill family')
             out.append(r)
             if len(out)==count:break

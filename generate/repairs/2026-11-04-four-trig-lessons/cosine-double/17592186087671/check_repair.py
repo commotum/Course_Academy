@@ -7,8 +7,7 @@ AUDIT=ROOT/'reference/edb-math/audits/2026-11-04-four-trig-lessons'
 sys.path.insert(0,str(AUDIT));sys.path.insert(0,str(H))
 from numeric_audit import audit,Numeric,nodes,target,field_key
 # Reuse the independent audit's equality reader without its top-level database-snapshot runner.
-namespace={};code=(AUDIT/'solutions_audit.py').read_text().split('\nresults=[]')[0];exec(compile(code,str(AUDIT/'solutions_audit.py'),'exec'),{'__file__':str(AUDIT/'solutions_audit.py')},namespace)
-# Its function globals must share imports from exec.
+code=(AUDIT/'solutions_audit.py').read_text().split('\nresults=[]')[0]
 namespace={'__file__':str(AUDIT/'solutions_audit.py')};exec(compile(code,str(AUDIT/'solutions_audit.py'),'exec'),namespace)
 solution_check=namespace['check']
 import generator as g

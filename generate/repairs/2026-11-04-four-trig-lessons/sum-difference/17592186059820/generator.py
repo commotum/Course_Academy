@@ -196,7 +196,7 @@ def generate(level,count,seed):
                 offset=error_offsets[family].pop()
                 error_offsets[family+'_last']=offset
             r=build(level,row,op,shape,'x',rng,error_sign_offset=offset)
-            r['generation'].update({'seed':seed,'catalog_cycle':cycle})
+            r['generation'].update({'seed':seed,'catalog_cycle':cycle,'mathematical_capacity':len(catalog),'calibration':'authored overlapping axis band; no imported easy anchor' if level=='easy' else 'imported same-skill family'})
             records.append(r)
         cycle+=1
     return records

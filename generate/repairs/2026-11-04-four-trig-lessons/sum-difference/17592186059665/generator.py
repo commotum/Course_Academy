@@ -101,7 +101,7 @@ def make(difficulty,k,sign,v='x',shape=None,rng=None):
     final=expression(pair,v)
     expr,formula,solution=derivation(k,sign,v,final)
     lead='Express $'+expr+'$ in terms of $\\sin '+v+'$ '+('or' if k in AXIS else 'and')+' $\\cos '+v+'$.'
-    meta={'parameters':{'angle_twelfths':k,'sign':sign,'variable':v},'domain':'variable real','support':'none','source_ids':['28e9089c-6417-5772-a8b3-173523505655'] if difficulty=='easy' else (['e50bbccc-38f5-586c-b552-2dd92be5a0c5','e3548f46-5f5c-5c9e-84fc-d32069c883d1'] if difficulty=='moderate' else ['31d126d7-a9c2-531e-862e-71990d0a9843','8f2cac98-d46c-5a68-832a-abb863407c09','41eed040-077a-55d8-92c4-de5f3f09a7a2'])}
+    meta={'parameters':{'angle_twelfths':k,'sign':sign,'variable':v},'domain':'variable real','support':'none','source_ids':['609d2236-8468-565e-9ebe-8fd019ac095c'] if difficulty=='easy' else (['e50bbccc-38f5-586c-b552-2dd92be5a0c5','609d2236-8468-565e-9ebe-8fd019ac095c'] if difficulty=='moderate' else ['31d126d7-a9c2-531e-862e-71990d0a9843','8f2cac98-d46c-5a68-832a-abb863407c09','2915c497-6e62-5a26-8916-051acceb249d'])}
     if difficulty=='easy':
         assert k in AXIS
         problem=lead
@@ -151,7 +151,7 @@ def generate(difficulty,count,seed):
         for k,s in deck:
             shape=None if difficulty!='hard' else rng.choice(['radio','coefficients'])
             record=make(difficulty,k,s,'x',shape,rng)
-            record['generation'].update(seed=seed,index=len(out),catalog_cycle=len(out)//len(deck),calibration='authored overlapping axis band; no easy imported anchor' if difficulty=='easy' else 'imported same-skill family')
+            record['generation'].update(seed=seed,index=len(out),catalog_cycle=len(out)//len(deck),mathematical_capacity=capacity,calibration='authored overlapping axis band; no easy imported anchor' if difficulty=='easy' else 'imported same-skill family')
             out.append(record)
             if len(out)==count: break
     return out

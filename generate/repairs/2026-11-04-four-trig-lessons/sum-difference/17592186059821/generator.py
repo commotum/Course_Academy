@@ -152,7 +152,7 @@ def generate(level,count,seed):
         for key in deck:
             p=rng.choice(groups[key])
             r=build(level,p,rng.getrandbits(64))
-            r['generation'].update(seed=seed,index=len(out),catalog_cycle=cycle,
+            r['generation'].update(seed=seed,index=len(out),catalog_cycle=cycle,mathematical_capacity=capacity,
                 calibration='authored overlapping single-shift band' if level=='hard' else 'imported same-skill family')
             out.append(r)
             if len(out)==count:break
