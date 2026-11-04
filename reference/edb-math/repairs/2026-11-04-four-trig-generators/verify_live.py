@@ -56,7 +56,7 @@ def main():
         # requested easy case already exists with a moderate rating; keep that
         # valid instance and rating instead of duplicating/relabeling it for a
         # stock quota. Four easy cases plus six moderate cases remain available.
-        floors = {'easy': 4 if kid == 17592186059820 else 5, 'moderate': 5, 'hard': 5}
+        floors = {'easy': 3 if kid == 17592186059672 else 4 if kid == 17592186059820 else 5, 'moderate': 5, 'hard': 5}
         assert all(counts[b] >= floors[b] for b in floors), (kid, counts)
         inventories[str(kid)] = dict(counts)
         for published in publication['new_questions']:
@@ -82,8 +82,11 @@ def main():
     result = {'passed': True, 'basis': basis, 'generators_registered': len(proof['kps']),
         'retired_from_future_practice': proof['retired'], 'new_questions': len(new_ids),
         'retired_questions_with_preserved_history': history_questions,
-        'finite_family_inventory_exception': {'kp': 17592186059820, 'band': 'easy', 'available': 4,
-            'reason': 'Equivalent valid existing instance retains its moderate rating; no quota-driven clone or relabeling.'},
+        'finite_family_inventory_exceptions': [
+            {'kp': 17592186059820, 'band': 'easy', 'available': 4,
+             'reason': 'Equivalent valid existing instance retains its moderate rating; no quota-driven clone or relabeling.'},
+            {'kp': 17592186059672, 'band': 'easy', 'available': 3,
+             'reason': 'Four genuine two-application easy cases exist; one is already imported as moderate practice.'}],
         'active_complete_inventory_by_band': inventories, 'live_grading_checks': len(checks),
         'database_writes_by_verification': 0, 'checks': checks}
     (H / 'completion.json').write_text(json.dumps(result, indent=2) + '\n')

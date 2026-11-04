@@ -109,6 +109,17 @@ class TrigQuestionPedagogyTests(unittest.TestCase):
                      r'Find the exact value of $\cos(-345^\circ)\cos(60^\circ)-\sin(-345^\circ)\sin(60^\circ)$.',
                      'reverse product')
 
+    def test_repeated_identity_requires_unfamiliar_intermediate_angle(self):
+        kp = 17592186059672
+        for expr in (r'8\sin(15^\circ)\cos(15^\circ)\cos(30^\circ)',
+                     r'4\sin(\pi/8)\cos(\pi/8)\cos(\pi/4)',
+                     r'\frac{2\sec(30^\circ)}{\sin(15^\circ)\cos(15^\circ)}'):
+            self.rejects(kp, 'Find the exact value of $'+expr+'$.', 'second application')
+        for expr in (r'4\sin(7.5^\circ)\cos(7.5^\circ)\cos(15^\circ)',
+                     r'\frac{\sec(\pi/8)}{\sin(\pi/16)\cos(\pi/16)}',
+                     r'8\sin(70^\circ)\cos(70^\circ)\csc(140^\circ)'):
+            validate_delivery_batch([record('Find the exact value of $'+expr+'$.', kp)], kp)
+
     def test_all_thirteen_kps_and_unrelated_scope(self):
         for kp in KPS:
             with self.subTest(kp=kp):

@@ -4,7 +4,7 @@ Removed the easy identity and substitution sequence. Easy keeps independent two-
 
 The required learner move and matched progression are in `instructional-account.md`. Runtime closure and exact dependencies are in `runtime-manifest.json`; `generator-package.json` binds every runtime file by hash. Only listed runtime files are needed for relocation.
 
-Validation: 70 current CLI records from all three bands at seeds 47, 83 and 109; independent visible-TeX key and all-pairs choice checks; 1578 worked-solution equality witnesses including available replays; deterministic CLI replay, zero count, semantic batch uniqueness, source key witnesses, deliberate wrong-key rejection and runtime-only relocation. `evidence/counterfactuals.json` records controlled relevant and irrelevant changes; `evidence/choice-probes.json` records position/rank/length observations without claiming exhaustive shortcut absence. `evidence/*-47.json` and `*-83.json` are five-question batches for each band.
+Validation: 64 current CLI records from all three bands at seeds 47, 83 and 109; independent visible-TeX key and all-pairs choice checks; 1446 worked-solution equality witnesses including available replays; deterministic CLI replay, zero count, semantic batch uniqueness, source key witnesses, deliberate wrong-key rejection and runtime-only relocation. `evidence/counterfactuals.json` records controlled relevant and irrelevant changes; `evidence/choice-probes.json` records position/rank/length observations without claiming exhaustive shortcut absence. `evidence/*-47.json` and `*-83.json` contain four easy questions and five moderate/hard questions.
 
 Reproduce from repository root:
 
@@ -18,3 +18,5 @@ Reproduce from repository root:
 Limits: numeric witnesses are independent checks, not universal symbolic proofs. Root owner performs actual UI rendering, native learner grading, inventory filtering and publication. No imported question, live registration, database or shared implementation was changed.
 
 Final presentation refinement verified by the current CLI: `evidence/presentation-refinement.json`. The relevant full CLI regression, numeric/choice/solution checks, controlled pairs, and choice observations were regenerated.
+
+Repeated-application purpose repair: ordinary evaluated products and reciprocal quotients exclude terminal angles whose half is a prerequisite-standard multiple of 30 or 45 degrees. Easy has exactly four semantic cases (terminal 30/45, coefficient 4/8); count 5 is rejected. Hard outer coefficients are 1 or 2, and cancellation intentionally remains a one-identity source family. `evidence/purpose_regression.py` passes on 108 current CLI records, reproduces the two reported bypass counterexamples, checks all four easy cases and the capacity rejection, and verifies marked historical source replays. Historical source labels do not establish the current repeated-application purpose.

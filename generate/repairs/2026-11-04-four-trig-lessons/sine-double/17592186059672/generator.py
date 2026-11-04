@@ -11,11 +11,17 @@ import uuid
 import sympy as sp
 from math_format import normalize_prose, normalize_tex, validate_generated_record
 
-VERSION = '2.0.0'
+VERSION = '2.1.0'
 KP = 17592186059672
 ENDS = (30, 45, 60, 90, 135, 150, 210, 225, 270, 300, 315, 330)
 GROUPS = ((30, 150, 210, 330), (45, 135, 225, 315), (60, 300), (90, 270))
 NAMESPACE = uuid.UUID('174eb3cd-4bd9-457e-88c5-9caf43e99ae5')
+
+def standard_intermediate(end):
+    half=sp.Rational(end)/2
+    return half % 30 == 0 or half % 45 == 0
+
+TWO_APPLICATION_ENDS=tuple(end for end in ENDS if not standard_intermediate(end))
 
 def tex(v):
     return normalize_tex(sp.latex(sp.simplify(v)))
@@ -189,17 +195,18 @@ def construct(difficulty, end, c, unit, family='product', profile=0, rng=None, r
     answers = [{':answer/id':uid(qid+':answer:'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
     correct_id = answers[values.index(answer)][':answer/id']
     field = {':answer-field/id':uid(qid+':field'),':answer-field/key':'field-1' if shape=='blank' else 'selection',':answer-field/type':':answer-field.type/'+shape,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}
-    source_ids = ['b22f045c-0b9c-53f1-b536-66fda02ca447','4270d786-b50e-5319-88f8-bca386712273'] if family=='product' else ['87e7afa8-1798-5127-a9ff-a08924db07de','6a88295e-a9f4-5381-9209-7cdc6c3b161d'] if family=='pair_over_sec' else ['4fabc70d-25ca-5a30-9a52-90a915524efa','19bb82ee-2583-57ae-92ec-48971505d385']
+    source_ids = ['b22f045c-0b9c-53f1-b536-66fda02ca447'] if family=='product' else ['6a88295e-a9f4-5381-9209-7cdc6c3b161d','5749738c-9ac0-51f9-9b71-e3d7fdfbde49'] if family=='pair_over_sec' else ['4fabc70d-25ca-5a30-9a52-90a915524efa','19bb82ee-2583-57ae-92ec-48971505d385']
     if family=='cancellation':source_ids=['f30309d1-f3e3-55ac-be8a-acbe0c0f980a','8883bfa3-8f36-5e8a-8a63-990442c2b246']
     if symbolic and family=='product':source_ids=['91b3ae38-a411-55e5-ba0c-b0976c1d82dd']
     if replay:source_ids=[replay['id']]
-    record = {'knowledge_point':KP,'question':{':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[field]},'generation':{'generator_version':VERSION,'template':family,'parameters':{'end_degrees':str(end),'coefficient':str(c),'unit':unit},'symbolic_terminal':symbolic, 'difficulty_basis':'workload-sensitive reclassification; independent easy is authored from product sources', 'bank_profile':'source-replay' if replay else profile if shape=='radio' else None,'choice_errors':{a[':answer/id']:why for a,(_,why) in zip(answers,choices)},'source_question_ids':source_ids,'angle_chain':[a,b,d],'shown_final':answer,'domain':'All displayed trigonometric factors and denominators are defined.'}}
+    record = {'knowledge_point':KP,'question':{':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[field]},'generation':{'generator_version':VERSION,'template':family,'parameters':{'end_degrees':str(end),'coefficient':str(c),'unit':unit},'symbolic_terminal':symbolic, 'historical_single_application_bypass':bool(replay and family!='cancellation' and standard_intermediate(end)), 'difficulty_basis':'workload-sensitive reclassification; independent easy is authored from product sources', 'bank_profile':'source-replay' if replay else profile if shape=='radio' else None,'choice_errors':{a[':answer/id']:why for a,(_,why) in zip(answers,choices)},'source_question_ids':source_ids,'angle_chain':[a,b,d],'shown_final':answer,'domain':'All displayed trigonometric factors and denominators are defined.'}}
     record = validate_generated_record(record)
     return (record, modal_cue) if _with_bank_cue else record
 
 def generate(difficulty, count, seed):
     if difficulty == 'unclassified':difficulty='moderate'
     if count < 0:raise ValueError('count must be nonnegative')
+    if difficulty=='easy' and count>4:raise ValueError('Easy supports four distinct two-application instances; count must be at most 4')
     rng = random.Random(seed)
     families={'easy':['product'], 'moderate':['cancellation','product','cancellation','symbolic_product'],
               'hard':['pair_over_sec','sec_over_pair']}[difficulty]
@@ -221,9 +228,9 @@ def generate(difficulty, count, seed):
                 end=4*rng.choice((17,25,35,40,55,65,70,75,80)) if unit=='degrees' else rng.choice([sp.Rational(720,n) for n in (5,7,9,10,11)])
                 c=rng.choice((2,4,6,8,10))
             else:
-                endpoints=(30,45,60,90) if difficulty=='easy' else ENDS
+                endpoints=(30,45) if difficulty=='easy' else TWO_APPLICATION_ENDS
                 end=rng.choice(endpoints)
-                c=rng.choice((4,8)) if difficulty=='easy' else rng.choice((1,2,3,4,6))
+                c=rng.choice((4,8)) if difficulty=='easy' else rng.choice((1,2)) if difficulty=='hard' else rng.choice((1,2,3,4,6))
             # Unit spelling, bank permutation and error profile do not create a new instance.
             semantic=(family,str(end),str(c),symbolic)
             if semantic in seen:continue

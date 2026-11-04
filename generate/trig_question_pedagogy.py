@@ -187,6 +187,16 @@ def validate_delivery_batch(records, kp_id):
         # and supplied numerical angle decomposition hints.
         main = next((expr for expr in expressions if list(_calls(expr))), ())
         calls = list(_calls(main))
+        if kp_id == 17592186059672 and not any(_operator(node) == 'csc' for node, _ in calls):
+            # In a linked product/reciprocal triple, evaluating a familiar
+            # intermediate angle bypasses the second double-angle application.
+            numerical = [(_operator(node), _constant(arg)) for node, arg in calls]
+            for fn, mid in numerical:
+                if fn not in ('cos', 'sec') or mid is None or mid[0] != 0: continue
+                half = (mid[0]/2, mid[1]/2)
+                if ('sin', half) not in numerical or ('cos', half) not in numerical: continue
+                if (mid[1]*6).denominator == 1 or (mid[1]*4).denominator == 1:
+                    raise ValueError('Repeated double-angle practice must not allow standard intermediate-angle evaluation to bypass the second application')
         if kp_id in SHIFT_KPS:
             symbolic = [(node, arg) for node, arg in calls if _has_variable(arg)]
             if len(symbolic) > 1:

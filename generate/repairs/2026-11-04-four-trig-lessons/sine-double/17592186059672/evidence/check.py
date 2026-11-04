@@ -36,9 +36,9 @@ def verify(records,label,all_distinct=True):
 
 def main():
     results=[];commands=[];records=[];coverage={};math_checks=[]
-    counts={'easy':8,'moderate':16,'hard':16} if KP=='17592186059672' else {'easy':24,'moderate':16,'hard':16} if KP=='17592186059674' else dict.fromkeys(('easy','moderate','hard'),24)
+    counts={'easy':4,'moderate':16,'hard':16} if KP=='17592186059672' else {'easy':24,'moderate':16,'hard':16} if KP=='17592186059674' else dict.fromkeys(('easy','moderate','hard'),24)
     for band in ('easy','moderate','hard'):
-        for seed,count in ((47,5),(83,5),(109,counts[band])):
+        for seed,count in ((47,4 if band=='easy' else 5),(83,4 if band=='easy' else 5),(109,counts[band])):
             data,cmd=cli(band,count,seed);commands.append(cmd)
             name=f'{band}-{seed}.json';(HERE/name).write_text(json.dumps(data,indent=2)+'\n')
             math_checks.extend(verify(data,name));records.extend(data)
@@ -63,7 +63,7 @@ def main():
             assert len(signature)==len(set(signature)),(band,seed,'semantic repeats')
             coverage[f'{band}-{seed}']=dict(collections.Counter((r['generation'].get('family') or r['generation']['template'])+(':symbolic' if r['generation'].get('symbolic_terminal') else '') for r in data))
         # Check replay of the exact current seeded CLI, not internal make() alone.
-        assert cli(band,5,47)[0]==json.loads((HERE/f'{band}-47.json').read_text())
+        assert cli(band,4 if band=='easy' else 5,47)[0]==json.loads((HERE/f'{band}-47.json').read_text())
         assert cli(band,0,47)[0]==[]
     if KP=='17592186059671':
         assert all('hidden' not in key for c in coverage.values() for key in c)
@@ -72,6 +72,8 @@ def main():
         assert {'product','cancellation','product:symbolic'}<=set(coverage['moderate-109'])
         assert {'pair_over_sec','sec_over_pair'}<=set(coverage['hard-47'])
         assert all(r['generation']['parameters']['coefficient'] in ('4','8') for r in json.loads((HERE/'easy-109.json').read_text()))
+        excess=subprocess.run([sys.executable,str(PKG/'generator.py'),'--difficulty','easy','--count','5','--seed','47','--format','json'],capture_output=True,text=True)
+        assert excess.returncode and 'four distinct' in excess.stderr
         old=json.loads((REPO/'reference/edb-math/audits/2026-11-04-four-trig-lessons/kps'/KP/'samples/easy-7.json').read_text())
         assert any('Use $2\\sin' in r['question'][':question/problem'] for r in old)
     if KP=='17592186059673':
@@ -91,7 +93,7 @@ def main():
         relocated=Path(tmp)
         for name in manifest['runtime_files']:shutil.copy2(PKG/name,relocated/name)
         for band in ('easy','moderate','hard'):
-            actual,cmd=cli(band,5,47,relocated)
+            actual,cmd=cli(band,4 if band=='easy' else 5,47,relocated)
             assert actual==json.loads((HERE/f'{band}-47.json').read_text())
     # Imported sources are retained as evidence, not silently completed or fixed.
     evidence=json.loads((PKG/'source-evidence.json').read_text());source_checks=[]
