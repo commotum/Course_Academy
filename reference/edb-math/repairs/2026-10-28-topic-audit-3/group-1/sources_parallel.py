@@ -1,9 +1,13 @@
 """Bounded parallel source read including hashed observations and full ownership."""
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import concurrent.futures,json,multiprocessing,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));p=R/'reference/edb-math/repairs/2026-10-26-structural-math/recover_formulas.py';ns={'__file__':str(p)};s=p.read_text();exec(compile(s.split('parents=json.loads')[0]+s[s.index('def roots(s):'):s.index('def visible(tex):')],str(p),'exec'),ns)
-D=json.loads((H/'current.json').read_text());wanted={q.get(':question/math-academy-id')for q in D['questions']};sources=json.loads((H/'sources.json').read_text());seen={(s['identity'],s['attribute'],s['html'])for s in sources}
+D=json.loads((H/'current.json').read_text());wanted={q.get(':question/math-academy-id')for q in D['questions']};sources=json.loads(read_archive_text(H/'sources.json'));seen={(s['identity'],s['attribute'],s['html'])for s in sources}
 def read(line):
  p=Path(line);m=re.search(r'(q-\d+)|(?:example|e)-(\d+)',p.name)
  if not m:return [],'no identity'
@@ -31,5 +35,5 @@ with concurrent.futures.ProcessPoolExecutor(max_workers=4,mp_context=multiproces
    key=(row['identity'],row['attribute'],row['html'])
    if key not in seen:seen.add(key);sources.append(row)
   if error:limits.append({'path':lines[i],'reason':error})
-  if(i+1)%500==0:(H/'sources.json').write_text(json.dumps(sources,indent=2)+'\n');print(i+1,len(sources),flush=True)
-(H/'sources.json').write_text(json.dumps(sources,indent=2)+'\n');(H/'source-path-resolution.json').write_text(json.dumps({'basis_t':9837,'paths':len(lines),'limits':limits},indent=2)+'\n');print('Final',len(sources),'identities',len({s['identity']for s in sources}),flush=True)
+  if(i+1)%500==0:write_archive_text(H/'sources.json', json.dumps(sources,indent=2)+'\n');print(i+1,len(sources),flush=True)
+write_archive_text(H/'sources.json', json.dumps(sources,indent=2)+'\n');(H/'source-path-resolution.json').write_text(json.dumps({'basis_t':9837,'paths':len(lines),'limits':limits},indent=2)+'\n');print('Final',len(sources),'identities',len({s['identity']for s in sources}),flush=True)

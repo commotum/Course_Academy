@@ -1,7 +1,11 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,collections
 from pathlib import Path
 from bs4 import BeautifulSoup
-H=Path(__file__).resolve().parent;D=json.loads((H/'snapshot.json').read_text());M=json.loads((H/'source-manifest.json').read_text());R=json.loads((H/'source-records.json').read_text());proof=collections.defaultdict(lambda:collections.defaultdict(list))
+H=Path(__file__).resolve().parent;D=json.loads((H/'snapshot.json').read_text());M=json.loads((H/'source-manifest.json').read_text());R=json.loads((read_archive_text(H/'source-records.json')));proof=collections.defaultdict(lambda:collections.defaultdict(list))
 for r in R:proof[r['source_identity']][r['attribute']].append(r['path'])
 for sid,paths in M.items():
  for path in paths:

@@ -1,3 +1,7 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,sys,collections,hashlib
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -38,7 +42,7 @@ for ident,p in paths:
  seen.add((ident,str(p)));data=json.loads(p.read_text());html=data.get('html')or data.get('raw_html')
  if html:parts(BeautifulSoup(slim(html),'html.parser'),ident,p)
 print('sources',len(seen),len(sources),flush=True)
-(H/'sources.json').write_text(json.dumps([{'identity':i,'attribute':a,**v}for(i,a),vs in sources.items()for v in vs],indent=2)+'\n')
+(write_archive_text(H/'sources.json', json.dumps([{'identity':i,'attribute':a,**v}for(i,a),vs in sources.items()for v in vs],indent=2)+'\n'))
 fields=[];issues=[]
 for act in D['activities']:
  for c in act['contents']:

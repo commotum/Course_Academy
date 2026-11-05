@@ -1,3 +1,7 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import collections,json,re,sys,difflib
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -62,4 +66,4 @@ for ident,q in allq.items():
    key=(a,str(node))
    if key in hashes:continue
    hashes.add(key);check(q[':db/id'],a,q[':'+a],str(node),path,ident)
-(H/'source-identity-evidence.json').write_text(json.dumps(identity_checks,indent=2));(H/'source-comparisons.json').write_text(json.dumps(reports,indent=2));(H/'source-highlight-candidates.json').write_text(json.dumps(candidates,indent=2));(H/'source-records.json').write_text(json.dumps(source_records,indent=2));(H/'source-manifest.json').write_text(json.dumps({i:[x[0]for x in ss]for i,ss in sources.items()},indent=2));print('source questions',len(sources),'tutorials',len(tutorial_source),'comparisons',len(reports),'exact',sum(bool(r.get('exact_formula_sequence'))for r in reports),'candidates',len(candidates));print('missing',sum(bool(r.get('missing_source'))for r in reports))
+(H/'source-identity-evidence.json').write_text(json.dumps(identity_checks,indent=2));(H/'source-comparisons.json').write_text(json.dumps(reports,indent=2));(H/'source-highlight-candidates.json').write_text(json.dumps(candidates,indent=2));(write_archive_text(H/'source-records.json', json.dumps(source_records,indent=2)));(H/'source-manifest.json').write_text(json.dumps({i:[x[0]for x in ss]for i,ss in sources.items()},indent=2));print('source questions',len(sources),'tutorials',len(tutorial_source),'comparisons',len(reports),'exact',sum(bool(r.get('exact_formula_sequence'))for r in reports),'candidates',len(candidates));print('missing',sum(bool(r.get('missing_source'))for r in reports))

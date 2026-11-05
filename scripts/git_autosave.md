@@ -90,6 +90,13 @@ and [blocks ordinary files above 100 MiB](https://docs.github.com/en/repositorie
 Chunking bounds individual transfers; the full backlog still takes time to
 upload and increases the remote repository's size.
 
+The local pre-commit hook in `.githooks/pre-commit` runs
+`scripts/check_staged_file_sizes.py`. It checks the actual staged blobs, so manual
+`git add`/`git commit` commands get the same size protection as autosave. Git LFS
+pointers remain eligible. Install this single hook into Git's hooks directory
+without replacing any existing custom hook. The hook prevents new oversized
+commits; a rejected commit already in local history still needs separate repair.
+
 ## Inspect progress
 
 ```bash

@@ -1,6 +1,10 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import collections,json
 from pathlib import Path
-H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());I=json.loads((H.parent/'inventory.json').read_text());S=json.loads((H/'sources.json').read_text());si=collections.defaultdict(lambda:collections.defaultdict(set))
+H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());I=json.loads((H.parent/'inventory.json').read_text());S=json.loads((read_archive_text(H/'sources.json')));si=collections.defaultdict(lambda:collections.defaultdict(set))
 for s in S:si[s['identity']][s['attribute']].add(s['path'])
 ledger=[]
 for q in D['questions']:

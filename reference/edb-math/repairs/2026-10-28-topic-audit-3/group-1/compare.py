@@ -1,8 +1,12 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import collections,difflib,json,re,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'))
 from question_capture.math_format import MATH,normalize_source_tex
-D=json.loads((H/'current.json').read_text());S=json.loads((H/'sources.json').read_text());idx=collections.defaultdict(list)
+D=json.loads((H/'current.json').read_text());S=json.loads((read_archive_text(H/'sources.json')));idx=collections.defaultdict(list)
 for s in S:idx[s['identity'],s['attribute']].append(s)
 def canon(v):
  v=normalize_source_tex(v);v=re.sub(r'\\color\{[^{}]+\}','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',v);v=re.sub(r'\\(?:mathbf|mathbb|mathrm|mathcal|mathit|textrm)\b','',v);v=v.replace('⁡','').replace('∼',r'\sim').replace('⟹',r'\Longrightarrow').replace('⟨',r'\langle').replace('⟩',r'\rangle').replace('∞',r'\infty').replace('∈',r'\in').replace('−','-').replace('×',r'\times').replace(r'\dfrac',r'\frac');v=re.sub(r'\s+|[{}]','',v);return v

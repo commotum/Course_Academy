@@ -7,7 +7,7 @@ import json
 import os
 from pathlib import Path
 
-from ..storage import atomic_bytes, read_json
+from ..storage import atomic_bytes, read_json, read_json_backup
 
 FORMAT = 'completed-batch-record-v1'
 FINAL = {'verified', 'no_changes'}
@@ -86,8 +86,8 @@ def compact_completed_batch(directory):
     if manifest['status'] == 'verified' and (verification.get('status') != 'verified'
                                            or verification.get('reimport_is_noop') is not True):
         raise ValueError('Batch verification must confirm that reimport is a no-op')
-    previous_path = path.with_name(path.name + '.previous')
-    previous_bytes = previous_path.read_bytes() if previous_path.exists() else None
+    previous_path, previous_bytes = read_json_backup(path)
+    previous_stored_bytes = previous_path.stat().st_size if previous_path else 0
     if previous_bytes is not None:
         previous = json.loads(previous_bytes)
         without_completion = lambda value: {k: v for k, v in value.items() if k not in {'status', 'result'}}
@@ -154,10 +154,11 @@ def compact_completed_batch(directory):
         raise ValueError('Batch became active while compacting; original manifest preserved')
     atomic_bytes(path, encoded(record))
     if previous_bytes is not None:
-        if previous_path.read_bytes() != previous_bytes:
+        current_previous, current_bytes = read_json_backup(path)
+        if current_previous != previous_path or current_bytes != previous_bytes:
             raise ValueError('Previous backup changed; leaving it in place')
         previous_path.unlink()
     return {'directory': str(directory), 'members': len(members),
-            'before_bytes': len(original_bytes) + len(previous_bytes or b''),
+            'before_bytes': len(original_bytes) + previous_stored_bytes,
             'after_bytes': path.stat().st_size + sum(len(data) for _, data in part_data),
             'parts': [{'path': str(p), 'bytes': len(data)} for p, data in part_data]}

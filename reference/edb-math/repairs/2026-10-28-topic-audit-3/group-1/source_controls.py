@@ -1,3 +1,7 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,sys,collections
 from pathlib import Path
 from bs4 import BeautifulSoup,Tag
@@ -45,7 +49,7 @@ class ControlRenderer(ns['CompleteSourceRenderer']):
    if fs:self.errors.append({'formula_count':len(fs),'formulas':fs});return''
   return super().render(n,extract_fields)
 D=json.loads((H/'current.json').read_text());src=collections.defaultdict(list)
-for s in json.loads((H/'sources.json').read_text()):
+for s in json.loads((read_archive_text(H/'sources.json'))):
  if s['attribute']=='question/problem':src[s['identity']].append(s)
 out=[]
 for q in D['questions']:

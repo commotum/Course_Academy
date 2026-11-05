@@ -8,6 +8,7 @@ from .client import StaleBasis
 from .edn import dumps, loads, kw, Keyword
 from .prepare import ALLOWED
 from ..storage import atomic_json, atomic_text, read_json
+from .archive_store import publish, publish_json
 
 class VerificationError(ValueError):
     pass
@@ -66,6 +67,20 @@ class Committer:
         self.config, self.client, self.directory = config, client, Path(directory)
         self.directory.mkdir(parents=True, exist_ok=True)
         self.intent_path = self.directory / 'request.json'
+
+    @property
+    def archive_store(self):
+        root = getattr(self.config, 'repo_root', None)
+        if root is None:
+            # Standalone callers predate the repository-scoped Config. Their
+            # archive stays local to the supplied directory.
+            return self.directory / 'objects'
+        return Path(root) / 'reference/mathacademy/capture-database/objects'
+
+    def archive_request(self, archive, request, receipt=None):
+        publish_json(Path(archive) / 'request.json', request, self.archive_store)
+        if receipt is not None:
+            publish(Path(archive) / 'receipt.edn', receipt.encode(), self.archive_store)
 
     def pending(self):
         return read_json(self.intent_path)
@@ -150,11 +165,11 @@ class Committer:
             raise ValueError('Cannot retire an unresolved request')
         archive = self.directory / 'requests' / request['request_key']
         archive.mkdir(parents=True, exist_ok=True)
-        atomic_json(archive / 'request.json', request)
+        self.archive_request(archive, request)
         for name in ('receipt.edn', 'preview.edn', 'transaction.edn'):
             path = self.directory / name
             if path.exists():
-                atomic_text(archive / name, path.read_text())
+                publish(archive / name, path.read_bytes(), self.archive_store)
         atomic_json(archive / 'result.json', {'status': status, **details})
         # Receipt first: a crash before deleting the intent triggers an exact replay.
         (self.directory / 'receipt.edn').unlink(missing_ok=True)

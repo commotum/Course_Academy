@@ -198,6 +198,12 @@ Use `--database-batch-questions` to tune the minimum. JSON configuration also ac
 
 Completed batch archives can be compacted with `python3 scripts/compact_completed_batches.py BATCH_DIRECTORY` from the repository root. The tool requires final status, no pending or active request, matching original capture files and imported hashes, and verified no-op reimport evidence. It replaces duplicate content snapshots with references and hashes, stores shared receipts once, and divides activity records between `manifest.part-1.json` and `manifest.part-2.json`. A small `manifest.json` indexes the parts with checksums. The batch reader reconstructs the original completed results without replaying an import. An identical `.previous` checkpoint is removed; distinct prior content is retained by refusing compaction. Pending batch manifests retain their existing format.
 
+Retired request and receipt bytes now live once in `capture-database/objects/<prefix>/<sha256>`. Existing evidence paths remain ordinary readable JSON/EDN files, linked to read-only immutable objects. Publication uses atomic replacement; changing a checkpoint never edits a shared object in place. Distinct bytes under an existing request identity are rejected. Keep the object store and evidence paths together when moving the archive; copying without preserving hardlinks remains correct but uses more space.
+
+JSON checkpoints keep their prior recovery value when an unchanged value is saved again. Backups of at least 1 MiB use `.previous.gz`; smaller backups retain `.previous`. Both formats preserve the exact original JSON bytes, and `read_json()` recovers either format if the current checkpoint is corrupt. A malformed current file never replaces a readable backup. Use `read_json_backup()` when inspecting backup bytes directly.
+
+`scripts/compact_capture_storage.py --review REVIEW.jsonl.gz --report REPORT.jsonl` revalidates an exact-duplicate review without changing files. Add `--apply` to share retired request archives and compress large backups that still match their current siblings. It takes the database and account capture locks, skips unresolved requests, preserves changed or distinct evidence, and records each operation and allocated bytes saved. This migration requires the gzip-aware storage reader above; deploy the source changes before restarting workers.
+
 ## Tests
 
 ```bash

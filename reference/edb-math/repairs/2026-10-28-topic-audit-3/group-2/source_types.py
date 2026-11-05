@@ -1,3 +1,7 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,sys,re
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -5,7 +9,7 @@ from propose_controls import norm
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'))
 s=(H/'import_historical_question_content.py').read_text();ns={'__file__':str(R/'scripts/import_historical_question_content.py')};exec(compile(s.split('def prepare():')[0],str(H/'import_historical_question_content.py'),'exec'),ns)
 D=json.loads((H/'current.json').read_text());Q={q.get(':question/math-academy-id'):q for q in D['questions']};out={};review=[]
-for source in json.loads((H/'sources.json').read_text()):
+for source in json.loads((read_archive_text(H/'sources.json'))):
  if source['attribute']!='question/problem'or'selectList'not in source['html']:continue
  q=Q.get(source['identity'])
  if not q:continue

@@ -1,9 +1,13 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import collections,json,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 sys.path.insert(0,'scripts');from question_capture.math_format import MATH,normalize_source_tex,validate_math_structure
 from import_historical_question_content import Renderer
-H=Path(__file__).resolve().parent;D=json.loads((H/'snapshot.json').read_text());F={(f['entity'],f['attribute']):f for f in json.loads((H/'fields.json').read_text())};S=json.loads((H/'source-records.json').read_text());M=json.loads((H/'source-manifest.json').read_text());props={};unresolved=[]
+H=Path(__file__).resolve().parent;D=json.loads((H/'snapshot.json').read_text());F={(f['entity'],f['attribute']):f for f in json.loads((H/'fields.json').read_text())};S=json.loads((read_archive_text(H/'source-records.json')));M=json.loads((H/'source-manifest.json').read_text());props={};unresolved=[]
 FONT=r'\\(?:mathbf|mathbb|mathcal|mathfrak|mathit|boldsymbol|overrightarrow|vec|widehat)'
 def core(t):
  t=normalize_source_tex(t).replace('⁡','').replace('′',"'");t=re.sub(r'([A-Z]{2})\^\(→\)',r'\1',t);t=re.sub(r'\\(?:[,;:! ]|left|right)\s*','',t);t=re.sub(r'\\hspace\{[^{}]*\}|\\color\{[^{}]*\}','',t);t=re.sub(r'\\(?:mathbf|mathbb|mathcal|mathfrak|mathit|boldsymbol|overrightarrow|vec|widehat|mathrm|textrm|text|operatorname)','',t);t=re.sub(r'\\(?:ln|sin|cos|tan|arcsin|arccos|arctan)',lambda m:m[0][1:],t);t=t.replace(r'\{','').replace(r'\}','');return re.sub(r'[{}\s$]','',t)

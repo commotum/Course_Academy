@@ -1,5 +1,7 @@
 # Quality audit: 99 topics, 2026-10-28
 
+The three full source exports are stored as `group-1/sources.json.gz`, `group-2/sources.json.gz`, and `group-3/source-records.json.gz`. Their original byte hashes, row counts, and compressed sizes are recorded in [source-archives.json](source-archives.json). The group scripts use `scripts/archive_json.py` to read either format and keep updates compressed. No source observations were removed.
+
 Completed using three disjoint subagents and EDB. The scope contains **99 topics, 7,844 questions/examples, 242 tutorials, 311 knowledge points, and 265 initially registered generators**. All 41 scoped multistep parent statements were also checked. The baseline was T9837; consolidated readback is T10144.
 
 ## Repairs applied

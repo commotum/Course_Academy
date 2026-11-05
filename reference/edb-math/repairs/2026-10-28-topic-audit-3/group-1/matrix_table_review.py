@@ -1,8 +1,12 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import matrix_answer,validate_math_structure
-D=json.loads((H/'current.json').read_text());by={q[':db/id']:q for q in D['questions']};sources=json.loads((H/'sources.json').read_text());props=json.loads((H/'source-reviewed-proposals.json').read_text());pby={(p['entity'],p['attribute']):p for p in props};checks=[]
+D=json.loads((H/'current.json').read_text());by={q[':db/id']:q for q in D['questions']};sources=json.loads((read_archive_text(H/'sources.json')));props=json.loads((H/'source-reviewed-proposals.json').read_text());pby={(p['entity'],p['attribute']):p for p in props};checks=[]
 for candidate in json.loads((H/'html-answer-table-candidates.json').read_text()):
  e=candidate['entity'];q=by[e];table=BeautifulSoup(candidate['table'],'html.parser').find('table')
  if table.get('aria-label')=='Answer matrix':checks.append({'question':e,'identity':candidate['identity'],'resolution':'Existing native matrix_answer table within matrix-answer-brackets; retain.'});continue

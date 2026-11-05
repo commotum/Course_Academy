@@ -6,7 +6,7 @@ import unittest
 
 from scripts.database.archive import compact_completed_batch, content_digest, read_manifest
 from scripts.database.batch import ActivityBatch
-from scripts.storage import atomic_json
+from scripts.storage import atomic_json, write_json_backup
 
 
 class CompletedBatchArchiveTests(unittest.TestCase):
@@ -118,6 +118,18 @@ class CompletedBatchArchiveTests(unittest.TestCase):
         (self.directory / 'manifest.json.previous').unlink()
         compact_completed_batch(self.directory)
         self.assertEqual(read_manifest(self.directory / 'manifest.json')['source_repairs'], self.manifest['source_repairs'])
+
+    def test_compressed_previous_manifest_is_verified_and_removed(self):
+        from unittest.mock import patch
+        path = self.directory/'manifest.json'
+        previous = path.with_name(path.name+'.previous').read_bytes()
+        with patch('scripts.storage.BACKUP_COMPRESSION_BYTES',1):
+            write_json_backup(path,previous)
+        before = sum(p.stat().st_size for p in [path,path.with_name(path.name+'.previous.gz')])
+        summary = compact_completed_batch(self.directory)
+        self.assertEqual(summary['before_bytes'],before)
+        self.assertFalse(path.with_name(path.name+'.previous.gz').exists())
+        self.assertEqual(read_manifest(path)['result'],self.manifest['result'])
 
 
 if __name__ == '__main__':

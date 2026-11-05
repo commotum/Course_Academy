@@ -276,8 +276,7 @@ class ActivityBatch:
         for member, _, _ in members:
             directory = Path(member['directory']) / 'database'
             archive = directory / 'requests' / request['request_key']
-            atomic_json(archive / 'request.json', request)
-            atomic_text(archive / 'receipt.edn', dumps(receipt))
+            self.committer.archive_request(archive, request, dumps(receipt))
             atomic_json(archive / 'result.json', result)
             atomic_json(directory / 'verification.json', result)
         self.committer.retire(request, status, result)

@@ -1,7 +1,11 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,sys,collections
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import MATH,normalize_prose,normalize_tex,validate_math_structure,validate_tex
-F=json.loads((H/'fields.json').read_text());SOURCE=json.loads((H/'sources.json').read_text());index=collections.defaultdict(list)
+F=json.loads((H/'fields.json').read_text());SOURCE=json.loads((read_archive_text(H/'sources.json')));index=collections.defaultdict(list)
 for s in SOURCE:index[s['identity'],s['attribute']].append(s)
 def neutral(v):
  v=re.sub(r'\\color\{[^{}]*\}|\\hspace\{[^{}]*\}','',v);v=re.sub(r'\\(?:mathbf|mathit|mathrm|textrm|text|operatorname|mathcal|mathbb)\s*(?=\{)','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle|quad|qquad)\b|\\[,;!]','',v)

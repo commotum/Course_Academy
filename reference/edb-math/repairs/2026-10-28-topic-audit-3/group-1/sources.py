@@ -1,9 +1,13 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import collections,json,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'))
 p=R/'reference/edb-math/repairs/2026-10-26-structural-math/recover_formulas.py';ns={'__file__':str(p)};exec(compile(p.read_text().split('index=collections.defaultdict(list)')[0],str(p),'exec'),ns)
-D=json.loads((H/'current.json').read_text());targets={q[':question/math-academy-id']:q for q in D['questions']if ':question/math-academy-id'in q};tu={str(c[':tutorial/math-academy-id']):c for c in D['contents']if ':tutorial/content'in c};sources=json.loads((H/'sources.json').read_text())if(H/'sources.json').exists()else[];seen={(s['identity'],s['attribute'],s['html'])for s in sources};prior=bool(sources)
+D=json.loads((H/'current.json').read_text());targets={q[':question/math-academy-id']:q for q in D['questions']if ':question/math-academy-id'in q};tu={str(c[':tutorial/math-academy-id']):c for c in D['contents']if ':tutorial/content'in c};sources=json.loads((read_archive_text(H/'sources.json')))if(archive_exists(H/'sources.json'))else[];seen={(s['identity'],s['attribute'],s['html'])for s in sources};prior=bool(sources)
 def add(ident,attr,part,path):
  if part is None:return
  html=str(part);key=(ident,attr,html)
@@ -37,4 +41,4 @@ for line in((H/'source-paths-added.txt')if prior else(H/'source-paths-fresh.txt'
  if observed and ident not in observed:continue
  add(ident,'question/problem',s.find(class_='exampleQuestion')if ident.startswith('e-')else s.find(class_='questionWidget-text')or s.find(class_='questionText'),p)
  add(ident,'question/worked-solution',s.find(class_='exampleSolution')or s.find(class_='questionExplanation')or s.find(class_='questionWidget-explanation'),p)
-(H/'sources.json').write_text(json.dumps(sources,indent=2)+'\n');print('source records',len(sources),'identities',len(set(s['identity']for s in sources)),'tutorials',len(tu),'source question identities',len(targets));print('source formula errors',[(s['identity'],s['attribute'],f)for s in sources for f in s['formulas']if not isinstance(f,str)])
+(write_archive_text(H/'sources.json', json.dumps(sources,indent=2)+'\n'));print('source records',len(sources),'identities',len(set(s['identity']for s in sources)),'tutorials',len(tu),'source question identities',len(targets));print('source formula errors',[(s['identity'],s['attribute'],f)for s in sources for f in s['formulas']if not isinstance(f,str)])

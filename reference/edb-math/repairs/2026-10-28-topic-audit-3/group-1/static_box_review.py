@@ -1,8 +1,12 @@
+import sys as _archive_sys
+from pathlib import Path as _ArchivePath
+_archive_sys.path.insert(0, str(_ArchivePath(__file__).resolve().parents[5] / 'scripts'))
+from archive_json import read_text as read_archive_text, write_text as write_archive_text, exists as archive_exists
 import json,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import MATH,validate_math_structure
-ns={'__file__':str(H/'propose_formulas.py')};exec((H/'propose_formulas.py').read_text().split('props=[];reject=[]')[0],ns);canon=ns['canonical'];nums=ns['nums'];D=json.loads((H/'current.json').read_text());by={q[':db/id']:q for q in D['questions']};sources=json.loads((H/'sources.json').read_text());props=json.loads((H/'source-reviewed-proposals.json').read_text());pby={(p['entity'],p['attribute']):p for p in props};out=[]
+ns={'__file__':str(H/'propose_formulas.py')};exec((H/'propose_formulas.py').read_text().split('props=[];reject=[]')[0],ns);canon=ns['canonical'];nums=ns['nums'];D=json.loads((H/'current.json').read_text());by={q[':db/id']:q for q in D['questions']};sources=json.loads((read_archive_text(H/'sources.json')));props=json.loads((H/'source-reviewed-proposals.json').read_text());pby={(p['entity'],p['attribute']):p for p in props};out=[]
 def c(v):
  v=re.sub(r'\\(?:boxed\{\\phantom\{[A-Za-z]+\}\}|enclose\{box\}\{\\phantom\{[A-Za-z]+\}\}|bbox\[[^\]]+\]\{\\phantom\{[A-Za-z]+\}\}|boxed\{\})','STATICBOX',v)
  v=canon(v);v=re.sub(r'_(?:\(([^()]+)\))',r'_\1',v);return v
