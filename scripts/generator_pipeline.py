@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT))
 from inventory_jobs import save
 from generator_packages import package_digest, publish_package, resolve_registered_script, check_dependencies, verify_package
 from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_only_review
-from generator_report_repair import generator_repair_findings, pending_report_repair
+from generator_report_repair import generator_repair_findings, pending_report_repair, finding_supersessions
 from generator_progress import failure_signature, material_identity
 from generator_approval import make_approval, approved_band, ApprovalError
 from generator_session_binding import input_binding, bind_session
@@ -273,45 +273,75 @@ class Pipeline:
         save(self.path, self.state)
 
     def session_call(self, role, context, directory):
-        """Freeze supplied evidence; later agent edits are separately bound outputs."""
+        """Bind live upstream inputs, but distinguish this agent's own draft edits."""
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         source = source_identity(read(self.directory / 'source/source.json'))
         supplied_path = directory / 'supplied-inputs.json'
-        supplied = read(supplied_path) if supplied_path.exists() else None
-        if supplied is None or supplied.get('source') != source:
-            files = {}
-            for name in ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file'):
-                value = context.get(name)
-                if value and Path(value).is_file():
-                    path = Path(value)
-                    sha = hashlib.sha256(path.read_bytes()).hexdigest()
-                    snapshot = directory / 'supplied-files' / sha / path.name
-                    snapshot.parent.mkdir(parents=True, exist_ok=True)
-                    if not snapshot.exists():
-                        shutil.copy2(path, snapshot)
-                    files[name] = {'sha256': sha, 'snapshot': str(snapshot)}
-            account = self.directory / 'workspace/investigation.md'
-            if role != 'investigate' and account.is_file():
-                sha = hashlib.sha256(account.read_bytes()).hexdigest()
-                snapshot = directory / 'supplied-files' / sha / account.name
-                snapshot.parent.mkdir(parents=True, exist_ok=True)
-                if not snapshot.exists():
-                    shutil.copy2(account, snapshot)
-                files['account'] = {'sha256': sha, 'snapshot': str(snapshot)}
-            supplied = {'source': source, 'files': files}
-        context = {**context, 'session_inputs': {
-            **supplied, 'knowledge_point': self.state['request']['kp'],
-            'difficulty': self.state['request']['difficulty'], 'count': self.state['request']['count']}}
+        previous = read(supplied_path) if supplied_path.exists() else {}
+        outputs_path = directory / 'session-outputs.json'
+        produced = read(outputs_path) if outputs_path.exists() else None
+        context = dict(context)
+
+        def capture(path):
+            path = Path(path)
+            sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            snapshot = directory / 'supplied-files' / sha / path.name
+            snapshot.parent.mkdir(parents=True, exist_ok=True)
+            if not snapshot.exists():
+                shutil.copy2(path, snapshot)
+            return {'sha256': sha, 'snapshot': str(snapshot), 'original': str(path)}
+
+        upstream = {}
+        for name in ('investigation_file', 'reference_file', 'investigation_result'):
+            if name == 'investigation_result' and role == 'investigate':
+                continue
+            value = context.get(name)
+            if value and Path(value).is_file():
+                upstream[name] = capture(value)
+                context[name] = upstream[name]['snapshot']
+        mutable_paths = [self.directory / 'workspace/investigation.md',
+                         self.directory / 'workspace/instructional-account.md']
+        if context.get('exemplars_file'):
+            mutable_paths.append(Path(context['exemplars_file']))
+        if produced is not None:
+            mutable_paths.extend(Path(path) for path in produced.get('files', {}) if Path(path) not in mutable_paths)
+        mutable = {str(path): hashlib.sha256(path.read_bytes()).hexdigest()
+                   for path in mutable_paths if path.is_file()}
+        # During an unfinished persistent session these are the agent's draft
+        # outputs. After a completed result, a subsequent external edit is new
+        # input and must invalidate that result.
+        reuse_draft_inputs = (previous.get('source') == source
+            and previous.get('upstream') == upstream
+            and (not (directory / 'result.json').exists()
+                 or produced is not None and produced.get('files') == mutable))
+        supplied_mutable = previous.get('mutable_inputs', {}) if reuse_draft_inputs else mutable
+        supplied = {'source': source, 'upstream': upstream, 'mutable_inputs': supplied_mutable}
+        context['session_inputs'] = {**supplied, 'knowledge_point': self.state['request']['kp'],
+            'difficulty': self.state['request']['difficulty'], 'count': self.state['request']['count']}
+        if produced is not None and (directory / 'result.json').exists():
+            result_hash = digest(read(directory / 'result.json'))
+            if result_hash != produced.get('result_sha256'):
+                context['session_inputs']['changed_result_sha256'] = result_hash
         bind_session(directory, input_binding(role, context, self.root))
         save(supplied_path, supplied)
-        return self.session(role, context, directory)
+        result = self.session(role, context, directory)
+        # Include the newly produced exemplar path as an output, not an input.
+        if role == 'investigate' and result.get('exemplars_file'):
+            path = inside(self.directory / 'workspace', result['exemplars_file'])
+            if path not in mutable_paths:
+                mutable_paths.append(path)
+        save(outputs_path, {'result_sha256': digest(result), 'files': {
+            str(path): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in mutable_paths if path.is_file()}})
+        return result
 
     def instructional_evidence(self):
         """Hash produced instructional artifacts, separate from immutable imports."""
         paths = [self.state.get(key) for key in
                  ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file')]
         paths.append(str(self.directory / 'workspace/investigation.md'))
+        paths.append(str(self.directory / 'workspace/instructional-account.md'))
         result = {str(Path(path).resolve()): hashlib.sha256(Path(path).read_bytes()).hexdigest()
                   for path in paths if path and Path(path).is_file()}
         examples = self.state.get('exemplars_file')
@@ -350,6 +380,8 @@ class Pipeline:
                 **({'grader_sha256': self.state['grader_sha256']} if self.state.get('grader_sha256') else {}),
                 **({'instructional_evidence': self.state['instructional_evidence']}
                    if 'instructional_evidence' in self.state else {}),
+                **({'finding_dispositions': self.state['finding_dispositions']}
+                   if self.state.get('finding_dispositions') else {}),
                 'verification_batches': {band: {key: row[key] for key in
                     ('batch_hash', 'assets', 'seed', 'count', 'requested_count', 'maximum_distinct_batch') if key in row}
                     for band, row in self.state.get('verification_batches', {}).items()}}
@@ -592,6 +624,9 @@ class Pipeline:
         directory = self.directory / 'investigation/publication'
         if not (directory / 'request.json').exists():
             return False
+        request_hash = hashlib.sha256((directory / 'request.json').read_bytes()).hexdigest()
+        if self.state.get('legacy_exemplar_recovered_request') == request_hash:
+            return False
         # Do not prepare new examples or reinterpret the investigator's draft.
         result = self.publisher.publish(directory)
         save(self.directory / 'investigation/legacy-exemplar-receipt.json', result)
@@ -602,7 +637,8 @@ class Pipeline:
         if previous.exists():
             save(source_dir / ('source-before-legacy-recovery-' + str(time.time_ns()) + '.json'), read(previous))
         fresh = self.publisher.extract_source(self.state['request']['kp'], source_dir)
-        self.persist(legacy_exemplar_publication=result, source_hash=digest(fresh), inventory_hash=None)
+        self.persist(legacy_exemplar_publication=result, legacy_exemplar_recovered_request=request_hash,
+                     source_hash=digest(fresh), inventory_hash=None)
         return True
 
     def finalize_review(self, evidence):
@@ -616,7 +652,7 @@ class Pipeline:
         previous_hash = self.state.get('publication_package_hash') or self.state.get('package_hash')
         if (self.state.get('publication') or {}).get('passed') and not self.state.get('publication_batch_hash'):
             self.persist(publication_batch_hash=self.state['batch_hash'])
-        self.check_repair_regressions()
+        self.check_repair_regressions(evidence=evidence)
         self.sample()
         candidate = self.candidate_hash()
         if self.state.get('review_after_publication') and candidate != previous_hash:
@@ -749,6 +785,10 @@ class Pipeline:
                     if not final_path.exists() or read(final_path) != self.review_binding():
                         raise ValueError('Run finalize_review_command, check its final batch, then return acceptance bound to final-binding.json.')
                 validate_review(result, evidence, self.review_binding())
+                if result.get('verdict') == 'accepted' and self.state.get('finding_dispositions'):
+                    cited = result.get('checks', {}).get('scope', {}).get('evidence_paths', [])
+                    if 'finding-dispositions.json' not in cited:
+                        raise ValueError('Scope evidence must cite the final finding-dispositions.json')
             except (OSError, ValueError) as invalid:
                 error = str(invalid)
             else:
@@ -917,6 +957,9 @@ class Pipeline:
         if ('instructional_evidence' in self.state
                 and self.instructional_evidence() != self.state['instructional_evidence']):
             raise ValueError('Reviewed investigation, reference or local examples changed; finalize again')
+        dispositions = self.state.get('finding_dispositions')
+        if dispositions and hashlib.sha256(Path(dispositions['path']).read_bytes()).hexdigest() != dispositions['sha256']:
+            raise ValueError('Reviewed finding dispositions changed')
         if (not self.is_refill and self.state.get('engine_hash')
                 and self.engine_identity() != self.state['engine_hash']):
             raise ValueError('Engine changed during active verification; rerun affected checks and finalize again')
@@ -973,10 +1016,19 @@ class Pipeline:
         save(path, history)
         return history
 
-    def check_repair_regressions(self):
+    def check_repair_regressions(self, evidence=None):
         """Run retained counterexamples before spending another full review."""
         history = self.directory / 'repair-history.json'
-        required = generator_repair_findings(read(history)) if history.exists() else []
+        retained = read(history) if history.exists() else {'findings': []}
+        superseded = set()
+        path = Path(evidence) / 'finding-dispositions.json' if evidence is not None else None
+        if path is None and self.state.get('finding_dispositions'):
+            path = Path(self.state['finding_dispositions']['path'])
+        if path is not None and path.is_file():
+            superseded = finding_supersessions(path, retained)
+            self.persist(finding_dispositions={'path': str(path),
+                'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'ids': sorted(superseded)})
+        required = generator_repair_findings(retained, superseded)
         if not required:
             return
         root = self.directory / 'workspace'
@@ -1229,6 +1281,11 @@ class Pipeline:
                 or not prior.get('investigation_complete')
                 or source_identity(read(directory / 'source/source.json')) != source_identity(read(self.directory / 'source/source.json'))):
             return False
+        retained = prior.get('instructional_evidence')
+        if not isinstance(retained, dict) or any(not Path(path).is_file()
+                or hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in retained.items()):
+            # A package match does not validate a later-edited instructional account.
+            return False
         old_workspace = directory / 'workspace'
         if not old_workspace.is_dir():
             return False
@@ -1241,10 +1298,18 @@ class Pipeline:
             # A retained workspace can have later edits; reload the immutable
             # registered version rather than trusting those unreviewed bytes.
             self.load_registered_package(prior['registration'])
-        self.persist(stage='sample', investigation_complete=True,
-                     investigation_file=prior.get('investigation_file'),
-                     investigation_result=prior.get('investigation_result'),
-                     exemplars_file=prior.get('exemplars_file'),
+        artifacts = {}
+        for key in ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file'):
+            value = prior.get(key)
+            if value:
+                original = Path(value)
+                if str(original.resolve()) not in retained:
+                    return False
+                destination = self.directory / 'reused-investigation' / key / original.name
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(original, destination)
+                artifacts[key] = str(destination)
+        self.persist(stage='sample', investigation_complete=True, **artifacts,
                      reused_pipeline=str(directory), prior_verification=prior.get('review'))
         return True
 

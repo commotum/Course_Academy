@@ -36,7 +36,7 @@ class LinearTrigGeneratorTests(unittest.TestCase):
         self.assertIn('{{answer}} $+C$',row['question'][':question/problem'])
         self.assertNotIn('+C',key)
 
-    def test_canonical_fractional_slope_is_reachable_on_ordinary_path(self):
+    def test_canonical_fractional_slope_is_supported_before_duplicate_exclusion(self):
         kp=17592186068915
         row=self.g.generate(kp,'moderate',28,'indef_sin',evidence=evidence(kp))
         self.assertEqual(row['generation']['parameters'],{'slope':'1/3','shift':'0','amplitude':'2'})
@@ -44,8 +44,12 @@ class LinearTrigGeneratorTests(unittest.TestCase):
         m=row['generation']['model'];s=self.g.s;x=self.g.X
         primitive=s.sympify(m['primitive'],locals={'x':x})
         self.assertEqual(s.trigsimp(s.diff(primitive,x)-2*s.sin(x/3)),0)
+        captured=evidence(kp)
+        captured['excluded_tasks']=[row['generation']['mathematical_fingerprint']]
+        fresh=self.g.generate(kp,'moderate',28,'indef_sin',evidence=captured)
+        self.assertNotEqual(fresh['generation']['mathematical_fingerprint'],row['generation']['mathematical_fingerprint'])
 
-    def test_zero_result_survives_all_bands_and_collapsed_bank_uses_exact_entry(self):
+    def test_zero_result_survives_all_bands_without_answer_dependent_response_shape(self):
         kp=17592186068915
         for band,seed in [('easy',7),('moderate',3),('hard',0)]:
             row=self.g.generate(kp,band,seed,'def_cos',evidence=evidence(kp))
@@ -59,12 +63,26 @@ class LinearTrigGeneratorTests(unittest.TestCase):
         outcomes={self.g.generate(kp,'moderate',seed,'def_cos',evidence=evidence(kp))['generation']['model']['result']for seed in range(8)}
         self.assertIn('0',outcomes)
         self.assertGreater(len(outcomes),1,'The family must not always give zero')
+        easy=[self.g.generate(kp,'easy',seed,'def_cos',evidence=evidence(kp))for seed in range(24)]
+        self.assertEqual({r['question'][':question/answer-fields'][0][':answer-field/type']for r in easy},{':answer-field.type/blank'})
+        self.assertIn('0',{r['generation']['model']['result']for r in easy})
+        self.assertTrue(any(r['generation']['model']['result']!='0'for r in easy),
+                        'Exact-entry must not be a conditional cue for zero')
 
     def test_hard_is_not_defined_by_a_negative_sign(self):
         kp=17592186068915
         rows=self.g.batch(kp,'hard',8,31,evidence=evidence(kp))
         self.assertEqual({self.g.s.Rational(r['generation']['parameters']['slope'])>0 for r in rows},{True,False})
         validate_delivery_batch(rows,kp)
+        self.assertTrue(all('both derivative signs' in r['generation']['band_origin']for r in rows))
+        self.assertTrue(all(r['generation']['prior_band_evidence']=='test fixture'for r in rows))
+
+    def test_easy_retains_nontrivial_inner_scaling(self):
+        kp=17592186068915
+        for seed in range(12):
+            row=self.g.generate(kp,'easy',seed,'indef_sin',evidence=evidence(kp))
+            self.assertGreater(abs(self.g.s.Rational(row['generation']['parameters']['slope'])),1,
+                               'sin(x) alone belongs to prerequisite primitive retrieval')
 
 
 if __name__=='__main__':unittest.main()

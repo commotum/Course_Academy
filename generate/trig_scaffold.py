@@ -1,6 +1,7 @@
 """Topic478: independent substitution practice with controlled prerequisite work.
 
-Easy asks for a complete integral with full-answer choices. Moderate asks for
+Easy uses full-answer choices for antiderivatives and exact entry for definite
+integrals. The response is chosen by task family, never by its answer. Moderate asks for
 the whole calculation through exact entry. Bands use overlapping, bounded
 arithmetic; a sign is not a difficulty definition. Full calculations retrieve
 mastered primitive formulas and endpoint values; the solution explains their use.
@@ -98,7 +99,7 @@ def trig_instance(kp,level,case,rng):
     fn=case.removeprefix('indef_').removeprefix('def_')
     # The canonical linear source includes 2 sin(x/3). A single reciprocal
     # slope is familiar scaling, not a compound fractional-amplitude task.
-    slopes=(1,2) if level=='easy' else (2,3,R(1,2),R(1,3)) if level=='moderate' and linear else (2,3,4)
+    slopes=(2,3) if level=='easy' else (2,3,R(1,2),R(1,3)) if level=='moderate' and linear else (2,3,4)
     a=s.sympify(rng.choice(slopes))
     if not linear and definite:a=s.Integer(2)
     A=s.Integer(rng.randint(1,3 if level=='easy' else 4))
@@ -139,7 +140,7 @@ def product_instance(level,case,rng):
         if level=='easy':b=s.Integer(0)
         inner=X**n+b;du=n*X**(n-1);outer=A*X**(n-1);r=R(A,n)
         params={'inner_role':'power','power':n,'shift':str(b),'amplitude':str(A)}
-        challenge='supplied_substitution' if level=='easy' else 'recognize_power'
+        challenge='recognize_power'
     return dict(kind=fn,inner=inner,du=du,body=outer*g(fn,inner),factor=r,
         transformed=g(fn,U),primitive_u=r*h(fn,U),primitive=r*h(fn,inner),lo=None,hi=None,
         scale=s.cancel(outer/r).as_coeff_Mul()[0],amplitude=A,parameters=params,challenge=challenge,
@@ -169,15 +170,15 @@ def quotient_instance(level,case,rng):
     body=numerator/inner
     lo=hi=None
     if definite:
-        # Both primitive endpoint arguments are small integers; trig recall is
-        # supplied in the prompt rather than used to manufacture a hard item.
+        # Familiar endpoint values leave recall to the learner without adding
+        # unfamiliar arithmetic to the denominator-recognition task.
         lo=s.Integer(0);hi=PI/2
     primitive_u=r*(U-d*s.log(U)) if rearranged else r*s.log(U)
     return dict(kind=name,inner=inner,du=du,body=body,body_tex=r'\frac{'+tex(numerator)+'}{'+tex(inner)+'}',
         factor=r,transformed=transformed,primitive_u=primitive_u,primitive=primitive_u.subs(U,inner),
         lo=lo,hi=hi,scale=scale,amplitude=A,log=True,rearranged=rearranged,d=d,theta=theta,trig_fn=fn,
         parameters={'offset':str(d),'denominator_scale':str(c),'amplitude':str(A),'power':power,'inner_role':'quadratic' if nested else 'identity'},
-        challenge='supplied_substitution' if level=='easy' else 'recognize_denominator' if level=='moderate' else 'definite_evaluation' if definite else 'rational_rearrangement' if rearranged else 'nested_inner',
+        challenge='recognize_denominator' if level in ('easy','moderate') else 'definite_evaluation' if definite else 'rational_rearrangement' if rearranged else 'nested_inner',
         source_questions=['q-49557','q-113998','q-350887','q-350901','q-350908','q-350892','q-73679','q-113987','q-73674','q-114004','q-113997','q-113992'])
 
 
@@ -188,16 +189,31 @@ def primitive_tex(m,z):
     return times(r,logabs(z))
 
 
+def band_rationale(kp,level):
+    """Describe this construction, not a superseded source-capture design."""
+    if kp in (17592186068915,17592186068916):
+        return {
+            'easy':'Authored small nonunit inner scaling; complete antiderivative choices or exact definite evaluation. Required recognition and recall remain independent.',
+            'moderate':('Authored bounded affine scaling and familiar evaluation, including canonical-family reciprocal slopes.' if kp==17592186068915 else 'Authored nonunit integer affine scaling with familiar reciprocal-trig primitives and endpoint evaluation.'),
+            'hard':'Authored bounded affine calculations with both derivative signs. Same substitution work is retained; difficulty is not empirically calibrated.',
+        }[level]
+    return {
+        'easy':'Authored simple instances with complete-antiderivative choices; substitution and prerequisite recall remain independent.',
+        'moderate':'Authored exact calculation with supported power or denominator recognition.',
+        'hard':'Authored source-supported inner-function or denominator cases with controlled arithmetic; difficulty is not empirically calibrated.',
+    }[level]
+
+
 
 def render(kp,level,case,m,seed,evidence,rng):
     inner,du,r,lo,hi=(m[k]for k in ('inner','du','factor','lo','hi'))
-    definite=lo is not None;easy=level=='easy';choice=easy
+    definite=lo is not None;easy=level=='easy';choice=easy and not definite
     body=m.get('body_tex',tex(m['body']));original=integral(body,lo=lo,hi=hi)
     fp=task_key(m['body'],lo,hi)
     u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
     target=times(r,integral(tex(m['transformed']),'u',u0,u1))
     problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n$$\n'+original+'\n$$\n\n'
-    if easy:
+    if choice:
         problem+='Choose the exact value.'if definite else 'Choose the antiderivative. In each choice, $C$ is an arbitrary constant.'
     else:problem+='{{answer}}'+(''if definite else ' $+C$')
     sol='Let $u='+tex(inner)+'$. Then\n\n$$\n'+r'\frac{\mathrm{d}u}{\mathrm{d}x}='+tex(du)+'.\n$$\n\n'
@@ -231,24 +247,17 @@ def render(kp,level,case,m,seed,evidence,rng):
         answer=s.simplify(last-first);key=tex(answer)
         sol+='Integrate and evaluate:\n\n$$\n'+r'\left['+primitive_tex(m,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}='+r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right).'+'\n$$\n\nThe answer is\n\n$$\n'+key+'.\n$$'
         bank=[(key,'correct')]
-    if easy:
+    if choice:
         def banktex(value):
             text=tex(value)
             for node in sorted(value.atoms(s.log),key=str):
                 text=text.replace(tex(node),logabs(node.args[0]))
             return text
-        try:
-            bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
-                             lower=lo,upper=hi,max_number=12)
-        except ValueError:
-            # A collapsed error bank does not invalidate the integral. Exact
-            # entry preserves the same task without invented filler choices.
-            choice=False
-            problem=problem.rsplit('Choose ',1)[0]+'{{answer}}'+(''if definite else ' $+C$')
-        else:
-            key=next(value for value,label in bank if label=='correct').removesuffix('+C')
-            prefix,_,suffix=sol.rsplit('$$',2)
-            sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
+        bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
+                         lower=lo,upper=hi,max_number=12)
+        key=next(value for value,label in bank if label=='correct').removesuffix('+C')
+        prefix,_,suffix=sol.rsplit('$$',2)
+        sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
     uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+'evaluate'+':'+role))
     answers=[{':answer/id':uid('answer:'+text),':answer/type':':answer.type/math',':answer/value':normalize_tex(text)}for text,_ in bank]
     correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
@@ -264,7 +273,8 @@ def render(kp,level,case,m,seed,evidence,rng):
         'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if choice else m['challenge'],
         'parameters':m['parameters'],'mathematical_fingerprint':fp,'model':model,
         'batch_contract':'trig-substitution-recognition-v7','source_questions':m['source_questions'],
-        'source_basis':evidence['basis'],'band_origin':evidence['band_origin'][level],
+        'source_basis':evidence['basis'],'band_origin':band_rationale(kp,level),
+        'prior_band_evidence':evidence['band_origin'][level],
         'operation':'evaluate','provided_substitution':False,
         'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall',
         'bank_profile':'complete antiderivative or exact value with authored error choices'if choice else 'exact fragment with external C for antiderivatives',

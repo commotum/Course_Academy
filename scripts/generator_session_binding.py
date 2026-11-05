@@ -17,7 +17,8 @@ def policy_identity(root, role):
         root = Path(__file__).resolve().parents[1]
     name = {'investigate': 'investigator', 'author': 'author', 'review': 'reviewer'}[role]
     paths = [root / f'generate/pipeline/{name}.md', root / f'generate/pipeline/{role}.schema.json',
-             root / 'generate/principles.md', *sorted((root / 'generate/docs').glob('*.md'))]
+             root / 'generate/principles.md', root / 'generate/pipeline/validation-tools.md',
+             *sorted((root / 'generate/docs').glob('*.md'))]
     return {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in paths if path.is_file()}
 
@@ -41,7 +42,7 @@ def bind_session(directory, binding):
     if previous != binding and any((directory / name).exists() for name in ('result.json', 'prompt.txt')):
         archive = directory / 'input-revisions' / (str(time.time_ns()) + '-' + digest(previous)[:12])
         archive.mkdir(parents=True)
-        for name in ('input-binding.json', 'result.json', 'prompt.txt', 'supplied-inputs.json'):
+        for name in ('input-binding.json', 'result.json', 'prompt.txt', 'supplied-inputs.json', 'session-outputs.json'):
             item = directory / name
             if item.is_file():
                 item.replace(archive / name)

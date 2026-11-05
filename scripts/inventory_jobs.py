@@ -141,6 +141,14 @@ def ranked_requests(inventory: dict) -> list[dict]:
                   'observed_difficulties': kp['inventory'].get('supported_difficulties', []),
                   'difficulty_evidence': 'inventory',
                   **{field: kp[field] for field in PRIORITY_FIELDS if field in kp}}
+        # Availability changes as the learner practices; it does not enlarge a
+        # proven finite domain. Content/source signals, when present in the
+        # projection, do invalidate that conclusion.
+        capacity_context = {key: value for key, value in kp['inventory'].items()
+                            if key not in {'available', 'unavailable', 'seen', 'used'}}
+        capacity_context.update({key: kp[key] for key in
+            ('source_identity', 'source_sha256', 'question_pool_sha256') if key in kp})
+        common['capacity_context'] = hashlib.sha256(json.dumps(capacity_context, sort_keys=True).encode()).hexdigest()
         if not packaged:
             # The selection gate reserves agent work for selected KPs. Existing
             # packages may still refill automatically after approval checks.
@@ -401,6 +409,16 @@ class InventoryJobs:
                 previous_cycle = cycle
                 changed = any(old.get('request', {}).get(k) != request.get(k)
                               for k in ('stage', 'missing', 'script', 'difficulty'))
+                finite_same_domain = (kind == 'refill' and state == 'rejected'
+                    and old.get('outcome', {}).get('outcome') == 'finite-limit'
+                    and all(old.get('request', {}).get(key) == request.get(key)
+                            for key in ('script', 'difficulty', 'capacity_context')))
+                if finite_same_domain:
+                    changed = False
+                elif (kind == 'refill' and state == 'rejected'
+                      and old.get('outcome', {}).get('outcome') == 'finite-limit'
+                      and old.get('request', {}).get('capacity_context') != request.get('capacity_context')):
+                    changed = True
                 if state == 'awaiting-verification' and changed:
                     state, cycle = 'pending', cycle + 1
                     old = {**old, 'attempts': 0, 'replenishments': 0, 'retryAt': 0}

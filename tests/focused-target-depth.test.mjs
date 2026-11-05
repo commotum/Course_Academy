@@ -14,6 +14,13 @@ test('target projection defaults to focused depth zero and preserves explicit de
   snapshot.studyDefaults = { targetPrerequisiteDepth: 0 };
   assert.deepEqual([...projectTargetScope(snapshot).nodeIds], [57]);
   assert.deepEqual([...projectTargetScope(snapshot, { prerequisiteDepth: 1 }).nodeIds].sort(), [56, 57]);
+  snapshot.learner = { targets: [54, 57, 999], queue: [0] };
+  const expanded = projectTargetScope(snapshot, { prerequisiteDepth: 10 });
+  assert.deepEqual([...expanded.roots], [54, 57, 0]);
+  assert.deepEqual([...expanded.nodeIds].sort((a, b) => a - b), [0, 54, 55, 56, 57]);
+  assert.equal(expanded.categories.get(54), 'target');
+  assert.equal(expanded.categories.get(0), 'queue');
+  assert.equal(expanded.categories.get(55), 'prerequisite');
 });
 
 test('actual graph initialization uses the server code policy for the targets overview', async () => {

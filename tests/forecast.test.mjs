@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ForecastFacts, forecastGraph, knownPreparationTopics, calculateForecast, completionEstimate,
-  forecastDayStarts, readForecast, withForecastGoal, courseCompletionEstimates } from '../ui/forecast.js';
+  forecastDayStarts, readForecast, withForecastGoal, courseCompletionEstimates, topicDueDays } from '../ui/forecast.js';
 import { projectTargetScope } from '../ui/target-scope.js';
 
 process.env.TZ = 'America/Los_Angeles';
@@ -189,11 +189,25 @@ test('the final graph handles layer cutoff, course filters, Queue independence a
   x.event(19, [[1, 'learner/queue', 129, true], [1, 'learner/targets', 120, true], [1, 'learner/queue', 135, true]]);
   const graph = forecastGraph(x.f, 1);
   const selected = projectTargetScope(graph, { courses: [], includeQueue: true });
-  assert.ok(selected.nodeIds.has(129)); // L55 is retained.
+  assert.ok(selected.nodeIds.has(129)); // Queued L55 is retained.
   assert.ok(!selected.nodeIds.has(128));
-  assert.ok(!selected.nodeIds.has(120));
+  assert.ok(selected.nodeIds.has(120)); // Unassigned targets remain visible below the cutoff.
   assert.ok(selected.nodeIds.has(135)); // Queue bypasses course switches.
-  assert.equal(projectTargetScope(graph, { courses: [], includeQueue: false }).nodeIds.size, 0);
+  assert.deepEqual([...projectTargetScope(graph, { courses: [], includeQueue: false }).nodeIds], [120]);
+});
+
+test('low-layer saved targets inherit needing targets deadlines without expanding low-layer prerequisites', () => {
+  const x = fixture({ tasks: false });
+  x.event(19, [[1, 'learner/targets', 135, false], [1, 'learner/targets', 128, true], [128, 'topic/next', 133, true]]);
+  const graph = forecastGraph(x.f, 1);
+  graph.targetSchedule = [
+    { due: iso(22), topicIds: [133] }, { due: iso(25), topicIds: [128] },
+  ];
+  const scope = projectTargetScope(graph), days = topicDueDays(graph, scope, {});
+  assert.ok(scope.roots.has(128));
+  assert.equal(days.get(128), days.get(133));
+  assert.ok(!scope.nodeIds.has(127));
+  assert.ok(!days.has(127));
 });
 
 test('a completed queued lesson remains modeled work when completion removes its root in the same transaction', () => {

@@ -257,6 +257,9 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
     if not browser or not Path(browser).is_file() or not Path(playwright).exists():
         raise RuntimeError("Installed Node Playwright, node, and Chromium headless shell are required; use --browser/--playwright for existing alternatives")
     node = resolve_node(playwright, node)
+    renderer_code = implementation_hashes([Path(__file__)])
+    served_files = {}
+    changed_resources = set()
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
@@ -289,6 +292,12 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
                 if file is None or not file.is_file():
                     self.send_error(404); return
                 data, kind = file.read_bytes(), mimetypes.guess_type(file)[0] or "application/octet-stream"
+                if file.resolve().is_relative_to(REPO):
+                    resource = str(file.resolve().relative_to(REPO))
+                    identity = hashlib.sha256(data).hexdigest()
+                    if resource in served_files and served_files[resource] != identity:
+                        changed_resources.add(resource)
+                    served_files[resource] = identity
             self.send_response(200)
             self.send_header("Content-Type", kind)
             self.end_headers()
@@ -326,12 +335,16 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
                        check=True, timeout=max(90, 45 * len(selected) * len(states) * len(viewports)))
         report_path = output / "rendering.json"
         report = json.loads(report_path.read_text())
+        implementation = {**renderer_code, **served_files}
+        changed_resources.update(name for name, identity in implementation.items() if sha256_file(REPO / name) != identity)
+        if changed_resources:
+            raise ValueError('Renderer resources changed during inspection: ' + ', '.join(sorted(changed_resources)))
         report.update({"format": "course-academy-rendering-v1", "input_file": "input.json",
                        "input_sha256": sha256_file(output / "input.json"), "record_sha256": identities,
                        "checked_record_sha256": [identities[i] for i in selected],
                        "selection": {"input_count": len(records), "selected_indices": selected,
                                      "omitted_indices": [i for i in range(len(records)) if i not in selected]},
-                       "implementation_sha256": implementation_hashes([Path(__file__), *ui.glob("*.js"), *ui.glob("*.html")]),
+                       "implementation_sha256": implementation,
                        "runtime": {"browser_sha256": sha256_file(browser), "node_sha256": sha256_file(node)}})
         report_path.write_text(json.dumps(report, indent=2) + "\n")
         return report

@@ -203,7 +203,7 @@ test('cache expires at local midnight and corrupt storage falls back to a fresh 
   f.data.pace.observedThrough = new Date(2026, 9, 22).toISOString();
   await f.view.refresh({ basis: 1 });
   assert.equal(f.calls, 2);
-  const bad = fixture(new Map([['course-academy.forecast.v2', '{invalid']]));
+  const bad = fixture(new Map([['course-academy.forecast.v3', '{invalid']]));
   await bad.view.refresh({ basis: 1 });
   assert.equal(bad.times().length, 8);
 });
@@ -236,7 +236,7 @@ test('unavailable storage preserves memory caching and restricted old scopes are
   await f.view.refresh({ basis: 1 });
   assert.equal(f.calls, 1);
   const restricted = model(); restricted.scope.includeQueue = false;
-  const old = fixture(new Map([['course-academy.forecast.v2', JSON.stringify(restricted)]]));
+  const old = fixture(new Map([['course-academy.forecast.v3', JSON.stringify(restricted)]]));
   assert.match(old.text(), /Calculating/);
   await old.view.refresh({ basis: 1 });
   assert.equal(old.calls, 1);

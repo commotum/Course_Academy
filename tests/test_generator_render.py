@@ -6,7 +6,33 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'generate/pipeline'))
-from render_preview import resolve_node
+from render_preview import resolve_node, select_indices, parse_viewport, preview
+
+
+class RepresentativeRenderingTests(unittest.TestCase):
+    def test_selection_is_explicit_and_validated(self):
+        records = list(range(8))
+        self.assertEqual(select_indices(records), list(range(8)))
+        self.assertEqual(select_indices(records, [6, 2]), [6, 2])
+        self.assertEqual(select_indices(records, limit=2), [0, 1])
+        for indices in ([], [0, 0], [8], [-1], [True]):
+            with self.assertRaises(ValueError):
+                select_indices(records, indices)
+
+    def test_viewports_and_unanswered_state_are_explicit(self):
+        self.assertEqual(parse_viewport('390x844'), {'width': 390, 'height': 844})
+        import argparse
+        for value in ('0x800', '390', '-1x1000'):
+            with self.assertRaises(argparse.ArgumentTypeError):
+                parse_viewport(value)
+        record = {'question': {':question/problem': 'Calculate.', ':question/worked-solution': 'The method is explained here.',
+                  ':question/answer-fields': [{':answer-field/key': 'answer', ':answer-field/type': ':answer-field.type/blank',
+                    ':answer-field/correct': [':answer/id', 'a'], ':answer-field/choices': [
+                        {':answer/id': 'a', ':answer/type': ':answer.type/math', ':answer/value': '0'}]}]}}
+        active, completed = preview(record, 0, active=True), preview(record, 0)
+        self.assertEqual(active['steps'][0]['status'], 'started')
+        self.assertNotIn('response', active['steps'][0]['fields'][0])
+        self.assertEqual(completed['steps'][0]['fields'][0]['response']['value'], '0')
 
 
 class RendererRuntimeTests(unittest.TestCase):

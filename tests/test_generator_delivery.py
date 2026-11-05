@@ -112,6 +112,18 @@ class DeliveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'outside the published math root'):
             delivery.audit([], self.inventory, self.source, 'easy', self.math / 'audit', self.root, self.math)
 
+    def test_report_binds_inputs_survivors_and_transitive_policies(self):
+        from scripts.generator_evidence import validate_tool_report
+        self.run_audit([record(2), record(3)])
+        path = self.root / 'evidence/delivery.json'
+        report = validate_tool_report(path, self.root / 'evidence')
+        self.assertEqual((report['input_count'], report['accepted_count']), (2, 1))
+        self.assertIn('scripts/inverse_substitution_batch_policy.py', report['implementation_sha256'])
+        self.assertIn('scripts/integration_support_policy.py', report['implementation_sha256'])
+        (self.root / 'evidence/accepted.json').write_text('[]')
+        with self.assertRaisesRegex(ValueError, 'accepted file hash mismatch'):
+            validate_tool_report(path, self.root / 'evidence')
+
 
 if __name__ == '__main__':
     unittest.main()

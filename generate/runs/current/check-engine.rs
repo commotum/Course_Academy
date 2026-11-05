@@ -4,6 +4,16 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, error::Error, fs, path::Path};
 fn sha(data: &[u8])->String {format!("{:x}",Sha256::digest(data))}
+fn canonical(value: &Value)->Value {
+ match value {
+  Value::Null=>json!(["null"]),
+  Value::Bool(v)=>json!(["boolean",v]),
+  Value::String(v)=>json!(["string",v]),
+  Value::Number(v)=>if v.is_f64(){json!(["float64",format!("{:016x}",v.as_f64().unwrap().to_bits())])}else{json!(["integer",v.to_string()])},
+  Value::Array(v)=>json!(["array",v.iter().map(canonical).collect::<Vec<_>>()]),
+  Value::Object(v)=>json!(["object",v.iter().map(|(key,item)|json!([key,canonical(item)])).collect::<Vec<_>>()]),
+ }
+}
 fn record(v: Value)->Record {v.as_object().unwrap().clone()}
 // Publisher records allow either a keyword string or a pulled :db/ident map.
 fn enum_name(value: &Value) -> Result<&str, Box<dyn Error>> {
@@ -14,6 +24,11 @@ fn enum_name(value: &Value) -> Result<&str, Box<dyn Error>> {
 fn main()->Result<(),Box<dyn Error>> {
  let args:Vec<_>=std::env::args().skip(1).collect();
  if args.len()!=2{return Err("check-engine INPUT.json REPORT.json".into())}
+ if Path::new(&args[1]).exists() && fs::canonicalize(&args[0])?==fs::canonicalize(&args[1])? {
+  return Err("input and report must be different files".into())
+ }
+ // A failed rerun must not leave a previous passing report at the requested path.
+ if Path::new(&args[1]).exists(){fs::remove_file(&args[1])?;}
  let input_bytes=fs::read(&args[0])?;
  let input:Value=serde_json::from_slice(&input_bytes)?;
  let items=input.as_array().filter(|items|!items.is_empty()).ok_or("nonempty records array required")?;
@@ -24,7 +39,7 @@ fn main()->Result<(),Box<dyn Error>> {
  let mut fingerprints=vec![];
  for item in items {
   let requested=item["checks"].as_array().filter(|checks|!checks.is_empty()).ok_or("nonempty checks required for every record")?;
-  let fingerprint=sha(&serde_json::to_vec(&item["record"])?);fingerprints.push(fingerprint.clone());
+  let fingerprint=sha(&serde_json::to_vec(&canonical(&item["record"]))?);fingerprints.push(fingerprint.clone());
   let q=&item["record"]["question"];let fields=q[":question/answer-fields"].as_array().ok_or("fields required")?;
   let mut entities=BTreeMap::new();let mut maps=vec![];let mut field_ids=vec![];let mut next_answer=100u64;
   let mut enum_names=std::collections::BTreeSet::new();
@@ -90,5 +105,11 @@ mod tests {
   for value in [json!(null), json!({}), json!({":db/ident": 3})] {
    assert!(enum_name(&value).is_err());
   }
+ }
+ #[test]
+ fn record_identity_matches_python_for_unicode_and_float_spellings() {
+  let record=json!({"n":1e-6,"large":1e20,"negative_zero":-0.0,"text":"π\u{2028}","integer":1});
+  assert_eq!(sha(&serde_json::to_vec(&canonical(&record)).unwrap()),
+   "657cf9b1bf3a9ce7a42d51db560738e8a3af29bd440a0b961c9b6d9424897a87");
  }
 }

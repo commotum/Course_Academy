@@ -72,7 +72,7 @@ For localized `accepted.json`, use `--asset-root <delivery_output/assets>`.
 `--state active|completed|both` selects unanswered questions, completed solutions,
 or both (default). Repeat `--viewport WIDTHxHEIGHT` for a relevant narrow layout.
 Use `--indices` with comma-separated zero-based indices for representative coverage;
-`--limit` remains available and omitted inputs are recorded. Select materially
+`--limit` is an optional explicit cap; without selection/capping all supplied records are rendered. Omitted inputs are recorded. Supply a bounded representative input or indices rather than an entire inventory. Select materially
 different task/support/response layouts rather than relying on the first records.
 
 Inspect screenshots, open dropdown content and `rendering.json`; the helper uses
@@ -119,3 +119,41 @@ python3 <repo_root>/scripts/generator_review.py \
 Correct evidence/report errors in the same verifier session. Reuse unaffected
 checks and expand samples only for a demonstrated gap. Do not relabel an unresolved
 valid response or unexamined applicable stage as passed to satisfy the contract.
+
+## Retained findings and supersession
+
+Ordinary author repair maps findings to executable checks in
+`workspace/repair-regressions.json`:
+
+```json
+{"findings":[{"id":"retained-finding-id","script":"checks/regression.py","args":[]}]}
+```
+
+Each script exits nonzero when the demonstrated defect persists in current visible
+records, and zero only after checking the intended behavior. A script may cover
+several findings. Retain old counterexamples; use independent mathematical or
+structural witnesses rather than copied expected results.
+
+If the verifier proves a retained requirement mistaken or superseded, it may write
+`evidence_root/finding-dispositions.json` (otherwise no such file is needed):
+
+```json
+{
+  "format": "course-academy-finding-dispositions-v1",
+  "findings": [{
+    "id": "retained-finding-id",
+    "disposition": "superseded",
+    "reason": "Concrete source/instructional reason the old rule is inappropriate",
+    "source_refs": ["specific source identity or passage"],
+    "evidence_paths": ["supersession-evidence.json"],
+    "counterexample_path": "valid-case-excluded-by-old-rule.json"
+  }]
+}
+```
+
+Paths name nonempty evidence-root-relative files. Preserve the original history
+and a valid counterexample the old rule would exclude. Finalization validates
+known finding IDs and evidence, binds this file and skips only the superseded
+executable obligation. An accepted review cites `finding-dispositions.json` in
+`checks.scope.evidence_paths`. This does not waive an unresolved actual defect or
+replace the conceptual source-account amendment when the interpretation changed.

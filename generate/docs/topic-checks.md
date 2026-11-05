@@ -14,6 +14,17 @@ Use one derivation to render the final worked result and canonical answer. Show 
 
 Distractors should be plausible for the actual instance: omitted differential factors, normalization mistakes, primitive/endpoint errors or incorrect bound subtraction. A copied setup or arbitrary integer offset is not a sufficient fallback. A colliding source recipe requires a different valid bank before it requires excluding the mathematical case. Probe numerical rank, unique sign/shape and intersections of modal coefficients within recognizable families; preserve legitimate mathematical reasoning and use the principles’ evidence threshold.
 
+The current scoped trig constructor includes the canonical fractional slope `1/3`,
+both signs in hard and legitimate zero results. Easy definite-integral families
+use exact entry for every instance, chosen independently of the answer; easy
+indefinite families retain complete-answer choices. Nonunit easy slopes preserve
+the linear-substitution operation instead of reducing it to prerequisite retrieval. These preserve substitution recognition and the
+final-answer endpoint; they are not a prescription for every integration KP. The
+shared policy retains bounded workload and mathematical/response checks without
+requiring a sign, family or endpoint mix in every refill fragment. Change constructor,
+policy contract and the original failure/valid-case regressions together when a
+scoped rule needs repair; changing a version label alone is not a repair.
+
 ## Equilibrium candidates
 
 For a task assessing constant equilibrium candidates after rearrangement, preserve useful factors/shifts and the original domain, form one consistent residual, and test candidates against it. Avoid gratuitous expansion, repeated equivalent work or adding the same irrelevant expression to both sides just to cancel. Preserve a different source-supported method if it serves the same target and workload.

@@ -40,6 +40,16 @@ A genuinely finite family may declare runtime `generation-limits.json` in `packa
 
 Test relocation outside the repository, such as a disposable `/tmp` copy, with the ordinary environment and a different output directory. Compare question/field/answer identities and asset bytes. Test installed entrypoints through the runner’s publication verification; do not publish independently to perform a check.
 
+A complete finite domain may additionally use `finite_catalogs` mapping each bounded
+band to a declared runtime JSON list of generated records. The runner can report
+`finite-limit` only when that complete supported catalog is in inventory, not from
+an empty random sample. A reviewed package may declare an inexpensive
+`refill-validation.json` checker for actual delivery survivors; its interface is in
+[the pipeline guide](../README.md#refill-checks-and-finite-domains). Retain meaningful
+semantic/equivalence/cue regressions there so fresh seeds exercise approved behavior
+without another LLM review. Do not impose population coverage quotas on each small
+refill fragment.
+
 ## Verification and delivery
 
 Run independent math, source replay, native grading, actual-UI presentation, meaningful coverage and deterministic/relocation checks. Use [shared validation tools](../pipeline/validation-tools.md), not homemade grader/render stacks. Test valid equivalents and plausible wrong responses, respecting legitimate response-form and precision requirements. An unresolved valid response is an unresolved limitation, not a positive grading pass.

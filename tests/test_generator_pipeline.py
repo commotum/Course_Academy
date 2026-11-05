@@ -15,7 +15,7 @@ from generator_packages import publish_package, resolve_registered_script
 from generator_pipeline import CodexSession, Pipeline, SessionRetryExhausted, main
 from generator_publish import SourceChanged, digest as source_digest
 from generator_review import CHECKS, REVIEW_POLICY_VERSION
-from generator_review_fixtures import write_decision_evidence, write_band_evidence
+from generator_review_fixtures import write_decision_evidence, write_band_evidence, write_tool_evidence
 
 
 GENERATOR = textwrap.dedent('''\
@@ -140,6 +140,13 @@ class FakeSession:
         checks = {name: {"status": "passed", "details": "Structured boundary fixture.",
                          "evidence_paths": ["checks.json"]} for name in CHECKS}
         checks["decision_variation"]["evidence_paths"] = [write_decision_evidence(directory)]
+        records_by_band = {band: json.loads(Path(row['batch_file']).read_text())
+                           for band, row in context.get('verification_batches', {}).items()}
+        if records_by_band:
+            tools = write_tool_evidence(directory, [record for rows in records_by_band.values() for record in rows],
+                                        engine_sha256=context['review_binding'].get('grader_sha256'))
+            for name in ('grading', 'rendering'):
+                checks[name]['evidence_paths'] = [tools[name]]
         checks["scope"]["evidence_paths"] = ['solution-paths.json']
         findings = []
         if self.reject:
@@ -153,7 +160,7 @@ class FakeSession:
             (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
         return {"verdict": "revise" if self.reject else "accepted", "summary": "Structured review fixture.",
                 "source_analysis": analysis, "checks": checks, "findings": findings,
-                "band_verification": write_band_evidence(directory, context["review_binding"])}
+                "band_verification": write_band_evidence(directory, context["review_binding"], records_by_band)}
 
 
 class FakePublisher:

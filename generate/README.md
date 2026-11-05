@@ -1,5 +1,9 @@
 # Generator pipeline
 
+[Question generation principles](principles.md) is the canonical pedagogical contract.
+The three role prompts define phase responsibilities; guides and conditional task
+examples implement that contract. Historical run notes do not redefine new jobs.
+
 Run or resume one knowledge point:
 
 ```bash
@@ -69,31 +73,34 @@ and developer-mode switches control both generation workers.
 
 Each build uses three headless `gpt-6.1-sol` agents with `high` reasoning:
 
-1. **Investigate:** A script captures the KP and selects one reference KP with at
-   least two complete Math Academy imports at each difficulty. Selection uses
-   fixed Datalog, one database basis, and batched explicit Pulls; agents do not
-   search the database themselves. The investigator studies the target and the
-   reference progression. When evidence is incomplete, it constructs and checks
-   three complete exemplars, one easy, one moderate, and one hard. The runner
-   publishes them as ordinary questions under the target KP using `:agent/codex`
-   provenance. No reconstruction labels or imported Math Academy IDs are added.
+1. **Investigate:** A script captures the target at one database basis. Complete
+   target evidence needs no donor. When examples are missing, the script ranks
+   candidates using prerequisite metadata and title evidence, then supplies a
+   bounded set of complete references. The investigator establishes the target
+   operation first and selects a compatible reference or none, explaining what
+   transfers. Agents consume supplied captures rather than search EDB ad hoc.
+   If needed, the investigator creates and checks three local design exemplars,
+   one per band. They remain local permanently; they are not published inventory,
+   imported evidence, or authority over the target task. Later phases may correct
+   them. Legacy uncertain exemplar requests are reconciled exactly before migration.
 2. **Author:** The author builds or continues one relocatable Python generator
-   supporting easy, moderate, and hard from the target material and completed
-   exemplars. It may revise earlier assumptions and repair relevant shared tools
-   or the answer engine. The runner samples every band twice at its saved seed
-   and compares records and asset bytes for deterministic replay.
-3. **Verify and repair:** The verifier first examines the instructional evidence
-   independently, then tests and repairs the generator in the same persistent
-   session. It owns mathematics, pedagogy, grading, rendering, packaging, and
-   delivered variation across all three bands, including their progression.
-   Earlier requirements may be overridden with evidence.
-   Shared-tool defects and report omissions are corrected by this verifier rather
-   than handed to another agent. There is no fourth approval agent.
+   covering all three bands from target material and the revisable account/examples.
+   Source replay records original banks; fresh practice repairs their defects and
+   preserves valid mathematical cases. The author may repair shared tools or the
+   answer engine. The runner samples every band twice at its saved seed and compares
+   records/assets for deterministic replay.
+3. **Verify and repair:** The verifier writes an independent source account before
+   inspecting author work, then tests and repairs in the same persistent session.
+   It compares actual pre-feedback decisions, required recall, support and response
+   endpoints across every material family and all bands. The initial account stays
+   unchanged; conceptual corrections have explicit source-backed amendments linked
+   to the final report. Shared-tool defects and report omissions remain this agent's
+   responsibility. There is no fourth approval agent.
 
-Engine hashes record the environment used for verification. An engine rebuild or
-shared engine change does not invalidate an accepted generator or stop refills.
-Engine repairs require their own relevant regressions; generator repairs are
-triggered by actual defects or changed package/source evidence.
+Engine hashes record the environment used for verification. An engine change during
+an active review requires affected compatibility checks to be rerun. Later unrelated
+engine builds do not expire a completed approval. Engine repairs retain their own
+regressions; actual defects or material package/source changes trigger generator repair.
 
 Incomplete imports remain unchanged. Missing fields, keys, solutions, or labels
 are partial evidence, never inventory-repair obligations or publication blockers.
@@ -127,7 +134,8 @@ no shared lock, and workers never edit another KP's job or imported questions.
 
 The verifier calls `finalize_review_command` before acceptance, including when
 no repair was needed. This regenerates all three final batches and assets and
-saves `final-binding.json` for the actual package, source, inventory, and engine.
+saves `final-binding.json` for the actual package, source, inventory, engine and
+instructional inputs, including the supplied account/reference/local examples.
 It checks those final outputs and validates its
 report with `scripts/generator_review.py --result FILE --evidence-root DIRECTORY`
 before returning. Report corrections resume the same persistent verifier session.
@@ -135,12 +143,18 @@ Acceptance requires explicit passing results for easy, moderate, and hard with
 their final batch hashes, plus nine shared checks: source replay, mathematics,
 variety, decision-relevant variation, scope, grading, rendering, packaging, and
 progression. Shared analysis need not be repeated in three separate reports.
+Each band cites recognized delivery, native-grader and rendering evidence for its
+actual final raw or delivered records. Representative checks must cover materially
+different families. A report-shaped file or an unresolved valid answer is not a pass.
 
 [Shared validation tools](pipeline/validation-tools.md) use the actual publication
-filter, native grader, and learning UI. The renderer ignores hidden native
-backing values while inspecting every opened rich-dropdown menu. Visible raw
-TeX remains a failure. It selects the installed Node >=20 runtime beside
-Playwright; `--node` or `COURSE_ACADEMY_NODE_EXECUTABLE` can override that choice.
+filter, native grader, and learning UI. Rendering defaults to unanswered and
+completed states; choose representative record indices and relevant desktop/narrow
+viewports. Omitted records are reported. Inspect actual controls, graphs and
+mathematical layout, not just parse success. The renderer ignores hidden native
+backing values while inspecting opened rich-dropdown menus. Visible raw TeX remains
+a failure. It selects installed Node >=20 beside Playwright; `--node` or
+`COURSE_ACADEMY_NODE_EXECUTABLE` can override that choice.
 
 After acceptance, deterministic **prepare** and **push** steps publish the
 immutable package/assets, preview the typed EDB forms, retain the exact guarded
@@ -226,6 +240,39 @@ does not install dependencies. Local helpers, renderers, data and fonts affectin
 output must be included in the package. Standard-library dependencies need no
 separate files. Logs, reviews and generated output stay outside the manifest.
 
+## Refill checks and finite domains
+
+Approved packages refill without another LLM review. The runner checks actual
+surviving response controls with the native grader. A reviewed package may declare
+`refill-validation.json` in its runtime files:
+
+```json
+{
+  "format": "course-academy-refill-check-v1",
+  "script": "check_refill.py",
+  "args": [],
+  "files": []
+}
+```
+
+The checker receives `--records`, `--inventory`, and `--output`, and returns a report
+with `status: "passed"` and `checked_fingerprints` equal to the exact sorted
+`content_fingerprint(question)` set of surviving records. Optional `native_checks`
+rows contain `fingerprint` and native-harness `checks`. Keep this checker and its
+inputs declared/package-bound. Use it for independently justified valid-equivalent,
+near-miss, task-contract and demonstrated cue regressions, not copied metadata
+assertions. The basic native fallback is not a proof of semantic equivalence or
+pedagogical variety. Population coverage is assessed against relevant delivered
+inventory, not forced into every small refill fragment.
+
+`generation-limits.json` can additionally declare
+`finite_catalogs: {"easy": "easy-catalog.json"}`, with complete generated-record
+lists in declared runtime files. The finite catalog must enumerate the supported
+domain; only the complete catalog already present in inventory proves exhaustion
+and produces `finite-limit`. A duplicate-heavy sample or `no_changes` alone does
+not prove that no valid unseen questions remain. Per-batch caps still apply to all
+verification/refill requests without dropping any of the three required bands.
+
 ## Configuration
 
 The runner uses the application's existing EDB environment and generated-content
@@ -256,7 +303,11 @@ repository and their job/evidence directories. They own relevant shared repairs;
 database publication stays in the runner's durable transport. `repair-history.json`
 retains findings, `repair-regressions.json` maps generator findings to executable
 checks, and `repair-preflight.json` records their results. Completed work and
-session identities survive interruption. Genuine repeated failures retain bounded
+session identities survive interruption. Cached phase results are reusable only
+when their role inputs, material source/reference content and instruction versions
+match; changed evidence is not written underneath a stale accepted interpretation.
+Produced accounts/examples remain distinct from the inputs used to cache their
+creator. Routine inventory/basis churn alone does not restart authorship. Genuine repeated failures retain bounded
 retry budgets and explicit errors; restarting alone does not renew those budgets
 or replace uncertain publication requests.
 

@@ -15,7 +15,7 @@ class ThreePhaseTests(unittest.TestCase):
     tearDown = fixtures.GeneratorPipelineTests.tearDown
     pipeline = fixtures.GeneratorPipelineTests.pipeline
 
-    def test_investigator_publishes_three_questions_before_author_gets_their_entities(self):
+    def test_investigator_examples_remain_local_design_anchors(self):
         events = []
         publisher = self.publisher
         original_publish = publisher.publish_exemplars
@@ -49,10 +49,11 @@ class ThreePhaseTests(unittest.TestCase):
                     return {'status': 'ready', 'exemplars_file': 'exemplars.json',
                             'summary': 'Three complete examples.', 'evidence_paths': [], 'limitations': []}
                 if role == 'author':
-                    testcase.assertEqual(len(publisher.exemplar_publications), 1)
+                    testcase.assertEqual(len(publisher.exemplar_publications), 0)
                     saved = json.loads(Path(context['exemplars_file']).read_text())
-                    testcase.assertEqual([q[':db/id'] for q in saved], [1000, 1001, 1002])
-                    testcase.assertEqual(context['investigation_file'], str(testcase.job / 'investigation/investigation.json'))
+                    testcase.assertEqual(len(saved), 3)
+                    testcase.assertTrue(all(':db/id' not in row['question'] for row in saved))
+                    testcase.assertTrue(json.loads(Path(context['investigation_file']).read_text())['fixture'])
                 return super().__call__(role, context, directory)
 
         session = Session()
@@ -60,9 +61,10 @@ class ThreePhaseTests(unittest.TestCase):
                             session=session, investigation_preparer=prepare)
         result = pipeline.run()
         self.assertEqual(result['stage'], 'verified')
-        self.assertEqual(events, ['prepare_reference', 'investigate', 'publish_exemplars', 'author', 'review'])
+        self.assertEqual(events, ['prepare_reference', 'investigate', 'author', 'review'])
         self.assertTrue(result['investigation_complete'])
-        self.assertEqual(result['exemplar_publication']['source'], ':agent/codex')
+        self.assertNotIn('exemplar_publication', result)
+        self.assertEqual(result['exemplars_file'], str(self.job / 'workspace/exemplars.json'))
 
     def test_verifier_repairs_generator_and_engine_then_accepts_final_bytes_in_same_phase(self):
         testcase = self

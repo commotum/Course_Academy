@@ -34,7 +34,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
   });
   const elements = new Map();
   const $ = id => { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); };
-  const nodes = [1, 2, 3, 4, 5, 6].map(id => ({ id, name: `Topic ${id}`, layer: 54 + ({ 4: 0, 1: 1, 6: 1, 2: 2, 3: 2, 5: 3 })[id], order: 0 }));
+  const nodes = [1, 2, 3, 4, 5, 6].map(id => ({ id, name: `Topic ${id}`, layer: 55 + ({ 4: 0, 1: 1, 6: 1, 2: 2, 3: 2, 5: 3 })[id], order: 0 }));
   const links = [{ source: 1, target: 3 }, { source: 1, target: 2 }, { source: 4, target: 1 }, { source: 3, target: 5 }, { source: 4, target: 6 }];
   const context = vm.createContext({
     URL, $, attachGraphTopicMenu() {}, document: { createElement: element, createElementNS: element, getElementById: $, querySelector: () => $('.app'), title: '' },
@@ -258,29 +258,40 @@ test('targets overview spans courses and retains only links between saved target
   assert.equal([...active.columns.values()].every(Number.isInteger), true);
 });
 
-test('targets exclude displayed L54 and below from roots, expanded prerequisites, links, and counts', () => {
-  const c = fixture([1, 3]); c.snapshot.learner.queue = [2, 4, 6];
-  for (const [id, layer] of [[4, 52], [1, 53], [6, 53], [2, 54], [3, 55], [5, 56]]) c.nodeById.get(id).layer = layer;
+test('targets and queue retain every layer while prerequisite-only topics through L55 are excluded', () => {
+  const c = fixture([1, 3]); c.snapshot.learner.queue = [2, 6];
+  for (const [id, layer] of [[4, 53], [1, 54], [6, 0], [2, 55], [3, 56], [5, 57]]) c.nodeById.get(id).layer = layer;
+  c.LINKS.push({source:2,target:3}); c.inMap.get(3).push(2); c.outMap.get(2).push(3);
   const saved = JSON.stringify(c.snapshot.learner);
   c.changeCourse(null, true, 'targets');
-  assert.deepEqual([...c.state.activeIds], [3, 2]); // L55 is retained; L54 is excluded.
-  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 1 target · 1 queued');
+  assert.deepEqual([...c.state.activeIds], [1, 3, 2, 6]);
+  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 2 targets · 2 queued');
   for (const depth of [0, 1, 2, 'all']) {
     c.setDepth(depth, true);
     const active = c.buildActiveSet();
-    assert.deepEqual([...active.nodeIds].sort(), [2, 3]);
+    assert.deepEqual([...active.nodeIds].sort(), [1, 2, 3, 6]);
+    assert.deepEqual([...active.edgeSet], [0, 1, 5]);
     assert.ok([...active.edgeSet].every(i => active.nodeIds.has(c.LINKS[i].source) && active.nodeIds.has(c.LINKS[i].target)));
   }
-  c.setSelected(1); assert.deepEqual([...c.state.activeIds], [3, 2]);
-  c.state.mode = 'overview'; assert.deepEqual([...c.buildActiveSet().nodeIds], [3, 2]);
+  c.setSelected(3); assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2, 3]);
+  let redraws = c.redraws.length;
+  c.learnerChanged({ ...c.snapshot.learner, targets: [3] });
+  assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [2, 3]);
+  assert.equal(c.redraws.length, redraws + 1); assert.equal(c.redraws.at(-1), false);
+  redraws = c.redraws.length;
+  c.learnerChanged({ ...c.snapshot.learner, targets: [1, 3] });
+  assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2, 3]);
+  assert.equal(c.redraws.length, redraws + 1); assert.equal(c.state.selected, 3);
+  c.setSelected(1); assert.deepEqual([...c.buildActiveSet().nodeIds], [1]);
+  c.setSelected(6); assert.deepEqual([...c.buildActiveSet().nodeIds], [6]);
+  c.state.mode = 'overview'; assert.deepEqual([...c.buildActiveSet().nodeIds], [1, 3, 2, 6]);
   c.changeCourse('course-a');
   assert.deepEqual([...c.buildActiveSet().nodeIds], [1, 2]); // Other graph pages retain the lower layers.
   assert.equal(JSON.stringify(c.snapshot.learner), saved);
-  c.learnerChanged({ ...c.snapshot.learner, targets: [1] });
-  c.queueChanged({ queue: [4, 6] });
-  c.changeCourse(null, true, 'targets');
-  assert.equal(c.buildActiveSet().nodeIds.size, 0);
-  assert.equal(c.state.selected, null);
+  c.learnerChanged({ ...c.snapshot.learner, targets: [3] });
+  c.queueChanged({ queue: [] });
+  c.changeCourse(null, true, 'targets', '2');
+  assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [2, 3]); // L56 expands; former target at L55 does not.
 });
 
 function addSchoolCourses(c) {
@@ -408,16 +419,16 @@ function coursePlacements(c, ids = c.NODES.map(node => node.id)) {
     Array.from(band.nodeIds, id => [id, band.key])).flat());
 }
 
-test('excluded low-layer targets and queue topics do not inflate track workloads', () => {
+test('low-layer targets and queue topics count once in track workloads', () => {
   const c = fixture([1, 2, 3, 4, 5, 6]); c.snapshot.learner.queue = [1];
   configureCourseBands(c, [[1], [2], [3]], []);
   c.nodeById.get(1).layer = 53;
   c.changeCourse(null, true, 'targets');
   const placement = coursePlacements(c, c.buildActiveSet().nodeIds);
-  assert.equal(placement.has(1), false);
-  assert.equal(placement.get(4), '256');
-  assert.equal(placement.get(5), '255');
-  assert.equal(placement.get(6), '256');
+  assert.equal(placement.get(1), '256');
+  assert.equal(placement.get(4), '255');
+  assert.equal(placement.get(5), '256');
+  assert.equal(placement.get(6), '341');
 });
 
 test('course distance crosses hidden nodes in either direction and wins over lighter workloads', () => {
@@ -770,7 +781,7 @@ test('focused stacks retain global layer order while collapsing layers without v
     assert.equal(columns.get(6), columns.get(4) + 1);
     assert.equal(columns.get(5), columns.get(6));
     assert.equal(new Set(columns.values()).size, 2);
-    assert.equal(c.nodeById.get(5).layer, 57);
+    assert.equal(c.nodeById.get(5).layer, 58);
   }
 });
 

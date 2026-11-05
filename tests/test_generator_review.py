@@ -48,6 +48,67 @@ class ReviewEvidenceTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_source_account_requires_substance_and_explicit_amendment(self):
+        import hashlib
+        initial_path = self.directory / 'source-analysis.json'
+        initial_bytes = initial_path.read_bytes()
+        initial_path.write_text('{"skill":"a label alone is not an independent account"}')
+        with self.assertRaisesRegex(ValueError, 'initial source analysis'):
+            validate_review(self.review, self.directory)
+        initial_path.write_bytes(initial_bytes)
+        self.review['source_analysis']['reasoning_steps'] = ['Locate the requested row and column independently']
+        with self.assertRaisesRegex(ValueError, 'linked source-analysis-amendments'):
+            validate_review(self.review, self.directory)
+        final = {k: v for k, v in self.review['source_analysis'].items() if k != 'evidence_paths'}
+        amendment = {'initial_sha256': hashlib.sha256(initial_bytes).hexdigest(), 'final_source_analysis': final,
+                     'amendments': [{'reason': 'Clarify the source operation after inspecting the actual task.',
+                                    'source_refs': ['fixture-q11'], 'evidence_paths': ['measurements.json']}]}
+        (self.directory / 'source-analysis-amendments.json').write_text(json.dumps(amendment))
+        self.review['source_analysis']['evidence_paths'].append('source-analysis-amendments.json')
+        validate_review(self.review, self.directory)
+        self.assertEqual(initial_path.read_bytes(), initial_bytes)
+        initial_path.write_text(json.dumps(final))
+        with self.assertRaisesRegex(ValueError, 'preserved initial account'):
+            validate_review(self.review, self.directory)
+
+    def test_tool_reports_cannot_be_replaced_by_generic_files_or_stale_inputs(self):
+        self.review['checks']['grading']['evidence_paths'] = ['measurements.json']
+        with self.assertRaisesRegex(ValueError, 'recognized input-bound'):
+            validate_review(self.review, self.directory)
+        self.review['checks']['grading']['evidence_paths'] = ['grading.json']
+        (self.directory / 'grading-input.json').write_text('[]')
+        with self.assertRaisesRegex(ValueError, 'input hash mismatch'):
+            validate_review(self.review, self.directory)
+
+    def test_each_final_band_needs_tools_on_its_actual_records(self):
+        band = self.review['band_verification']['hard']
+        band['evidence_paths'] = ['hard-delivery.json', 'easy-grading.json', 'easy-rendering.json']
+        with self.assertRaisesRegex(ValueError, 'hard requires grading evidence on actual final records'):
+            validate_review(self.review, self.directory)
+
+    def test_unresolved_native_outcome_cannot_count_as_passing_grading(self):
+        path = self.directory / 'grading.json'
+        report = json.loads(path.read_text())
+        report['documented_unresolved_checks'] = 1
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'unresolved grading'):
+            validate_review(self.review, self.directory)
+
+    def test_conversion_control_is_required_only_when_path_changes_form(self):
+        path = self.directory / 'solution-paths.json'
+        report = json.loads(path.read_text())
+        validate_review(self.review, self.directory)  # Direct integer answer needs no CAS control.
+        report['cases'][0]['conversions'] = [{'rule': 'reduce fraction', 'scope_source': 'fixture-q11',
+                                            'shown_step': '18/2=9', 'status': 'passed'}]
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'requires conversion_control'):
+            validate_review(self.review, self.directory)
+        report['cases'][0]['conversion_control'] = {'candidate': 'sqrt(81)', 'reason': 'No square-root conversion is shown or taught.',
+            'observed': 'The scope check rejects an unexplained rewrite despite equivalence.', 'status': 'passed',
+            'sample_refs': ['decision-samples.json']}
+        path.write_text(json.dumps(report))
+        validate_review(self.review, self.directory)
+
     def test_structured_acceptance_needs_real_evidence_and_no_failures(self):
         validate_review(self.review, self.directory)
         for mutation in (

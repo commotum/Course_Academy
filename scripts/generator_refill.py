@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import re
 
 from scripts.generator_packages import package_digest
 from scripts.generator_publish import answer_id, content_fingerprint, enum, validate_question, normalized_question
@@ -76,7 +77,7 @@ def native_cases(records):
             choices = field[':answer-field/choices']
             selected = next(answer for answer in choices if str(answer[':answer/id']) == key)
             kind = enum(field[':answer-field/type'])
-            if kind in (':answer-field.type/radio', ':answer-field.type/select'):
+            if kind in (':answer-field.type/radio', ':answer-field.type/select', ':answer-field.type/checkbox'):
                 for answer in choices:
                     checks.append({'field_index': field_index, 'submitted_answer_id': str(answer[':answer/id']),
                                    'expected': 'accepted' if str(answer[':answer/id']) == key else 'rejected',
@@ -84,10 +85,19 @@ def native_cases(records):
             else:
                 checks.append({'field_index': field_index, 'submitted': selected[':answer/value'],
                                'expected': 'accepted', 'purpose': 'actual canonical response'})
-                checks.append({'field_index': field_index,
-                               'submitted': ('false' if selected[':answer/value'] == 'true' else 'true')
-                                   if kind == ':answer-field.type/checkbox' else '',
-                               'expected': 'rejected', 'purpose': 'opposite checkbox or empty response'})
+                prompt = question[':question/problem'].lower()
+                value = selected[':answer/value']
+                # Do not invent a universal wrong expression: +C, external
+                # squaring and response fragments can change equivalence.
+                if (enum(selected[':answer/type']) == ':answer.type/math'
+                        and re.fullmatch(r'[+-]?\d+(?:\.\d+)?', value)
+                        and not any(marker in prompt for marker in ('arbitrary', '+c', '+ c', 'integrat', 'family'))):
+                    wrong = '1' if float(value) == 0 else '0'
+                    checks.append({'field_index': field_index, 'submitted': wrong,
+                                   'expected': 'rejected', 'purpose': 'distinct simple numeric response'})
+                elif enum(selected[':answer/type']) == ':answer.type/text':
+                    checks.append({'field_index': field_index, 'submitted': value + ' __incorrect__',
+                                   'expected': 'rejected', 'purpose': 'distinct text response'})
         cases.append({'label': 'publication-survivor-' + str(index), 'record': record, 'checks': checks})
     return cases
 
@@ -106,6 +116,8 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
             continue
         try:
             normalized = normalized_question(question)
+            for field in normalized[':question/answer-fields']:
+                field[':answer-field/correct'] = [':answer/id', field[':answer-field/correct']]
             validate_question(normalized)
             eligible[content_fingerprint(normalized)] = {'question': normalized}
         except (KeyError, ValueError, TypeError):
@@ -160,6 +172,20 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
             target = by_fingerprint.get(extra.get('fingerprint'))
             if target is None or not isinstance(extra.get('checks'), list):
                 raise ValueError('Refill native checks reference an unserved record')
+            for check in extra['checks']:
+                fields = target['record']['question'][':question/answer-fields']
+                index = check.get('field_index')
+                if (type(index) is not int or not 0 <= index < len(fields)
+                        or check.get('expected') not in ('accepted', 'rejected')
+                        or not isinstance(check.get('purpose'), str) or not check['purpose'].strip()
+                        or (('submitted' in check) == ('submitted_answer_id' in check))):
+                    raise ValueError('Refill native check has invalid field, expected result or submission')
+                submitted = check.get('submitted', check.get('submitted_answer_id'))
+                if not isinstance(submitted, str) or not submitted.strip():
+                    raise ValueError('Refill native checks require a nonempty learner response')
+                if 'submitted_answer_id' in check and submitted not in {
+                        str(answer[':answer/id']) for answer in fields[index][':answer-field/choices']}:
+                    raise ValueError('Refill native check selects an unauthored answer')
             target['checks'].extend(extra['checks'])
         result['package_check'] = str(report_path)
     inputs, native = directory / 'native-input.json', directory / 'native-report.json'

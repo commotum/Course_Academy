@@ -399,7 +399,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function targetSelectors(snapshot, graph, options = {}, calendar = null) {
     const {nodeById}=graph, targetCourseCodes=TARGET_COURSE_CODES;
-    const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
+    const targetTopicVisible=id=>nodeById.has(id);
     const enabledTargetCourses=new Set(options.courses ?? targetCourseCodes);
     const targetQueueEnabled=options.includeQueue!==false;
     const targetCalendar=calendar ?? buildTargetCalendar(snapshot?.targetSchedule || []);
@@ -459,7 +459,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function assignTargetCourses(snapshot, graph, targetCalendar, nodeIds) {
       const {nodeById,inMap,outMap}=graph;
       const targetCourseCodes=TARGET_COURSE_CODES;
-      const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
+      const targetTopicVisible=id=>nodeById.has(id);
       const courses=targetCourseCodes.map(code=>({key:code,label:'MTH '+code,nodeIds:new Set()}));
       const direct=new Map(), placement=new Map(), workload=new Map(courses.map(course=>[course.key,0]));
       const addMembership=(id,code)=>{
@@ -659,8 +659,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   // global layer order, collapsing independent layers; badges keep global ranks.
   function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
   function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
-  // Displayed layers are one-based: L55 is the first retained target layer.
-  function targetTopicVisible(id) { return assignmentScope ? nodeById.has(id) : nodeById.get(id)?.layer >= 54; }
+  // Saved roots remain visible at every layer. Additional prerequisites must
+  // be above displayed L55; assignment graphs retain prerequisites at all layers.
+  function prerequisiteTopicVisible(id) { return assignmentScope ? nodeById.has(id) : courseTopics.has(id) || nodeById.get(id)?.layer >= 55; }
   function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
   function resetSelection() {
     state.followTargets=targetsView;
@@ -737,19 +738,19 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function buildActiveSet() {
     const upstream = new Map(), downstream = new Map(); let columns = new Map();
     if (!isScoped()) {
-      const nodeIds=new Set([...courseTopics].filter(id=>!targetsView || targetTopicVisible(id)));
+      const nodeIds=new Set([...courseTopics].filter(id=>nodeById.has(id)));
       for (const n of NODES) if(nodeIds.has(n.id)) columns.set(n.id, n.layer);
       const edgeSet=new Set();LINKS.forEach((e,i)=>{if(nodeIds.has(e.source)&&nodeIds.has(e.target))edgeSet.add(i);});
       return {nodeIds, edgeSet, upstream, downstream, columns};
     }
-    const roots=[...state.activeIds].filter(id=>!targetsView || targetTopicVisible(id));
+    const roots=[...state.activeIds].filter(id=>nodeById.has(id));
     const limit = state.mode === 'neighbors' ? 1 : state.depth === 'all' ? Infinity : Number(state.depth);
     const bfs = (adj, result) => {
       const queue = [...roots];
       for (const id of queue) result.set(id,0);
       for (let i=0; i<queue.length; i++) {
         const id=queue[i], d=result.get(id); if (d>=limit) continue;
-        for (const next of adj.get(id)) if (!result.has(next) && (!targetsView || targetTopicVisible(next))) {result.set(next,d+1);queue.push(next);}
+        for (const next of adj.get(id)) if (!result.has(next) && (!targetsView || prerequisiteTopicVisible(next))) {result.set(next,d+1);queue.push(next);}
       }
     };
     if (targetsView || ['neighbors','upstream','both'].includes(state.mode)) bfs(inMap,upstream);
@@ -1502,7 +1503,6 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function setSelected(id, center=true, additive=false) {
     id=Number(id);if(!nodeById.has(id))return;
-    if(targetsView && !targetTopicVisible(id))return;
     state.followTargets=false;
     if (!additive) {
       state.activeIds=new Set([id]);state.selected=id;
@@ -2118,6 +2118,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     // An overview follows the saved target group. A focused exploration keeps
     // its own roots, even if the topic being inspected is added or removed.
     const followingTargets=state.followTargets;
+    const previousVisible=followingTargets?null:buildActiveSet().nodeIds;
     courseTopics=new Set(filteredTargetIds());
     renderTargetWeekStrip();
     if(followingTargets){
@@ -2127,7 +2128,10 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       // Preserve depth, camera, history, URL, and cached row ordering.
       redraw(false);
     }else{
-      refreshTargetColors();updateUI();
+      // A low-layer prerequisite appears only while it is also a saved root.
+      const visible=buildActiveSet().nodeIds;
+      if(previousVisible.size!==visible.size || [...visible].some(id=>!previousVisible.has(id)))redraw(false);
+      else {refreshTargetColors();updateUI();}
     }
   }
   function changeCourse(id, updateURL=true, view='course', depth=null) {

@@ -242,6 +242,10 @@ def _tool_evidence(result, root, binding):
             relevant = [r for r in cited if FORMATS[r['format']] == kind and set(r['checked_record_sha256']) & records]
             if not relevant:
                 raise ValueError(f'{band} requires {kind} evidence on actual final records')
+            if kind == 'rendering':
+                states = {case['state'] for report in relevant for case in report['cases'] if case['record_sha256'] in records}
+                if states != {'active', 'completed'}:
+                    raise ValueError(f'{band} requires unanswered and completed rendering evidence')
 
 
 def _inventory_evidence(root):

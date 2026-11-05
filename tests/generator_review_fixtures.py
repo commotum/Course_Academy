@@ -2,14 +2,14 @@
 import json
 import hashlib
 from pathlib import Path
-from scripts.generator_evidence import batch_sha256, record_sha256, sha256_file
+from scripts.generator_evidence import ROOT, TOOL_SOURCES, batch_sha256, record_sha256, sha256_file
 
 
 def write_tool_evidence(directory, records, prefix="", engine_sha256=None):
     """Explicitly synthetic tool-bound fixtures, never pedagogical certification."""
     directory = Path(directory)
     identities = [record_sha256(row) for row in records]
-    implementation = {"synthetic-test-fixture": "f" * 64}
+    implementation = {name: sha256_file(ROOT / name) for name in TOOL_SOURCES.values()}
     input_name = prefix + "input.json"
     (directory / input_name).write_text(json.dumps(records))
     input_hash = sha256_file(directory / input_name)
@@ -40,8 +40,11 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None):
     (directory / screenshot).write_bytes(b"synthetic screenshot boundary fixture")
     rendering = {"format": "course-academy-rendering-v1", "passed": True, "input_file": input_name,
                  "input_sha256": input_hash, "record_sha256": identities, "checked_record_sha256": identities,
+                 "selection": {"input_count": len(records), "selected_indices": list(range(len(records))), "omitted_indices": []},
+                 "runtime": {"browser_sha256": "b" * 64, "node_sha256": "c" * 64},
                  "implementation_sha256": implementation, "cases": [{"record_sha256": identity, "passed": True,
-                 "state": "active", "viewport": {"width": 1280, "height": 1000}, "screenshot": screenshot} for identity in identities]}
+                 "state": state, "viewport": {"width": 1280, "height": 1000}, "screenshot": screenshot}
+                 for identity in identities for state in ('active', 'completed')]}
     paths = {}
     for kind, report in (("grading", grading), ("rendering", rendering), ("delivery", delivery)):
         name = prefix + kind + ".json"
