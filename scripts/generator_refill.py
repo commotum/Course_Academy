@@ -156,17 +156,26 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
         if completed.returncode:
             raise ValueError('Package refill regression failed: ' + completed.stderr[-2000:])
         report = _read(report_path)
-        if (report.get('status') != 'passed' or not fingerprints
-                or sorted(report.get('checked_fingerprints', [])) != fingerprints):
+        covered = report.get('checked_fingerprints', []) if isinstance(report, dict) else None
+        if (not isinstance(report, dict) or report.get('status') != 'passed' or not fingerprints
+                or not isinstance(covered, list) or any(not isinstance(value, str) for value in covered)
+                or sorted(covered) != fingerprints):
             raise ValueError('Package refill check must pass and cover every actual surviving question')
         # Optional extra wrong/equivalent forms must run through the native
         # grader against our actual record, not a checker-supplied replacement.
         by_fingerprint = {content_fingerprint(case['record']['question']): case for case in cases}
-        for extra in report.get('native_checks', []):
+        extra_cases = report.get('native_checks', [])
+        if not isinstance(extra_cases, list):
+            raise ValueError('Refill native_checks must be a list')
+        for extra in extra_cases:
+            if not isinstance(extra, dict):
+                raise ValueError('Refill native check must identify a surviving record')
             target = by_fingerprint.get(extra.get('fingerprint'))
             if target is None or not isinstance(extra.get('checks'), list):
                 raise ValueError('Refill native checks reference an unserved record')
             for check in extra['checks']:
+                if not isinstance(check, dict):
+                    raise ValueError('Refill native check must be an object')
                 fields = target['record']['question'][':question/answer-fields']
                 index = check.get('field_index')
                 if (type(index) is not int or not 0 <= index < len(fields)

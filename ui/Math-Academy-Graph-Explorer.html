@@ -950,7 +950,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       const center=constants.topPad+Math.max(0,...layerMetrics.map(col=>col.height))/2;
       for(const col of layerMetrics)placeStack(col,col.nodes,center-col.height/2);
     }
-    const routing=routeConnections(activeLinks,pos,layerMetrics,scoped);
+    const routing=routeConnections(activeLinks,pos,layerMetrics,scoped,courseBands);
     const edgeStubs=bundleLongConnections(routing.edges);
     const allBoxes=[...pos.values()].map(p=>({x1:p.x,x2:p.x+p.w,y1:p.y,y2:p.y+p.h}));
     allBoxes.push(...courseBands.map(band=>({x1:band.x,x2:band.x+band.width,y1:band.y,y2:band.y+band.height})));
@@ -961,8 +961,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     if(layoutCache.size>12)layoutCache.delete(layoutCache.keys().next().value);
     return state.layout;
   }
-  function routeConnections(rawEdges,pos,cols,scoped) {
+  function routeConnections(rawEdges,pos,cols,scoped,courseBands=[]) {
     const edges=rawEdges.map(e=>({...e,sourceSide:'right',targetSide:'left'}));
+    const bandByNode=new Map(courseBands.flatMap(band=>[...band.nodeIds].map(id=>[id,band])));
     const incident=new Map();
     const fmt=v=>Number(v.toFixed(3));
     const portInset=5, portGap=4.5, corridorPad=12;
@@ -1039,7 +1040,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       if(Math.abs(y1-y0)<0.2) flat(e,x0,(y0+y1)/2,x1);
       else bridge(e,x0,y0,x1,y1);
     }
-    function freeTrack(col,preferred){
+    function freeTrack(col,preferred,band){
       let space=trackSpaces.get(col.index);
       if(!space){
         const ns=col.nodes.map(n=>pos.get(n.id)).sort((a,b)=>a.y-b.y),candidates=[];
@@ -1050,7 +1051,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
             if(hi-lo>=8)candidates.push(lo+1,hi-1);
           }
         }
-        space={candidates,lo:ns[0].y,hi:ns.at(-1).y+ns.at(-1).h,taken:[]};
+        space={candidates,lo:ns[0].y,hi:ns.at(-1).y+ns.at(-1).h,boxes:ns,bands:new Map(),taken:[]};
         trackSpaces.set(col.index,space);
       }
       const taken=space.taken;
@@ -1069,10 +1070,33 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
           best=v;bestDistance=distance;
         }
       };
-      // Keep the same nearest-track and stable tie choices without sorting
-      // candidates or comparing each one with every occupied track.
-      for(const v of space.candidates)consider(v);
-      for(let i=1;i<=Math.max(24,taken.length+1);i++){consider(space.lo-6-i*5);consider(space.hi+6+i*5);}
+      if(band){
+        let ranges=space.bands.get(band);
+        if(!ranges){
+          // Stay below the course heading and clear of every box. An empty
+          // course column leaves its whole band available, including the centerline.
+          ranges=[];
+          let low=band.y+28;
+          const high=band.y+band.height-5;
+          for(const box of space.boxes){
+            if(box.y+box.h+5<low)continue;
+            if(box.y-5>high)break;
+            if(box.y-5>=low)ranges.push([low,box.y-5]);
+            low=Math.max(low,box.y+box.h+5);
+          }
+          if(low<=high)ranges.push([low,high]);
+          space.bands.set(band,ranges);
+        }
+        for(const [low,high] of ranges){
+          const within=v=>Math.max(low,Math.min(high,v));
+          consider(within(preferred));consider(low);consider(high);
+          for(const y of taken){consider(within(y-4));consider(within(y+4));}
+        }
+      }else{
+        // Preserve unbounded routing for combined views and cross-course edges.
+        for(const v of space.candidates)consider(v);
+        for(let i=1;i<=Math.max(24,taken.length+1);i++){consider(space.lo-6-i*5);consider(space.hi+6+i*5);}
+      }
       const y=best??nearest;
       taken.splice(insertion(y),0,y);return y;
     }
@@ -1108,10 +1132,12 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
           flat(e,sx,sy,exit);direct(e,exit,sy,entry,ty);flat(e,entry,ty,tx);
         }
       } else {
+        const sourceBand=bandByNode.get(e.source);
+        const band=sourceBand===bandByNode.get(e.target)?sourceBand:null;
         let px=sc.x+sc.width+rightPads[sc.index], py=sy;
         flat(e,sx,sy,px);
         for(let j=s.colIndex+1;j<t.colIndex;j++){
-          const mid=cols[j], fraction=(j-s.colIndex)/(t.colIndex-s.colIndex), y=freeTrack(mid, sy+(ty-sy)*fraction);
+          const mid=cols[j], fraction=(j-s.colIndex)/(t.colIndex-s.colIndex), y=freeTrack(mid, sy+(ty-sy)*fraction,band);
           bridge(e,px,py,mid.x-leftPads[mid.index],y);
           flat(e,mid.x-leftPads[mid.index],y,mid.x+mid.width+rightPads[mid.index]);
           px=mid.x+mid.width+rightPads[mid.index]; py=y;

@@ -900,6 +900,52 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertNotIn("publication", approval["bands"]["hard"])
         self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
 
+    def test_duplicate_only_refill_is_bounded_and_never_reports_generated_or_finite(self):
+        request, _ = self.approve_for_refill()
+        def duplicates(*args, **kwargs):
+            self.publisher.prepares += 1
+            return {'new_questions': 0, 'delivery_validation': {'status': 'no-new-records',
+                'exhausted': False, 'reason': 'sample_does_not_prove_exhaustion'}}
+        self.publisher.prepare = duplicates
+        session = FakeSession()
+        pipeline = self.pipeline(session, request=request)
+        seed = pipeline.state['seed']
+        result = pipeline.run()
+        self.assertEqual(result['stage'], 'unsupported')
+        self.assertTrue(result['needs_repair'])
+        self.assertEqual(result['error']['code'], 'refill_no_new_records')
+        self.assertEqual(result['error']['sampling_rounds'], 3)
+        self.assertEqual(result['seed'], (seed + 2 * 104729) % (2 ** 32))
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (3, 0))
+        self.assertEqual(session.calls, [])
+        self.assertNotIn('publication', result)
+
+    def test_engine_change_after_commit_preserves_historical_review_during_receipt_recovery(self):
+        self.publisher.lose_ack = True
+        first = FakeSession()
+        pipeline = self.pipeline(first)
+        with self.assertRaises(ConnectionError):
+            pipeline.run()
+        saved = json.loads((self.job / 'job.json').read_text())
+        self.assertEqual(saved['stage'], 'push')
+        self.assertFalse(saved.get('approval_recorded'))
+        old_engine, old_review = saved['engine_hash'], saved['review']
+        engine = self.root / 'engine/rust/grader.rs'
+        engine.parent.mkdir(parents=True)
+        engine.write_text('// Engine changed after the acknowledged database write.\n')
+        second = FakeSession()
+        resumed = self.pipeline(second)
+        result = resumed.run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertTrue(result['approval_recorded'])
+        self.assertEqual(second.calls, [])
+        self.assertEqual(result['review'], old_review)
+        self.assertEqual(result['engine_hash'], old_engine)
+        approval = json.loads(resumed.approval_path().read_text())
+        self.assertEqual(approval['verification_binding']['engine_hash'], old_engine)
+        self.assertEqual(self.publisher.prepares, 1)
+        self.assertEqual(json.loads((self.root / 'committed.json').read_text())['writes'], 1)
+
     def downgrade_saved_review(self):
         """Emulate a job stopped under the previous review contract."""
         state = json.loads((self.job / "job.json").read_text())

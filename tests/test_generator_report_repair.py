@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_pipeline import CodexSession
-from generator_report_repair import evidence_only_review, generator_repair_findings, pending_report_repair
+from generator_report_repair import evidence_only_review, generator_repair_findings, pending_report_repair, finding_supersessions
 from generator_review import CHECKS, validate_review
 
 
@@ -73,6 +73,25 @@ class ReportRepairRoutingTests(unittest.TestCase):
         before = copy.deepcopy(self.history)
         self.assertEqual([row["id"] for row in generator_repair_findings(self.history)], ["math"])
         self.assertEqual(self.history, before)
+
+    def test_supersession_requires_evidence_and_preserves_original_finding(self):
+        history = {'findings': [{'id': 'old-rule', 'finding': finding('restriction')}]}
+        original = copy.deepcopy(history)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'source.json').write_text('{"target":"choose substitution"}')
+            (root / 'counterexample.json').write_text('{"valid_case":"independent practice without supplied u"}')
+            path = root / 'finding-dispositions.json'
+            value = {'format': 'course-academy-finding-dispositions-v1', 'findings': [{
+                'id': 'old-rule', 'disposition': 'superseded', 'reason': 'Earlier demand removed the target decision.',
+                'source_refs': ['target-q1'], 'evidence_paths': ['source.json'], 'counterexample_path': 'counterexample.json'}]}
+            path.write_text(json.dumps(value))
+            superseded = finding_supersessions(path, history)
+            self.assertEqual(generator_repair_findings(history, superseded), [])
+            self.assertEqual(history, original)
+            (root / 'counterexample.json').unlink()
+            with self.assertRaisesRegex(ValueError, 'missing'):
+                finding_supersessions(path, history)
 
     def test_inventory_finding_is_valid_but_cannot_approve_unrepaired_pool(self):
         result = {"verdict": "revise", "summary": "Historical records require a pool repair.",

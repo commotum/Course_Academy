@@ -984,7 +984,10 @@ class Pipeline:
         dispositions = self.state.get('finding_dispositions')
         if dispositions and hashlib.sha256(Path(dispositions['path']).read_bytes()).hexdigest() != dispositions['sha256']:
             raise ValueError('Reviewed finding dispositions changed')
-        if (not self.is_refill and not allow_engine_change and not allow_draft_package_change and self.state.get('engine_hash')
+        completed_publication = (self.state['stage'] == 'verified'
+                                 and (self.state.get('publication') or {}).get('passed') is True)
+        if (not self.is_refill and not completed_publication and not allow_engine_change
+                and not allow_draft_package_change and self.state.get('engine_hash')
                 and self.engine_identity() != self.state['engine_hash']):
             raise ValueError('Engine changed during active verification; rerun affected checks and finalize again')
         if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in self.state['assets'].items()):

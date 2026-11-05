@@ -400,10 +400,56 @@ test('split layout vertically separates labeled courses and keeps all nodes and 
     assert.ok(split.pos.get(edge.source).col < split.pos.get(edge.target).col);
     assert.ok(edge.segments.every(segment => [...segment.p0, ...segment.c1, ...segment.c2, ...segment.p1].every(Number.isFinite)));
     assert.ok(edge.segments.every(segment => segment.p0[0] <= segment.c1[0] && segment.c1[0] <= segment.c2[0] && segment.c2[0] <= segment.p1[0]));
+    const band=split.courseBands.find(band=>band.nodeIds.has(edge.source)&&band.nodeIds.has(edge.target));
+    if(band)assert.ok(edge.segments.every(segment=>[segment.p0,segment.c1,segment.c2,segment.p1].every(point=>point[1]>=band.y&&point[1]<=band.y+band.height)));
   }
   c.setTargetSplit(false); const again = c.layoutCurrent(); c.renderGuides();
   assert.equal(again.courseBands.length, 0); assert.equal(c.guidesG.children.length, 0);
   for (const [id, box] of combined.pos) assert.deepEqual(again.pos.get(id), box);
+});
+
+test('same-course skipping edges stay straight across empty course columns in either band', () => {
+  for(const code of ['255','256']){
+    const c=fixture([1,2,3,4,5,6]);
+    configureCourseBands(c,code==='256'?[[1,5],[2,3,4,6],[]]:[[2,3,4,6],[1,5],[]],[[1,5],[2,3],[3,4]]);
+    for(const [id,layer] of [[1,81],[2,81],[6,81],[3,82],[4,83],[5,83]])c.nodeById.get(id).layer=layer;
+    c.changeCourse(null,true,'targets');c.setTargetSplit(true);
+    const layout=c.layoutCurrent(),band=layout.courseBands.find(band=>band.key===code);
+    const edge=layout.activeLinks.find(edge=>edge.source===1&&edge.target===5);
+    const source=layout.pos.get(1),target=layout.pos.get(5),middle=layout.layers[source.colIndex+1];
+    assert.equal(edge.span,2);assert.equal(edge.shortened,false);
+    assert.ok(middle.nodes.length>0);
+    assert.ok(middle.nodes.every(node=>!band.nodeIds.has(node.id)));
+    assert.equal(source.y,target.y);
+    const center=source.y+source.h/2;
+    // Cubic curves stay within the convex hull of their control points.
+    assert.ok(edge.segments.every(segment=>[segment.p0,segment.c1,segment.c2,segment.p1].every(point=>point[1]===center)));
+  }
+});
+
+test('same-course skipping tracks clear occupied columns without escaping their band', () => {
+  const c=fixture(),pos=new Map(),cols=[];
+  for(let col=0;col<3;col++){
+    const nodes=[];
+    for(let row=0;row<5;row++){
+      const id=col*5+row+1;
+      nodes.push({id});pos.set(id,{x:col*240,y:532+row*44,w:80,h:26,col,colIndex:col});
+    }
+    cols.push({index:col,x:col*240,width:80,nodes});
+  }
+  const band={key:'256',y:500,height:330,nodeIds:new Set(pos.keys())};
+  const raw=[];
+  for(let source=1;source<=5;source++)for(let target=11;target<=15;target++)raw.push({source,target,index:raw.length});
+  const {edges}=c.routeConnections(raw,pos,cols,true,[band]),tracks=[];
+  assert.equal(edges.length,raw.length);
+  for(const edge of edges){
+    assert.ok(edge.segments.every(segment=>[segment.p0,segment.c1,segment.c2,segment.p1].every(point=>point[1]>=band.y+28&&point[1]<=band.y+band.height-5)));
+    const crossing=edge.segments.find(segment=>segment.p0[0]<cols[1].x&&segment.p1[0]>cols[1].x+cols[1].width);
+    assert.ok(crossing);const y=crossing.p0[1];tracks.push(y);
+    for(const node of cols[1].nodes){const box=pos.get(node.id);assert.ok(y<=box.y-5||y>=box.y+box.h+5);}
+  }
+  assert.ok(tracks.some(y=>y<pos.get(6).y||y>pos.get(10).y+pos.get(10).h));
+  assert.ok(tracks.every((y,i)=>tracks.slice(0,i).every(other=>Math.abs(y-other)>=3.7)));
 });
 
 function configureCourseBands(c, memberships, edges) {
