@@ -86,6 +86,21 @@ class ReviewEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'hard requires grading evidence on actual final records'):
             validate_review(self.review, self.directory)
 
+    def test_final_delivery_must_use_the_bound_captured_inventory(self):
+        from scripts.generator_evidence import batch_sha256
+        binding = json.loads((self.directory / 'final-binding.json').read_text())
+        binding['inventory_hash'] = batch_sha256({'actual': 'captured inventory'})
+        with self.assertRaisesRegex(ValueError, 'different captured inventory'):
+            validate_review(self.review, self.directory, binding)
+
+    def test_completed_only_preview_cannot_certify_unanswered_band(self):
+        path = self.directory / 'hard-rendering.json'
+        report = json.loads(path.read_text())
+        report['cases'] = [row for row in report['cases'] if row['state'] == 'completed']
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'unanswered and completed'):
+            validate_review(self.review, self.directory)
+
     def test_unresolved_native_outcome_cannot_count_as_passing_grading(self):
         path = self.directory / 'grading.json'
         report = json.loads(path.read_text())

@@ -202,6 +202,35 @@ class RankedInventoryJobTests(unittest.TestCase):
                 'topics': [{'db/id': kp['topic_entity'], 'knowledge_points': [copy.deepcopy(kp)]} for kp in kps],
                 'knowledge_points': [copy.deepcopy(kp) for kp in kps if not kp['generator_usable'] and kp['urgency_value']]}
 
+    def test_finite_catalog_exhaustion_survives_learner_count_churn_but_not_new_domain(self):
+        kp = self.kp(script='generators/aa/old/generator.py')
+        kp['inventory'].update(available_total=1, rated_total=1)
+        self.jobs.accept(self.ranked(kp))
+        path = self.path_for(1, 'refill', 'easy')
+        self.jobs.finish(path, {'state': 'rejected', 'outcome': {'outcome': 'finite-limit',
+            'reason': {'code': 'finite_catalog_exhausted'}}, 'completedAt': 10})
+        before = json.loads(path.read_text())
+        kp['inventory'].update(available_total=0, rated_total=0)
+        kp['inventory']['available']['easy'] = 0
+        kp['refill_deficits']['easy'] = 5
+        self.jobs.accept(self.ranked(kp, basis=11))
+        retained = json.loads(path.read_text())
+        self.assertEqual(retained['state'], 'rejected')
+        self.assertEqual(retained['cycle'], before['cycle'])
+        self.assertEqual(retained['outcome']['reason']['code'], 'finite_catalog_exhausted')
+        kp['source_sha256'] = 'changed-explicit-source-identity'
+        self.jobs.accept(self.ranked(kp, basis=12))
+        self.assertEqual(json.loads(path.read_text())['state'], 'pending')
+
+    def test_new_package_reopens_proven_finite_catalog(self):
+        kp = self.kp(script='generators/aa/old/generator.py')
+        self.jobs.accept(self.ranked(kp))
+        path = self.path_for(1, 'refill', 'easy')
+        self.jobs.finish(path, {'state': 'rejected', 'outcome': {'outcome': 'finite-limit'}})
+        kp['generator_script'] = 'generators/bb/new/generator.py'
+        self.jobs.accept(self.ranked(kp, basis=11))
+        self.assertEqual(json.loads(path.read_text())['state'], 'pending')
+
     def relevant(self, kp, tier, **context):
         metadata = {'priority_policy': PRIORITY_POLICY, 'relevance_tier': tier,
                     'baseline_relevance_tier': tier, 'topic_layer': 10,

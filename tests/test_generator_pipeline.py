@@ -160,7 +160,9 @@ class FakeSession:
             (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
         return {"verdict": "revise" if self.reject else "accepted", "summary": "Structured review fixture.",
                 "source_analysis": analysis, "checks": checks, "findings": findings,
-                "band_verification": write_band_evidence(directory, context["review_binding"], records_by_band)}
+                "band_verification": write_band_evidence(directory, context["review_binding"], records_by_band,
+                    captured_inputs={name: json.loads(Path(context[name + '_file']).read_text())
+                                     for name in ('source', 'inventory')})}
 
 
 class FakePublisher:
@@ -713,6 +715,8 @@ class GeneratorPipelineTests(unittest.TestCase):
         directory = self.root / 'cached-agent'
         directory.mkdir()
         expected = {'status': 'ready', 'manifest': 'package.json'}
+        from generator_session_binding import input_binding, bind_session
+        bind_session(directory, input_binding('author', {}, Path(__file__).resolve().parents[1]))
         (directory / 'result.json').write_text(json.dumps(expected))
         session = CodexSession(root=Path(__file__).resolve().parents[1])
         with patch('generator_pipeline.subprocess.Popen') as start:

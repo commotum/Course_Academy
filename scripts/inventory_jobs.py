@@ -144,8 +144,10 @@ def ranked_requests(inventory: dict) -> list[dict]:
         # Availability changes as the learner practices; it does not enlarge a
         # proven finite domain. Content/source signals, when present in the
         # projection, do invalidate that conclusion.
-        capacity_context = {key: value for key, value in kp['inventory'].items()
-                            if key not in {'available', 'unavailable', 'seen', 'used'}}
+        capacity_context = {key: kp['inventory'][key] for key in
+                            ('supported_difficulties', 'content_sha256', 'pool_sha256',
+                             'finite_catalog_sha256', 'source_sha256', 'question_ids', 'retired_question_ids')
+                            if key in kp['inventory']}
         capacity_context.update({key: kp[key] for key in
             ('source_identity', 'source_sha256', 'question_pool_sha256') if key in kp})
         common['capacity_context'] = hashlib.sha256(json.dumps(capacity_context, sort_keys=True).encode()).hexdigest()

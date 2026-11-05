@@ -679,7 +679,8 @@ class Pipeline:
                 or self.state.get('review') or self.state.get('publication')
                 or (publication / 'request.json').exists()
                 or (publication / 'verification.json').exists()
-                or self.candidate_hash() == self.state['package_hash']):
+                or (self.candidate_hash() == self.state['package_hash']
+                    and self.instructional_evidence() == self.state.get('instructional_evidence', {}))):
             return False
         evidence = inside(self.directory, active)
         rounds = self.state.get('review_report_rounds', {})
@@ -945,7 +946,7 @@ class Pipeline:
                 **({'maximum_distinct_batch': maximum} if maximum is not None else {}),
                 'assets': asset_hashes(records, output, self.math_root)}
 
-    def verify_approval_inputs(self, *, allow_draft_package_change=False):
+    def verify_approval_inputs(self, *, allow_draft_package_change=False, allow_engine_change=False):
         if ((not allow_draft_package_change and self.candidate_hash() != self.state['package_hash'])
                 or digest(read(self.directory / 'samples.json')) != self.state['batch_hash']):
             raise ValueError('Reviewed package or publication batch changed')
@@ -954,13 +955,16 @@ class Pipeline:
         if (self.state.get('inventory_hash') is not None
                 and digest(read(self.directory / 'source/inventory.json')) != self.state['inventory_hash']):
             raise ValueError('Reviewed delivery inventory changed')
-        if ('instructional_evidence' in self.state
-                and self.instructional_evidence() != self.state['instructional_evidence']):
-            raise ValueError('Reviewed investigation, reference or local examples changed; finalize again')
+        if 'instructional_evidence' in self.state:
+            actual, expected = self.instructional_evidence(), self.state['instructional_evidence']
+            changed = {path for path in actual.keys() | expected.keys() if actual.get(path) != expected.get(path)}
+            if changed and (not allow_draft_package_change or any(
+                    not Path(path).resolve().is_relative_to(self.directory / 'workspace') for path in changed)):
+                raise ValueError('Reviewed investigation, reference or local examples changed; finalize again')
         dispositions = self.state.get('finding_dispositions')
         if dispositions and hashlib.sha256(Path(dispositions['path']).read_bytes()).hexdigest() != dispositions['sha256']:
             raise ValueError('Reviewed finding dispositions changed')
-        if (not self.is_refill and self.state.get('engine_hash')
+        if (not self.is_refill and not allow_engine_change and not allow_draft_package_change and self.state.get('engine_hash')
                 and self.engine_identity() != self.state['engine_hash']):
             raise ValueError('Engine changed during active verification; rerun affected checks and finalize again')
         if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in self.state['assets'].items()):
@@ -982,6 +986,36 @@ class Pipeline:
 
     def publication_records(self):
         return read(self.directory / 'samples.json')
+
+    def refresh_active_engine(self):
+        """Retest changed execution semantics in the existing bounded verifier."""
+        if (self.is_refill or not self.state.get('engine_hash')
+                or self.state['engine_hash'] == self.engine_identity()
+                or self.state['stage'] not in {'validate', 'prepare'}):
+            return False
+        self.verify_approval_inputs(allow_engine_change=True)
+        active = self.state.get('active_review_directory') or self.state.get('report_repair_directory')
+        if not active and self.state.get('review'):
+            active = str(Path(self.state['review']).parent)
+        self.sample()
+        updates = {'stage': 'validate', 'review': None, 'review_binding': None,
+                   'review_policy_version': None, 'approval_recorded': False}
+        if active:
+            evidence = inside(self.directory, active)
+            binding = evidence / 'review-binding.json'
+            if binding.exists():
+                save(evidence / ('binding-before-engine-' + str(time.time_ns()) + '.json'), read(binding))
+            save(binding, self.review_binding())
+            (evidence / 'final-binding.json').unlink(missing_ok=True)
+            rounds = self.state.get('review_report_rounds', {})
+            rounds[str(evidence)] = max(1, rounds.get(str(evidence), 0))
+            while (evidence / f'contract-repair-{rounds[str(evidence)]}' / 'result.json').exists():
+                rounds[str(evidence)] += 1
+            updates.update(active_review_directory=str(evidence), report_repair_directory=str(evidence),
+                review_report_rounds=rounds,
+                review_report_error='Engine changed after the saved checks. Rerun affected native compatibility checks and finalize in this same session.')
+        self.persist(**updates)
+        return True
 
     def validate_refill_records(self, records, fingerprints, directory):
         from generator_refill import validate_survivors
@@ -1347,6 +1381,8 @@ class Pipeline:
                                  source_eligibility_refreshed=True)
                     continue
             self.upgrade_verification()
+            if self.refresh_active_engine():
+                continue
             error = self.state.get('error')
             if stage == 'failed' and isinstance(error, dict) and error.get('code') == 'review_contract_invalid':
                 rounds = self.state.get('review_report_rounds', {})

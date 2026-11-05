@@ -5,7 +5,7 @@ from pathlib import Path
 from scripts.generator_evidence import ROOT, TOOL_SOURCES, batch_sha256, record_sha256, sha256_file
 
 
-def write_tool_evidence(directory, records, prefix="", engine_sha256=None):
+def write_tool_evidence(directory, records, prefix="", engine_sha256=None, captured_inputs=None):
     """Explicitly synthetic tool-bound fixtures, never pedagogical certification."""
     directory = Path(directory)
     identities = [record_sha256(row) for row in records]
@@ -18,7 +18,7 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None):
     captured = {}
     for name in ("source", "inventory"):
         file = prefix + name + ".json"
-        (directory / file).write_text(json.dumps({"fixture": True}))
+        (directory / file).write_text(json.dumps((captured_inputs or {}).get(name, {"fixture": True})))
         captured[name] = {"file": file, "sha256": sha256_file(directory / file)}
     delivery = {"format": "course-academy-delivery-v1", "passed": True, "input_file": input_name,
                 "input_sha256": input_hash, "record_sha256": identities, "checked_record_sha256": identities,
@@ -53,7 +53,7 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None):
     return paths
 
 
-def write_band_evidence(directory, binding=None, records_by_band=None):
+def write_band_evidence(directory, binding=None, records_by_band=None, captured_inputs=None):
     """Write explicit three-band boundary evidence for structured test agents."""
     directory = Path(directory)
     records_by_band = records_by_band or {band: [{"fixture": True, "band": band}] for band in ("easy", "moderate", "hard")}
@@ -68,7 +68,7 @@ def write_band_evidence(directory, binding=None, records_by_band=None):
         row = {'fixture': True, 'band': band,
                'batch_sha256': binding['verification_batches'][band]['batch_hash']}
         (directory / name).write_text(json.dumps(row))
-        tools = write_tool_evidence(directory, records_by_band[band], band + '-', binding.get('grader_sha256'))
+        tools = write_tool_evidence(directory, records_by_band[band], band + '-', binding.get('grader_sha256'), captured_inputs)
         result[band] = {'status': 'passed', 'batch_sha256': row['batch_sha256'],
                         'evidence_paths': [name, *tools.values()], 'details': 'Structured boundary fixture, not pedagogical certification.'}
     return result

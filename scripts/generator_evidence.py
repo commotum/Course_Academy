@@ -74,6 +74,13 @@ def implementation_hashes(paths, root=ROOT):
                 modules = [alias.name for alias in node.names]
             elif isinstance(node, ast.ImportFrom) and node.module and not node.level:
                 modules = [node.module]
+            elif isinstance(node, ast.ImportFrom) and node.level:
+                base = path.parent
+                for _ in range(node.level - 1):
+                    base = base.parent
+                relatives = [node.module] if node.module else [alias.name for alias in node.names]
+                for module in relatives:
+                    pending.append(base / (module.replace('.', '/') + '.py'))
             for module in modules:
                 candidate = root / (module.replace('.', '/') + '.py')
                 if candidate.is_file():

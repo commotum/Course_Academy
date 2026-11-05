@@ -8,9 +8,9 @@ import uuid
 import hashlib
 
 try:
-    from .generator_evidence import FORMATS, validate_tool_report
+    from .generator_evidence import FORMATS, batch_sha256, validate_tool_report
 except ImportError:
-    from generator_evidence import FORMATS, validate_tool_report
+    from generator_evidence import FORMATS, batch_sha256, validate_tool_report
 
 
 REVIEW_POLICY_VERSION = 6
@@ -236,6 +236,11 @@ def _tool_evidence(result, root, binding):
             raise ValueError(f'{band} requires delivery evidence for its final batch')
         records = set()
         for report in deliveries:
+            report_path = next(root / path for path in claim['evidence_paths'] if reports.get(path) is report)
+            for name in ('source', 'inventory'):
+                captured_path = report_path.parent / report['captured_inputs'][name]['file']
+                if binding.get(name + '_hash') is not None and batch_sha256(json.loads(captured_path.read_text())) != binding[name + '_hash']:
+                    raise ValueError(f'{band} delivery uses a different captured {name}')
             records.update(report['record_sha256'])
             records.update(report['accepted_record_sha256'])
         for kind in ('grading', 'rendering'):

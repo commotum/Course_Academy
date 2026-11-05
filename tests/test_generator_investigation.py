@@ -93,10 +93,10 @@ class InvestigationTests(unittest.TestCase):
         publisher.questions[20][-1][':question/answer-fields'][0].pop(':answer-field/correct')
         with tempfile.TemporaryDirectory() as td:
             result = prepare_investigation(publisher, source(), td)
-            self.assertEqual(result['reference_kp_id'], 30)
+            self.assertEqual(result['reference_candidates'][0]['reference_kp'][':db/id'], 30)
             self.assertTrue(result['needs_exemplars'])
             saved = json.loads(Path(result['reference_file']).read_text())
-            self.assertTrue(all(len(saved['questions'][b]) == 2 for b in BANDS))
+            self.assertTrue(all(len(saved['candidates'][0]['questions'][b]) == 2 for b in BANDS))
             self.assertTrue(all(row[3] == 42 for row in publisher.calls))
             count_queries = [row for row in publisher.calls if row[2].startswith('candidate-counts')]
             self.assertTrue(all(len(row[1]) == 1 for row in count_queries))
@@ -134,7 +134,7 @@ class InvestigationTests(unittest.TestCase):
             stale.update(needs_exemplars=True, construction_needed=True,
                          complete_examples=dict.fromkeys(BANDS, 0))
             path.write_text(json.dumps(stale))
-            reference_path = Path(initial['reference_file'])
+            reference_path = Path(td) / 'reference.json'
             reference_before = json.loads(reference_path.read_text())
             reference_before.update(needs_exemplars=True, construction_needed=True,
                                     complete_examples=dict.fromkeys(BANDS, 0))
@@ -145,15 +145,14 @@ class InvestigationTests(unittest.TestCase):
             self.assertFalse(result['construction_needed'])
             self.assertEqual(result['complete_examples'], dict.fromkeys(BANDS, 1))
             self.assertEqual(result['incomplete_imports'], initial['incomplete_imports'])
-            self.assertEqual(result['reference_kp_id'], initial['reference_kp_id'])
+            self.assertEqual(result['reference_candidates'], initial['reference_candidates'])
             self.assertEqual(len(publisher.calls), calls)
             for artifact in (path, reference_path):
                 persisted = json.loads(artifact.read_text())
                 for key in ('needs_exemplars', 'construction_needed', 'complete_examples', 'incomplete_imports'):
                     self.assertEqual(persisted[key], result[key])
             reference_after = json.loads(reference_path.read_text())
-            self.assertEqual(reference_after['questions'], reference_before['questions'])
-            self.assertEqual(reference_after['reference_kp'], reference_before['reference_kp'])
+            self.assertEqual(reference_after['candidates'], reference_before['candidates'])
             unchanged = (path.read_bytes(), reference_path.read_bytes())
             prepare_investigation(publisher, saved_source, td)
             self.assertEqual((path.read_bytes(), reference_path.read_bytes()), unchanged)
@@ -165,7 +164,7 @@ class InvestigationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             initial = prepare_investigation(publisher, saved_source, td)
             input_path = Path(initial['investigation_file'])
-            reference_path = Path(initial['reference_file'])
+            reference_path = Path(td) / 'reference.json'
             reference = json.loads(reference_path.read_text())
             reference.update(basis=43, preparation_key='newer-snapshot')
             reference_path.write_text(json.dumps(reference))
@@ -203,14 +202,54 @@ class InvestigationTests(unittest.TestCase):
 
     def test_complete_three_band_source_does_not_require_new_examples(self):
         with tempfile.TemporaryDirectory() as td:
-            result = prepare_investigation(References(), source([question(i + 1, b) for i, b in enumerate(BANDS)]), td)
+            publisher = References()
+            result = prepare_investigation(publisher, source([question(i + 1, b) for i, b in enumerate(BANDS)]), td)
             self.assertFalse(result['needs_exemplars'])
+            self.assertIsNone(result['reference_file'])
+            self.assertEqual(publisher.calls, [])
+
+    def test_no_complete_donor_does_not_block_target_construction(self):
+        publisher = References()
+        for questions in publisher.questions.values():
+            for item in questions:
+                item.pop(':question/worked-solution')
+        with tempfile.TemporaryDirectory() as td:
+            result = prepare_investigation(publisher, source(), td)
+        self.assertTrue(result['needs_exemplars'])
+        self.assertEqual(result['reference_candidates'], [])
+        self.assertIsNone(result['reference_file'])
+
+    def test_prerequisite_metadata_is_ranked_globally_before_bounded_candidate_selection(self):
+        publisher = References()
+        publisher.points = [{':db/id': i, ':knowledge-point/title': 'Adding One'} for i in range(2, 29)]
+        publisher.points.append({':db/id': 100, ':knowledge-point/title': 'Other Complete Skill',
+            ':knowledge-point/key-prerequisites': [{':db/id': 999}]})
+        publisher.questions = {p[':db/id']: [question(p[':db/id'] * 100 + i, band)
+            for i, band in enumerate(('easy', 'easy', 'moderate', 'moderate', 'hard', 'hard'))]
+            for p in publisher.points}
+        target = source()
+        target['material']['kp'][':knowledge-point/key-prerequisites'] = [{':db/id': 999}]
+        with tempfile.TemporaryDirectory() as td:
+            result = prepare_investigation(publisher, target, td)
+        self.assertEqual(result['reference_candidates'][0]['reference_kp'][':db/id'], 100)
+        self.assertEqual(len(result['reference_candidates']), 3)
+
+    def test_inventory_only_basis_change_reuses_original_capture(self):
+        publisher = References()
+        original = source()
+        with tempfile.TemporaryDirectory() as td:
+            first = prepare_investigation(publisher, original, td)
+            calls = len(publisher.calls)
+            newer = copy.deepcopy(original); newer['basis'] = 77
+            second = prepare_investigation(publisher, newer, td)
+            self.assertEqual(second, first)
+            self.assertEqual(len(publisher.calls), calls)
 
     def test_retired_and_contained_questions_do_not_qualify_reference(self):
         p = References()
         p.excluded.add(p.questions[20][0][':db/id'])
         with tempfile.TemporaryDirectory() as td:
-            self.assertEqual(prepare_investigation(p, source(), td)['reference_kp_id'], 30)
+            self.assertEqual(prepare_investigation(p, source(), td)['reference_candidates'][0]['reference_kp'][':db/id'], 30)
 
     def test_coverage_plan_replaces_sentinel_and_preserves_other_observed_levels(self):
         class Client:
