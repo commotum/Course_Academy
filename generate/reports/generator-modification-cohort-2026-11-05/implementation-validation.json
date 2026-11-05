@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-05",
+  "scope": "Repository implementation and offline verification; no EDB writes or new generation campaign.",
+  "python_tests": {
+    "generator_nonbrowser_shards": [
+      {
+        "tests": 83,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "tests": 83,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "tests": 82,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "tests": 82,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      }
+    ],
+    "generator_browser": 8,
+    "model_policy": 37,
+    "inventory": 71,
+    "engine_recovery": 5,
+    "total": 451,
+    "failures": 0,
+    "errors": 0
+  },
+  "commands": [
+    "PYTHONPATH=scripts:tests .venv/bin/python -m unittest discover -s tests -p test_generator*.py -v (final execution split into four nonbrowser groups plus test_generator_render)",
+    "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_linear_trig_generator test_trig_substitution_models test_inverse_substitution_quality test_substitution_pedagogy_policy test_integration_batch_policy -v",
+    "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_inventory_jobs -v",
+    "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_recover_engine_only_refills -v"
+  ],
+  "native_rust_unit_tests": {
+    "tests": 3,
+    "passed": true
+  },
+  "math_and_ui_smoke": {
+    "cases": [
+      {
+        "label": "canonical-fractional-slope",
+        "band": "moderate",
+        "seed": 28,
+        "family": "indef_sin",
+        "input": "2*sin(x/3)",
+        "lower": null,
+        "upper": null,
+        "result": "-6*cos(x/3)",
+        "independent_sympy_check": true,
+        "submitted": "-6*cos(x/3)",
+        "wrong": "6*cos(x/3)",
+        "response_type": "blank"
+      },
+      {
+        "label": "zero-easy",
+        "band": "easy",
+        "seed": 7,
+        "family": "def_cos",
+        "input": "3*cos(2*x)",
+        "lower": "0",
+        "upper": "pi/2",
+        "result": "0",
+        "independent_sympy_check": true,
+        "submitted": "0.0",
+        "wrong": "1",
+        "response_type": "blank"
+      },
+      {
+        "label": "nonzero-easy-same-response",
+        "band": "easy",
+        "seed": 0,
+        "family": "def_cos",
+        "input": "cos(3*x)",
+        "lower": "pi/6",
+        "upper": "pi/3",
+        "result": "-1/3",
+        "independent_sympy_check": true,
+        "submitted": "-1/3",
+        "wrong": "1/3",
+        "response_type": "blank"
+      }
+    ],
+    "native_passed": true,
+    "accepted": 3,
+    "rejected": 3,
+    "render_passed": true,
+    "render_views": 12,
+    "viewports": [
+      "1280x1000",
+      "390x844"
+    ],
+    "states": [
+      "active",
+      "completed"
+    ],
+    "artifacts": {
+      "/tmp/generator-intent-smoke/records.json": "c05304aad72fa53e6b2aabcde503e8c4186bd986ae8116e76ba544117aa7c759",
+      "/tmp/generator-intent-smoke/independent-math.json": "6fc5f269e3b3c9a33e03d8a5a00013ab1728580198b71ad96f5a4e5a9c278c22",
+      "/tmp/generator-intent-smoke/grading.json": "d2d9e2e50f02ce9eb1b18bff3f010dbcde2f6c24b7ae0ee4b687a7f705b26a29",
+      "/tmp/generator-intent-smoke/render-final/rendering.json": "215883b3b9a59067461fc85a4174c2be91ec3917f7b885a86705ee155b1b7756",
+      "/tmp/generator-intent-smoke/integer-size-observation.json": "87d40e7b2d82987c2109c6d88d5adebfd1da8cfb15ffc33acb5d2049bcd1f5d2"
+    }
+  },
+  "code_sha256": {
+    "generate/principles.md": "19a9a921b830abf496f7e6b38418e4bd63fee64b67e6115907c0c288b4cf683f",
+    "generate/pipeline/investigator.md": "9c402a07a06c72cf7893defa303fb84c64ff23b0d75619f6f1b36a6415e7b6e1",
+    "generate/pipeline/author.md": "8574199ab4cb8039ac1df673de270ffe991ed47d161531f4b7ee68c982453532",
+    "generate/pipeline/reviewer.md": "522248d255f3427a200c6c3039dde3afab30639cbd24afae48868286569fe170",
+    "generate/pipeline/validation-tools.md": "9ee0086bcc931ca2d63c5d476e07c78a28972dceb71fbefc4e9a13017486536e",
+    "generate/pipeline/check_delivery.py": "0d260a371c001d75699fa2d8ac6bed54206ae77827f8c9c258e066e5959b2733",
+    "generate/pipeline/render_preview.py": "4533b661fbffb2d60581bee02809d9d34a1f610ed8903adfd2e993b8ec140a15",
+    "generate/runs/current/check-engine.rs": "cfc852b926ae463c16c98141becf5a187b0cd841687dc158ab482d94cd073d44",
+    "generate/runs/current/check-engine": "2e5132703fb4eafb2143472e25e12c294ad04e1864ecfbecb19fd3120c0a86db",
+    "generate/evals/intent-cases.json": "c50a87da5d277c3e130817bc71fc2528f6b131c4b1d733fa7796d0d2b6edf9c7",
+    "generate/trig_scaffold.py": "c5b52b6208f4afaad504731727bfb749de96b898c6f6aed85029dd9ab4f7ba10",
+    "generate/inverse_substitution_models.py": "bdba9668840b0789ec1f3f702b4bc27e69ecddb806b30d2d154df363f93f37db",
+    "generate/substitution_pedagogy.py": "444924f780dda53c515401152cf8bfb2d7498c9c003f7eca64e289a55871193e",
+    "scripts/generator_pipeline.py": "6f3bd075f74d43a43cb91314da7ed6c975c10375aa9045e024794bf9e45fe7ef",
+    "scripts/generator_investigation.py": "18e9c738fddb1f2f6e19ca6d2932ea398c6a1db5cd7cace62253146e953b2407",
+    "scripts/generator_publish.py": "aa5a333d6ce84200fba7071dda20972ea76e5d49760a13bf1c8b575e40a0d75b",
+    "scripts/generator_report_repair.py": "7030fbfd24b9cf703d24168472cc8c467ed72db80b4b2ee2b2013fc4e773439d",
+    "scripts/generator_session_binding.py": "2e57f0976e7d0328a427f4d0937261097b98a9ceb047619baeca3ff64155c319",
+    "scripts/generator_refill.py": "cf3409c71f6ed5b364b9ba28509101e553bd3cde0d96f55c3b142e761a4c3291",
+    "scripts/generator_review.py": "5ba7d99608f1d07467b9ade4462cf06f816ce579c9a4dcad7d3fcd28002fb9bb",
+    "scripts/generator_evidence.py": "2fae23099823fc2cc5e90d5820ffe6a0651aecc03a30ca482b3f522344e5c629",
+    "scripts/inventory_jobs.py": "2d0c7bfa48ec4f2396010bfac11ece70a1c9ba510387b67d540137b14c514a5b",
+    "scripts/trig_substitution_batch_policy.py": "5d592acdbd0ca2b872da3e06c48ab3d7213237df9fd3bfed7df53b5fd28a4997",
+    "scripts/inverse_substitution_batch_policy.py": "8f7bd6ca4009a9c483fc0e5718771dc22f05da95b44497d481688db2e13d4279",
+    "scripts/substitution_pedagogy_batch_policy.py": "afd58c36f9e5eae6e3901140078c4b6a2d38309b96c78025c2762c5fa4455d9f",
+    "scripts/integration_batch_policy.py": "38f34d10a6938bb161f14d20921ec5dd423b48ee3c0c522c34f526f979e986a8"
+  },
+  "evaluation_scope": {
+    "frozen_cases": 11,
+    "historical_mechanisms": 8,
+    "held_out_analogues": 3,
+    "new_agent_generation_campaign": false
+  },
+  "limitations": [
+    "Unit/integration checks and inspected outputs do not establish aggregate pedagogical improvement.",
+    "Blank-response refill fallback checks canonical acceptance; contextual negatives/equivalents require reviewed package checks.",
+    "Finite supervisor source-change detection requires source/content signals from the finder; no new source-hash projection or polling was added."
+  ]
+}
