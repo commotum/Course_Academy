@@ -178,6 +178,51 @@ class GeneratorFiniteCapacityTests(unittest.TestCase):
         self.assertEqual(result['request']['count'], 11)
         self.assertEqual(len(refill.publication_records()), 4)
 
+    def test_exhausted_catalog_reaches_finite_outcome_without_publication_or_agent(self):
+        class CatalogSession(FiniteSession):
+            def __call__(inner, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == 'author':
+                    workspace = Path(context['workspace'])
+                    output = subprocess.check_output([sys.executable, str(workspace / 'generator.py'),
+                        '--difficulty', 'easy', '--count', '4', '--seed', '17', '--format', 'json'],
+                        cwd=workspace, env={**os.environ, 'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR': str(workspace.parent / 'catalog-output')})
+                    (workspace / 'catalog.json').write_bytes(output)
+                    limits = json.loads((workspace / NAME).read_text())
+                    limits['finite_catalogs'] = {'easy': 'catalog.json'}
+                    (workspace / NAME).write_text(json.dumps(limits))
+                    manifest = json.loads((workspace / 'package.json').read_text())
+                    manifest['files'].append('catalog.json')
+                    (workspace / 'package.json').write_text(json.dumps(manifest))
+                return result
+
+        native = self.root / 'generate/runs/current/check-engine'
+        native.parent.mkdir(parents=True)
+        native.symlink_to(ROOT / 'generate/runs/current/check-engine')
+        build = self.pipeline(count=5, session=CatalogSession(), name='catalog-build')
+        approved = build.run()
+        self.assertEqual(approved['stage'], 'verified')
+        catalog = json.loads((build.directory / 'workspace/catalog.json').read_text())
+        from generator_publish import content_fingerprint
+        inventory = {'questions': [row['question'] for row in catalog],
+                     'fingerprints': [content_fingerprint(row['question']) for row in catalog]}
+        class ExhaustedPublisher(FakePublisher):
+            def prepare(inner, kp, records, reference, package_hash, directory, **kwargs):
+                inner.prepares += 1
+                validation = kwargs['records_validator']([], inventory, Path(directory) / 'delivery-validation')
+                return {'new_questions': 0, 'delivery_validation': validation}
+        publisher = ExhaustedPublisher(self.root / 'catalog-refill-publisher')
+        publisher.registered_generator = {':question-generator/script': approved['registration']}
+        session = FakeSession()
+        refill = self.pipeline(count=5, refill=True, name='catalog-refill', publisher=publisher,
+                               session=session, registration=approved['registration'])
+        result = refill.run()
+        self.assertEqual(result['stage'], 'finite-limit')
+        self.assertEqual(result['error']['code'], 'finite_catalog_exhausted')
+        self.assertEqual(session.calls, [])
+        self.assertEqual((publisher.prepares, publisher.publishes), (1, 0))
+        self.assertFalse((refill.directory / 'publication/request.json').exists())
+
     def test_actual_trig_cli_and_pipeline_primary_refill_and_secondary_when_available(self):
         package = ROOT/'generate/repairs/2026-11-04-four-trig-lessons/sine-double/17592186059672'
         if not (package/'generator.py').exists(): self.skipTest('Trig repair package is not present in this checkout')

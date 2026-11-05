@@ -101,7 +101,7 @@ class GeneratorReportFlowTests(unittest.TestCase):
         self.assertEqual(result["attempt"], 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
-    def test_engine_change_does_not_add_another_report_correction(self):
+    def test_engine_change_rechecks_in_same_verifier_without_reusing_cached_correction(self):
         pipeline = self.pipeline(fixtures.FakeSession())
         pipeline.run(stop_after="generate")
         original_evidence = pipeline.review_directory()
@@ -125,12 +125,17 @@ class GeneratorReportFlowTests(unittest.TestCase):
         session = ChangedEngine()
         result = self.pipeline(session).run()
         self.assertEqual(result["stage"], "verified")
-        self.assertEqual([role for role, _ in session.calls], ['review'])
+        self.assertEqual([role for role, _ in session.calls], ['review', 'review'])
         directory, context = session.review_contexts[0]
         self.assertEqual(directory, original_evidence / 'contract-repair')
         self.assertEqual(context['review_binding'], original_binding)
         self.assertEqual(Path(result['review']), original_evidence / 'result.json')
-        self.assertEqual(json.loads((original_evidence / 'review-binding.json').read_text()), original_binding)
+        final = json.loads((original_evidence / 'review-binding.json').read_text())
+        self.assertNotEqual(final['engine_hash'], original_binding['engine_hash'])
+        self.assertEqual(final['batch_hash'], original_binding['batch_hash'])
+        next_directory, next_context = session.review_contexts[1]
+        self.assertEqual(next_directory, original_evidence / 'contract-repair-2')
+        self.assertEqual(next_context['resume_session_id'], 'engine-repair-thread')
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_demonstrated_generator_defect_is_fixed_rechecked_and_published_by_verifier(self):

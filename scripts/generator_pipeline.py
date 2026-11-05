@@ -622,14 +622,24 @@ class Pipeline:
     def recover_legacy_exemplars(self):
         """A removed publication lane must still recover its exact durable writes."""
         directory = self.directory / 'investigation/publication'
-        if not (directory / 'request.json').exists():
+        receipt_path = self.directory / 'investigation/legacy-exemplar-receipt.json'
+        pending = directory / 'request.json'
+        if pending.exists():
+            request_hash = hashlib.sha256(pending.read_bytes()).hexdigest()
+            result = None
+        elif receipt_path.is_file():
+            saved = read(receipt_path)
+            request_hash, result = saved.get('request_sha256'), saved.get('publication')
+            if not request_hash or not isinstance(result, dict):
+                return False
+        else:
             return False
-        request_hash = hashlib.sha256((directory / 'request.json').read_bytes()).hexdigest()
         if self.state.get('legacy_exemplar_recovered_request') == request_hash:
             return False
         # Do not prepare new examples or reinterpret the investigator's draft.
-        result = self.publisher.publish(directory)
-        save(self.directory / 'investigation/legacy-exemplar-receipt.json', result)
+        if result is None:
+            result = self.publisher.publish(directory)
+            save(receipt_path, {'request_sha256': request_hash, 'publication': result})
         if result.get('questions'):
             save(self.directory / 'investigation/published-exemplars.json', result['questions'])
         source_dir = self.directory / 'source'
@@ -792,6 +802,16 @@ class Pipeline:
                         raise ValueError('Scope evidence must cite the final finding-dispositions.json')
             except (OSError, ValueError) as invalid:
                 error = str(invalid)
+                if self.state.get('engine_hash') != self.engine_identity():
+                    try:
+                        refreshed = self.refresh_active_engine()
+                    except (OSError, ValueError):
+                        refreshed = False  # A package/source edit still needs explicit finalization.
+                    if refreshed:
+                        rounds = self.state.get('review_report_rounds', {})
+                        count = rounds.get(str(evidence), count + 1)
+                        error = self.state.get('review_report_error')
+                        continue
             else:
                 self.persist(previous_review={'directory': str(evidence), 'binding': self.review_binding()})
                 if result['verdict'] == 'accepted':
@@ -997,7 +1017,11 @@ class Pipeline:
         active = self.state.get('active_review_directory') or self.state.get('report_repair_directory')
         if not active and self.state.get('review'):
             active = str(Path(self.state['review']).parent)
-        self.sample()
+        # The package and sampled records did not change. Do not regenerate
+        # content merely because the native grader/engine needs new checks.
+        helper = self.root / 'generate/runs/current/check-engine'
+        self.persist(engine_hash=self.engine_identity(),
+                     grader_sha256=hashlib.sha256(helper.read_bytes()).hexdigest() if helper.is_file() else None)
         updates = {'stage': 'validate', 'review': None, 'review_binding': None,
                    'review_policy_version': None, 'approval_recorded': False}
         if active:
@@ -1008,8 +1032,11 @@ class Pipeline:
             save(binding, self.review_binding())
             (evidence / 'final-binding.json').unlink(missing_ok=True)
             rounds = self.state.get('review_report_rounds', {})
-            rounds[str(evidence)] = max(1, rounds.get(str(evidence), 0))
-            while (evidence / f'contract-repair-{rounds[str(evidence)]}' / 'result.json').exists():
+            rounds[str(evidence)] = max(1 if (evidence / 'result.json').exists() else 0,
+                                        rounds.get(str(evidence), 0))
+            def correction_path(count):
+                return evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
+            while (correction_path(rounds[str(evidence)]) / 'result.json').exists():
                 rounds[str(evidence)] += 1
             updates.update(active_review_directory=str(evidence), report_repair_directory=str(evidence),
                 review_report_rounds=rounds,
@@ -1568,6 +1595,17 @@ class Pipeline:
                     self.repair({'code': 'preparation_invalid', 'error': str(error)})
                     continue
                 delivery = (prepared or {}).get('delivery_validation', {})
+                if self.is_refill and delivery.get('status') == 'no-new-records':
+                    rounds = self.state.get('refill_sampling_rounds', 0) + 1
+                    if rounds < 3 and delivery.get('reason') != 'catalog_contains_retired_or_unusable_inventory':
+                        self.persist(stage='refill', refill_sampling_rounds=rounds,
+                                     seed=(self.state['seed'] + 104729) % (2 ** 32),
+                                     depletion=delivery)
+                        continue
+                    self.repair({'code': 'refill_no_new_records', 'sampling_rounds': rounds,
+                        'error': 'No new usable records survived bounded sampling; this is not proof of finite exhaustion.',
+                        'details': delivery})
+                    continue
                 if self.is_refill and delivery.get('exhausted') and not prepared.get('new_questions'):
                     self.persist(stage='finite-limit', depletion=delivery, needs_repair=False,
                         error={'code': 'finite_catalog_exhausted', 'details': delivery}, registration=package.reference)

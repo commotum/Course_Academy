@@ -10,7 +10,6 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
-import re
 
 from scripts.generator_packages import package_digest
 from scripts.generator_publish import answer_id, content_fingerprint, enum, validate_question, normalized_question
@@ -85,19 +84,9 @@ def native_cases(records):
             else:
                 checks.append({'field_index': field_index, 'submitted': selected[':answer/value'],
                                'expected': 'accepted', 'purpose': 'actual canonical response'})
-                prompt = question[':question/problem'].lower()
-                value = selected[':answer/value']
-                # Do not invent a universal wrong expression: +C, external
-                # squaring and response fragments can change equivalence.
-                if (enum(selected[':answer/type']) == ':answer.type/math'
-                        and re.fullmatch(r'[+-]?\d+(?:\.\d+)?', value)
-                        and not any(marker in prompt for marker in ('arbitrary', '+c', '+ c', 'integrat', 'family'))):
-                    wrong = '1' if float(value) == 0 else '0'
-                    checks.append({'field_index': field_index, 'submitted': wrong,
-                                   'expected': 'rejected', 'purpose': 'distinct simple numeric response'})
-                elif enum(selected[':answer/type']) == ':answer.type/text':
-                    checks.append({'field_index': field_index, 'submitted': value + ' __incorrect__',
-                                   'expected': 'rejected', 'purpose': 'distinct text response'})
+                # Contextual negatives/equivalents belong to the reviewed hook.
+                # Neither numeric offsets nor text suffixes are universally
+                # wrong under tolerance, fragment, or solution-family grading.
         cases.append({'label': 'publication-survivor-' + str(index), 'record': record, 'checks': checks})
     return cases
 
@@ -139,6 +128,11 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
     _write(records_path, records)
     _write(inventory_path, {'fingerprints': inventory})
     cases = native_cases(grading_records)
+    result['limitations'] = [
+        {'fingerprint': content_fingerprint(record['question']), 'field_index': index,
+         'scope': 'Legacy fallback checks canonical acceptance only; contextual negatives and equivalents require reviewed package checks.'}
+        for record in grading_records for index, field in enumerate(record['question'][':question/answer-fields'])
+        if enum(field[':answer-field/type']) == ':answer-field.type/blank']
     descriptor_name = 'refill-validation.json'
     if records and descriptor_name in manifest['files']:
         contract = _read(declared_file(root, manifest, descriptor_name))

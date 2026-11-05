@@ -105,6 +105,8 @@ class LifecycleTests(unittest.TestCase):
         execution = self.launch()
         mark_stopped(self.owner)
         expected = {'status': 'ready', 'manifest': 'package.json'}
+        from generator_session_binding import bind_session, input_binding
+        bind_session(self.directory, input_binding('author', {'workspace': str(self.directory)}, ROOT))
         save(self.directory / 'result.json', expected)
         self.assertEqual(credit_interruption(self.execution_path, execution, 3), execution)
         with patch('generator_pipeline.subprocess.Popen') as spawn:

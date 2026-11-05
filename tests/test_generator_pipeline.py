@@ -439,13 +439,16 @@ class GeneratorPipelineTests(unittest.TestCase):
                 contexts.append(context)
                 return super().__call__(role, context, directory)
         session = FreshReview()
-        result = self.pipeline(session).run()
+        resumed = self.pipeline(session)
+        with patch.object(resumed, 'sample', side_effect=AssertionError('Engine-only refresh regenerated content')):
+            result = resumed.run()
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual([role for role, _ in session.calls], ['review'])
         self.assertIsNone(contexts[0]['interrupted_review'])
         self.assertEqual(contexts[0]['resume_session_id'], 'interrupted-verifier')
-        self.assertNotIn('review_contract_feedback', contexts[0])
-        self.assertEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
+        self.assertIn('review_contract_feedback', contexts[0])
+        self.assertNotEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
+        self.assertEqual(contexts[0]['review_binding']['batch_hash'], binding['batch_hash'])
         self.assertEqual(Path(contexts[0]['evidence_root']), interrupted)
         self.assertEqual(json.loads((interrupted / 'review-binding.json').read_text()), contexts[0]['review_binding'])
         self.assertTrue((interrupted / 'result.json').exists())
@@ -658,7 +661,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual([role for role, _ in fake.calls], ['author', 'review'])
 
-    def test_engine_update_preserves_accepted_review_without_another_agent(self):
+    def test_engine_update_before_publication_refreshes_existing_verifier(self):
         first = FakeSession()
         state = self.pipeline(first).run('validate')
         old_review = state['review']
@@ -669,11 +672,12 @@ class GeneratorPipelineTests(unittest.TestCase):
         second = FakeSession()
         state = self.pipeline(second).run()
         self.assertEqual(state['stage'], 'verified')
-        self.assertEqual(second.calls, [])
+        self.assertEqual([role for role, _ in second.calls], ['review'])
         self.assertEqual(state['review'], old_review)
         final_binding = json.loads((Path(state['review']).parent / 'final-binding.json').read_text())
-        self.assertEqual(final_binding, old_binding)
-        self.assertFalse(list(Path(old_review).parent.glob('engine-binding-before-*.json')))
+        self.assertNotEqual(final_binding['engine_hash'], old_binding['engine_hash'])
+        self.assertEqual(final_binding['package_hash'], old_binding['package_hash'])
+        self.assertTrue(list(Path(old_review).parent.glob('binding-before-engine-*.json')))
         self.assertEqual(self.publisher.publishes, 1)
 
     def test_old_attempt_failure_requires_explicit_resume_with_feedback_and_workspace(self):

@@ -52,7 +52,8 @@ class RefillValidationTests(unittest.TestCase):
         result = self.validate([blank, checkbox])
         self.assertEqual(result['status'], 'passed')
         native = json.loads(Path(result['native_report']).read_text())
-        self.assertEqual((native['accepted_checks'], native['rejected_checks']), (2, 2))
+        self.assertEqual((native['accepted_checks'], native['rejected_checks']), (2, 1))
+        self.assertEqual(len(result['limitations']), 1)
         self.assertTrue(all('submitted_answer_id' in row for row in native_cases([checkbox])[0]['checks']))
 
     def test_blank_solution_family_has_no_invented_wrong_constant_control(self):

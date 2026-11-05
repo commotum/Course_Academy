@@ -68,6 +68,9 @@ class LinearTrigGeneratorTests(unittest.TestCase):
         self.assertIn('0',{r['generation']['model']['result']for r in easy})
         self.assertTrue(any(r['generation']['model']['result']!='0'for r in easy),
                         'Exact-entry must not be a conditional cue for zero')
+        integer=self.g.generate(kp,'easy',73,'def_cos',evidence=evidence(kp))
+        self.assertEqual(integer['generation']['model']['result'],'1')
+        self.assertEqual(integer['question'][':question/answer-fields'][0][':answer-field/type'],':answer-field.type/blank')
 
     def test_hard_is_not_defined_by_a_negative_sign(self):
         kp=17592186068915

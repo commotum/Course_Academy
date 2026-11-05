@@ -261,8 +261,10 @@ with `status: "passed"` and `checked_fingerprints` equal to the exact sorted
 rows contain `fingerprint` and native-harness `checks`. Keep this checker and its
 inputs declared/package-bound. Use it for independently justified valid-equivalent,
 near-miss, task-contract and demonstrated cue regressions, not copied metadata
-assertions. The basic native fallback is not a proof of semantic equivalence or
-pedagogical variety. Population coverage is assessed against relevant delivered
+assertions. Without contextual checks, the native fallback tests every offered
+selection choice and canonical acceptance for blank fields, recording the missing
+blank-response controls as limitations. It does not invent wrong blank answers or
+prove semantic equivalence or pedagogical variety. Population coverage is assessed against relevant delivered
 inventory, not forced into every small refill fragment.
 
 `generation-limits.json` can additionally declare

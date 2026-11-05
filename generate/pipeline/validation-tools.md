@@ -49,7 +49,10 @@ Pass the complete generated record as `record`. For radio/select/checkbox, use
 `submitted_answer_id` with an authored choice UUID instead of `submitted`.
 For checkbox fields, choose the UUID whose stored value is `true` or `false`,
 as the UI does. For blank responses use a string `submitted`.
-Expected outcomes are `accepted`, `rejected`, or explicitly justified `unresolved`. An unresolved valid response is a limitation and cannot substitute for a successful positive case; an accepted review needs substantive accepted and rejected coverage.
+Expected outcomes are `accepted`, `rejected`, or explicitly justified `unresolved`.
+Any unresolved outcome produces a failed report and nonzero exit, even when expected;
+record it as a limitation and resolve it before acceptance. An accepted review needs
+substantive accepted and rejected coverage.
 `field_index` defaults to zero. The tool rejects empty coverage, fails on an unexpected outcome and saves
 checked responses with input/record fingerprints and runtime identity. Keep the
 recognized report intact so review can bind its checks to actual final records. Test plausible wrong responses and independently
