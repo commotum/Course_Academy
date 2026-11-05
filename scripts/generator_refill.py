@@ -132,7 +132,7 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
         {'fingerprint': content_fingerprint(record['question']), 'field_index': index,
          'scope': 'Legacy fallback checks canonical acceptance only; contextual negatives and equivalents require reviewed package checks.'}
         for record in grading_records for index, field in enumerate(record['question'][':question/answer-fields'])
-        if enum(field[':answer-field/type']) == ':answer-field.type/blank']
+        if enum(field[':answer-field/type']) in (':answer-field.type/blank', ':answer-field.type/free')]
     descriptor_name = 'refill-validation.json'
     if records and descriptor_name in manifest['files']:
         contract = _read(declared_file(root, manifest, descriptor_name))
