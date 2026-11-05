@@ -23,6 +23,7 @@ from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_on
 from generator_report_repair import generator_repair_findings, pending_report_repair
 from generator_progress import failure_signature, material_identity
 from generator_approval import make_approval, approved_band, ApprovalError
+from generator_session_binding import input_binding, bind_session
 
 PHASE_POLICY_VERSION = 2
 VERIFICATION_BANDS = ('easy', 'moderate', 'hard')
@@ -155,6 +156,7 @@ class CodexSession:
         template = templates / {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role]
         prompt = template.read_text().replace('{{context}}', json.dumps(context, indent=2))
         output = directory / 'result.json'
+        bind_session(directory, input_binding(role, context, self.root))
         # A completed structured result survives a parent crash. The caller
         # still validates its contract and the exact candidate/evidence bytes.
         if output.exists():
@@ -270,6 +272,55 @@ class Pipeline:
         self.state.update(updated=time.time(), **updates)
         save(self.path, self.state)
 
+    def session_call(self, role, context, directory):
+        """Freeze supplied evidence; later agent edits are separately bound outputs."""
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        source = source_identity(read(self.directory / 'source/source.json'))
+        supplied_path = directory / 'supplied-inputs.json'
+        supplied = read(supplied_path) if supplied_path.exists() else None
+        if supplied is None or supplied.get('source') != source:
+            files = {}
+            for name in ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file'):
+                value = context.get(name)
+                if value and Path(value).is_file():
+                    path = Path(value)
+                    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+                    snapshot = directory / 'supplied-files' / sha / path.name
+                    snapshot.parent.mkdir(parents=True, exist_ok=True)
+                    if not snapshot.exists():
+                        shutil.copy2(path, snapshot)
+                    files[name] = {'sha256': sha, 'snapshot': str(snapshot)}
+            account = self.directory / 'workspace/investigation.md'
+            if role != 'investigate' and account.is_file():
+                sha = hashlib.sha256(account.read_bytes()).hexdigest()
+                snapshot = directory / 'supplied-files' / sha / account.name
+                snapshot.parent.mkdir(parents=True, exist_ok=True)
+                if not snapshot.exists():
+                    shutil.copy2(account, snapshot)
+                files['account'] = {'sha256': sha, 'snapshot': str(snapshot)}
+            supplied = {'source': source, 'files': files}
+        context = {**context, 'session_inputs': {
+            **supplied, 'knowledge_point': self.state['request']['kp'],
+            'difficulty': self.state['request']['difficulty'], 'count': self.state['request']['count']}}
+        bind_session(directory, input_binding(role, context, self.root))
+        save(supplied_path, supplied)
+        return self.session(role, context, directory)
+
+    def instructional_evidence(self):
+        """Hash produced instructional artifacts, separate from immutable imports."""
+        paths = [self.state.get(key) for key in
+                 ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file')]
+        paths.append(str(self.directory / 'workspace/investigation.md'))
+        result = {str(Path(path).resolve()): hashlib.sha256(Path(path).read_bytes()).hexdigest()
+                  for path in paths if path and Path(path).is_file()}
+        examples = self.state.get('exemplars_file')
+        if examples and Path(examples).is_file():
+            records = read(examples)
+            if isinstance(records, list):
+                result.update(asset_hashes(records, Path(examples).parent, self.math_root))
+        return result
+
     def worker_code_identity(self):
         paths = sorted({path for directory in ('scripts', 'generate/pipeline', 'capture/scripts/database')
                         for path in (self.root / directory).rglob('*.py')})
@@ -296,6 +347,9 @@ class Pipeline:
                 **{key: self.state.get(key) for key in
                    ('package_hash', 'batch_hash', 'source_hash', 'inventory_hash', 'assets', 'effective_difficulty')},
                 **({'engine_hash': self.state['engine_hash']} if 'engine_hash' in self.state else {}),
+                **({'grader_sha256': self.state['grader_sha256']} if self.state.get('grader_sha256') else {}),
+                **({'instructional_evidence': self.state['instructional_evidence']}
+                   if 'instructional_evidence' in self.state else {}),
                 'verification_batches': {band: {key: row[key] for key in
                     ('batch_hash', 'assets', 'seed', 'count', 'requested_count', 'maximum_distinct_batch') if key in row}
                     for band, row in self.state.get('verification_batches', {}).items()}}
@@ -467,6 +521,7 @@ class Pipeline:
                 'engine_repair_allowed': True,
                 'investigation_file': self.state.get('investigation_file'),
                 'investigation_result': self.state.get('investigation_result'),
+                'reference_file': self.state.get('reference_file'),
                 'exemplars_file': self.state.get('exemplars_file'),
                 'assets_directory': self.state.get('assets_directory'),
                 'finalize_review_command': [python_executable(self.root, self.environment),
@@ -476,14 +531,15 @@ class Pipeline:
                     str(self.root / 'scripts/generator_shared_repair.py')]}
 
     def investigate(self):
-        """Let one investigator finish the source account and publish its examples."""
+        """Let one investigator finish the source account and local design anchors."""
         from generator_investigation import prepare_investigation
         evidence = self.directory / 'investigation'
         evidence.mkdir(exist_ok=True)
         source = read(self.directory / 'source/source.json')
         prepare = self.investigation_preparer or prepare_investigation
         prepared = prepare(self.publisher, source, evidence)
-        self.persist(investigation_file=prepared.get('investigation_file'))
+        self.persist(investigation_file=prepared.get('investigation_file'),
+                     reference_file=prepared.get('reference_file'))
         attempts = self.state.get('investigation_rounds', 0)
         while attempts < self.max_attempts:
             directory = evidence if attempts == 0 else evidence / f'correction-{attempts}'
@@ -491,7 +547,7 @@ class Pipeline:
                        'investigation_feedback': self.state.get('investigation_error')}
             if attempts:
                 context['resume_session_id'] = session_thread(evidence)
-            result = self.session('investigate', context, directory)
+            result = self.session_call('investigate', context, directory)
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
             if result.get('status') != 'ready':
@@ -507,24 +563,17 @@ class Pipeline:
                         records = read(path)
                         if isinstance(records, dict):
                             records = records.get('records', records.get('questions'))
-                        from generator_publish import StaleBasis
-                        for publication_attempt in range(6):
-                            try:
-                                published = self.publisher.publish_exemplars(self.state['request']['kp'], records,
-                                    evidence / 'publication', assets_directory=path.parent)
-                                break
-                            except StaleBasis:
-                                if publication_attempt == 5:
-                                    raise
-                        # This is a separate normal question publication, attributed
-                        # to the investigator. Original imports stay untouched.
-                        save(evidence / 'published-exemplars.json', published['questions'])
-                        save(self.directory / 'source/source.json', published['fresh_source'])
-                        self.publisher.extract_inventory(self.state['request']['kp'], self.directory / 'source')
-                        self.persist(exemplars_file=str(evidence / 'published-exemplars.json'),
-                                     exemplar_publication={k: v for k, v in published.items()
-                                                           if k not in {'questions', 'fresh_source'}},
-                                     source_hash=digest(published['fresh_source']), inventory_hash=None)
+                        from generator_publish import validate_question, enum
+                        if not isinstance(records, list) or len(records) != 3:
+                            raise ValueError('Local investigation examples must contain three complete records')
+                        if {enum(record.get('question', {}).get(':question/difficulty')) for record in records} != {
+                                ':question.difficulty/' + band for band in VERIFICATION_BANDS}:
+                            raise ValueError('Local examples need one easy, moderate and hard anchor')
+                        for record in records:
+                            validate_question(record['question'])
+                        asset_hashes(records, path.parent, self.math_root)
+                        # Design anchors remain local, even after acceptance.
+                        self.persist(exemplars_file=str(path))
                     self.persist(stage='sample' if self.state['request'].get('review_existing') and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
                                  investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
                                  investigation_error=None)
@@ -537,6 +586,24 @@ class Pipeline:
             self.persist(investigation_rounds=attempts, investigation_error=error)
             save(evidence / 'feedback.json', error)
         self.block('investigation_unfinished', error, 'investigate')
+
+    def recover_legacy_exemplars(self):
+        """A removed publication lane must still recover its exact durable writes."""
+        directory = self.directory / 'investigation/publication'
+        if not (directory / 'request.json').exists():
+            return False
+        # Do not prepare new examples or reinterpret the investigator's draft.
+        result = self.publisher.publish(directory)
+        save(self.directory / 'investigation/legacy-exemplar-receipt.json', result)
+        if result.get('questions'):
+            save(self.directory / 'investigation/published-exemplars.json', result['questions'])
+        source_dir = self.directory / 'source'
+        previous = source_dir / 'source.json'
+        if previous.exists():
+            save(source_dir / ('source-before-legacy-recovery-' + str(time.time_ns()) + '.json'), read(previous))
+        fresh = self.publisher.extract_source(self.state['request']['kp'], source_dir)
+        self.persist(legacy_exemplar_publication=result, source_hash=digest(fresh), inventory_hash=None)
+        return True
 
     def finalize_review(self, evidence):
         """Refresh final bytes before the verifier checks and accepts its repair."""
@@ -669,7 +736,7 @@ class Pipeline:
             if not self.admit_review_session(directory):
                 return None
             self.persist(active_review_directory=str(evidence))
-            result = self.session('review', context, directory)
+            result = self.session_call('review', context, directory)
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
             # The verifier's finalization helper may have resampled and saved
@@ -769,6 +836,9 @@ class Pipeline:
         self.persist(batch_hash=primary['batch_hash'], runtime=primary['runtime'],
                      assets_directory=primary['assets_directory'], assets=primary['assets'],
                      engine_hash=self.engine_identity(), verification_batches={} if self.is_refill else batches,
+                     grader_sha256=(hashlib.sha256((self.root / 'generate/runs/current/check-engine').read_bytes()).hexdigest()
+                         if (self.root / 'generate/runs/current/check-engine').is_file() else None),
+                     instructional_evidence=self.instructional_evidence(),
                      sampling_errors=errors,
                      batch_metadata={key: primary[key] for key in
                          ('count', 'requested_count', 'maximum_distinct_batch') if key in primary},
@@ -823,6 +893,8 @@ class Pipeline:
                 band = band.get(':db/ident')
             if band != ':question.difficulty/' + difficulty:
                 raise ValueError('Generated question is in the wrong difficulty band')
+        from generator_refill import check_catalog_membership
+        check_catalog_membership(source, manifest, difficulty, records)
         if self.candidate_hash() != package_digest(runtime, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies')):
             raise ValueError('Running generator modified its declared package files')
         batch_file = self.directory / ('samples' + suffix + '.json')
@@ -842,6 +914,12 @@ class Pipeline:
         if (self.state.get('inventory_hash') is not None
                 and digest(read(self.directory / 'source/inventory.json')) != self.state['inventory_hash']):
             raise ValueError('Reviewed delivery inventory changed')
+        if ('instructional_evidence' in self.state
+                and self.instructional_evidence() != self.state['instructional_evidence']):
+            raise ValueError('Reviewed investigation, reference or local examples changed; finalize again')
+        if (not self.is_refill and self.state.get('engine_hash')
+                and self.engine_identity() != self.state['engine_hash']):
+            raise ValueError('Engine changed during active verification; rerun affected checks and finalize again')
         if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in self.state['assets'].items()):
             raise ValueError('Reviewed image bytes changed')
         for band, batch in self.state.get('verification_batches', {}).items():
@@ -861,6 +939,13 @@ class Pipeline:
 
     def publication_records(self):
         return read(self.directory / 'samples.json')
+
+    def validate_refill_records(self, records, fingerprints, directory):
+        from generator_refill import validate_survivors
+        root, manifest = self.manifest()
+        return validate_survivors(records, fingerprints, directory, root=root, manifest=manifest,
+            band=self.state['effective_difficulty'], python=python_executable(self.root, self.environment),
+            repo_root=self.root, environment=self.environment)
 
     def engine_identity(self):
         paths = list((self.root / 'engine/rust').rglob('*.rs'))
@@ -1040,6 +1125,7 @@ class Pipeline:
             # A caller may have constructed this object before another worker
             # finished. Always make launch decisions from the locked state.
             self.state = read(self.path)
+            self.recover_legacy_exemplars()
             self.upgrade_phases()
             if isinstance(self.session, CodexSession):
                 self.session.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())
@@ -1209,7 +1295,7 @@ class Pipeline:
             if stage == 'report-repair':
                 self.persist(stage='validate')
                 continue
-            if stage in {'verified', 'failed', 'unsupported', 'blocked'}:
+            if stage in {'verified', 'failed', 'unsupported', 'blocked', 'finite-limit'}:
                 if stage == 'verified' and not self.is_refill:
                     from generator_source_policy import POLICY_VERSION
                     if (source_path.exists() and read(source_path).get('material',{}).get('source_eligibility',{}).get('policy_version')!=POLICY_VERSION):
@@ -1279,7 +1365,7 @@ class Pipeline:
                     execution = read(previous / 'execution.json') if (previous / 'execution.json').exists() else {}
                     if execution.get('persistent_session'):
                         context['resume_session_id'] = execution.get('thread_id') or session_thread(previous)
-                result = self.session('author', context, evidence)
+                result = self.session_call('author', context, evidence)
                 save(evidence / 'result.json', result)
                 self.reload_repaired_runner()
                 self.persist(author_running=False)
@@ -1341,11 +1427,12 @@ class Pipeline:
                                           dependencies=manifest.get('dependencies'), expected_digest=self.state['package_hash'])
                 from generator_publish import SourceChanged, StaleBasis
                 try:
-                    self.publisher.prepare(self.state['request']['kp'], self.publication_records(),
+                    prepared = self.publisher.prepare(self.state['request']['kp'], self.publication_records(),
                                            package.reference, package.digest, self.directory / 'publication',
                                            source_snapshot=read(self.directory / 'source/source.json'),
                                            assets_directory=self.state.get('assets_directory', self.state['runtime']),
-                                           **({'expected_registered_generator': package.reference} if self.is_refill else {}))
+                                           **({'expected_registered_generator': package.reference,
+                                               'records_validator': self.validate_refill_records} if self.is_refill else {}))
                 except StaleBasis:
                     # A concurrent learner/worker write can invalidate the
                     # speculative preparation. Retry fresh reads here without
@@ -1361,9 +1448,15 @@ class Pipeline:
                     continue
                 except SourceChanged as error:
                     if not self.is_refill:
+                        old = read(self.directory / 'source/source.json')
+                        save(self.directory / 'source' / ('source-before-refresh-' + str(time.time_ns()) + '.json'), old)
                         self.publisher.extract_source(self.state['request']['kp'], self.directory / 'source')
-                        self.persist(source_hash=digest(read(self.directory / 'source/source.json')), inventory_hash=None)
-                    self.repair({'code': 'source_changed', 'error': str(error)})
+                        self.persist(stage='investigate', source_hash=digest(read(self.directory / 'source/source.json')),
+                                     inventory_hash=None, investigation_complete=False, review=None,
+                                     review_binding=None, review_policy_version=None, approval_recorded=False,
+                                     error={'code': 'source_changed', 'error': str(error)})
+                    else:
+                        self.repair({'code': 'source_changed', 'error': str(error)})
                     continue
                 except ValueError as error:
                     # Preparation performs no submission. Invalid generated
@@ -1372,6 +1465,11 @@ class Pipeline:
                     if (self.directory / 'publication/request.json').exists():
                         raise
                     self.repair({'code': 'preparation_invalid', 'error': str(error)})
+                    continue
+                delivery = (prepared or {}).get('delivery_validation', {})
+                if self.is_refill and delivery.get('exhausted') and not prepared.get('new_questions'):
+                    self.persist(stage='finite-limit', depletion=delivery, needs_repair=False,
+                        error={'code': 'finite_catalog_exhausted', 'details': delivery}, registration=package.reference)
                     continue
                 self.persist(stage='push', registration=package.reference, publication_batch_hash=self.state['batch_hash'],
                              publication_package_hash=package.digest)
@@ -1462,7 +1560,7 @@ def main(argv=None):
                               **({'error': result.get('error')} if result['stage'] == 'blocked' else {})}), flush=True)
             if args.inventory_job:
                 save(args.inventory_job.with_suffix('.result'), {
-                    'outcome': 'generated' if result['stage'] == 'verified' else 'blocked' if result['stage'] == 'blocked' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',
+                    'outcome': 'generated' if result['stage'] == 'verified' else 'finite-limit' if result['stage'] == 'finite-limit' else 'blocked' if result['stage'] == 'blocked' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',
                     'evidence': str(directory / 'job.json'), 'generator': result.get('registration'),
                     'publication': result.get('publication'), 'needs_repair': result.get('needs_repair', False),
                     'difficulty': result.get('effective_difficulty', request['difficulty']),

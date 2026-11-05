@@ -1,0 +1,184 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired the hard-batch sign-pattern shortcut and verified easy, moderate and hard together. All nine checks pass; imports and level coverage remain unchanged.",
+  "source_analysis": {
+    "skill": "Expand sine of a variable plus or minus a special radian angle into a linear combination of sine and cosine of that variable.",
+    "reasoning_steps": [
+      "Identify the signed angle and apply sin(u\u00b1v)=sin(u)cos(v)\u00b1cos(u)sin(v).",
+      "Retrieve exact unit-circle sine and cosine, including quadrant signs.",
+      "Multiply and simplify; select the full expression or enter coefficients at the actual signed blank scope."
+    ],
+    "invariants": [
+      "Sine sum/difference only; no cosine outer functions, double-angle identities or changed nested variable arguments required.",
+      "Exact special-angle values; preserve full simplification and response scope.",
+      "Both signs and coefficient roles are eligible to change; no fixed qualifying answer or position."
+    ],
+    "permitted_variations": [
+      "Variable name, plus/minus, special angle and quadrant, zero versus nonzero coefficients, correct option position, plausible sign/swap/value distractors.",
+      "Authored easy progression may retain full expansion with simpler angles or task-specific formula support; moderate axes and hard radicals are observed anchors. Radio versus coefficient blanks needs explicit support accounting."
+    ],
+    "source_refs": [
+      "e-9983 / 0ce71d86-7470-5d53-ac94-20b473889dee: sin(x+pi/6) expands to (sqrt(3)sin x+cos x)/2.",
+      "q-43383 / f043b7ca-be08-556b-94ec-1d757642bb0f: hard sin(x-pi/4), factored final expression.",
+      "q-141284 / 78f7a073-b897-5930-bd54-7d5e600e42be: moderate sin(x-pi/2).",
+      "q-332197 / 7d2e5f2f-dd16-5fbd-88cd-c72fe86e0b28: moderate sin(x-3pi/2), coefficient blanks.",
+      "q-329274 / 38df000e-738f-5d02-8231-0fba0871726b: hard sin(x+5pi/3), a minus before second blank means its magnitude is entered.",
+      "Tutorial 2559 / a8b2cde2-4c10-51d6-b6f7-3b2a941a1d98: both sine identities and exact special-angle substitutions.",
+      "Tutorial 13285 / 93e513c3-90cf-588d-84a3-ed0b82e82401: odd sine and even cosine justify signed angles."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replays.json",
+        "exemplar-math.json"
+      ],
+      "details": "All 14 complete source contracts replayed with preserved prompts, banks, keys and field scopes. Two partial imports remain untouched. The q-142025 source solution typo is corrected in generated replay; source immutable."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivery-math.json",
+        "exemplar-math.json",
+        "progression-math.json",
+        "audit.py"
+      ],
+      "details": "167 independently parsed cases, including all final records and normalized delivery survivors, pass exact coefficient and final-expression checks. All final choices are distinct with exactly one true identity."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "audit-summary.json",
+        "regression-easy.json",
+        "regression-moderate.json",
+        "regression-hard.json",
+        "selection-results.json"
+      ],
+      "details": "Fresh-seed controls exhaust finite angle/operator catalogs and cover every served response family; final survivors preserve meaningful role/sign variation. Conditional bank probes include the repaired counterexample."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json",
+        "math-results.json"
+      ],
+      "details": "Every served response field is traced from givens through displayed expansion to its exact scoped key, including external minus signs, zero coefficients and source factoring. No added trig argument conversion or branch."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-grader-cases.json",
+        "final-grading.json",
+        "engine-refresh.json"
+      ],
+      "details": "447 native grade_field checks passed together against the final engine: every final and delivery-survivor radio choice, exact equivalent blank spellings including trailing zeros/radicals, sign and nearby-value errors, stale counterfactual answer and source/exemplar contracts. No unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-index.json",
+        "ui-audit.json",
+        "render/question-001.png",
+        "render/question-007.png",
+        "render/question-011.png",
+        "render/question-012.png"
+      ],
+      "details": "Actual unmodified UI renders all 15 final records plus 11 controls/exemplars/matched cases. Exact expected math-container counts and all 79 aligned rows verified; representative screenshots visually inspected, including every final hard record. No raw TeX, lost rows, visible stars or MathJax errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "final-binding.json",
+        "audit.py"
+      ],
+      "details": "Exact Python 3.13.5 standard-library dependency contract; isolated relocation reproduces all final batches. Deterministic replay, empty count and input rejection pass. No asset or external-output requirement."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "repair-reproduction.json",
+        "ui-audit.json"
+      ],
+      "details": "Repaired permutation-invariant repeated-sign shortcut in the hard sqrt3 batch. Relevant/irrelevant counterfactuals and real grader outcomes agree; coverage and conditional shortcut results examined through delivery and presentation."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "progression-records.json",
+        "supplement-grading.json",
+        "render-index.json"
+      ],
+      "details": "Matched radio instances establish supported identity application, unsupported axis recall, then two signed radical coefficients. Blank entry demand is accounted for separately; source moderate/hard anchors and an authored easy exemplar justify progression without oversized arithmetic."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "91c9827accc30c129321f88bc13fda9a8d8edc77a36172fb358a5fac6e5dcf25",
+      "evidence_paths": [
+        "final-easy.json",
+        "math-results.json",
+        "delivery-math.json",
+        "final-grading.json",
+        "engine-refresh.json",
+        "delivery-final-easy/delivery.json",
+        "probes-final-easy.json",
+        "coverage-results.json",
+        "render/rendering.json",
+        "render-index.json",
+        "ui-audit.json"
+      ],
+      "details": "All 5 final records independently checked; all 5 survive captured-basis delivery. 25 native final-band checks pass, repeated on normalized survivors against the final engine; all 5 rendered in the actual UI. Conditional role/shortcut checks and three-band progression pass against this final binding."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "cee6e532aa8bf2b071d7de6ea3a1af12d5e37d9177a4dad6d27da50afa853bbf",
+      "evidence_paths": [
+        "final-moderate.json",
+        "math-results.json",
+        "delivery-math.json",
+        "final-grading.json",
+        "engine-refresh.json",
+        "delivery-final-moderate/delivery.json",
+        "probes-final-moderate.json",
+        "coverage-results.json",
+        "render/rendering.json",
+        "render-index.json",
+        "ui-audit.json"
+      ],
+      "details": "All 5 final records independently checked; all 5 survive captured-basis delivery. 41 native final-band checks pass, repeated on normalized survivors against the final engine; all 5 rendered in the actual UI. Conditional role/shortcut checks and three-band progression pass against this final binding."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "911baef11c034a36c4027d6d809b58c71576dab0578406740e87db1f7d44f6a6",
+      "evidence_paths": [
+        "final-hard.json",
+        "math-results.json",
+        "delivery-math.json",
+        "final-grading.json",
+        "engine-refresh.json",
+        "delivery-final-hard/delivery.json",
+        "probes-final-hard.json",
+        "coverage-results.json",
+        "render/rendering.json",
+        "render-index.json",
+        "ui-audit.json"
+      ],
+      "details": "All 5 final records independently checked; all 5 survive captured-basis delivery. 41 native final-band checks pass, repeated on normalized survivors against the final engine; all 5 rendered in the actual UI. Conditional role/shortcut checks and three-band progression pass against this final binding."
+    }
+  }
+}

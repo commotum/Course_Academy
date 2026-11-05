@@ -1,0 +1,171 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired the easy band to retain triangle-area calculation and subtraction. All nine checks and all three final batches pass, including 289 native grading checks. Imports and level coverage remain unchanged.",
+  "source_analysis": {
+    "skill": "Calculate an enclosing triangle\u2019s area, subtract the given quadrilateral area, and round the missing triangle\u2019s area when required.",
+    "reasoning_steps": [
+      "Identify the enclosing triangle and triangular notch.",
+      "Calculate triangle area from perpendicular sides or two sides and their included angle.",
+      "Subtract the quadrilateral area.",
+      "Round the final result and answer using the stated units."
+    ],
+    "invariants": [
+      "Valid geometry and positive target area.",
+      "The supplied angle lies between the supplied sides.",
+      "The diagram supports the displayed subtraction.",
+      "Every band retains triangle-area calculation and subtraction."
+    ],
+    "permitted_variations": [
+      "Side lengths, included angle and quadrilateral area.",
+      "Consistent vertex relabeling, rotation and units.",
+      "Both larger and smaller missing regions.",
+      "Source-supported radio and numerical-blank responses."
+    ],
+    "source_refs": [
+      "e-3297 / 472216c8-da7d-58fb-9056-e71d5e33460d",
+      "q-18188 / 157038e6-e68d-5ec0-b464-27301542d833",
+      "q-285740 / 1777d556-717d-5159-9602-61018070f640",
+      "q-67794 / bfe01a47-0bae-5ba1-bce0-856215b36fe4",
+      "Tutorial 2465: included-angle area formula.",
+      "Tutorial 13277: base-height derivation."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All 11 complete imported practice banks replayed and independently solved. Partial imports remain unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-math.json",
+        "control-math.json",
+        "counterfactual-math.json",
+        "review_checks.py"
+      ],
+      "details": "Independent calculations and geometry checks pass for all 15 final questions, 96 fresh controls and 14 controlled or boundary cases."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "delivery-stages.json",
+        "control-probes.json",
+        "boundary-rejections.json"
+      ],
+      "details": "Controls cover every supported error profile, target relabeling, rotations and both area proportions. Hard covers acute/obtuse angles and radio/blank responses."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative.json",
+        "scope-negative-result.json"
+      ],
+      "details": "Every served response shape has a complete displayed solution path. An equivalent but unexplained supplementary-angle conversion fails the retained negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading-input.json",
+        "grading.json"
+      ],
+      "details": "Native learner grader passes 289 checks: 69 accepted, 220 rejected and none unresolved. Includes delivered records, equivalent decimal spellings and plausible wrong responses."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "rendering-audit.json",
+        "prose-boundary.json",
+        "render-easy/rendering.json",
+        "render-moderate/rendering.json",
+        "render-hard/rendering.json",
+        "render-active/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-counterfactual-hard/rendering.json"
+      ],
+      "details": "All final screenshots inspected. Every intended equation row, diagram, choice and unit renders correctly; hints render in bold. Shared prose-boundary validation and active-control previews pass."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "final-binding.json",
+        "easy-goal-regression.json",
+        "generator-repair.diff"
+      ],
+      "details": "Exact dependency versions verified. Relocated declared files reproduce all final records deterministically. Strict finalization regenerated all three bands."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivered-probes.json",
+        "ui-position-probes.json",
+        "learner-selection.json"
+      ],
+      "details": "Controlled changes update answers, diagrams, explanations and native outcomes coherently. Exact delivered pools pass tested rank, position and doubled-pair shortcut probes. Delivery and learner-selection limits are documented."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "progression-records.json",
+        "repair-summary.json",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json"
+      ],
+      "details": "Easy retains both operations with guidance; moderate removes that guidance; hard adds general included-angle calculation and final rounding. Authored calibration is distinguished from imported hard labels."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "01b2041921b50dbaf20327a151a81753f011a28de3faffe726948940d442bdc0",
+      "evidence_paths": [
+        "band-easy.json",
+        "final-easy.json",
+        "delivery-easy/delivery.json",
+        "render-easy/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json"
+      ],
+      "details": "All five repaired final questions pass correctness, delivery, native grading, rendering and applicable coverage/shortcut checks."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "d1939ae343a685e1fd71c429404084a08bbb717958175c3e72a9d8863a0ea74f",
+      "evidence_paths": [
+        "band-moderate.json",
+        "final-moderate.json",
+        "delivery-moderate/delivery.json",
+        "render-moderate/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json"
+      ],
+      "details": "All five final questions pass correctness, delivery, native grading, rendering and applicable coverage/shortcut checks."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "753ec3d11efdb44509cbf4cd22eaae57e65abbf1c24f32f94d4b14e6e73a4f6b",
+      "evidence_paths": [
+        "band-hard.json",
+        "final-hard.json",
+        "delivery-hard/delivery.json",
+        "render-hard/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json"
+      ],
+      "details": "All five final questions pass correctness, delivery, native grading, rendering and applicable coverage/shortcut checks. Both angle cases and response forms are present."
+    }
+  }
+}

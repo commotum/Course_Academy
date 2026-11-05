@@ -1,0 +1,146 @@
+{
+  "scope": "Controlled calls to active current trig delivery policy only. Minimal policy fixtures do not establish full publisher acceptance. No DB/publication/generator changes.",
+  "results": [
+    {
+      "label": "nonzero_control",
+      "observed": "accepted",
+      "reason": null,
+      "independent_math": "Antiderivative sin(2x); sin(pi/2)-sin(0)=1.",
+      "record": {
+        "question": {
+          ":question/problem": "Calculate $\\int_0^{\\pi/4} 2\\cos(2x)\\,dx$.",
+          ":question/worked-solution": "$$\n1\n$$",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/key": "answer",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/correct": [
+                ":answer/id",
+                "a"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a",
+                  ":answer/value": "1"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "batch_contract": "trig-substitution-recognition-v6",
+          "family": "def_cos",
+          "support_policy": "mastered-prerequisite-recall",
+          "provided_primitive": false,
+          "provided_endpoint_values": false,
+          "provided_substitution": false,
+          "operation": "evaluate",
+          "parameters": {
+            "slope": "2",
+            "amplitude": "2"
+          },
+          "model": {
+            "substitution": "2*x",
+            "lower": "0",
+            "upper": "pi/4"
+          }
+        }
+      }
+    },
+    {
+      "label": "zero_cancellation_control",
+      "observed": "rejected",
+      "reason": "Zero-result padding is not eligible",
+      "independent_math": "Antiderivative sin(2x); sin(2pi)-sin(0)=0. Same substitution and familiar endpoint operation.",
+      "record": {
+        "question": {
+          ":question/problem": "Calculate $\\int_0^{\\pi} 2\\cos(2x)\\,dx$.",
+          ":question/worked-solution": "$$\n0\n$$",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/key": "answer",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/correct": [
+                ":answer/id",
+                "a"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a",
+                  ":answer/value": "0"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "batch_contract": "trig-substitution-recognition-v6",
+          "family": "def_cos",
+          "support_policy": "mastered-prerequisite-recall",
+          "provided_primitive": false,
+          "provided_endpoint_values": false,
+          "provided_substitution": false,
+          "operation": "evaluate",
+          "parameters": {
+            "slope": "2",
+            "amplitude": "2"
+          },
+          "model": {
+            "substitution": "2*x",
+            "lower": "0",
+            "upper": "pi"
+          }
+        }
+      }
+    },
+    {
+      "label": "canonical_fractional_slope_control",
+      "observed": "rejected",
+      "reason": "No fractional amplitude/slope composition or large coefficients",
+      "independent_math": "Canonical e-464 has exactly this integrand; derivative of -6cos(x/3) is 2sin(x/3). This fixture tests arithmetic policy, not full source replay.",
+      "record": {
+        "question": {
+          ":question/problem": "Calculate $\\int 2\\sin(x/3)\\,dx$.",
+          ":question/worked-solution": "$$\n-6\\cos(x/3)\n$$",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/key": "answer",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/correct": [
+                ":answer/id",
+                "a"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a",
+                  ":answer/value": "-6\\cos(x/3)"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "batch_contract": "trig-substitution-recognition-v6",
+          "family": "indef_sin",
+          "support_policy": "mastered-prerequisite-recall",
+          "provided_primitive": false,
+          "provided_endpoint_values": false,
+          "provided_substitution": false,
+          "operation": "evaluate",
+          "parameters": {
+            "slope": "1/3",
+            "amplitude": "2"
+          },
+          "model": {
+            "substitution": "1/3*x",
+            "lower": null,
+            "upper": null
+          }
+        }
+      }
+    }
+  ]
+}

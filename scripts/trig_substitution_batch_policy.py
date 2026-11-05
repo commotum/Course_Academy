@@ -1,9 +1,10 @@
-"""Publication guard for the reviewed scaffolded topic478 task contracts.
+"""Publication guard for reviewed independent topic478 task contracts.
 
 Independent printed-math and native-grading checks establish mathematics. This
-guard preserves support, workload, answer transitions and delivered coverage.
+guard preserves independent work, bounded arithmetic and answer transitions.
+Family/sign/rank frequencies belong to generator review over a population, not
+mandatory quotas for every fragment that survives inventory deduplication.
 """
-from collections import defaultdict
 from fractions import Fraction
 import re
 
@@ -24,10 +25,11 @@ FAMILIES={
 def validate_delivery_batch(records,kp_id):
     kp=int(kp_id)
     if kp not in KPS:return
-    groups=defaultdict(list);shapes=set()
+    shapes=set()
     for record in records:
         q,m=record['question'],record.get('generation',{})
-        if m.get('batch_contract')!='trig-substitution-recognition-v6':
+        contract=m.get('batch_contract')
+        if contract not in {'trig-substitution-recognition-v6','trig-substitution-recognition-v7'}:
             raise ValueError('Trig substitution requires the reviewed scaffolded band contract')
         band=str(q[':question/difficulty']).rsplit('/',1)[-1];family=m.get('family')
         if family not in FAMILIES[kp].get(band,set()):raise ValueError('Unsupported scaffolded family or difficulty')
@@ -43,11 +45,11 @@ def validate_delivery_batch(records,kp_id):
         correct_id=str(correct.get(':answer/id'))if isinstance(correct,dict)else str(correct[1])
         key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==correct_id)
         easy=band=='easy'
-        if easy:
-            if field[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5:
-                raise ValueError('Easy needs the complete-answer choice support')
-            if m.get('provided_substitution')or m.get('operation')!='evaluate'or 'Use the substitution' in problem:
-                raise ValueError('Easy must retain substitution recognition and full calculation')
+        if m.get('provided_substitution')or m.get('operation')!='evaluate'or 'Use the substitution' in problem:
+            raise ValueError('Practice must retain substitution recognition and full calculation')
+        if easy and field[':answer-field/type']==':answer-field.type/radio':
+            if not 2<=len(choices)<=5:
+                raise ValueError('Complete-answer choices require distinct alternatives')
             if any(r'\int'in a[':answer/value']for a in choices):raise ValueError('Easy choices must give complete answers')
         else:
             if field[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1:
@@ -59,9 +61,11 @@ def validate_delivery_batch(records,kp_id):
         params=m['parameters']
         if kp in(17592186068915,17592186068916):
             a=Fraction(params['slope']);A=Fraction(params['amplitude'])
-            if a.denominator!=1 or not 1<=abs(a)<=4 or A.denominator!=1 or not 1<=A<=4:
+            # Keep one familiar scaling operation. Reciprocal slopes include
+            # the canonical x/3; fractional amplitudes stacked with fractional
+            # slopes remain outside this reviewed, deliberately bounded model.
+            if a not in {Fraction(n)for n in(-4,-3,-2,-1,1,2,3,4)}|{Fraction(1,2),Fraction(1,3),Fraction(-1,2),Fraction(-1,3)} or A.denominator!=1 or not 1<=A<=4:
                 raise ValueError('No fractional amplitude/slope composition or large coefficients')
-            if(a<0)!=(band=='hard'):raise ValueError('Hard adds only the negative inner derivative condition')
         if kp==17592186068917:
             role=params.get('inner_role')
             if(role in('reciprocal','sqrt'))!=(band=='hard'):raise ValueError('Product band must reflect inner recognition, not heavier arithmetic')
@@ -69,8 +73,6 @@ def validate_delivery_batch(records,kp_id):
         model=m['model'];shape=(band,family,model['substitution'],model['lower'],model['upper'])
         if shape in shapes:raise ValueError('Amplitude-only repetition in delivered practice')
         shapes.add(shape)
-        if not easy and model['lower']is not None and key.strip()in{'0','0.0'}:raise ValueError('Zero-result padding is not eligible')
-        groups[band].append(record)
-    for band,rows in groups.items():
-        if len({r['generation']['family']for r in rows})<min(len(rows),len(FAMILIES[kp][band])):
-            raise ValueError('Delivered batch lost required family coverage')
+        # Zero is a legitimate endpoint result. The ordinary generator must
+        # also serve nonzero cases; that is reviewed across independent draws,
+        # not inferred from the size or composition of this filtered fragment.

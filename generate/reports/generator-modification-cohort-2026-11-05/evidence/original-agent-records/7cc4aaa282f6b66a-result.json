@@ -1,0 +1,207 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired conditional choice-position, numerical-rank and fixed-answer cues. All nine checks and all three final batches pass; 675 grading responses were rerun against the newly finalized shared engine.",
+  "source_analysis": {
+    "skill": "Evaluate exact sine values by decomposing a nonspecial angle into two special angles and applying the sine sum or difference identity.",
+    "reasoning_steps": [
+      "Identify supplied decomposition, or construct one if unhinted.",
+      "Apply sin(a\u00b1b)=sin(a)cos(b)\u00b1cos(a)sin(b).",
+      "Retrieve quadrant-correct special values.",
+      "Simplify radical products and combine into an exact answer."
+    ],
+    "invariants": [
+      "Sine sum/difference evaluation only, not cosine/tangent evaluation or symbolic-variable expansion.",
+      "Special-angle components with manageable radicals and signed quadrant values.",
+      "Solutions show identity, special values, arithmetic and final answer.",
+      "No decimal approximation substitutes for an exact answer."
+    ],
+    "permitted_variations": [
+      "Degree/radian presentation with the same angular value.",
+      "Sum versus difference, component order where valid, different supported special angles.",
+      "Positive/negative target and small/large magnitude sine; qualifying answer sign and radical sum/difference are incidental, not fixed.",
+      "Choice positions and plausible mistake profiles; hint presence and response demand according to band."
+    ],
+    "source_refs": [
+      "e-3519 / 7341638b-3c0f-5c10-8b7d-a2c313607bed",
+      "q-1708 / d93d90d2-8105-59cb-a801-47640240ddbd",
+      "q-65430 / 4bf1dbaf-6e61-5607-8543-7f1dda28cf3f",
+      "q-332158 / 2f345820-3d37-51b7-9bb6-51dedb3880f8",
+      "q-332159 / 16e4e461-f621-53d1-96fa-7b2df72cfebc",
+      "q-274557 / 996eb380-c7f3-58b2-8258-bc17318d5244",
+      "q-65427 / 585e18d7-2aa5-5d3f-86ad-587ffce85678",
+      "q-119007 / 97e8e577-5bc3-50c1-b8c6-66747cc71a22",
+      "tutorial a8b2cde2-4c10-51d6-b6f7-3b2a941a1d98 Introduction: These identities can be used to calculate the sine of an angle which is the sum or difference of two special angles.",
+      "tutorial 93e513c3-90cf-588d-84a3-ed0b82e82401: cos(-B)=cos B, sin(-B)=-sin B."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "verify.py"
+      ],
+      "details": "Seven complete practice cases reproduce all 23 bank values mathematically, keyed values, response shapes, hint status and taught solution stages. The incomplete import remains partial source evidence and unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "bank-counterexample-math.json",
+        "verify.py"
+      ],
+      "details": "Independent SymPy checks read visible targets and every displayed derivation row, not generator answer metadata; each bank has one correct distinct exact value. All final records and normalized survivors pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "stage-measurements.json",
+        "shortcut-measurements.json",
+        "generator-repair.diff"
+      ],
+      "details": "All four product-sign outcomes occur in every final band and its survivors. Sum/difference, unit-circle components, targets, error profiles and responses vary. Finite catalog exhausts 96/192/15 distinct semantics before repeating; limits are explicit."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json",
+        "scope-negative-record.json",
+        "bank-counterexample-math.json"
+      ],
+      "details": "Guided radio, guided exact-entry and unhinted radio each show decomposition, sine identity, signed values, radical products and final combination. No residual hidden conversion; the equivalent but unshown argument-reversal negative control fails as intended."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "engine-refresh-grading.json",
+        "engine-refresh-grader-input.json",
+        "engine-refresh-command.json",
+        "engine-refresh-evidence.json"
+      ],
+      "details": "All 675 native learner responses rerun against the current finalized engine: 194 accepted, 481 rejected, zero unresolved. Includes every final radio choice in all three bands, equivalent radical entries, wrong signs/denominators, normalized delivery survivors and controlled counterfactuals. Live engine identity confirmed before and after grading."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "visual-inspection.json",
+        "final-batch-contact-sheet.png",
+        "scroll-audit-result.json",
+        "scroll-render/rendering.json"
+      ],
+      "details": "Actual UI renders all 15 final questions plus 12 source/matched/counterfactual cases. Exact equation-container counts and five actual aligned rows account for every formula. Bold/italic emphasis displays; no raw TeX, lost row breaks or visible stars. Long radian expansions are accessible by native horizontal scrolling, checked on final records."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "commands.json",
+        "binding-confirmation.json",
+        "final-binding.json",
+        "position-after-generator.json",
+        "engine-refresh-evidence.json",
+        "engine-refresh-position.json"
+      ],
+      "details": "Declared stdlib-only Python 3.13.5 runtime matches installed version; bundled formatter equals shared implementation. Relocation and deterministic replay pass. Original runner seeds/counts retained; no assets, services, database writes or shared-code repair required."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-measurements.json",
+        "position-before.json",
+        "rank-before.json",
+        "position-after-generator.json",
+        "position-final-survivors.json",
+        "repair-note.json",
+        "engine-refresh-evidence.json",
+        "engine-refresh-grading.json",
+        "engine-refresh-position.json"
+      ],
+      "details": "Repaired demonstrated conditional ordinal and numerical-rank/fixed-value cues in batch construction. Controlled relevant/irrelevant changes pass actual rendering and grading. Repeated cue groups vary in all final and fresh delivered pools. Known exact-family-plus-bounds reasoning is separately identified as inherent mathematical recognition, also successful on complete original banks."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "matched-progression.json",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json"
+      ],
+      "details": "Source-supported support progression verified across all bands: guided recognition, guided exact production/alternate radio, unhinted decomposition. Arithmetic remains manageable. Response-form overlap and sparse hard calibration are stated explicitly."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "c3a29e8d9f4cfd609da7577b08205f65673f1171574eef085faaf457f23a83b2",
+      "evidence_paths": [
+        "final-easy.json",
+        "delivery-easy/accepted.json",
+        "delivery-easy/delivery.json",
+        "math-results.json",
+        "engine-refresh-grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "visual-inspection.json",
+        "scroll-render/rendering.json",
+        "shortcut-measurements.json",
+        "position-final-survivors.json",
+        "progression.json",
+        "engine-refresh-evidence.json"
+      ],
+      "details": "Five final deterministic records; all five survive captured-inventory delivery. All four sign/magnitude outcomes retained. Independent visible math/path, actual learner grading, actual UI and conditional shortcut checks pass against the same final package and engine. Grading rerun under the current finalized engine; identical content and unaffected rendering/delivery evidence reconfirmed."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "f903f4360385f76a8c0b7789a8cb6b0d0956317382b079c2acd768687f2c67d2",
+      "evidence_paths": [
+        "final-moderate.json",
+        "delivery-moderate/accepted.json",
+        "delivery-moderate/delivery.json",
+        "math-results.json",
+        "engine-refresh-grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "visual-inspection.json",
+        "scroll-render/rendering.json",
+        "shortcut-measurements.json",
+        "position-final-survivors.json",
+        "progression.json",
+        "engine-refresh-evidence.json"
+      ],
+      "details": "Five final deterministic records; all five survive captured-inventory delivery. All four sign/magnitude outcomes retained. Independent visible math/path, actual learner grading, actual UI and conditional shortcut checks pass against the same final package and engine. Grading rerun under the current finalized engine; identical content and unaffected rendering/delivery evidence reconfirmed."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "9fc2092946fa324d27458debb08b91fcaa765a53824eb7c70fa807224d35136a",
+      "evidence_paths": [
+        "final-hard.json",
+        "delivery-hard/accepted.json",
+        "delivery-hard/delivery.json",
+        "math-results.json",
+        "engine-refresh-grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "visual-inspection.json",
+        "scroll-render/rendering.json",
+        "shortcut-measurements.json",
+        "position-final-survivors.json",
+        "progression.json",
+        "engine-refresh-evidence.json"
+      ],
+      "details": "Five final deterministic records; all five survive captured-inventory delivery. All four sign/magnitude outcomes retained. Independent visible math/path, actual learner grading, actual UI and conditional shortcut checks pass against the same final package and engine. Grading rerun under the current finalized engine; identical content and unaffected rendering/delivery evidence reconfirmed."
+    }
+  }
+}

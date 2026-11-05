@@ -49,9 +49,10 @@ Pass the complete generated record as `record`. For radio/select/checkbox, use
 `submitted_answer_id` with an authored choice UUID instead of `submitted`.
 For checkbox fields, choose the UUID whose stored value is `true` or `false`,
 as the UI does. For blank responses use a string `submitted`.
-Expected outcomes are `accepted`, `rejected`, or explicitly justified `unresolved`.
-`field_index` defaults to zero. The tool fails on an unexpected outcome and saves
-all checked responses on success. Test plausible wrong responses and independently
+Expected outcomes are `accepted`, `rejected`, or explicitly justified `unresolved`. An unresolved valid response is a limitation and cannot substitute for a successful positive case; an accepted review needs substantive accepted and rejected coverage.
+`field_index` defaults to zero. The tool rejects empty coverage, fails on an unexpected outcome and saves
+checked responses with input/record fingerprints and runtime identity. Keep the
+recognized report intact so review can bind its checks to actual final records. Test plausible wrong responses and independently
 chosen valid equivalents. Exact value equivalence does not satisfy an explicit
 "simplest form" instruction when the submitted fraction is unreduced. The harness
 source is `generate/runs/current/check-engine.rs` if a specific interface gap needs
@@ -59,8 +60,62 @@ inspection; do not replace it with a homemade grader.
 
 ## Actual UI rendering
 
-Use `generate/pipeline/render_preview.py` as specified in the job prompt. Input
-must be an array of complete generated records, not a counterfactual/report object.
-For localized `accepted.json`, pass `--asset-root <delivery_output/assets>`.
-Inspect its screenshots and concise `rendering.json` results; reuse the installed
-runtime and browser. Rendering success does not certify math or grading.
+```sh
+python3 <repo_root>/generate/pipeline/render_preview.py \
+  --input <records.json> --output <evidence_root/render> \
+  --asset-root <generated_asset_directory> --math-root <math_root> \
+  --state both --viewport 1280x1000
+```
+
+Input is an array of complete generated records, not counterfactual/report objects.
+For localized `accepted.json`, use `--asset-root <delivery_output/assets>`.
+`--state active|completed|both` selects unanswered questions, completed solutions,
+or both (default). Repeat `--viewport WIDTHxHEIGHT` for a relevant narrow layout.
+Use `--indices` with comma-separated zero-based indices for representative coverage;
+`--limit` remains available and omitted inputs are recorded. Select materially
+different task/support/response layouts rather than relying on the first records.
+
+Inspect screenshots, open dropdown content and `rendering.json`; the helper uses
+the actual unmodified UI, installed browser, MathJax and image decoding. Successful
+DOM/typesetting checks do not establish readability, correct cells or absence of
+answer-revealing prompt/choice annotations. Active and completed states support
+different claims. Keep recognized reports and record fingerprints intact; cite
+reports for actual final raw or delivered records. Rendering cannot certify math
+or grading.
+
+## Shared repository repairs
+
+For a shared repository repair, stage a unified diff against the current files under your own workspace without first applying it to the shared tree. Run the argv in `shared_repair_command` from context with `--patch <workspace/repair.patch>` and one or more `--check-json '["executable","argument",...]'` options. The helper serializes the shared edit and its regression commands and reverses your patch if a check fails. It also restores the previous native grader binary; list any other rebuilt output with repeated `--artifact <repo-relative-path>` options so those files are restored on failure too. Resolve any patch conflict yourself by reading the current files, updating the patch, and retrying the relevant checks. Keep ownership of the repair; do not create another handoff. This coordination is only for shared code such as the renderer or engine. Edit your own KP package and evidence directly.
+
+For engine changes, reproduce a valid-response rejection or wrong-response
+acceptance in the native grader, repair the actual rule and retain acceptance and
+rejection regressions. Rebuild the harness used here before rerunning. Never
+special-case a question, bypass grading or restart live services. Apply equivalent
+failure-preserving checks to renderer, delivery or packaging rules.
+
+## Evidence and report validation
+
+Save full inputs, recognized tool reports and reproducible commands under the
+workspace/evidence root; print summaries and failures. Accepted review evidence
+must identify final records actually tested. Native grading needs nonempty positive
+and negative coverage. Each final band cites its matching delivery report plus
+recognized grader and render reports for raw or delivered records. Representative
+checks are allowed; the verifier still accounts for all material families and
+limitations. Report status and file existence alone do not establish those claims.
+
+Keep the initial `source-analysis.json` unchanged. Conceptual amendments belong in
+`source-analysis-amendments.json`, using the reviewer prompt’s schema and linking
+the initial hash to the final substantive account. `solution-paths.json` needs a
+conversion negative control only for cases with a necessary conversion; unrelated
+CAS/trig examples are not required for direct answers.
+
+After finalizing and inspecting the actual candidate, validate the report:
+
+```sh
+python3 <repo_root>/scripts/generator_review.py \
+  --result <evidence_root>/final-result.json --evidence-root <evidence_root>
+```
+
+Correct evidence/report errors in the same verifier session. Reuse unaffected
+checks and expand samples only for a demonstrated gap. Do not relabel an unresolved
+valid response or unexamined applicable stage as passed to satisfy the contract.

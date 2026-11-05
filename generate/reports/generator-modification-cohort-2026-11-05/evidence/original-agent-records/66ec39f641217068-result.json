@@ -1,0 +1,173 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired a positive-label shortcut in deterministic hard-batch construction. All nine checks and all three finalized five-question batches passed. Imported content and level coverage remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify which proposed constant functions satisfy an autonomous differential equation by checking the original domain and evaluating the equation with derivative zero.",
+    "reasoning_steps": [
+      "Set the derivative of a constant function to zero.",
+      "Rearrange the equation or compare its original sides.",
+      "Reject undefined candidates and select exactly those satisfying the equation."
+    ],
+    "invariants": [
+      "Preserve equilibrium identification among supplied constants.",
+      "Derive every checkbox key from the displayed original equation.",
+      "Require neither integration nor stability analysis."
+    ],
+    "permitted_variations": [
+      "Vary qualifying constants, candidate order, signs and selected subset size.",
+      "Vary supported polynomial, rational, trigonometric and logarithmic expressions.",
+      "Increase rearrangement and domain decisions while keeping arithmetic manageable."
+    ],
+    "source_refs": [
+      "aeb0ab38-6a30-586d-bcb4-8d3c6b8c9d9b: canonical equilibrium substitution example.",
+      "73083626-cc38-5982-9c18-9459efa65b4d: cubic substitution.",
+      "09328241-3b39-5707-a62b-8ca38e3a3a9c: rational equation and multiple qualifying constants.",
+      "c7b0ec58-a026-543f-8622-101c6f9cdc96: sine evaluation.",
+      "7617131b-e756-503f-ac7c-f76ae1870fab: logarithm evaluation.",
+      "Tutorial 7dde60b1-7c40-56b1-a9d9-88b38866c838: equilibrium criterion f(c)=0."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-equations.json",
+      "source-replay-results.json",
+      "exemplar-checks.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-equations.json",
+        "exemplar-checks.json"
+      ],
+      "details": "Five complete imported banks match equations, candidates and Boolean alternatives. Partial imports remain unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-math.json",
+        "grader-input.json",
+        "audit.py"
+      ],
+      "details": "Independent displayed-equation substitution and original-domain checks agree with every final key and worked result."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-regression.json",
+        "selection-stages.json",
+        "shortcut-measurements.json"
+      ],
+      "details": "Fresh seeds, served families, deterministic replay and count boundaries passed. Eligible mathematical cases remain available."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "negative-control.json"
+      ],
+      "details": "All served families and final fields have supported solution paths. An equivalent but unshown sine rewrite is retained and rejected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading.json",
+        "grader-input.json",
+        "grading-command.json"
+      ],
+      "details": "Native learner grading passed 270 valid and 270 wrong submissions across 90 records, including all final questions and controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "render/question-001.png",
+        "render/question-006.png",
+        "render/question-011.png",
+        "render/question-031.png"
+      ],
+      "details": "All 31 records rendered through the actual UI. Every intended math span and aligned row survived; emphasis rendered correctly. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-binding.json",
+        "final-identity-check.json",
+        "relocation.json",
+        "generator-repair.diff",
+        "report-validation.json"
+      ],
+      "details": "Final package, runtime copies and engine match the binding. Relocation and exact dependency versions passed. The report validator accepted the report."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "before-repair-regression.json",
+        "after-repair-regression.json",
+        "selection-stages.json"
+      ],
+      "details": "The original hard rational subgroup admitted a positive-only selection shortcut. Deterministic batch resampling repairs it at the same seed. No tested label-only action answers every member of a repeated final family or profile."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "controlled.json",
+        "exemplar-checks.json"
+      ],
+      "details": "Easy supplies the criterion, moderate adds recall and rearrangement, and hard adds original-domain validity decisions. All retain the same checkbox identification task. Moderate and hard are authored extensions without empirical calibration claims."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "79fc9dae6b83047d1c13f30a017bb1d5b9efc7467fbdb4cbc1ca8b3d782462bf",
+      "evidence_paths": [
+        "final-easy.json",
+        "final-math.json",
+        "grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "delivery-easy/delivery.json",
+        "shortcut-measurements.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 4063690431: all five final questions passed correctness, grading, rendering and applicable shortcut checks; delivery retained five."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "41fb4e997d96d7984955354a6722c8ddb9faa87a21a8b73ac3f51af581e0be8e",
+      "evidence_paths": [
+        "final-moderate.json",
+        "final-math.json",
+        "grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "delivery-moderate/delivery.json",
+        "shortcut-measurements.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 4063690433: all five final questions passed correctness, grading, rendering and applicable shortcut checks; delivery retained five."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "0eac3581743fff2c6b32363287b92c2b218c912d4b8d90fbf690849064b024f6",
+      "evidence_paths": [
+        "final-hard.json",
+        "final-math.json",
+        "grading.json",
+        "render/rendering.json",
+        "render-boundary-audit.json",
+        "delivery-hard/delivery.json",
+        "shortcut-measurements.json",
+        "after-repair-regression.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 4063690434: repaired batch construction passed the preserved counterexample regression. All five final questions passed correctness, grading, rendering and applicable shortcut checks; delivery retained five."
+    }
+  }
+}

@@ -5,6 +5,12 @@ from pathlib import Path
 import re
 import sys
 import uuid
+import hashlib
+
+try:
+    from .generator_evidence import FORMATS, validate_tool_report
+except ImportError:
+    from generator_evidence import FORMATS, validate_tool_report
 
 
 REVIEW_POLICY_VERSION = 6
@@ -12,6 +18,7 @@ DIFFICULTIES = ("easy", "moderate", "hard")
 CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging", "progression")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
                  "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")
+SOURCE_FIELDS = ('skill', 'reasoning_steps', 'invariants', 'permitted_variations', 'source_refs')
 
 
 def evidence_only_review(result):
@@ -148,6 +155,93 @@ def _solution_path_evidence(check, root):
                 _text(conversion.get(key), "solution_path.conversion." + key)
             if conversion.get("status") != "passed":
                 raise ValueError("solution path contains an unsupported or unshown conversion")
+        # A conversion control is applicable only when this path changes form.
+        # No fabricated CAS/trig exercise is required for a direct answer path.
+        if conversions:
+            control = case.get('conversion_control')
+            if not isinstance(control, dict):
+                raise ValueError('solution path with conversions requires conversion_control')
+            for key in ('candidate', 'reason', 'observed'):
+                _text(control.get(key), 'solution_path.conversion_control.' + key)
+            if control.get('status') != 'passed':
+                raise ValueError('solution path conversion control is failed or untested')
+            _evidence(control.get('sample_refs'), root, 'solution_path.conversion_control.sample_refs', required=True)
+
+
+def _source_account(value, label):
+    if not isinstance(value, dict):
+        raise ValueError(label + ' must be an object')
+    _text(value.get('skill'), label + '.skill')
+    for field in SOURCE_FIELDS[1:]:
+        _strings(value.get(field), label + '.' + field, required=True)
+    return {field: value[field] for field in SOURCE_FIELDS}
+
+
+def _source_analysis_evidence(analysis, root):
+    """Keep the initial independent account distinct from later justified changes."""
+    root = Path(root)
+    initial_path = root / 'source-analysis.json'
+    try:
+        initial = _source_account(json.loads(initial_path.read_text()), 'initial source analysis')
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError('independent source analysis must be readable JSON') from error
+    final = _source_account(analysis, 'source_analysis')
+    amendment_name = 'source-analysis-amendments.json'
+    if amendment_name not in analysis['evidence_paths']:
+        if final != initial:
+            raise ValueError('changed source analysis requires linked source-analysis-amendments.json')
+        return
+    amendment = json.loads((root / amendment_name).read_text())
+    if not isinstance(amendment, dict) or amendment.get('initial_sha256') != hashlib.sha256(initial_path.read_bytes()).hexdigest():
+        raise ValueError('source analysis amendment does not match the preserved initial account')
+    if _source_account(amendment.get('final_source_analysis'), 'amended source analysis') != final:
+        raise ValueError('amended source analysis differs from final report')
+    changes = amendment.get('amendments')
+    if not isinstance(changes, list) or not changes:
+        raise ValueError('source analysis amendments require a reason and evidence')
+    for change in changes:
+        if not isinstance(change, dict):
+            raise ValueError('source analysis amendment must be an object')
+        _text(change.get('reason'), 'source analysis amendment reason')
+        _strings(change.get('source_refs'), 'source analysis amendment source_refs', required=True)
+        _evidence(change.get('evidence_paths'), root, 'source analysis amendment evidence_paths', required=True)
+
+
+def _tool_evidence(result, root, binding):
+    """Require recognized inputs/results while leaving semantic sufficiency to review."""
+    root = Path(root)
+    reports = {}
+    paths = set()
+    for check in result['checks'].values():
+        paths.update(check['evidence_paths'])
+    for band in result['band_verification'].values():
+        paths.update(band['evidence_paths'])
+    # Delivery may be linked from the existing variation evidence.
+    variation = json.loads((root / 'pedagogical-variation.json').read_text())
+    paths.update(variation['delivery']['sample_refs'])
+    for path in paths:
+        report = validate_tool_report(root / path, root, engine_sha256=binding.get('grader_sha256'))
+        if report is not None:
+            reports[path] = report
+    for kind in ('grading', 'rendering'):
+        if not any(FORMATS[reports[path]['format']] == kind for path in result['checks'][kind]['evidence_paths'] if path in reports):
+            raise ValueError(kind + ' requires a recognized input-bound tool report')
+    delivery_paths = set(result['checks']['decision_variation']['evidence_paths']) | set(variation['delivery']['sample_refs'])
+    if not any(FORMATS[reports[path]['format']] == 'delivery' for path in delivery_paths if path in reports):
+        raise ValueError('decision_variation requires a recognized delivery report')
+    for band, claim in result['band_verification'].items():
+        cited = [reports[path] for path in claim['evidence_paths'] if path in reports]
+        deliveries = [r for r in cited if FORMATS[r['format']] == 'delivery' and r['batch_sha256'] == claim['batch_sha256']]
+        if not deliveries:
+            raise ValueError(f'{band} requires delivery evidence for its final batch')
+        records = set()
+        for report in deliveries:
+            records.update(report['record_sha256'])
+            records.update(report['accepted_record_sha256'])
+        for kind in ('grading', 'rendering'):
+            relevant = [r for r in cited if FORMATS[r['format']] == kind and set(r['checked_record_sha256']) & records]
+            if not relevant:
+                raise ValueError(f'{band} requires {kind} evidence on actual final records')
 
 
 def _inventory_evidence(root):
@@ -247,12 +341,7 @@ def validate_review(result, evidence_root, binding=None):
     if accepted and "source-analysis.json" not in analysis["evidence_paths"]:
         raise ValueError("accepted review requires independent source-analysis.json")
     if accepted:
-        try:
-            saved_analysis = json.loads((Path(evidence_root) / "source-analysis.json").read_text())
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
-            raise ValueError("independent source analysis must be readable JSON") from error
-        if not isinstance(saved_analysis, dict) or not saved_analysis:
-            raise ValueError("independent source analysis must be a nonempty JSON object")
+        _source_analysis_evidence(analysis, evidence_root)
     checks = result.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(CHECKS):
         raise ValueError("review must contain exactly the nine named checks")
@@ -273,6 +362,10 @@ def validate_review(result, evidence_root, binding=None):
     if checks["scope"]["status"] == "passed":
         _solution_path_evidence(checks["scope"], evidence_root)
     _band_verification(result, evidence_root, binding, accepted)
+    if accepted:
+        if binding is None:
+            binding = json.loads((Path(evidence_root) / 'final-binding.json').read_text())
+        _tool_evidence(result, evidence_root, binding)
     findings = result.get("findings")
     if not isinstance(findings, list):
         raise ValueError("findings must be a list")

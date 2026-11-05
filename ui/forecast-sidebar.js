@@ -1,6 +1,6 @@
 import { withForecastGoal, courseCompletionEstimates } from './forecast.js';
 
-const cacheKey = 'course-academy.forecast.v1';
+const cacheKey = 'course-academy.forecast.v2';
 let savedForecast, pendingForecast;
 const localDay = () => { const now = new Date(); return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(); };
 function cachedForecast() {

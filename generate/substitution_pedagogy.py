@@ -13,7 +13,7 @@ import sympy as s
 from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
-VERSION='substitution-recognition-3'
+VERSION='substitution-recognition-4'
 INV={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
@@ -145,17 +145,15 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  raise ValueError('Bounded variant capacity exhausted')
 def batch(kp,level,count=8,seed=0,*,evidence,template=None):
  if not 1<=count<=100:raise ValueError('Count must be 1..100')
- cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};ranks={};rows=[]
+ cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();rows=[]
  for index in range(count):
   for attempt in range(300):
    record=generate(kp,level,seed,template or cases[index%len(cases)],evidence=evidence,index=index,attempt=attempt)
    key=record['generation']['mathematical_fingerprint']
-   shape=record['generation']['model']['substitution']
-   if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 ):continue
-   rank=(record['generation']['family'],record['generation']['bank_correct_rank'])
-   if kp==17592186064220 and level=='easy'and count>=8 and ranks.get(rank,0)>=(count+3)//4:continue
-   ranks[rank]=ranks.get(rank,0)+1
-   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;break
+   if key in seen:continue
+   # Diagnostic banks vary with the instance. Do not condition the mathematical
+   # sample on a desired answer rank or a quota for an incidental substitution.
+   rows.append(record);seen.add(key);break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows
 

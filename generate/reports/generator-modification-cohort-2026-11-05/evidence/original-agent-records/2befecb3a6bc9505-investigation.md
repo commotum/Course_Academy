@@ -1,0 +1,38 @@
+# Investigation: Simplifying Expressions in Radians Using the Sum and Difference Formulas
+
+KP **17592186059820**, UUID `4b12a7b7-1df3-5203-934e-8820604de3de`. Evidence is the supplied math snapshot at basis **7431**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. No database queries or publication were performed.
+
+The learner must select the sine sum or difference identity, assign the variable and fixed-angle roles, evaluate the fixed angle's sine and cosine, and simplify the coefficients of sin x and cos x. The target does not ask for solving x, proving the identities, expanding cosine, or calculating a wholly numerical unusual angle.
+
+## Evidence and retained instruction
+
+I read the target canonical example `0ce71d86-7470-5d53-ac94-20b473889dee` (sin(x+pi/6)), all 16 supplied practice records and their answer banks/solutions, and the complete supplied lesson. Its introduction presents both identities; the lesson proceeds through exact values, degree expressions, this radian KP, and identity proofs. The proofs use cosine differences/cofunctions and even/odd identities, but those are explanatory context, not additional operations to assess here. The explicit prerequisite list is empty; necessary skills inferred from the examples are radian special-angle values, quadrant signs, signed arithmetic, and radical fractions. No formal prerequisite links were invented. The image manifest and all relevant content contain no diagrams; plot requirement is **none**.
+
+Observed coverage remains **moderate, hard**: 2 complete moderate and 12 complete hard questions, no complete easy. Source eligibility excludes no questions. The partial records `aa051443-506f-5b2c-acc8-7a5ef1eab5aa` (sin(x+pi), five radio choices, no key/solution/difficulty) and `dbad6380-b2bb-5055-b266-ec9ed286c5de` (sin(x-pi/6), solution but no fields) remain exactly as supplied. These are partial evidence, not defects.
+
+Moderate examples `78f7a073-b897-5930-bd54-7d5e600e42be` and `7d2e5f2f-dd16-5fbd-88cd-c72fe86e0b28` use axis angles: one five-choice radio field versus two coefficient blanks, including zero. Hard examples retain both terms with exact radical coefficients, using five-choice radio answers (e.g. `f043b7ca-be08-556b-94ec-1d757642bb0f`, `1e29af52-e62f-515a-a6c0-ecb0bc3bcf41`) or two coefficient blanks (e.g. `78623ec6-7143-54b5-8ec3-a1bf17721f5e`, `f6d9223e-755f-520e-aa29-e860e8e723c3`). Sum/difference, quadrant, and field-sign patterns vary; the complete values and layouts are preserved in `source-question-ledger.json`. These are two prompt/response structures per observed band, with axis-angle collapse versus two surviving terms as the mathematical distinction. Radio banks differ: some distinguish opposite signs and swapped functions, others add wrong special-angle coefficients. They must not be reduced to a single mandatory distractor recipe.
+
+The imported hard solution `85585a6b-0c0e-5963-819c-40902d9e809c` starts its aligned expansion with x+pi/6 although the prompt and evaluated values use x+4pi/3. The latter angle is mathematically intended. This copied left-side typo was documented and avoided, without editing the import.
+
+## Reference progression and adaptation
+
+Reference KP **17592186054787** assesses distributing over negative terms and collecting like terms. Easy `e47c7dff-9b13-5c86-8db2-973382940a0f` and `5d0b6029-5d16-5038-805d-6574595234a2` have a left-hand multiplier and one collection. Moderate `e474bc44-1cd0-59d9-b243-4f2f3cc65ac2` and `7ece68ae-b0bf-5eed-aec9-db4933ac6a74` place the multiplier on the right and reorder terms; this is a modest recognition change, not an entirely new skill. Hard `fadc73be-dedf-5384-82b7-e3c8b9123466` and `4d334025-0c34-5846-8199-851ecb05753e` require collecting both constants and variable terms. Both radio and coefficient blanks occur across levels: response type alone does not determine difficulty. Their distribution/collection explanations appear afterward, not as hints before answering.
+
+The adaptation preserves one core operation while reducing support and increasing the sign decisions that must be coordinated. Larger angles or coefficients alone are not difficulty criteria. Exactly three complete ordinary questions are in `exemplars.json`:
+
+| Level / fresh question ID | Before answering | Response / result |
+| --- | --- | --- |
+| Easy `a28dca8b-5e61-465b-89bf-e9bc3689100f` | Apply the supplied sum identity and supplied pi/2 values; identify the vanishing term. This added support establishes an entry level absent from imports. | Five radio choices; sin(x+pi/2)=cos x. |
+| Moderate `5fad4912-9b10-4895-8f85-775e4c100eaf` | Recall the difference identity and pi values independently; preserve the negative surviving coefficient and zero term. | Two blanks for sin(x-pi): -1, 0. |
+| Hard `6e263ebf-2a7f-460f-ac11-899b47b0e584` | Recall the difference identity, find quadrant III values at 4pi/3, and coordinate the outer subtraction with negative sine. Both terms survive. | Two signed exact coefficient blanks: -1/2, sqrt(3)/2. |
+
+Only easy supplies the formula and values in the prompt. Moderate/hard formula reminders, quadrant explanations, substitution, and simplification appear in the worked solution afterward. This matters: a detailed solution does not scaffold the learner's initial answer. All questions retain radians, sine expansion, source radio/coefficient contracts, and the recall → substitution → simplification solution sequence. No source provenance IDs, authored labels, or tags were added.
+
+## Checks and limits
+
+- `verify_exemplars.py` validates the complete final records and each difficulty through the publisher's offline prepare path: **one accepted per band, no duplicates**. It uses only supplied snapshots, with no publication.
+- Independent exact reasoning: a quarter-turn gives cos x; a half-turn gives -sin x. For hard, x-4pi/3 is coterminal with x+2pi/3. Evaluating at x=0 and x=pi/2 isolates coefficients sqrt(3)/2 and -1/2 respectively, confirming the authored expansion independently. A 101-point numerical check per question supplements this reasoning; it is not an identity proof. See `independent-math.json` and its input hashes.
+- Actual native `learning::grade_field`: **27 checks, 11 accepted, 16 rejected, zero unresolved**. Every easy option was tested. Both blanks at each other level were checked with correct values, equivalent fractions/radical notation, and plausible sign, swapped-coefficient, zero/one, and missing-denominator errors. See `grader-cases.json` and `grading.json`. The first harness invocation required lookup references rather than pulled answer objects; final keys use the supported `[:answer/id, UUID]` format. No shared code repair was necessary.
+- `generate/pipeline/render_preview.py` rendered all final records through the unmodified learning UI. I inspected all three full-page screenshots and their reports: formulas, fractions, radicals, five radio options, both pairs of coefficient controls, feedback, and complete solutions were readable and unclipped. All reports passed, with no raw TeX, math/JavaScript errors, broken images, or internal field labels. There are no select fields or dropdown menus. Evidence is under `rendering/`.
+
+These three exemplars establish progression, not a tested generator or proof of broad practice diversity. A subsequent generator should vary supported angle, operator, quadrant, vanishing term, and signed coefficient roles without introducing other trig identities or assuming the same coefficient sign pattern always occurs. Imported coverage and incomplete records remain unchanged. New assets and shared repairs: none.

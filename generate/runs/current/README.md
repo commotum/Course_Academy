@@ -1,3 +1,5 @@
+> Historical campaign instructions at captured basis 1356, retained for provenance. Current generation uses [the pipeline guide](../../README.md), [principles](../../principles.md), and `generate/pipeline` role prompts. The native grader harness stored here remains supported; these campaign constraints do not govern new jobs.
+
 # Candidate generator run
 
 The user's requested 120 topics contain **384 distinct KPs** at the captured `math` database basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. [candidates.json](candidates.json) is the finder result; [manifest.json](manifest.json) tracks each individual KP assignment and independent QA. All work stops after generator/plot creation and validation (steps 3–7); no database writes.

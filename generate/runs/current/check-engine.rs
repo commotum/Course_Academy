@@ -1,7 +1,9 @@
 //! Generic in-memory grading checks through the real application; never accesses EDB.
 use course_academy_engine::{learning, schema::{EntitySnapshot, Record}};
 use serde_json::{Value, json};
-use std::{collections::BTreeMap, error::Error, fs};
+use sha2::{Digest, Sha256};
+use std::{collections::BTreeMap, error::Error, fs, path::Path};
+fn sha(data: &[u8])->String {format!("{:x}",Sha256::digest(data))}
 fn record(v: Value)->Record {v.as_object().unwrap().clone()}
 // Publisher records allow either a keyword string or a pulled :db/ident map.
 fn enum_name(value: &Value) -> Result<&str, Box<dyn Error>> {
@@ -12,9 +14,17 @@ fn enum_name(value: &Value) -> Result<&str, Box<dyn Error>> {
 fn main()->Result<(),Box<dyn Error>> {
  let args:Vec<_>=std::env::args().skip(1).collect();
  if args.len()!=2{return Err("check-engine INPUT.json REPORT.json".into())}
- let input:Value=serde_json::from_str(&fs::read_to_string(&args[0])?)?;
+ let input_bytes=fs::read(&args[0])?;
+ let input:Value=serde_json::from_slice(&input_bytes)?;
+ let items=input.as_array().filter(|items|!items.is_empty()).ok_or("nonempty records array required")?;
+ let output=Path::new(&args[1]);
+ let input_name=format!("{}.input.json",output.file_stem().and_then(|s|s.to_str()).ok_or("report filename required")?);
+ fs::write(output.with_file_name(&input_name),&input_bytes)?;
  let(mut accepted,mut rejected,mut unresolved)=(0,0,0);let mut reports=vec![];
- for item in input.as_array().ok_or("records array required")? {
+ let mut fingerprints=vec![];
+ for item in items {
+  let requested=item["checks"].as_array().filter(|checks|!checks.is_empty()).ok_or("nonempty checks required for every record")?;
+  let fingerprint=sha(&serde_json::to_vec(&item["record"])?);fingerprints.push(fingerprint.clone());
   let q=&item["record"]["question"];let fields=q[":question/answer-fields"].as_array().ok_or("fields required")?;
   let mut entities=BTreeMap::new();let mut maps=vec![];let mut field_ids=vec![];let mut next_answer=100u64;
   let mut enum_names=std::collections::BTreeSet::new();
@@ -39,7 +49,7 @@ fn main()->Result<(),Box<dyn Error>> {
   entities.insert(10,record(json!({"question/id":"batch-generator-fixture","question/problem":q[":question/problem"],"question/answer-fields":field_ids})));
   entities.insert(11,record(json!({"knowledge-point/title":item["record"]["knowledge_point"]["title"],"knowledge-point/questions":[10]})));
   let snapshot=EntitySnapshot::new(entities,0)?;let mut checks=vec![];
-  for check in item["checks"].as_array().ok_or("checks required")?{
+  for check in requested {
    let i=check["field_index"].as_u64().unwrap_or(0)as usize;
    if i>=fields.len(){return Err("field_index out of range".into())}
    let submitted=if let Some(uuid)=check["submitted_answer_id"].as_str(){maps[i].get(uuid).ok_or("selected UUID not in field")?.to_string()}
@@ -49,12 +59,20 @@ fn main()->Result<(),Box<dyn Error>> {
    let expected=check["expected"].as_str().ok_or("expected result required")?;
    if outcome!=expected{return Err(format!("{} field {}: {:?} expected {}, got {} ({:?})",item["label"],i,submitted,expected,outcome,result).into())}
    match outcome{"accepted"=>accepted+=1,"rejected"=>rejected+=1,_=>unresolved+=1}
-   checks.push(json!({"field_index":i,"submitted":submitted,"outcome":outcome,"reason":result.err(),"purpose":check["purpose"]}));
+   checks.push(json!({"field_index":i,"field_key":fields[i][":answer-field/key"],"field_type":enum_name(&fields[i][":answer-field/type"])? ,
+    "submitted":submitted,"submitted_input":check.get("submitted_answer_id").unwrap_or(&check["submitted"]),
+    "outcome":outcome,"reason":result.err(),"purpose":check["purpose"]}));
   }
-  reports.push(json!({"label":item["label"],"template":item["record"]["generation"]["template"],"checks":checks}));
+  reports.push(json!({"label":item["label"],"template":item["record"]["generation"]["template"],"record_sha256":fingerprint,"checks":checks}));
  }
- fs::write(&args[1],serde_json::to_string_pretty(&json!({"database_writes":0,"entry_point":"course_academy_engine::learning::grade_field","records":reports,"accepted_checks":accepted,"rejected_checks":rejected,"documented_unresolved_checks":unresolved}))?+"\n")?;
- println!("Native grading: {accepted} accepted, {rejected} rejected, {unresolved} explicitly unresolved; no database operations.");Ok(())
+ let source_hash=sha(include_bytes!("check-engine.rs"));
+ fs::write(output,serde_json::to_string_pretty(&json!({"format":"course-academy-native-grading-v1","passed":unresolved==0,
+  "input_file":input_name,"input_sha256":sha(&input_bytes),"record_sha256":fingerprints,"checked_record_sha256":fingerprints,
+  "engine_sha256":sha(&fs::read(std::env::current_exe()?)?),"implementation_sha256":{"generate/runs/current/check-engine.rs":source_hash},
+  "database_writes":0,"entry_point":"course_academy_engine::learning::grade_field","records":reports,
+  "accepted_checks":accepted,"rejected_checks":rejected,"documented_unresolved_checks":unresolved}))?+"\n")?;
+ println!("Native grading: {accepted} accepted, {rejected} rejected, {unresolved} explicitly unresolved; no database operations.");
+ if unresolved>0{return Err("unresolved grading is a limitation, not passing validation".into())}Ok(())
 }
 
 #[cfg(test)]

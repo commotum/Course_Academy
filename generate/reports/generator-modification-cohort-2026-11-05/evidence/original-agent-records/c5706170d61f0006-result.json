@@ -1,0 +1,195 @@
+{
+  "verdict": "accepted",
+  "summary": "All nine checks and all three final five-record bands pass. No current generator repair was needed; the existing source-layout repair was independently reproduced and verified. Imports and level coverage remain unchanged.",
+  "source_analysis": {
+    "skill": "Multiply two ordered 3x3 integer matrices by row-column dot products and assemble the product.",
+    "reasoning_steps": [
+      "Identify the ordered left and right matrices.",
+      "For each required output position (i,j), pair row i of the left matrix with column j of the right.",
+      "Multiply three corresponding pairs and sum with correct signs, including zeros and cancellations.",
+      "Assemble all nine entries or complete five missing entries; select the complete product when radio."
+    ],
+    "invariants": [
+      "Both factors and output remain 3x3.",
+      "Order matters: AB is not generally BA.",
+      "Small integer signed arithmetic; no inverses, determinants or symbolic parameters.",
+      "Shown solution expands each required dot product before its result."
+    ],
+    "permitted_variations": [
+      "All eighteen input entries including zero placement and sign may change.",
+      "Matrix labels, operand display and order may change provided dependencies follow.",
+      "The five blank positions may change; their source placement is incidental.",
+      "Correct choice position and error locations may change; source sparse/repeated rows are incidental.",
+      "Authored difficulty may reduce zero support and increase required independent dot products while retaining manageable integers."
+    ],
+    "source_refs": [
+      "e-4402 / 3b0c400c-89bd-504d-87c3-e0f24957d42b: row-column expansion and full 3x3 result",
+      "q-11571 / 67ea568e-e811-5ba4-adbb-000e9b72b0e8: five-choice radio; repeated first/third rows are incidental",
+      "q-318332 / 0d0bbd66-8521-57b9-82e2-4d2276785a6e: five blanks and four supplied product entries",
+      "q-318338 / e878e357-b27a-5291-8192-76cc692bad79 and q-318339 / 86cd5699-1148-5c01-9618-c9fa06817152: varied blank positions",
+      "q-129367 / cdfd9e99-dfb0-5111-9847-07557a210428: cancellation to zero remains legitimate",
+      "q-19850 / 0a12b486-888b-5ab9-8fed-a79e395ed5ce: incomplete key/solution; retains ordered factors and radio response evidence",
+      "lesson 23cd302e-47d0-5453-b9bd-9813f996a502, tutorial 2989: \"multiply each row in the first matrix by each column in the second\"; c11,c12,c21,c22 dot-product demonstration",
+      "lesson step 16179: 3x3 canonical example; preceding e-4401: noncommutativity"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-design-assessment.json",
+      "source-replay.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "source-design-assessment.json",
+        "source-layout-regression.json"
+      ],
+      "details": "Reproduced eleven complete imports and all three investigation exemplars, including full radio banks and every blank position/given. Canonical product independently confirmed. Partial q-19850 remains unchanged; its operands and response contract supply valid partial evidence. Radio replay is diagnostic; ordinary practice serves the supported exact-entry family."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "review_checks.py",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json",
+        "boundary-records.json"
+      ],
+      "details": "All 15 final records and 54 fresh records recomputed from displayed operands with exact SymPy integer arithmetic. Every result cell, key, nine ordered dot products and final matrix agrees. Signed/zero/cancellation boundaries pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "distribution.json",
+        "sampler-trace.json",
+        "delivery-analysis.json",
+        "selection.json",
+        "decision_checks.py"
+      ],
+      "details": "Every output position appears in every exact final band and fresh band. Input signs, active terms, targets and setup roles vary. Traced actual mask rejection (1/19 easy, 10/28 moderate, 0/18 hard); no value/sign rejection. Actual captured-inventory filtering retains all 15 final and 54 fresh records, preserving measured decision coverage. ID-only learner selection and all 31 nonempty eligible subsets per band examined; live learner/weight distributions remain outside the captured evidence."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "negative-scope.json",
+        "review_checks.py",
+        "source-design-assessment.json"
+      ],
+      "details": "All 85 final keyed fragments traced at actual field position from ordered visible row-column evidence to the displayed integer and key. No conversion remains after the shown result. Equivalent special-case AB=BA without a licensed matrix-order transition is retained as a rejected scope negative; ordinary scalar/summand reordering remains allowed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading.json",
+        "grader-input.json",
+        "review_checks.py",
+        "identity-confirmation.json"
+      ],
+      "details": "Native learning::grade_field passed 1,507 checks: 607 acceptances and 900 rejections, zero unresolved. Every final field tested with exact integer, trailing-zero decimal and equivalent fraction, plus nearby/sign/operation errors. Controlled old-key dependencies and complete original radio banks tested against the final engine identity."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-checks.json",
+        "render-verified/rendering.json",
+        "render_checks.py",
+        "render-verified/question-001.png",
+        "render-verified/question-006.png",
+        "render-verified/question-011.png",
+        "source-layout-regression.json",
+        "math.json"
+      ],
+      "details": "Actual unmodified UI rendered all 15 final records, five controlled records and two source layouts. Verified active controls, 3x3 answer-grid cell mapping, both bracket pseudo-element borders, six three-row math tables per served solution and no clipping. Screenshots inspected across every band and controlled/source cases. Shared prose/strict boundary validation covers prompts and solutions; math choices validated, no text choices/feedback/emphasis wrappers served. Retained old source solution still clips despite zero MathJax errors; current replay fits."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "commands.json",
+        "identity-confirmation.json",
+        "final-binding.json",
+        "review_checks.py"
+      ],
+      "details": "Finalization regenerated all three complete deterministic batches. Declared Python 3.13.5 matches the actual interpreter; packages is empty and runtime is standard-library-only. Each band replays identically after copying only the three declared runtime files into a foreign directory with empty PYTHONPATH. No assets/external output required. Final package and engine identities reconfirmed."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "probe-contract.json",
+        "shortcut-results.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading.json",
+        "render-verified/rendering.json"
+      ],
+      "details": "Relevant factor and target changes propagate through visible prompts, solutions, keys, controls and native grading; paired-inner permutation preserves answers. Field-label, copy, zero, entrywise and wrong-pairing probes do not answer an entire final band. Conditional probes cover each band, active-term groups and diagonal/off-diagonal cases. Perfect diagonal dot products perform the intended skill. No bank cues apply to ordinary exact-entry output."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "matched-progression-records.json",
+        "source-design-assessment.json",
+        "band-easy.json",
+        "band-moderate.json",
+        "band-hard.json"
+      ],
+      "details": "Matched operands hold arithmetic fixed: easy has three requested cells, six supplied results and one setup while retaining two independent pairings; moderate removes the setup and requests five cells; hard requires all nine without given product entries. Production additionally reduces zero support from sparse to dense while keeping factors within +/-3. Progression adds independent organization and complete assembly without new matrix operations or response types; cancellations remain valid. Original difficulty labels are moderate only; easy/hard calibration is an explicit source-grounded authored judgment, not an imported-label claim."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "fd061ded500c2bc60fe1f5f836c7db7136d481dd50cfa5bb5166ec6b114f82db",
+      "evidence_paths": [
+        "band-easy.json",
+        "final-easy.json",
+        "delivery-final-easy/delivery.json",
+        "grading.json",
+        "render-verified/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json",
+        "identity-confirmation.json"
+      ],
+      "details": "All five final easy records independently pass correctness, native grading, actual rendered controls/solutions, captured-inventory delivery, finite shortcut/coverage checks and the shared progression review. Hash copied from the checked final binding; no publication is claimed."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "f7a0ad4802693f2ab888020dd74bf762a4555ec80fc18898b968ca40260ae8e8",
+      "evidence_paths": [
+        "band-moderate.json",
+        "final-moderate.json",
+        "delivery-final-moderate/delivery.json",
+        "grading.json",
+        "render-verified/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json",
+        "identity-confirmation.json"
+      ],
+      "details": "All five final moderate records independently pass correctness, native grading, actual rendered controls/solutions, captured-inventory delivery, finite shortcut/coverage checks and the shared progression review. Hash copied from the checked final binding; no publication is claimed."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "2f2001d030fbfa672f0af944ef5fbcb3075a2f102d161eb849afb69ad8b97af6",
+      "evidence_paths": [
+        "band-hard.json",
+        "final-hard.json",
+        "delivery-final-hard/delivery.json",
+        "grading.json",
+        "render-verified/rendering.json",
+        "pedagogical-variation.json",
+        "solution-paths.json",
+        "identity-confirmation.json"
+      ],
+      "details": "All five final hard records independently pass correctness, native grading, actual rendered controls/solutions, captured-inventory delivery, finite shortcut/coverage checks and the shared progression review. Hash copied from the checked final binding; no publication is claimed."
+    }
+  }
+}

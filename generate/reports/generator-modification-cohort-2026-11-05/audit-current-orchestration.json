@@ -1,0 +1,751 @@
+{
+  "format": "current-generator-orchestration-audit/v1",
+  "date": "2026-11-05",
+  "repository_head": "d230439e563838d8467d4ac836ff8e7845ddbd14",
+  "scope": "Read-only current-code audit and implementation proposals. No production or DB edits. No pipeline execution or generator reruns. Existing tests were inspected selectively, not run. Root covers donor/selection algorithm; separate workstream covers report acceptance.",
+  "file_sha256": {
+    "scripts/generator_pipeline.py": "5ed3bf125ae7e16dbdcd93ca5a08b02acbf42ae3b75ff5576e5850486d787a1e",
+    "scripts/generator_investigation.py": "4a71daef33d620acdc2a1e80b367ee53c1eb249d9dfe7992c443736faad32c41",
+    "scripts/generator_publish.py": "966771651ca8d0d2d122a589ed41ae61b824c9eda51f065d12c6c9072cadb16a",
+    "scripts/generator_packages.py": "14132e50eb04230714155bdf7a8a901ed95525ff794d028e9dcfc4bdcba4c507",
+    "scripts/generator_approval.py": "60a64f629864e5046b09f7d5a86fccdb850400595d14a2499d32eec7921bf46f",
+    "scripts/generator_report_repair.py": "46d05a605334c716168aa28d71a271edd847656c69c190a000a34bf5870bba1e",
+    "scripts/generator_progress.py": "6dff82b6f4e56c54050f3e4e504fa1bf8c8137788bf51470c9530eb4bb888197",
+    "scripts/inventory_jobs.py": "66d59daa59ae12a16b2661493d45594631eb058f00a3245edd56b9da2cdea2bb",
+    "generate/pipeline/investigator.md": "ffaaf77a046479ad3be295b668ff716b2f80d55258b6eda9453b6be59114501c",
+    "generate/pipeline/author.md": "0868818fd80e5bd090bc7532ce451cabd3742f980fd10c440931ce04a6083bec"
+  },
+  "current_flow": [
+    {
+      "stage": "source",
+      "code": "Pipeline._run source; Publisher.extract_source",
+      "behavior": "Capture immutable-basis imported target/context evidence and separate current inventory; exclude retired and multipart-contained sources."
+    },
+    {
+      "stage": "investigate",
+      "code": "prepare_investigation; Pipeline.investigate",
+      "behavior": "Select complete imported donor snapshot, derive coverage/completeness, ask investigator for account and optional exactly-three exemplars; currently publish examples immediately."
+    },
+    {
+      "stage": "author",
+      "code": "Pipeline._run generate",
+      "behavior": "Resume author across bounded attempts, preserve prior findings, create package manifest; unsupported/blocked is routed to repair unless budget is exhausted."
+    },
+    {
+      "stage": "sample",
+      "code": "Pipeline.sample / sample_band",
+      "behavior": "Build samples all three bands, lower raw count only through package-declared finite caps, run each seed twice, bind output/assets/dependencies; refill samples one band."
+    },
+    {
+      "stage": "verify and repair",
+      "code": "Pipeline.review_candidate / finalize_review",
+      "behavior": "Same verifier repairs package and report, finalizes exact all-band samples, and returns accepted only against current binding; bounded durable rounds/sessions."
+    },
+    {
+      "stage": "prepare and publish",
+      "code": "Pipeline.admit_publication; Publisher.prepare / publish",
+      "behavior": "Check accepted binding; publish immutable package; compare fresh instructional source; deduplicate and apply specific policies; commit exact durable intent; verify receipt/readback."
+    },
+    {
+      "stage": "record approval",
+      "code": "Pipeline.record_approval; make_approval",
+      "behavior": "After verified publication, record package/source identity and one all-band final review for later refill."
+    },
+    {
+      "stage": "refill",
+      "code": "Pipeline._run refill; inventory_jobs.ranked_requests",
+      "behavior": "Require valid immutable package/source/all-band approval; no model session; generate requested band, filter/publish, and confirm pool replenishment on a later inventory capture."
+    }
+  ],
+  "same_three_agent_proposal": [
+    "Keep the same investigator, author and verifier. The investigator writes local target objective/progression account plus only needed draft anchors, bound to exact target and donor evidence.",
+    "The author builds from that account, preserving the learner’s target decisions. Declared limitations explain legitimate finite scope rather than forcing cosmetic numeric variants.",
+    "The existing verifier independently reconstructs the objective, may revise mistaken assumptions/findings, checks final examples and all required band batches including delivered subsets, then finalizes one evidence envelope and package.",
+    "Only then prepare and publish the approved normal questions and generator; exact durable-intent recovery remains first priority after a crash.",
+    "Fast refill retains the previous pedagogical approval, runs bounded behavioral checks on its new filtered exposure set, and reports finite exhaustion or a concrete new failure without silently changing curriculum."
+  ],
+  "findings": [
+    {
+      "id": "ORCH-01",
+      "priority": "P0",
+      "title": "Keep investigator exemplars local until the same verifier approves them",
+      "current_behavior": "Pipeline.investigate calls Publisher.publish_exemplars immediately after an investigator returns ready. It publishes exactly one easy, one moderate and one hard ordinary question before authoring, sampling or independent review. prepare_exemplars checks structural validity and identities, but does not require a review certificate or call prepare_records and its KP-specific delivery policies. question_forms links these normal questions to the KP pool. The next phases receive published exemplars separately; imports remain distinct.",
+      "semantic_or_operational_risk": "A wrong scaffold, leaked decision or inflated difficulty can enter normal practice before the independent verifier examines the design. A later rejected generator does not automatically retract those questions. A typed ready result and structural validity are not pedagogical approval.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 478,
+          "code": "def investigate(self):",
+          "supports": "Investigation owns publication before the generate/sample transition."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 513,
+          "code": "published = self.publisher.publish_exemplars(self.state['request']['kp'], records,",
+          "supports": "Normal exemplar publication is invoked here."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 528,
+          "code": "self.persist(stage='sample' if self.state['request'].get('review_existing') and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),",
+          "supports": "Only afterward does the pipeline enter authoring or sampling."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 607,
+          "code": "if not isinstance(records, list) or len(records) != 3:",
+          "supports": "Exactly three questions are enforced."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 620,
+          "code": "validate_question(localized['question'])",
+          "supports": "Only validate_question is invoked for exemplar content."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 640,
+          "code": "forms, assertions = question_forms(kp_id, accepted)",
+          "supports": "Exemplars are normal linked question forms."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 335,
+          "code": "def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_directory, *, localizer=localize_record):",
+          "supports": "Normal generated records take a separate policy-filtering path."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "Pipeline.investigate"
+          ],
+          "change": "Replace publish_exemplars with local structural preparation and image staging. Persist investigation_result, account, draft exemplar records and their hashes; leave the database and source inventory unchanged."
+        },
+        {
+          "functions": [
+            "Pipeline.context",
+            "Pipeline.finalize_review",
+            "Pipeline.review_binding"
+          ],
+          "change": "Pass the local examples to the existing author and verifier. Finalization binds the exact final examples, including images, with the package and final generated batches. The same verifier can repair the examples and re-finalize; no fourth agent."
+        },
+        {
+          "functions": [
+            "Publisher.prepare",
+            "Publisher.prepare_exemplars",
+            "Publisher.publish"
+          ],
+          "change": "Publish any approved exemplar records with the approved generator/primary batch in the final preparation, using the shared content checks and an exact approval-bound record set. Alternatively keep examples permanently local when they serve only as design anchors. Do not retain a normal unreviewed exemplar-write lane."
+        }
+      ],
+      "validation_scenarios": [
+        "Investigator returns a structurally valid question that gives u and asks only for the transformed integral: no question transaction occurs before the verifier either repairs or rejects it.",
+        "Author fails or verifier exhausts its durable budget: zero new pool questions from this build.",
+        "Verifier changes one exemplar: old exemplar hash invalidates finalization; only new checked bytes may be prepared.",
+        "Crash after final saved publication intent: recover its exact records and receipt before any new draft or review; do not duplicate examples."
+      ],
+      "existing_mitigations": [
+        "Investigator prompt already requires solving, native grading and rendered inspection (generate/pipeline/investigator.md:22); this is self-checking, not independent acceptance.",
+        "Publisher prevents overwrites and verifies exact readback.",
+        "Publisher.instructional_material removes non-imported pool questions, so examples do not masquerade as imported authority."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Requires a bound supplementary-record set in finalization/publication; reviewer-report changes should remain owned by the review-validator workstream.",
+        "Do not alter the rule that unresolved durable DB intents must be recovered before policy upgrades.",
+        "Previously published examples require a separate, evidence-based audit; this sequencing fix is prospective."
+      ],
+      "recovery_impact": "Bump phase policy. For jobs without a pending intent, retain work and convert saved exemplar references into explicitly historical local evidence. For a pending exemplar intent, recover exactly once, record its published status, and require the verifier to assess those historical questions without silently rewriting or replaying the transaction.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-02",
+      "priority": "P1",
+      "title": "Bind cached investigator results to their actual evidence and preserve source revisions",
+      "current_behavior": "CodexSession.__call__ returns result.json before it computes or compares any prompt/context identity. prepare_investigation reuses input/reference only if its full-source preparation_key matches; when that input key differs it falls through and writes a new reference/input in the same directory. Pipeline phase/eligibility upgrades re-enter investigation without moving its old result directory. SourceChanged during final preparation refreshes source then routes directly to generate, leaving the old investigation account.",
+      "semantic_or_operational_risk": "A cached investigation can refer to a previous target source or donor while the directory now contains new source inputs. The generator may follow stale pedagogical assumptions even though later hashes correctly bind the refreshed source bytes. This is a code-permitted scenario, not a claim that it has happened in a particular live job.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 162,
+          "code": "return read(output)",
+          "supports": "Existing result is reused without context binding."
+        },
+        {
+          "path": "scripts/generator_investigation.py",
+          "line": 151,
+          "code": "preparation_key = _hash(source)",
+          "supports": "Preparation key hashes the whole source snapshot."
+        },
+        {
+          "path": "scripts/generator_investigation.py",
+          "line": 157,
+          "code": "if saved.get('preparation_key') == preparation_key:",
+          "supports": "Only matching key takes the safe cached-reference branch."
+        },
+        {
+          "path": "scripts/generator_investigation.py",
+          "line": 225,
+          "code": "reference = {**summary, 'reference_kp': point, 'questions': selected}",
+          "supports": "Changed-key recomputation later writes the same reference path."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1077,
+          "code": "self.persist(stage='source', phase_policy_version=PHASE_POLICY_VERSION,",
+          "supports": "Phase upgrade re-enters source while retaining work directories."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1186,
+          "code": "fresh=self.publisher.extract_source(self.state['request']['kp'],source_path.parent)",
+          "supports": "Eligibility refresh extracts a new source snapshot."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1362,
+          "code": "except SourceChanged as error:",
+          "supports": "Changed instructional source is handled after review; source refresh goes to repair/generate."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "CodexSession.__call__",
+            "Pipeline.investigate"
+          ],
+          "change": "Persist a role-input binding beside every structured result before launch; require matching target instructional identity, selected reference hash, relevant prompt/policy version, account/example inputs and role when reusing a completed result. Review-specific bindings continue to apply independently."
+        },
+        {
+          "functions": [
+            "prepare_investigation"
+          ],
+          "change": "Place each evidence revision in a hash-addressed subdirectory or archive the old input/reference/result as a unit before a new revision. Never overwrite the reference beneath a retained result. Maintain exact source basis as provenance while using stable instructional identity to avoid churn from unrelated DB writes."
+        },
+        {
+          "functions": [
+            "Pipeline._run SourceChanged branch",
+            "Pipeline.upgrade_phases",
+            "Pipeline.reuse_completed_work"
+          ],
+          "change": "On material instructional change, invalidate the investigation binding and re-enter the same investigator with explicit changed evidence and prior account. Keep authored code as a draft; clear dependent acceptance. Operational inventory-only changes do not require re-investigation."
+        }
+      ],
+      "validation_scenarios": [
+        "Write a completed investigator result for source A, change actual target content to B, and resume: old result must not be silently accepted; A artifacts remain inspectable.",
+        "Change only DB basis or generated inventory while imported instructional evidence is identical: preserve semantic investigation when its donor/contract identity is unchanged.",
+        "Change reference questions or relevant investigator prompt: invalidate its cached result even with identical target source.",
+        "Simulate SourceChanged immediately before prepare: source/account are reconciled before new authorship/review, with no published transaction and no fresh unlimited retry budget."
+      ],
+      "existing_mitigations": [
+        "Matching cached reference files are checked for exact preparation key and basis.",
+        "Publication compares fresh instructional evidence against the saved snapshot.",
+        "Review cache has a richer exact binding; this gap is specifically role-input/result caching and source-transition handling."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Specify which policy and prompt changes require invalidation rather than hashing every file in the repository.",
+        "Some persisted results are legitimate interrupted work; preserve them as evidence rather than deleting them."
+      ],
+      "recovery_impact": "Reuse the same investigator session with explicit delta context if available. Spend only a recorded bounded evidence-refresh allowance; do not reset attempt counters on every restart.",
+      "evidence_strength": "Direct code trace plus root-agent offline probe of CodexSession with changed context and process launch forbidden: old result returned unchanged and no new prompt saved. This proves the cache component behavior; full phase-refresh impact remains a code-traced scenario, not a reproduced live incident.",
+      "offline_probe": {
+        "path": "generate/reports/generator-modification-cohort-2026-11-05/current-audit-probes.json",
+        "line": 2,
+        "result": "existing_result_returned_unchanged=true; new_prompt_saved=false; subprocess_launched=false",
+        "scope": "Root ran isolated current CodexSession cache probe with a preexisting result and changed context; no database or agent process."
+      }
+    },
+    {
+      "id": "ORCH-03",
+      "priority": "P1",
+      "title": "Bind the instructional account and reference boundaries as review inputs",
+      "current_behavior": "Pipeline.context passes paths to investigation_file, investigation_result and exemplars_file. review_binding binds source, inventory, package, sampled records, assets and engine, but not these additional account/reference/example bytes. source_identity intentionally binds imported evidence while excluding pool churn; this separation is sound.",
+      "semantic_or_operational_risk": "The pedagogical plan used to construct the package can change or remain stale without invalidating the review binding. A donor scaffold can influence the author without an auditable declaration of why it transfers to the target. Existing prompt warnings are strong but the orchestration carries paths rather than a stable evidence envelope.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 293,
+          "code": "def review_binding(self):",
+          "supports": "Current review binding enumerates hashed inputs."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 468,
+          "code": "'investigation_file': self.state.get('investigation_file'),",
+          "supports": "Investigation artifacts are passed as context paths."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 836,
+          "code": "def verify_approval_inputs(self, *, allow_draft_package_change=False):",
+          "supports": "Input verification lacks investigation/reference/example hashes."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 69,
+          "code": "def instructional_material(material):",
+          "supports": "Imported instructional identity intentionally excludes operational pool links."
+        },
+        {
+          "path": "generate/pipeline/investigator.md",
+          "line": 5,
+          "code": "Ordinary practice must preserve the mathematical decisions, method selection, and formula recall required by the target KP's standalone source questions at every difficulty. Make easy variants manageable through simpler expressions, coefficients, coordinates, and arithmetic without supplying those decisions or their intermediate results. Keep procedural reminders, formulas to recall, substituted setups, and intermediate calculations in the worked solution. Prompt support is justified only when the target's source question supplies that support for the same objective and practice stage; a tutorial, worked solution, or unrelated reference KP does not establish that permission. A missing easy anchor is not permission to turn independent practice into a guided exercise. Compare what the learner must do before feedback, including answer-choice cues, and correct existing exemplars that violate this rule rather than treating their publication as instructional authority.",
+          "supports": "Existing prompt already distinguishes target practice objective from donor/tutorial support."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "Pipeline.investigate",
+            "Pipeline.context"
+          ],
+          "change": "Persist a compact instructional evidence envelope: target learner decisions before feedback, target source IDs and practice stage, permitted prompt support, response endpoint, proposed progression, and explicitly limited donor use. References remain evidence, not constraints that overrule the target objective."
+        },
+        {
+          "functions": [
+            "Pipeline.review_binding",
+            "Pipeline.verify_approval_inputs",
+            "Pipeline.finalize_review",
+            "source_identity"
+          ],
+          "change": "Hash that envelope and its referenced account/examples/assets into active review bindings. Keep original imported source identity separate. Let the same verifier revise a mistaken assumption with source-backed rationale and rebind final artifacts."
+        },
+        {
+          "functions": [
+            "Pipeline.reuse_completed_work"
+          ],
+          "change": "Reuse investigation only when the evidence-envelope identity also matches; retain an old account as historical evidence when it does not."
+        }
+      ],
+      "validation_scenarios": [
+        "Modify the local investigation account or exemplar after finalization: approval becomes stale until the same verifier rechecks.",
+        "A given-u donor serves a different KP: target envelope requires choosing u and completing the integral, so imported donor support cannot silently replace that decision.",
+        "Correct an earlier mistaken restriction: verifier can revise the envelope with evidence, rather than being forced to satisfy both incompatible claims."
+      ],
+      "existing_mitigations": [
+        "Target/source snapshots and image hashes are already preserved.",
+        "Current investigator and author prompts explicitly prohibit importing unrelated scaffold permissions."
+      ],
+      "dependencies_and_tradeoffs": [
+        "The envelope must express mathematical decisions, not rigid incidental source details or mechanical all-fields paperwork.",
+        "Coordinate envelope acceptance with the existing reviewer; it must not create another approval role."
+      ],
+      "recovery_impact": "For current jobs with no envelope, derive it from retained investigation/source work in the existing verifier session and mark provenance; do not silently claim old runs had this binding.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-04",
+      "priority": "P1",
+      "title": "Treat all-band progression as a pedagogical design obligation, not a fixed output quota",
+      "current_behavior": "prepare_investigation sets construction_needed if any band lacks a complete imported question, and publish_exemplars requires all three new questions even if only one band is missing. Pipeline.sample always generates easy/moderate/hard for builds; nonprimary bands request at least five. Author unsupported/blocked results are automatically returned as repair work. The current all-band requirement is explicit product policy, not itself a proven bug.",
+      "semantic_or_operational_risk": "Completion pressure can encourage inventing difficulty by extra algebra, supplying the decision in easy practice, or importing a donor objective. The code can only see that all labels/counts exist, while pedagogy must establish that the same target skill survives. Blanket demands to finish cannot substitute for that justification.",
+      "evidence": [
+        {
+          "path": "scripts/generator_investigation.py",
+          "line": 149,
+          "code": "'construction_needed': any(not complete[b] for b in BANDS)}",
+          "supports": "Any missing complete band triggers construction."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 610,
+          "code": "if sorted(bands) != [':question.difficulty/' + band for band in ('easy', 'hard', 'moderate')]:",
+          "supports": "Exemplar construction is exactly one of each band."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 746,
+          "code": "bands = (difficulty,) if self.is_refill else VERIFICATION_BANDS",
+          "supports": "Build sampling unconditionally covers all bands."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 751,
+          "code": "count = self.state['request']['count'] if primary else max(5, self.state['request']['count'])",
+          "supports": "Nonprimary bands request at least five."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1286,
+          "code": "if result.get('status') in {'unsupported', 'blocked'}:",
+          "supports": "Unsupported/blocked author results are sent back for completion."
+        },
+        {
+          "path": "scripts/generator_approval.py",
+          "line": 40,
+          "code": "return (isinstance(batches, dict) and set(batches) == set(BANDS)",
+          "supports": "Approval currently requires all-band batches."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "prepare_investigation",
+            "Pipeline.investigate"
+          ],
+          "change": "Represent observed coverage, complete usable evidence and authored progression separately. Identify exactly which anchors need construction; reuse adequate target examples rather than treating the all-three count as the objective."
+        },
+        {
+          "functions": [
+            "Pipeline.sample",
+            "Pipeline.context"
+          ],
+          "change": "Before sampling, require a source-backed or explicitly authored progression that preserves target decisions across every required band. Keep the current all-band product goal unless the user changes it; a band that cannot yet be justified should yield a precise design-blocked result with the missing decision, not silently simplify the task or add prerequisites."
+        },
+        {
+          "functions": [
+            "Pipeline._run author_unfinished handling",
+            "Pipeline.block"
+          ],
+          "change": "Distinguish a demonstrated pedagogical scope conflict from a fixable tool error. Allow a bounded same-team design revision and then surface the concrete unresolved conflict; do not present every inability as an obligation to manufacture three superficially labeled outputs."
+        }
+      ],
+      "validation_scenarios": [
+        "A target already has usable easy/moderate evidence but lacks hard: construction addresses the missing progression without replacing the existing objective or silently publishing three new anchors.",
+        "For integration, easy reduces arithmetic but still chooses substitution and completes integration; hard coefficients that cancel do not by themselves prove harder reasoning.",
+        "A truly finite single-decision KP retains valid cancellation/equal-coordinate cases; required bands are justified without banning legitimate mathematics merely to meet count/difficulty labels."
+      ],
+      "existing_mitigations": [
+        "All-band review and progression checking now close the historical single-band approval gap.",
+        "generation-limits.json already permits lower finite batch sizes.",
+        "Current prompts explicitly reject larger coefficients as the sole difficulty rationale and protect independent practice."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Changing supported-band policy would be a product decision; this proposal does not quietly remove the current three-band requirement.",
+        "Do not replace fixed counts with fixed structural quotas that reproduce the rank-inspection repair mistake."
+      ],
+      "recovery_impact": "Existing completed all-band approvals remain valid under their recorded scope. Add semantic design bindings prospectively or during a deliberate policy migration, using one bounded catch-up allowance.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-05",
+      "priority": "P1",
+      "title": "Carry finite capacity and inventory depletion through refill outcomes",
+      "current_behavior": "generation_limits reads only package-bound maximum_distinct_batch and clamps requested count. It does not describe total eligible domain, delivered semantic decision capacity or remaining unseen instances. Publisher.prepare_records drops duplicates against current inventory. Empty/no-change publication is a successful result; main reports generated for any verified state. inventory_jobs requests a reserve of five in every band and retries awaiting-verification up to three replenishments; it recognizes finite-limit but the current pipeline main does not emit that outcome.",
+      "semantic_or_operational_risk": "A legitimate finite generator can be repeatedly asked for unavailable distinct practice, then rejected as nonproductive; pressure may encourage cosmetic variants or forbidden-parameter restrictions. A smaller declared batch cap does not communicate exhausted curriculum capacity. Conversely a single duplicate sample is not proof of exhaustion.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 72,
+          "code": "def generation_limits(source, manifest):",
+          "supports": "Only maximum_distinct_batch is read."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 779,
+          "code": "maximum = generation_limits(source, manifest).get(difficulty)",
+          "supports": "Count is clamped per invocation, without inventory depletion input."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 348,
+          "code": "if fingerprint in seen:",
+          "supports": "Duplicate questions are omitted after generation."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 797,
+          "code": "result = {'status': 'no_changes', 'passed': True, 'basis_after': prepared['basis'], 'new_questions': 0,",
+          "supports": "No-change publication is passed with zero new questions."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1465,
+          "code": "'outcome': 'generated' if result['stage'] == 'verified' else 'blocked' if result['stage'] == 'blocked' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',",
+          "supports": "Verified pipeline maps to generated, not finite-limit."
+        },
+        {
+          "path": "scripts/inventory_jobs.py",
+          "line": 158,
+          "code": "for band in ('easy', 'moderate', 'hard'):",
+          "supports": "Each band targets five available questions."
+        },
+        {
+          "path": "scripts/inventory_jobs.py",
+          "line": 407,
+          "code": "elif state == 'awaiting-verification' and old.get('retryAt', 0) <= time.time():",
+          "supports": "Unfilled reserve causes bounded replenishment cycles."
+        },
+        {
+          "path": "scripts/inventory_jobs.py",
+          "line": 682,
+          "code": "'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit'} else",
+          "supports": "Supervisor already has a finite-limit outcome branch."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "generation_limits",
+            "Pipeline.sample_band"
+          ],
+          "change": "Extend the package-bound capability contract only where needed: verified finite-domain identity/enumerator, supported decision cases, per-batch limit and distinction between domain exhaustion and temporary duplicate sampling. A finite capacity claim must have evidence rather than being an author escape hatch."
+        },
+        {
+          "functions": [
+            "Publisher.prepare",
+            "Pipeline._run",
+            "main"
+          ],
+          "change": "Record requested, generated, duplicate-filtered and accepted counts; emit an explicit exhausted or finite-limit outcome only when the finite-domain proof plus current inventory supports it. Otherwise use a bounded new-seed retry and report the actual no-new-content cause."
+        },
+        {
+          "functions": [
+            "inventory_jobs.ranked_requests",
+            "inventory_jobs.accept",
+            "inventory_jobs.run_one"
+          ],
+          "change": "Honor verified exhaustion/capacity for the package/source identity. Do not keep rebuilding or demand artificial new variants solely because reserve five exceeds the legitimate remaining domain; reopen when package/source/capacity or relevant inventory changes."
+        }
+      ],
+      "validation_scenarios": [
+        "A proven three-instance domain requested at count five publishes at most three and records capacity; subsequent refresh does not launch repeated cycles to reach five.",
+        "One seed duplicates current inventory but another seed has unseen cases: classify as sampling collision, not permanent exhaustion.",
+        "A new package expands the legitimate domain: old capacity outcome is invalidated and refill resumes.",
+        "Five numerically distinct systems with identical solved decision roles are not accepted as five pedagogically distinct outcomes solely because UUIDs or hashes differ."
+      ],
+      "existing_mitigations": [
+        "Finite batch caps are package-bound rather than arbitrary workspace files.",
+        "Duplicate filtering uses normalized content, ignoring solution prose, feedback and accumulated blank responses.",
+        "Replenishment and process failures are bounded."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Semantic decision coverage remains the reviewer/selection workstream responsibility; capacity metadata cannot automatically prove it.",
+        "Need a precise policy for previously practiced finite items; do not silently reissue them or widen curriculum."
+      ],
+      "recovery_impact": "Persist capacity with package/source identity, not as a transient error. Preserve old cycles and exact publication intents; avoid resetting failed cycles solely because the availability target remains unmet.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-06",
+      "priority": "P1",
+      "title": "Validate new refill batches against the reviewed behavioral contract after filtering",
+      "current_behavior": "Fast refill correctly requires a current immutable registration and source-matching all-band approval, then samples only the requested band and proceeds directly to prepare/publish without a model session. sample_band checks determinism, count, band labels, package mutation and asset hashes; it does not run the native grader or a general decision-variation test. prepare_records does run several explicit KP-specific pedagogical policies after duplicate filtering. Approval records historical batch evidence, not executable evidence for every future seed.",
+      "semantic_or_operational_risk": "A different seed and depleted pool can leave a biased or ungradable delivered subset even though the package previously passed review. Historical finite-batch failures make this a concrete class of exposure. The solution should not be another full LLM review on every refill.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 1255,
+          "code": "elif stage == 'refill':",
+          "supports": "Refill path loads approval, samples and skips independent review."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 803,
+          "code": "for _ in range(2):",
+          "supports": "Sample executes twice for deterministic equality."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 816,
+          "code": "if not isinstance(records, list) or len(records) != count:",
+          "supports": "Sample checks raw count and labels."
+        },
+        {
+          "path": "scripts/generator_publish.py",
+          "line": 353,
+          "code": "from scripts.integration_batch_policy import validate_delivery_batch",
+          "supports": "Several existing KP-specific policies run on the filtered set."
+        },
+        {
+          "path": "scripts/generator_approval.py",
+          "line": 82,
+          "code": "bands[band] = {",
+          "supports": "Approval retains reviewed batch and evidence, rather than an executable new-batch contract."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "Pipeline.sample_band",
+            "Pipeline._run refill branch",
+            "Publisher.prepare_records"
+          ],
+          "change": "Run a bounded package-bound validation entrypoint for the actual candidate/delivered records: native correct/near-miss/equivalent grading checks and source-supported decision invariants. Validate after duplicate filtering and again after any filtering/selection change that affects the exposure set."
+        },
+        {
+          "functions": [
+            "make_approval",
+            "approved_band"
+          ],
+          "change": "Bind the approved checker/behavioral-contract identity and supported scope to the package. Shared checks should cover known whole-bank cues where appropriate; allow source-grounded exceptions and independent reviewer challenge."
+        },
+        {
+          "functions": [
+            "Pipeline.repair",
+            "inventory_jobs.review_request"
+          ],
+          "change": "On a reproducible new refill failure, retain the exact seed, filtered inventory binding and counterexample, and route one review/repair job through the existing team. Do not erase the previous accepted review or run unbounded new seeds until one accidentally passes."
+        }
+      ],
+      "validation_scenarios": [
+        "Approval batch has varied subset outcomes; new refill batch after dedup leaves A always true: publication is withheld and exact counterexample retained.",
+        "Native grader changes so an approved symbolic equivalent is now rejected: cheap compatibility check catches it without blanket pedagogical re-review.",
+        "Old specific policies remain effective after central validation refactoring; a generic checkbox balance quota is not allowed to delete a legitimate joint outcome."
+      ],
+      "existing_mitigations": [
+        "Package/source/registration identities already gate the refill lane.",
+        "Source-reference exclusion and specific repaired-KP policies already run during normal prepare.",
+        "Current engine hash intentionally does not expire all content approvals; preserve this behavior."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Root is auditing delivery selection; avoid implementing conflicting second selection algorithm.",
+        "An author-provided checker is evidence, not unquestionable truth. The verifier must independently validate the checker’s semantic assertions."
+      ],
+      "recovery_impact": "Add new required runtime contract under an explicit approval policy version. Existing approvals can be upgraded by a bounded checker verification, not automatic full reconstruction for every engine rebuild.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-07",
+      "priority": "P2",
+      "title": "Let retained findings be revised without retaining obsolete restrictions as executable obligations",
+      "current_behavior": "remember_repair preserves every finding keyed by description/source. generator_repair_findings excludes only evidence and inventory; check_repair_regressions requires an executable check for every other retained finding. Prompts say earlier requirements may be corrected with evidence, but the state has no explicit superseded/retracted disposition for an erroneous reviewer demand.",
+      "semantic_or_operational_risk": "An earlier mistaken definition of hard, source fidelity or answer equivalence can persist as a required regression even after later evidence reverses it. A no-op executable can satisfy the mechanical requirement, while a sincere author may preserve the bad restriction. The phase1 guided-u reversal illustrates why historical findings cannot all be permanent truth.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 872,
+          "code": "def remember_repair(self, reason):",
+          "supports": "All findings are retained across attempts."
+        },
+        {
+          "path": "scripts/generator_report_repair.py",
+          "line": 12,
+          "code": "return [row for row in history.get(\"findings\", [])",
+          "supports": "Only evidence/inventory kinds are excluded from runtime regressions."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 903,
+          "code": "missing = [row['id'] for row in required if row['id'] not in by_id]",
+          "supports": "Every remaining historical ID must have a regression entry."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 956,
+          "code": "'instruction': 'Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. Repair relevant shared tools, policy or engine yourself, and verify the result; earlier requirements may be corrected with evidence.'})",
+          "supports": "Prompt explicitly permits correcting earlier requirements with evidence."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "remember_repair",
+            "generator_repair_findings",
+            "check_repair_regressions"
+          ],
+          "change": "Keep immutable finding events but add a reviewer-owned disposition with evidence: confirmed, repaired-and-regressed, or superseded by a named later finding/contract correction. Require executable checks only for still-valid obligations, and retain a counterexample proving why a superseded demand was wrong."
+        },
+        {
+          "functions": [
+            "Pipeline.context",
+            "Pipeline.review_candidate"
+          ],
+          "change": "Present active obligations and historical reversals separately, so neither the author nor verifier treats old prose as authority. Keep the same verifier session and retained evidence; no new approval committee."
+        }
+      ],
+      "validation_scenarios": [
+        "An old finding demands given-u scaffolding; target evidence requires the learner to choose u. The same verifier supersedes the finding with evidence, and preflight now protects the target decision.",
+        "An author attempts to mark a valid unresolved finding superseded without evidence: final review rejects it.",
+        "Evidence-only/report defects never require generator edits, retaining the current corrected routing."
+      ],
+      "existing_mitigations": [
+        "All historical findings and concrete reproductions are already preserved.",
+        "Evidence-only repairs already route back to the reviewer, and inventory observations are excluded from generator regression obligations.",
+        "Durable session budgets and explicit resume reasons now prevent the historical report-only retry runaway."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Coordinate disposition validation with the review-validator agent.",
+        "Do not let supersession become a blanket mechanism to discard uncomfortable counterexamples."
+      ],
+      "recovery_impact": "Historical findings remain unmodified; append disposition events. Existing regressions are retained until a current verifier documents a reasoned correction.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    },
+    {
+      "id": "ORCH-08",
+      "priority": "P2",
+      "title": "Recheck active-review engine identity without expiring content approval on every rebuild",
+      "current_behavior": "sample records engine_identity; review_binding includes it. verify_approval_inputs checks package, source, inventory, assets and Python dependencies but does not compare the live engine identity with the recorded one. approved_band intentionally treats engine hashes as historical metadata, so ordinary engine changes do not invalidate completed pedagogical reviews.",
+      "semantic_or_operational_risk": "An engine edit after finalization can leave active review evidence apparently bound to the old engine while publication occurs in a new environment. This is a secondary technical consistency issue, not a reason to restart all pedagogical reviews.",
+      "evidence": [
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 771,
+          "code": "engine_hash=self.engine_identity(), verification_batches={} if self.is_refill else batches,",
+          "supports": "Sampling records engine identity."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 836,
+          "code": "def verify_approval_inputs(self, *, allow_draft_package_change=False):",
+          "supports": "Input verification lacks live engine equality."
+        },
+        {
+          "path": "scripts/generator_pipeline.py",
+          "line": 865,
+          "code": "def engine_identity(self):",
+          "supports": "Live identity function exists."
+        },
+        {
+          "path": "scripts/generator_approval.py",
+          "line": 103,
+          "code": "def approved_band(value, identity, band, policy_version, engine_hash=None):",
+          "supports": "Completed content approval intentionally ignores current engine hash."
+        }
+      ],
+      "proposed_function_level_changes": [
+        {
+          "functions": [
+            "Pipeline.verify_approval_inputs",
+            "Pipeline.finalize_review"
+          ],
+          "change": "During an active build/review, detect live engine changes after bound tests and require rerunning affected native compatibility checks, refreshing final binding in the same verifier session."
+        },
+        {
+          "functions": [
+            "approved_band",
+            "Pipeline._run refill branch"
+          ],
+          "change": "Keep pedagogical approval stable across engine rebuilds. Use the bounded current-engine behavioral compatibility checks proposed in ORCH-06 rather than blanket model review."
+        }
+      ],
+      "validation_scenarios": [
+        "Change a Rust grader file after finalization but before preparation: acceptance cannot claim the old tested engine applies unchanged; refresh only affected checks.",
+        "Rebuild byte-equivalent engine or change unrelated engine code: content approval remains usable when bounded compatibility checks pass."
+      ],
+      "existing_mitigations": [
+        "Engine identity is already captured and finalizer receipts bind sampled bytes.",
+        "Tests explicitly cover refills surviving engine updates; preserve that intent."
+      ],
+      "dependencies_and_tradeoffs": [
+        "Secondary to semantic/exemplar/cache changes."
+      ],
+      "recovery_impact": "Do not reset durable sessions; same verifier resumes from retained results with a precise environment delta.",
+      "evidence_strength": "Direct code trace; impact is an enabling risk unless separately demonstrated in historical cases."
+    }
+  ],
+  "recommended_order": [
+    "ORCH-01 and ORCH-02: close premature publication and stale evidence reuse together.",
+    "ORCH-03: bind a revisable instructional account and clear source/donor boundaries.",
+    "ORCH-04 and ORCH-05: address quota/capacity pressure without silently changing the three-band product policy.",
+    "ORCH-06: connect approved behavior to actual refill exposure; coordinate with selection audit.",
+    "ORCH-07: explicit finding supersession; ORCH-08: active-review environment consistency."
+  ],
+  "preserve_existing_safeguards": [
+    "Imported target evidence is separated from generated inventory; do not contaminate source truth with agent exemplars.",
+    "Immutable content-addressed packages, assets, source and exact batch bindings.",
+    "No overwriting served questions; exact durable request/receipt recovery before changing intent.",
+    "All-band review/progression checking under the current product policy.",
+    "Persistent investigator/author/verifier sessions with bounded launches, report corrections and explicit resumes.",
+    "Incomplete imported fields are observations, not mandatory pool repair work.",
+    "Current instructional prompts already protect target decisions and allow evidence-based correction of earlier assumptions.",
+    "No blanket pedagogical re-review on ordinary engine rebuilds."
+  ],
+  "non_claims": [
+    "Current code paths are enabling risks; this audit does not infer hidden agent motives.",
+    "Pre-review examples are NOT relabeled as imported Math Academy evidence: current source filtering correctly prevents that.",
+    "The historical 1,382-event evidence retry issue is substantially mitigated by current durable budgets and report-only routing.",
+    "All-band coverage is an explicit present policy; changing that policy requires a conscious product decision, not an implementation shortcut.",
+    "No generic rank/balance/quota test can by itself establish pedagogical validity; the rank-inspection reversal demonstrates why."
+  ]
+}

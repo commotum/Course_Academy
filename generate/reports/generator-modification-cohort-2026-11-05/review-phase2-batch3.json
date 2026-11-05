@@ -1,0 +1,2045 @@
+{
+  "scope": "All21 assigned campaign generators reviewed via complete repair findings, embedded source analyses and checks, final accepted review summaries/decision checks; selected archived extraction/runtime inspected. No generator execution, mutation or live database read.",
+  "covered_kps": [
+    17592186054816,
+    17592186059771,
+    17592186059775,
+    17592186068841,
+    17592186078583,
+    17592186087877,
+    17592186096613,
+    17592186096745,
+    17592186096842,
+    17592186100989,
+    17592186105746,
+    17592186119771,
+    17592186119805,
+    17592186119847,
+    17592186124479,
+    17592186124674,
+    17592186129176,
+    17592186161966,
+    17592186172040,
+    17592186184219,
+    17592186229182
+  ],
+  "cases": [
+    {
+      "kp": 17592186054816,
+      "title": "Identifying Sets Containing a Given Element",
+      "intended_learner_operation": "Classify an individual number or determine universal containment among scripted special number sets.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Classify an individual number or determine universal containment among scripted special number sets.",
+          "reasoning_steps": [
+            "Simplify or classify the target number, or identify the entire target class.",
+            "Determine sign, integrality, rationality, and zero membership.",
+            "Evaluate each candidate set and report the precise qualifying subset."
+          ],
+          "invariants": [
+            "Natural numbers exclude zero.",
+            "Strict positive and negative sets exclude zero; a zero subscript includes it.",
+            "Preserve the observed response contract and elementary workload."
+          ],
+          "permitted_variations": [
+            "Vary elementary numeric representations, signs, zero cases, and named target sets.",
+            "Vary candidate sets, qualifying positions, and correct-selection counts.",
+            "Derive keys and explanations from the final visible answer bank."
+          ],
+          "source_refs": [
+            "Tutorial 8214: definitions and hierarchy; natural numbers exclude zero.",
+            "Tutorial 8215: sign superscripts and zero subscripts.",
+            "f51862bd-578b-533f-86e5-e297bb989e9a: zero qualifying candidates requires explicit None.",
+            "fbe70e06-2b02-5b5d-9ff3-573e87348689: terminating-decimal classification.",
+            "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7: universal containment with a five-choice radio bank."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "math",
+          "description": "The explicit None key contradicts the instruction to leave every box unchecked. The actual batch contains this defect at index 1, surviving delivery as UUID 2d1cea9b-2a10-5675-94d1-43fa0a7492c7.",
+          "source_refs": [
+            "f51862bd-578b-533f-86e5-e297bb989e9a",
+            "Tutorials 8214 and 8215"
+          ],
+          "reproduction": "Run strict-regression.py against the current package. Minimal generator parameters: --seed 827461 --count 1 --format json. The target is sqrt(0), candidates are Z+, Q-, Z-, N, and None is correctly true. See minimal-cli.json and strict-regression-result.txt.",
+          "requested_change": "Derive the concluding instruction from the final answer bank after explicit-None adaptation. Every zero-match case must instruct selecting None. Preserve zero-match practice and retain the strict regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Replay indices 3, 6, and 7 omit captured None checkboxes, and the eleventh source radio question has no replay.",
+          "source_refs": [
+            "1da25f7d-182b-5d2d-b5c8-9d3f66bb445c",
+            "f51862bd-578b-533f-86e5-e297bb989e9a",
+            "4fc9ff9e-591c-5172-b83a-e2856d63bd94",
+            "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7"
+          ],
+          "reproduction": "Run strict-source-regression.py; the first failure is replay index 3. Actual check_delivery.py rejects source-replay-none.json because every remaining checkbox is false. Commands and captured errors are retained.",
+          "requested_change": "Restore complete captured banks and replay all eleven supplied questions. Associate replay truths with their candidate fields rather than indexing a bank after deleting options.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/repair-history.json",
+          "line": 24,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b"
+        },
+        {
+          "kind": "restriction",
+          "description": "Production excludes terminating decimals and all radio combination-bank profiles despite their presence in the source.",
+          "source_refs": [
+            "fbe70e06-2b02-5b5d-9ff3-573e87348689",
+            "a3dec5c5-6226-58b5-981a-1d9be8ed928c",
+            "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7"
+          ],
+          "reproduction": "Inspect generator.py PROFILES, sample_instance, and make_record: decimal support is replay-only and production fields are always checkboxes. coverage-results.json records the implemented sampling domain.",
+          "requested_change": "Include source-supported finite-decimal and complete radio-bank profiles in normal easy sampling, deriving answers from varied eligible assignments.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/repair-history.json",
+          "line": 42,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Historical generated UUID 6e7f7e59-12b8-5d8f-a27b-48f0bd02db19, entity 17592186624696, has four false checkboxes and no None option. Current fresh-practice source rules exclude it. This is separate from the current solution defect.",
+          "source_refs": [
+            "f51862bd-578b-533f-86e5-e297bb989e9a",
+            "engine/rust/learning.rs:149-171"
+          ],
+          "reproduction": "Run followup.py and analyze-delivery.py. Explicit instance: all real numbers; candidates N, Z, Q-, R0-. generated-records.json reproduces the captured content fingerprint and publisher UUID. selection-limits.json discloses the cached-library discrepancy and unavailable historical seed.",
+          "requested_change": "After correcting the solution rule, prepare a separately authorized replacement with the source-backed explicit None option. Preserve the zero-qualifying case; do not conceal it through sampling restrictions.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/repair-history.json",
+          "line": 59,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b"
+        }
+      ],
+      "literal_interpretation_or_proxy": "A valid Boolean key and explicit-None UI adaptation were treated separately from the conclusion text and original bank identity. Production also narrowed representational families.",
+      "semantic_loss": "The solution told the learner to leave all boxes unchecked while None was correctly keyed. Rendering and native grading passed despite contradictory advice. Deleting None during replay also changed the answer contract.",
+      "causal_evidence_assessment": "Integration/representation consistency failure directly documented; no evidence the author was knowingly following a particular literal command.",
+      "counterevidence_and_scope_limits": "No conditional decision shortcut was demonstrated. All16 truth patterns were reachable. Zero-match cases are legitimate and should not be banned to satisfy UI requirements.",
+      "patterns": [
+        "response_contract_semantic_mismatch",
+        "engine_or_ui_contract_overrides_content",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-1-policy-2-6f744538327d62cb/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The current generator and five-record batch pass all eight checks. Prior failures are repaired. One historical inventory defect remains documented and excluded by current selection rules. Package files are unchanged; no publishing or database writes occurred.",
+        "decision_variation": "Relevant and irrelevant interventions propagate through explanations, grading and rendering. No tested incidental action solves the delivered batch. Selection assumptions and historical inventory limits are disclosed."
+      },
+      "publication_basis": 5460,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186059771,
+      "title": "Applying Row Operations To a Coefficients Matrix",
+      "intended_learner_operation": "Apply specified elementary row operations to a coefficient matrix and select the resulting matrix.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Apply specified elementary row operations to a coefficient matrix and select the resulting matrix.",
+          "reasoning_steps": [
+            "Identify the operation and indexed row roles.",
+            "Apply it to every entry of each destination row, preserving unassigned rows.",
+            "For two operations, use the intermediate matrix.",
+            "Select the complete resulting matrix."
+          ],
+          "invariants": [
+            "Ordinary 3×3 coefficient matrices.",
+            "Five-choice math radio response.",
+            "Nonzero scaling and distinct donor/destination rows.",
+            "One operation for easy/moderate; two additions for hard."
+          ],
+          "permitted_variations": [
+            "Matrix entries, eligible row roles, factors and choice positions.",
+            "Hard operations sharing either a destination or a donor.",
+            "Optional cancellation without fixing which entry becomes zero."
+          ],
+          "source_refs": [
+            "19304b0c-e5c7-5753-b769-38318084c464",
+            "ca077f28-d99d-5d8c-83aa-140ea10ab237",
+            "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+            "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+            "d89fad28-1b46-55f3-b90e-6ed4c3f194da",
+            "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: elementary row-operation definitions."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "Complete source banks q-10251 and q-10243 are unsupported.",
+          "source_refs": [
+            "19304b0c-e5c7-5753-b769-38318084c464",
+            "ca077f28-d99d-5d8c-83aa-140ea10ab237"
+          ],
+          "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B regressions.py` from evidence_root. Minimal case: generate('easy',991,'q-10251',{'matrix':[[-1,0,1],[1,0,0],[-1,1,0]],'rows':[0,2]}) raises ValueError: Unknown easy profile. The script also reproduces q-10243's rejection.",
+          "requested_change": "Add exact replay paths for both complete banks and retain strict bank-comparison regressions.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/review-0-policy-2-9356a1eb0df1c5b3"
+        },
+        {
+          "kind": "restriction",
+          "description": "Hard production always updates one destination twice, excluding three supplied shared-donor/two-destination cases.",
+          "source_refs": [
+            "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+            "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+            "d89fad28-1b46-55f3-b90e-6ed4c3f194da"
+          ],
+          "reproduction": "Run regressions.py. Source q-130064 requires R1:=R1-2R2 followed by R3:=R3+R2. Normal hard seeds 72011–72070 all repeat one destination. hard.operations() explicitly emits p['target'] twice, proving structural exclusion.",
+          "requested_change": "Sample both demonstrated destination relationships using explicit ordered operations, deriving banks, prompts, intermediate matrices, keys and fingerprints consistently.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/repair-history.json",
+          "line": 24,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/review-0-policy-2-9356a1eb0df1c5b3"
+        }
+      ],
+      "literal_interpretation_or_proxy": "A hard two-operation template fixed both operations to one destination, retaining an incidental relationship instead of the broader ordered-row-operation task.",
+      "semantic_loss": "Legitimate shared-donor/two-destination cases disappeared although the same row-operation reasoning applies.",
+      "causal_evidence_assessment": "Restriction and missing profiles directly documented; accidental template hardening is an inferred mechanism.",
+      "counterevidence_and_scope_limits": "Correctness, grading and conditional shortcut tests passed. A five-item easy batch containing only swaps was ultimately accepted; universal per-batch operation quotas were not required.",
+      "patterns": [
+        "incidental_template_feature_hardened",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/review-1-policy-2-98c7311a33cad693/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects are repaired. All eight checks pass; no new failure demonstrated. Package files remain unchanged.",
+        "decision_variation": "Relevant and irrelevant changes track prompts, solutions, keys and actual grading. Conditional shortcut probes reveal no demonstrated bypass. The exact batch is five valid swap-practice items; live-selection and inventory limitations are documented."
+      },
+      "publication_basis": 5359,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186059775,
+      "title": "Reducing a 2x2 Augmented Matrix to REF Using Gaussian Elimination",
+      "intended_learner_operation": "Normalize the first pivot, eliminate the lower-left entry, normalize the second pivot, and optionally back-substitute to solve the represented 2x2 system.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Normalize the first pivot, eliminate the lower-left entry, normalize the second pivot, and optionally back-substitute to solve the represented 2x2 system.",
+          "reasoning_steps": [
+            "Read the augmented matrix.",
+            "Normalize and eliminate using elementary row operations.",
+            "Identify the resulting normalized REF.",
+            "For solve prompts, back-substitute and select the matching matrix and solution."
+          ],
+          "invariants": [
+            "Nonsingular 2x2 coefficient matrix with nonzero first pivot.",
+            "Five radio choices.",
+            "Preserve the observed forward-elimination stages and arithmetic difficulty."
+          ],
+          "permitted_variations": [
+            "Vary coefficients and constants within the observed workload.",
+            "Vary which candidate qualifies and its displayed position.",
+            "Derive prompts, solutions and grading consistently from changed evidence."
+          ],
+          "source_refs": [
+            "9752715d-a11c-5d27-95dc-d20bec1117cb",
+            "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+            "8ad44012-c8dc-51b0-90ac-8e2b89d003b4",
+            "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: three Gaussian-elimination steps",
+            "Tutorial ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        {
+          "skill": "Perform Gaussian elimination on a nonsingular 2×2 system and optionally back-substitute.",
+          "reasoning_steps": [
+            "Normalize the first pivot.",
+            "Eliminate the lower-left entry.",
+            "Normalize the second pivot.",
+            "Optionally back-substitute and select the matching answer."
+          ],
+          "invariants": [
+            "Nonzero first pivot and nonsingular coefficient matrix.",
+            "Five radio choices.",
+            "Preserve the source arithmetic workload."
+          ],
+          "permitted_variations": [
+            "Vary coefficients and constants within supported arithmetic.",
+            "Vary which candidate qualifies and its position.",
+            "Update prompts, keys and explanations consistently."
+          ],
+          "source_refs": [
+            "9752715d-a11c-5d27-95dc-d20bec1117cb",
+            "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+            "2112d3af-1fb0-5a70-ab99-59931db99930: three elimination steps",
+            "ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "contract-repair-2/source-confirmation.json",
+            "contract-repair-2/correction-provenance.json",
+            "contract-repair-2/path-correction-provenance.json"
+          ]
+        },
+        {
+          "skill": "Reduce a nonsingular 2×2 augmented matrix using Gaussian elimination, optionally followed by back substitution.",
+          "reasoning_steps": [
+            "Normalize the first pivot.",
+            "Eliminate the lower-left entry.",
+            "Normalize the second pivot.",
+            "Optionally back-substitute and select the matching answer."
+          ],
+          "invariants": [
+            "Nonzero first pivot and nonsingular coefficient matrix.",
+            "Five radio choices.",
+            "Preserve the source arithmetic workload and forward-elimination stages."
+          ],
+          "permitted_variations": [
+            "Vary coefficients, constants and solutions within supported arithmetic.",
+            "Vary which candidate qualifies and its position.",
+            "Update prompts, explanations and keys consistently."
+          ],
+          "source_refs": [
+            "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+            "canonical 0a9e6824-677a-5fae-9867-1701e7d8378f",
+            "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: three elimination steps",
+            "tutorial ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-confirmation.json",
+            "reuse-provenance.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "At seed 4258185931, choose the second-largest candidate lower-right value when input a11=1; otherwise choose the smallest. This answers all five delivered questions. Within q-73439, scales 2, 4 and 5 all select the minimum value, succeeding 3/3 versus a 1/5 guessing baseline. The finding concerns this exact batch, not every generator output.",
+          "source_refs": [
+            "9752715d-a11c-5d27-95dc-d20bec1117cb",
+            "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+            "8ad44012-c8dc-51b0-90ac-8e2b89d003b4"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py. It reproduces current batch('easy',5,4258185931), reports 5/5 and exits 1. Repeat with --input delivery-batch/accepted.json. Minimal repeated-role pair: ['q-73439',2,0] and ['q-73439',4,0]. The first input is [[3,9,12],[2,7,6]], with correct REF [[1,3,4],[0,1,-2]] and solution x=10,y=-2.",
+          "requested_change": "Revise batch selection so repeated scaled members of a recognizable coefficient family do not preserve a fixed answer rank or this pivot/rank cue. Use the supported target roles, regenerate the five-item batch, and rerun the retained strict test on its actual delivered records. Preserve source families and the response contract.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-2-policy-2-4ea3e9df01325020"
+        },
+        {
+          "kind": "evidence",
+          "description": "The previous response used evidence paths relative to contract-repair instead of evidence_root. The named missing-provenance error was reproduced. A corrected, validated bundle exists, but installation at the required root remains blocked by filesystem permissions.",
+          "source_refs": [
+            "9752715d-a11c-5d27-95dc-d20bec1117cb",
+            "dc5530a8-d7bb-5ee6-b842-11178cec4e06"
+          ],
+          "reproduction": "Run python3 -B correct_evidence.py from evidence_root/contract-repair-2. path-validation.json records successful bundle and root-relative report validation. Validating contract-repair/result.json against evidence_root reproduces the missing correction-provenance.json error.",
+          "requested_change": "Have the runner install the complete contract-repair-2 evidence bundle at evidence_root, using accepted-review.json as result.json, then validate against that root. This is a report-only correction: do not invoke generator authoring, modify the package, publish assets, or write the database.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93"
+        },
+        {
+          "kind": "inventory",
+          "description": "Question f98461ac-7c48-536e-aa56-fcc53a0bd592 (entity 17592186528070) remains selectable at inventory basis 5574. Choosing the median candidate lower-right value answers it without elimination. All three permitted scales of its legacy q-1060 family preserve that rank. The two retired easy legacy records are excluded from the repair list.",
+          "source_refs": [
+            "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+            "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: normalize, eliminate, normalize"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_inventory_shortcut.py; expected exit 1. Archived parameters: legacy.generate(\"moderate\",59775,\"q-1060\",[\"q-1060\",3]). Input [[-1,2,3],[5,6,24]]; candidate lower-right values 27/16,33/16,39/16,45/16,51/16; keyed median 39/16. Complete reproduced record and metadata are in generated-records.json.",
+          "requested_change": "Runner-owned pool repair: retire or replace the eligible record in affected-inventory.json so selectable legacy practice no longer preserves the fixed-median answer rule. Preserve retired history and original source questions, refresh inventory, and independently verify eligibility. No current generator change or author database write is requested.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/repair-history.json",
+          "line": 41,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-5595bf9a345705ea"
+        }
+      ],
+      "literal_interpretation_or_proxy": "A broad catalog supporting all key ranks was used as evidence of variation even when the exact five-question delivered batch retained a simple pivot/rank rule.",
+      "semantic_loss": "Learners could use first-pivot status and candidate rank rather than elimination in that delivered batch.",
+      "causal_evidence_assessment": "Direct finite-batch witness. Literal-instruction causation is unproven; this is a sampling/selection blind spot.",
+      "counterevidence_and_scope_limits": "The cue is expressly batch-specific and controls break it. Report-root permissions and evidence-path errors are separate infrastructure issues, not pedagogical failures. Existing source REF/RREF ambiguity was documented and corrected. Do not infer every catalog member is defective.",
+      "patterns": [
+        "catalog_coverage_not_delivered_variation",
+        "batch_specific_shortcut",
+        "technical_report_repair_separate"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-965098618b47df3b/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "All eight checks pass. The current batch defeats the retained shortcut. All three defective legacy records are retired at inventory basis 5577. Package files remain unchanged.",
+        "decision_variation": "The retained shortcut succeeds on 1/5 current batch records versus 5/5 historical records. All three reproduced legacy defects are retired and excluded from fresh practice at captured basis 5577."
+      },
+      "publication_basis": 5579,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186068841,
+      "title": "Finding General Solutions by Rearranging Then Integrating",
+      "intended_learner_operation": "Solve elementary separable ODEs by rearranging, separating variables, integrating, and solving explicitly for y.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Solve elementary separable ODEs by rearranging, separating variables, integrating, and solving explicitly for y.",
+          "reasoning_steps": [
+            "Rearrange and separate variables under valid domain assumptions.",
+            "Integrate both sides with an arbitrary constant.",
+            "Solve for y and select valid branches.",
+            "Choose the complete solution or enter the missing expression."
+          ],
+          "invariants": [
+            "Preserve elementary separation and integration workload.",
+            "Preserve source response forms and complete answer banks.",
+            "Respect nonzero and branch restrictions without revealing the computed solution."
+          ],
+          "permitted_variations": [
+            "Change small coefficients and signs while updating every dependent expression.",
+            "Vary missing polynomial expressions and supported solution scaffolds.",
+            "Shuffle choices without preserving incidental answer cues."
+          ],
+          "source_refs": [
+            "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833",
+            "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767",
+            "dfb65111-b319-54c6-84cc-f60506595a69 / tutorial 6766"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "The captured q-128198 blank family is missing from the package.",
+          "source_refs": [
+            "8363d7a8-d552-504e-a21c-ebf886d548c2 / q-128198"
+          ],
+          "reproduction": "generate_moderate(seed=730033, template=\"q-128198\", parameters={\"a\":1}, profile=\"observed\") raises ValueError(\"Template/level/field mismatch\"). Run reproduce_failures.py.",
+          "requested_change": "Implement the complete source family, including its scaffold, answer, worked solution, replay checks, and coherent variations.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Normal interval restrictions reveal integrated answer expressions, allowing copy-and-power actions to bypass integration.",
+          "source_refs": [
+            "5a2bae15-170e-5e1c-8377-f10d9fc5ad9d / q-79665",
+            "d4faf034-eb8a-55d3-93d9-79b525a402a1 / q-8304",
+            "679701a5-b0c3-5865-adfd-e49e046da668 / q-8303"
+          ],
+          "reproduction": "generate_moderate(730061, template=\"q-79665\", parameters={\"a\":1}) prints x^(3/2)/3+K>0; squaring that printed expression selects the correct answer without integrating. See minimal-failures.json and leak-cases.json.",
+          "requested_change": "Change the family-wide domain wording to preserve valid branch assumptions without supplying computed antiderivatives. Retest conditional shortcuts after delivery filtering.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/repair-history.json",
+          "line": 23,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b"
+        },
+        {
+          "kind": "grading",
+          "description": "The native grader rejects a valid source solution family, while added normal wording excludes that response.",
+          "source_refs": [
+            "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-family-strict-input.json grader-family-strict-report.json. Submission x^2+5 should be accepted because K absorbs +5; actual outcome is rejected, exit 1.",
+          "requested_change": "Retain the strict failing test and identify the missing context-aware solution-family equivalence capability. Do not remove the family or narrow valid source responses to hide it; engine repair is outside this job.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/repair-history.json",
+          "line": 40,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b"
+        },
+        {
+          "kind": "rendering",
+          "description": "Indented captured whitespace renders the blank scaffold as literal code rather than mathematics.",
+          "source_refs": [
+            "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+          ],
+          "reproduction": "Run reproduce_failures.py. Default q-128191 with a=1 displays literal $y=-2($ and $+K)^{-1}$ code blocks. See minimal-render/question-001.png and render-all/question-013.png.",
+          "requested_change": "Normalize the served scaffold layout throughout the family while preserving its placeholder and mathematics. Verify screenshots and reject literal mathematical code blocks.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/repair-history.json",
+          "line": 55,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Making all branch/domain conditions explicit exposed already-integrated expressions. Preserving captured whitespace retained invalid Markdown layout. Restricting a blank to the nonconstant term made answers easier for the grader.",
+      "semantic_loss": "Domain wording supplied the antiderivative, allowing copying/power operations instead of integration; answer wording narrowed valid solution-family equivalence; mathematically present scaffold rendered as code.",
+      "causal_evidence_assessment": "Direct archived template rationale/runtime and reviewer witnesses. A concrete instance of correctness/format obligations implemented without preserving the learner task.",
+      "counterevidence_and_scope_limits": "Some domain repairs were mathematically necessary, and source signed-constant/absolute-value defects were real. The issue is how restrictions were expressed, not a demand to omit domains. The historical recorded findings did not demonstrate affected stored generated instances.",
+      "patterns": [
+        "safety_or_correctness_text_leaks_answer",
+        "engine_limit_narrows_valid_task",
+        "literal_source_format_copy",
+        "technical_validity_replaces_learner_meaning"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-1-policy-2-65563c2f3cd9e12b/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "All eight checks pass. The four retained defects are resolved in tested cases. All five batch records survive filtering. Package files remained unchanged.",
+        "decision_variation": "Controlled changes, conditional shortcut probes and delivery stages pass. No demonstrated affected generated inventory records. Conclusions use captured inventory and stated learner-selection assumptions; finite testing cannot exclude every shortcut."
+      },
+      "publication_basis": 5370,
+      "additional_archival_evidence": [
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b/relocated-package/17592186068841/template-extraction.md",
+          "line": 11,
+          "supports": "Branch repairs explicitly described, including solved-factor interval and preserving captured whitespace."
+        },
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b/relocated-package/17592186068841.py",
+          "line": 269,
+          "supports": "Nonconstant-only instruction narrows accepted family."
+        },
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b/relocated-package/17592186068841.py",
+          "line": 276,
+          "supports": "Solved antiderivatives inserted into normal interval wording."
+        }
+      ]
+    },
+    {
+      "kp": 17592186078583,
+      "title": "Modeling Inhibited Decay",
+      "intended_learner_operation": "Translate Newton's cooling statement into a differential equation approaching ambient temperature from above.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Translate Newton's cooling statement into a differential equation approaching ambient temperature from above.",
+          "reasoning_steps": [
+            "Identify the surrounding temperature as equilibrium.",
+            "Form the excess T-T_S.",
+            "Apply negative proportionality with k>0.",
+            "Select the matching differential equation."
+          ],
+          "invariants": [
+            "Cooling follows dT/dt=-k(T-T_S), with k>0.",
+            "One correct equation among five radio choices.",
+            "Easy cases provide ambient temperature; moderate cases also provide an initial temperature.",
+            "No integration or parameter fitting is required."
+          ],
+          "permitted_variations": [
+            "Ambient temperature, supported Celsius/Fahrenheit contexts, and hotter initial temperatures.",
+            "Choice position and source-supported distractor profiles.",
+            "Equivalent equation representations preserving the method and workload."
+          ],
+          "source_refs": [
+            "246dbe47-9137-5b96-af87-04ddded3bed6: easy liquid",
+            "29a46a1b-3fea-5ef3-98e8-a12878014c94: easy Fahrenheit cake",
+            "3ba4e3cf-6728-56eb-8731-1748c4ffae5c: moderate turkey",
+            "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f: moderate soup",
+            "Tutorial f58653bc-cafb-532a-b92d-8183054c181b: Newton's law of cooling"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "The current source contains ten question banks, but the package retains nine. Easy Fahrenheit cake q-106877 is omitted, leaving normal easy sampling entirely Celsius.",
+          "source_refs": [
+            "29a46a1b-3fea-5ef3-98e8-a12878014c94 / q-106877"
+          ],
+          "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py cake. The exact source case uses seed 90271, template/profile q-106877, parameters {S:70}; it raises ValueError: Template does not belong to level.",
+          "requested_change": "Restore the complete cake source bank and include its Fahrenheit profile in normal easy sampling. Update source-coverage claims and retain the strict regression test.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-0-policy-2-0c69632c0ac42ce3"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Within turkey and soup templates, the correct equation is always uniquely shortest. Three-digit initial readings and two-digit ambient readings preserve this cue, bypassing ambient identification and Newton-law reasoning. All 20 tested cases survive moderate delivery. The requested easy batch does not exhibit this demonstrated shortcut.",
+          "source_refs": [
+            "3ba4e3cf-6728-56eb-8731-1748c4ffae5c / q-106883",
+            "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f / q-106934",
+            "58a15628-6a07-582f-a2d4-e1c7a7c6e77c / q-37365",
+            "generate/principles.md: incidental answer-producing cues"
+          ],
+          "reproduction": "Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py shortest. Exact case: moderate q-106883, seed 92601, S=52, I=179. The RHS choices are -179(T-52), -k(T-52), -52(T-179), -k(T-179), and -kT(T-52). The correct second expression alone is shortest. Complete record and screenshot: shortcut-render-records.json and render-shortcut/question-001.png.",
+          "requested_change": "Revise practice-bank construction so equation length cannot determine correctness within recognizable templates. Preserve raw source replay, cooling constraints, and workload; retain affected families and the strict shortcut regression. Shuffling choices alone does not fix this rule.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/repair-history.json",
+          "line": 23,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-0-policy-2-0c69632c0ac42ce3"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Vary numeric temperatures and shuffle a fixed structural mistake bank while retaining its textual complexity relationships.",
+      "semantic_loss": "The correct cooling equation remained uniquely shortest in turkey/soup templates, bypassing ambient-versus-initial identification and sign reasoning.",
+      "causal_evidence_assessment": "Direct20-case conditional witness; original author motive is not established.",
+      "counterevidence_and_scope_limits": "Reported easy batch scored0/5 on the cue; the demonstrated failure is moderate-family-specific. Seven stored generated records were unaffected. Missing Fahrenheit cake is a source coverage gap, not proof of literal intent loss.",
+      "patterns": [
+        "fixed_bank_relationship_leaks_key",
+        "surface_variation_not_decision_variation",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-1-policy-2-760825190a9286b7/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects are fixed. All eight checks pass, including the exact five-question batch. Package files remain unchanged; no assets were published or database content written.",
+        "decision_variation": "The historical shortest-choice shortcut no longer succeeds. Relevant and irrelevant counterfactuals pass. All five exact batch records survive filtering. Seven historical generated inventory records were reproduced and are unaffected. Selection conclusions are conditional on captured inventory and explicit learner-policy assumptions."
+      },
+      "publication_basis": 5392,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186087877,
+      "title": "Transforming First-Order Linear ODEs Using Integrating Factors",
+      "intended_learner_operation": "Transform a first-order linear ODE into d(yI)/dx = IQ using an integrating factor.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Transform a first-order linear ODE into d(yI)/dx = IQ using an integrating factor.",
+          "reasoning_steps": [
+            "Normalize the derivative coefficient and identify P and Q.",
+            "Compute I = exp(integral P dx).",
+            "Recognize the product derivative and select the complete transformed equation."
+          ],
+          "invariants": [
+            "I is nonzero on the working interval and satisfies I′ = PI.",
+            "Multiply the normalized Q by the same I.",
+            "Stop before solving for y; retain the single-choice response contract."
+          ],
+          "permitted_variations": [
+            "Vary small coefficients, signs, forcing functions and source-supported normalization.",
+            "Vary correct positions and distractor relationships without making the answer recognizable from the bank alone."
+          ],
+          "source_refs": [
+            "1e3c0253-226d-596c-a831-7c68ec76b21c",
+            "65a9092a-d6a6-5192-82ca-c04151a6438f",
+            "dba525fe-7e4d-5319-88bd-1b806feb0904",
+            "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1–4",
+            "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I′=IP passage"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "Every default easy bank uses [I, 1/I, I², x, x²]. The correct exponential is uniquely the one whose doubled exponent also appears, allowing the learner to ignore the ODE.",
+          "source_refs": [
+            "dba525fe-7e4d-5319-88bd-1b806feb0904",
+            "65a9092a-d6a6-5192-82ca-c04151a6438f",
+            "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I′=IP passage"
+          ],
+          "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py; expected exit 1. Minimal case: generate('easy', seed=8173, template='signed_constant_power', parameters={'a':'1','n':2}). For y′+y=x², the factors exp(x), exp(-x), exp(2x), x and x² reveal exp(x) from the bank alone. The opposite-sign paired case also succeeds.",
+          "requested_change": "Change the complete-bank construction rule shared by all three easy templates so superficial exponent relationships cannot identify the key independently of P. Preserve legitimate coefficient variation and unique correctness; retain the conditional shortcut regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/review-0-policy-2-34bbd6ba8ad34ac5"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Canonical source e-21741, y′+2y=2exp(-2x), cannot be generated. Constant-P templates permit only cosine or polynomial forcing; exponential-forcing templates require nonconstant P.",
+          "source_refs": [
+            "1e3c0253-226d-596c-a831-7c68ec76b21c",
+            "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1–4"
+          ],
+          "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python canonical_coverage.py; expected exit 1. All 12 reachable easy forcing assignments at P=2 are retained in canonical-candidates.json; none matches the canonical equation.",
+          "requested_change": "Support the canonical constant-coefficient exponential-forcing family through the normal construction path, deriving the prompt, integrating factor, choices and worked solution together.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/review-0-policy-2-34bbd6ba8ad34ac5"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Generate plausible-looking errors I,1/I,I²,x,x² while preserving a fixed relationship around the correct factor.",
+      "semantic_loss": "The uniquely doubled exponent identifies I without computing an integrating factor from P.",
+      "causal_evidence_assessment": "Direct bank construction and witness; inferred local focus on each distractor rather than information revealed by the complete bank.",
+      "counterevidence_and_scope_limits": "All generated choices can be individually mathematically meaningful errors. The whole-bank relationship causes the loss. Three historical affected records remained separately documented at the final review, so generator acceptance is not historical-pool remediation.",
+      "patterns": [
+        "fixed_bank_relationship_leaks_key",
+        "surface_variation_not_decision_variation",
+        "source_coverage_gap",
+        "runtime_repair_not_pool_repair"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/review-1-policy-2-82b7674315173c64/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained generator defects are resolved. All eight checks pass. Three affected historical inventory records remain documented separately. Package unchanged; no database writes.",
+        "decision_variation": "Relevant and irrelevant counterfactuals, conditional shortcut probes and delivery/selection scenarios passed for the revision. Three historical affected records are retained for separate inventory remediation."
+      },
+      "publication_basis": 5343,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186096613,
+      "title": "Differentiating the Product of a Constant and the Natural Logarithm Function",
+      "intended_learner_operation": "Differentiate a constant multiple of ln(x), preserving the entire signed constant.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Differentiate a constant multiple of ln(x), preserving the entire signed constant.",
+          "reasoning_steps": [
+            "Identify the constant, rewriting ln(x)/d as (1/d)ln(x) when needed.",
+            "Apply the constant multiple rule and (ln x)' = 1/x.",
+            "Simplify c/x and select or enter an equivalent expression."
+          ],
+          "invariants": [
+            "One natural logarithm with argument x.",
+            "Easy constant-multiple differentiation without chain rules, sums or point evaluation.",
+            "Five-option radio or equivalent-expression blank response."
+          ],
+          "permitted_variations": [
+            "Signed integer and rational constants, including unit fractions.",
+            "Integer multiples of e.",
+            "Multiplier and quotient presentations.",
+            "Radio answer order."
+          ],
+          "source_refs": [
+            "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: derivative of ln(x) is 1/x.",
+            "Canonical 6624681a-bb00-59db-8df9-4d5a3cd00434: 5 ln(x) differentiates to 5/x.",
+            "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887): ln(x)/4, including the constant-factor rewriting step.",
+            "f8867c14-c978-5609-8feb-155bfedae13c (q-70889): 6e ln(x)."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "restriction",
+          "description": "Source q-70887 asks y=ln(x)/4, with derivative 1/(4x). The generator rejects parameters n=1,d=4,k=0 because every profile requires |n|>=2, and no quotient-by-a-constant family exists.",
+          "source_refs": [
+            "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887)",
+            "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948",
+            "generate/principles.md: source fidelity and meaningful variation"
+          ],
+          "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_source_gap.py. It exits 1 and writes source-gap.json. Minimal failing call: generate_easy(seed=917, parameters={\"n\":1,\"d\":4,\"k\":0}).",
+          "requested_change": "Add the sourced quotient family to replay and normal easy sampling, including unit-fraction coefficients, its complete five-choice bank and the rewriting step. Use family-specific domain and distractor rules, retain the regression, and verify varied denominators through grading and delivery. No database or runner-owned batch edits are required.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096613/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096613/review-0-policy-2-81a000b338586d94"
+        }
+      ],
+      "literal_interpretation_or_proxy": "A universal nonunit-numerator domain kept one coefficient/distractor implementation simple.",
+      "semantic_loss": "The source quotient ln(x)/4 and its rewrite as a constant multiple became unavailable, narrowing a core representation of the same skill.",
+      "causal_evidence_assessment": "Direct rejection of source parameters; reason for the original restriction is not proven.",
+      "counterevidence_and_scope_limits": "Supported generated samples were correct and had no demonstrated shortcut. This is coverage/domain narrowing, not answer leakage or excessive difficulty.",
+      "patterns": [
+        "implementation_domain_narrows_skill",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096613/review-1-policy-2-807b2c9d1c668d8d/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The quotient-family repair passes independent review. All eight checks passed. No current generator, batch, or stored-pool defect was demonstrated. Package files remain unchanged.",
+        "decision_variation": "Controlled changes, conditional shortcut probes, delivery and selection rules passed. All five batch records survive; live inventory and learner-state limits are documented."
+      },
+      "publication_basis": 5684,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots",
+      "intended_learner_operation": "Reduce a consistent singular 3x3 system with two pivots to RREF, then select its matrix or general solution vector.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Reduce a consistent singular 3x3 system with two pivots to RREF, then select its matrix or general solution vector.",
+          "reasoning_steps": [
+            "Construct the augmented matrix.",
+            "Find and normalize two pivots using row operations.",
+            "Clear entries above the pivots.",
+            "When requested, express x and y in terms of free variable z."
+          ],
+          "invariants": [
+            "Consistent rank-two linear system.",
+            "Source-supported matrix and solution-vector response families.",
+            "Five radio choices with exactly one correct answer."
+          ],
+          "permitted_variations": [
+            "Signed coefficients, slopes, intercepts and row dependencies.",
+            "Equation ordering and nonzero row scaling.",
+            "Correct-option position and distractor assignments."
+          ],
+          "source_refs": [
+            "Tutorial 3949: Using the Gauss-Jordan Method on a 3x3 System With Two Pivots",
+            "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+            "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "The registry omits two supplied source profiles, preventing their replay and sampling. No affected generated inventory instance was demonstrated; both profiles remain original source questions.",
+          "source_refs": [
+            "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+            "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+          ],
+          "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python missing-profile.py --template q-74625. It exits with KeyError('q-74625'). Repeat with --template q-131634.",
+          "requested_change": "Build the registry from all 17 supplied assessed source cases, retaining complete banks and worked solutions. Add exact source-ID coverage checks and verify replay plus sampled generation for every profile.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-0-policy-2-5c66a489da337c4d"
+        }
+      ],
+      "literal_interpretation_or_proxy": "The embedded executable registry had15 profiles while current evidence had17.",
+      "semantic_loss": "Two source examples could not replay or sample; no change in meaning of successfully generated tasks was demonstrated.",
+      "causal_evidence_assessment": "Operational source synchronization/coverage failure. Insufficient evidence for literal instruction following or a semantic shortcut.",
+      "counterevidence_and_scope_limits": "Exact math, grading, controlled changes and shortcut tests passed. A suspected shortest-answer cue scored2/10 and was rejected. No affected stored generated item was established.",
+      "patterns": [
+        "operational_source_snapshot_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-1-policy-2-ff32c64117fa7c75/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The two omitted source profiles are restored. All eight checks pass; no remaining defect was demonstrated. Package unchanged; no publication or database writes.",
+        "decision_variation": "Relevant and irrelevant counterfactuals pass in both families. Conditional shortcut probes found no reproducible defect, including in the exact batch. Selection preserves support under the documented fresh-learner assumptions; live policy and history remain unobserved."
+      },
+      "publication_basis": 5374,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186096842,
+      "title": "Differentiating a Radical Function Using the Chain Rule",
+      "intended_learner_operation": "Differentiate square-root and reciprocal-square-root functions using the chain rule, then evaluate at a specified point for tangent slopes.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Differentiate square-root and reciprocal-square-root functions using the chain rule, then evaluate at a specified point for tangent slopes.",
+          "reasoning_steps": [
+            "Identify the inner polynomial and outer power.",
+            "Differentiate both functions and multiply.",
+            "Substitute and simplify.",
+            "Evaluate at the stated point when requested."
+          ],
+          "invariants": [
+            "Preserve the observed function families, response formats and difficulty.",
+            "Require positive radicands at evaluation points.",
+            "Keep the inner-derivative factor, including legitimate zero slopes."
+          ],
+          "permitted_variations": [
+            "Vary coefficients, signs and valid evaluation points.",
+            "Vary positive, negative and zero slopes where supported.",
+            "Vary distractors and correct-choice positions without revealing the answer through bank construction."
+          ],
+          "source_refs": [
+            "8fcdb2c8-71ca-5bfa-b7fe-49f8f2c05bbb (e-182)",
+            "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+            "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+            "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate outer and inner functions, multiply, then substitute."
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "The production scale_bank makes answers consecutive multiples of a shared factor. Multiplying the common spacing by the visible linear coefficient yields the correct square-root derivative or slope; negating that multiplier handles reciprocal roots. This bypasses outer differentiation and target evaluation despite shuffled positions.",
+          "source_refs": [
+            "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+            "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+            "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)"
+          ],
+          "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_probe.py batch-records.json; exit 1 demonstrates failure. Minimal current case: seed 3173462203, easy, slope_sqrt_radio, parameters a=7,b=37,t=-4. For y=sqrt(37+7x), sorted choices are 1,7/6,4/3,3/2,5/3. Their spacing is 1/6, so choose 7×1/6=7/6 without evaluating the radicand or target. The same record survives delivery.",
+          "requested_change": "Replace the family-wide coefficient-ladder bank construction with source-supported distractors that do not disclose the derivative through spacing. Preserve source families and deterministic replay. Retain the executable regression across applicable templates and delivered candidate batches; the script accepts an explicit candidate-records file. Regenerate the runner batch after package repair.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260"
+        },
+        {
+          "kind": "inventory",
+          "description": "Three eligible stored radios reproduce the same shortcut: 90db644a-fd4a-5c58-b43a-e0452a6336d1, ab67789f-4616-5914-aa8d-59736a54c4f6, and f48647ea-8ebd-5583-b713-aef1cac5a291. Their stable IDs and content fingerprints match independent generated reproductions.",
+          "source_refs": [
+            "Inventory basis 5644",
+            "98cde390-f268-5ffd-9f2f-31f016a0c432 (q-107303)",
+            "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)",
+            "0ce97e32-c8a9-5155-bb70-6cb7385360f5 (q-107291)"
+          ],
+          "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B inventory_probe.py. Explicit parameters and matching complete records are retained in inventory-results.json and generated-records.json. affected-inventory.json identifies all three entities. Seed 70001 is an independent replay seed, not an asserted historical seed.",
+          "requested_change": "After generator repair, the runner should repair or retire these proven eligible generated records, refresh inventory and request independent review. Preserve original source questions and history; no author database write is required.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Use a common factor and consecutive coefficient ladder to preserve a complete answer bank while varying the input coefficient.",
+      "semantic_loss": "Choice spacing multiplied by the visible coefficient reveals the derivative or slope, bypassing outer differentiation and evaluation.",
+      "causal_evidence_assessment": "Direct family-wide construction witness across30 simple linear-root radios and10 delivered easy examples.",
+      "counterevidence_and_scope_limits": "All17 sources replayed and all102 tested derivatives were mathematically correct. Source fidelity plus correct keys therefore did not establish pedagogical variation. Three stored affected radios were separately retired before acceptance.",
+      "patterns": [
+        "fixed_bank_relationship_leaks_key",
+        "surface_variation_not_decision_variation",
+        "runtime_repair_not_pool_repair"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-1-policy-2-a056c78c591d53f9/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The spacing shortcut is repaired, and all three affected stored radios are retired. All eight checks passed. Package files remained unchanged.",
+        "decision_variation": "Historical witness still fails the regression; current construction passes. Controlled pairs, conditional shortcut probes, delivery and eligibility checks found no current defect. Future learner-selection limits are documented."
+      },
+      "publication_basis": 5666,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186100989,
+      "title": "Finding an Entry of a Square Matrix",
+      "intended_learner_operation": "Interpret the first subscript as row and the second as column, check existence, and identify the indicated matrix entry.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Interpret the first subscript as row and the second as column, check existence, and identify the indicated matrix entry.",
+          "reasoning_steps": [
+            "Read the requested row and column.",
+            "Compare both indices with the square matrix’s order.",
+            "Return the intersecting entry or select “No such entry.”"
+          ],
+          "invariants": [
+            "Square matrices and row-before-column indexing.",
+            "Prompt, answer and solution refer to the same target.",
+            "Numeric blanks require existing entries."
+          ],
+          "permitted_variations": [
+            "Matrix order 2–4, name, entries and target coordinates.",
+            "Existing and nonexistent targets within the same radio presentation and matrix size.",
+            "Choice positions and complete distractor banks."
+          ],
+          "source_refs": [
+            "fe56a988-49e9-5f33-b0a5-f43d33984c1d",
+            "bf0cde7f-5b94-5af7-b3da-c7304b62c190",
+            "4b55801d-38e7-5449-9bcb-92a485dcdd1c",
+            "5aee8772-02f1-5e96-b1e0-f67b0c259d43",
+            "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
+            "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: entries are defined within the matrix dimensions."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "Default easy radio construction fixes the answer to “No such entry” whenever the matrix is 2×2. Learners can ignore the requested indices. Sampling forces existing radio profiles to larger matrices, while validation forbids existing targets in the 2×2 all_four profile.",
+          "source_refs": [
+            "bf0cde7f-5b94-5af7-b3da-c7304b62c190",
+            "fe56a988-49e9-5f33-b0a5-f43d33984c1d",
+            "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a",
+            "generate/principles.md"
+          ],
+          "reproduction": "Generate easy seed 11, profile all_four, parameters {\"name\":\"B\",\"matrix\":[[\"1\",\"-3\"],[\"0\",\"5\"]],\"i\":3,\"j\":2}: answer is No such entry. Change only i to 2: expected answer 5, but generation raises ValueError. Run reproduce_restriction.py against the package entrypoint. Run python3 shortcut_regression.py --candidate-records delivery-sample/accepted.json --output shortcut-regression.json to reproduce 33/33 shape-only successes. Batch seed 3302362091 exhibits the same defect.",
+          "requested_change": "Decouple existence from matrix size and recognizable radio presentation. Permit existing and missing targets within the same size/layout groups, deriving banks and solutions consistently. Retain strict boundary-counterfactual and conditional-shortcut regressions, verify delivery, and regenerate through the deterministic package CLI. Changing seeds or editing runner-owned batch/database records does not repair this construction rule.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/review-0-policy-2-2c307eef8ade70a2"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Bank profiles bundled matrix size, response layout and existence outcome: the2x2 all-four-values-plus-None bank was reserved for missing indices.",
+      "semantic_loss": "Matrix shape alone determines No such entry, so row/column indexing is unnecessary.",
+      "causal_evidence_assessment": "Direct construction restriction and33/33 subgroup witness; incidental source/bank arrangement hardening is inferred.",
+      "counterevidence_and_scope_limits": "Numeric blanks legitimately require existing entries. The repair concerns radio layouts where both existing and missing cases fit; it should not force missing-target blanks.",
+      "patterns": [
+        "incidental_template_feature_hardened",
+        "surface_variation_not_decision_variation"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/review-1-policy-2-efcb362aa69b8cd7/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The demonstrated 2×2 shortcut is repaired. All eight checks pass for the current easy generator and exact five-question batch. Package files remain unchanged.",
+        "decision_variation": "Strict regressions fail preserved old examples and pass current output. All five batch records survive delivery with both existence cases per radio size/layout. Captured inventory contains no generated records; live-selection limitations are documented."
+      },
+      "publication_basis": 5669,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186105746,
+      "title": "Solving a Singular 2x2 System of Equations Using Gaussian Elimination",
+      "intended_learner_operation": "Use Gaussian elimination on a singular 2x2 system, distinguish a contradictory row from a redundant row, and select the general solution.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Use Gaussian elimination on a singular 2x2 system, distinguish a contradictory row from a redundant row, and select the general solution.",
+          "reasoning_steps": [
+            "Construct the augmented matrix.",
+            "Normalize the first pivot when necessary and eliminate the second x entry.",
+            "Interpret the final row as a contradiction or redundancy.",
+            "Select No solution or the correct vector family."
+          ],
+          "invariants": [
+            "Two variables, singular rank-one coefficient matrix, and an x-first pivot.",
+            "Easy cases require one elimination operation.",
+            "Both consistent and inconsistent outcomes belong to the skill.",
+            "Practice responses use five-choice radio fields."
+          ],
+          "permitted_variations": [
+            "Vary coefficients and first-row constants, including zero.",
+            "Vary the second RHS independently so fixed coefficients can yield either consistency outcome.",
+            "Derive matrices, explanations, answer banks, and keys from the same instance."
+          ],
+          "source_refs": [
+            "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+            "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)",
+            "79d64547-fc54-5cd3-a6ec-b00c0e085729 (q-73750)",
+            "Tutorial 3153: solve the basic variable in terms of the free variable.",
+            "Tutorial 3901: a final equation 0=10 is false.",
+            "Tutorial 3154: the eliminated RHS distinguishes infinitely many solutions from no solution."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "The generator omits q-20964: x-5y=0; 2x-10y=3. Its nonzero scaling of nonzero source intercepts also excludes this captured boundary.",
+          "source_refs": [
+            "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)"
+          ],
+          "reproduction": "Run targeted-regressions.py with the context Python; it exits 1. Minimal call: generate('easy',7331,'q-20964',{'rhs_scale':1}) raises ValueError('Template difficulty mismatch').",
+          "requested_change": "Include this source family and its complete bank. Support zero first-row intercepts independently and derive distinct distractors and the eliminated RHS from the instance.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-0-policy-2-f4f6723c67ba4318"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Fixed coefficient patterns determine consistency because both RHS values always scale together. For q-42157, recognizing coefficient -6 and choosing No solution succeeds on 8/8 raw variants and 7/7 delivered variants. A coefficient-signature strategy also answers the exact delivered batch 5/5, solving only the first equation on consistent templates.",
+          "source_refs": [
+            "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+            "a9a9e509-4293-5590-b2bf-432eea2f6134 (q-73749)",
+            "e2f37bf7-c408-5d68-a145-8a36082b4969 (q-42163)",
+            "Tutorials 3901 and 3154: consistency depends on the eliminated RHS."
+          ],
+          "reproduction": "Run targeted-regressions.py and finish_review.py; see commands.md. Minimal generated case: q-42157, seed 7331, rhs_scale=2 gives x-6y=4; -4x+24y=-20. The coefficient cue predicts No solution at every allowed scale. Holding x-6y=2 fixed and changing the second RHS from -10 to -8 must instead produce x=2+6y, but that decision change is unavailable.",
+          "requested_change": "Make the second RHS or eliminated residual independent of template identity. Derive prompts, echelon rows, explanations, and keys together so recognizable coefficient signatures support both consistency outcomes. Regenerate the batch and retain the controlled-pair and conditional-shortcut regressions.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/repair-history.json",
+          "line": 23,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-0-policy-2-f4f6723c67ba4318"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Nonzero scaling of both original right-hand sides preserved the example consistency outcome and coefficient signature.",
+      "semantic_loss": "Recognizing the coefficient template determines no-solution versus consistent outcome; inspecting the eliminated residual is bypassed.",
+      "causal_evidence_assessment": "Direct held-out-scale and controlled-pair evidence. Generalization preserves an accidental outcome instead of the reasoning that determines it.",
+      "counterevidence_and_scope_limits": "The coefficient matrix must remain singular and rankone; varying that would change the task. Only RHS/residual should independently vary consistency. Original zero-intercept source also proves that common nonzero scaling is too narrow.",
+      "patterns": [
+        "incidental_template_feature_hardened",
+        "surface_variation_not_decision_variation",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-1-policy-2-4301bd9690936d29/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects are repaired. All eight checks pass for the reviewed revision and exact five-question batch. Package files remain unchanged.",
+        "decision_variation": "Retained tests fail on the old package and pass now. Controlled changes update prompts, solutions and grading correctly. The former coefficient-signature shortcut scores 2/5 on the delivered batch."
+      },
+      "publication_basis": 5365,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186119771,
+      "title": "Describing a Triangular Matrix",
+      "intended_learner_operation": "Inspect zeros around the main diagonal and choose the most specific supplied matrix classification.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Inspect zeros around the main diagonal and choose the most specific supplied matrix classification.",
+          "reasoning_steps": [
+            "Inspect all entries strictly above and below the diagonal.",
+            "Distinguish upper triangular, lower triangular and diagonal structure.",
+            "Use a nonzero witness to exclude diagonal and the opposite orientation."
+          ],
+          "invariants": [
+            "Direct classification of a square numeric matrix.",
+            "One radio field with the complete five-label bank.",
+            "Classification depends on the entire zero region, not a predetermined witness cell."
+          ],
+          "permitted_variations": [
+            "Upper versus lower orientation, supported size, matrix letter and answer position.",
+            "Diagonal values, signs and magnitudes.",
+            "Any nonempty permitted-side support, including a single nonzero witness."
+          ],
+          "source_refs": [
+            "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+            "2b95456b-3323-5d6f-9e68-2195aad3e714",
+            "527b33fb-f404-506c-9c40-f8d572226bac",
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number, including zero, is allowed on the diagonal and permitted side"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        {
+          "skill": "Inspect zeros around the main diagonal and choose the most specific supplied matrix classification.",
+          "reasoning_steps": [
+            "Inspect entries above and below the diagonal.",
+            "Distinguish upper triangular, lower triangular and diagonal structure.",
+            "Use a nonzero witness to exclude competing classifications."
+          ],
+          "invariants": [
+            "Direct classification of a square numeric matrix.",
+            "One radio field with the complete five-label bank.",
+            "Diagonal signs do not determine triangular orientation."
+          ],
+          "permitted_variations": [
+            "Upper versus lower orientation and supported matrix size.",
+            "Every nonempty permitted-side support, including sole witnesses.",
+            "Diagonal values, signs, matrix letter and answer position."
+          ],
+          "source_refs": [
+            "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+            "527b33fb-f404-506c-9c40-f8d572226bac",
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number, including zero, may occur on the diagonal"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "provenance.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "restriction",
+          "description": "Both level_guard and catalog require at least ceil(n(n−1)/4) nonzero off-diagonal entries. For 3×3 matrices, this excludes every sole-witness triangular case, including canonical A=[[-2,0,0],[6,-1,0],[0,0,0]]. Sparse cases require inspecting the same zero region, so the claimed scan-workload justification does not support excluding this source pattern.",
+          "source_refs": [
+            "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+            "generate/principles.md: establish fidelity first and vary eligible answer-bearing relationships"
+          ],
+          "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python test_single_witness.py. The strict acceptance test fails with ValueError: Normal triangular practice needs a substantial nonzero off-diagonal region. Exact parameters, command and stderr are retained in single-witness-acceptance.json.",
+          "requested_change": "Update catalog construction and parameter validation to admit every nonempty permitted-side support at source-supported sizes. Derive witnesses from the matrix. Retain the strict canonical acceptance test, cover each upper/lower sole-witness coordinate, and preserve the passing five-question regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Batch-selection defect: both 3×3 upper matrices have negative top-left entries (-9, -3), while both lower matrices have positive entries (9, 6). The sole 2×2 matrix is diagonal. Consequently, size plus one diagonal sign answers every delivered member without inspecting off-diagonal zeros. This rule succeeds on only 15/30 independent controls, so the finding is batch-specific.",
+          "source_refs": [
+            "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+            "527b33fb-f404-506c-9c40-f8d572226bac",
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+            "generate/principles.md: meaningful variety and conditional cue groups"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python test_batch_shortcut.py. The strict acceptance test fails: choose Diagonal for 2×2; otherwise choose Upper when the top-left entry is negative and Lower otherwise. Accuracy is 5/5 after delivery filtering, with all five submissions accepted by the native grader. Flipping only the first record’s top-left value from -9 to 9 preserves Upper and causes the heuristic Lower response to be rejected.",
+          "requested_change": "Revise batch construction/selection and regenerate this pool so incidental size/sign cues retain counterexamples. Preserve independent diagonal values, all source families and restored sparse supports. Retain the strict batch test and native-graded sign-change control.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-2-policy-2-0c1c91bdcd7c4ff5"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Require at least half of permitted off-diagonal cells nonzero to preserve a supposedly substantial scan workload; later rely on broader controls for batch validity.",
+      "semantic_loss": "Canonical sole-witness triangular matrices are rejected even though identifying the zero region is the same skill. A later delivered batch separately permits a size/diagonal-sign shortcut.",
+      "causal_evidence_assessment": "Direct old runtime docstring and density guard justify the restriction as workload. Review explicitly rejects that justification. Later sign cue is batch-specific.",
+      "counterevidence_and_scope_limits": "Sparse nonzero evidence does not mean the learner need not inspect zeros. Final review investigated a4/4 preview-order coincidence and rejected it as an unstable UI artifact; not every sample coincidence warrants a new restriction.",
+      "patterns": [
+        "invented_difficulty_or_workload_rule",
+        "implementation_domain_narrows_skill",
+        "batch_specific_shortcut",
+        "counterevidence_to_overbroad_review"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-3-policy-2-413866e964a72e3e/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects reproduce on old examples and pass on the revision. All eight checks pass for the current package and exact batch. No current defect demonstrated; package unchanged.",
+        "decision_variation": "Relevant and irrelevant controls behave correctly. The old shortcut gets 1/5 on the current batch. A 4/4 preview-order coincidence was investigated and varies with task-item IDs; no stable delivered predictor was demonstrated. Future live IDs and histories remain unknown."
+      },
+      "publication_basis": 5452,
+      "additional_archival_evidence": [
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc/relocated/17592186119771.py",
+          "line": 2,
+          "supports": "Runtime description imposes substantial nonzero regions."
+        },
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc/relocated/17592186119771.py",
+          "line": 81,
+          "supports": "Rejects sparse legitimate source cases."
+        }
+      ]
+    },
+    {
+      "kp": 17592186119805,
+      "title": "Solving for One Coefficient in a Linear Combination",
+      "intended_learner_operation": "Solve for one scalar coefficient in a vector linear combination.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Solve for one scalar coefficient in a vector linear combination.",
+          "reasoning_steps": [
+            "Isolate the unknown scalar-vector product.",
+            "Compute the residual componentwise.",
+            "Determine a scalar from a nonzero component and verify every component.",
+            "Select the scalar or No solution from five radio choices."
+          ],
+          "invariants": [
+            "One unknown scalar and equal-dimensional column vectors.",
+            "Basic vector addition, subtraction and scalar multiplication.",
+            "Preserve component consistency checking and source workload."
+          ],
+          "permitted_variations": [
+            "Change coordinates, scalar values, signs, unknown labels and eligible answer-bank relationships.",
+            "Vary informative and contradictory coordinates.",
+            "Vary homogeneous versus explicit-target equations without automatically fixing consistency."
+          ],
+          "source_refs": [
+            "fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+            "lesson 17592186120045 step 17592186120673: isolate the s term using vector addition/subtraction and scalar multiplication",
+            "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+            "ce5d7202-47f0-50c1-9bc6-a025b8d27432"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "Visible variable/bank signatures answer every runner question without inspecting vectors: l with No solution selects the only negative value; l with numeric-only choices selects the second-largest; h selects the largest. Other easy subgroups also have perfect rank/sign rules.",
+          "source_refs": [
+            "4e441944-ad54-59d2-9897-793ac5452b92",
+            "b99af0d8-b75f-54bf-9697-c5d904e35653",
+            "c8dd7df5-a62a-5efa-a6ef-0c480856813f"
+          ],
+          "reproduction": "Run the context Python on audit.py and acceptance-tests.py under evidence_root. Minimal runner case b713577b-6986-5a32-9f22-4f4d35b1455e, seed 2406259497: l; choices 1,-1,1/2,0,No solution. Choosing the only negative value succeeds. All five batch records survive check_delivery.py.",
+          "requested_change": "Revise normal scalar/sign domains and distractor-bank construction so visible signatures do not determine the correct value. Preserve source replay and regenerate a batch that passes conditional shortcut probes. Option shuffling alone is insufficient.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/review-0-policy-2-92c215d6c6ddfe7e"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Every homogeneous profile answers No solution: 18/18 fresh samples and 17/17 delivered controls. Two stored generated questions reproduce this weakness.",
+          "source_refs": [
+            "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+            "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+            "80bf8c74-6292-5b04-9a45-fc39723fd232"
+          ],
+          "reproduction": "Run followup.py and acceptance-tests.py. For q-34570, a=[2,4], c=3, u=[3,2] is inconsistent. Change only u[0] to 1: k=-6 becomes valid, but explicit generation raises AssertionError. generated-records.json reproduces stored UUIDs 036a544e-adcf-5604-8565-d9b2d689152b and e5e9f97a-8dbd-5e5f-adc8-0ae163476518.",
+          "requested_change": "Decouple zero-RHS wording from consistency. Include justified same-method decision cases and derive banks and explanations from component consistency while retaining the source contradiction families.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/review-0-policy-2-92c215d6c6ddfe7e"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Three complete rated source cases are absent from the package: q-34572, q-105153 and q-105156. Their full banks cannot be replayed.",
+          "source_refs": [
+            "1c4f9063-8349-57ea-b235-d134f5cba639",
+            "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+            "6154ace2-6af4-581c-9596-72c7ea4a622a"
+          ],
+          "reproduction": "Run audit.py; inspect source-replay-results.json. Minimal q-34572 has a1=[2,-3], a2=[7,5], b=[18,4], known coefficient 2, correct answer 2 and bank [-1,4,2,-2,-5], but no package profile.",
+          "requested_change": "Add replay support for all three complete captured cases, including full banks and worked solutions, and validate their variations independently.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/repair-history.json",
+          "line": 42,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/review-0-policy-2-92c215d6c6ddfe7e"
+        },
+        {
+          "kind": "math",
+          "description": "The subtraction profile accepts c=2, computes b=2a-su, but displays a-ju=b and stores j=2. This is an explicit-parameter validation defect outside normal sampling.",
+          "source_refs": [
+            "ce5d7202-47f0-50c1-9bc6-a025b8d27432"
+          ],
+          "reproduction": "Run audit.py then run-native.py. q-34241, seed 64193, parameters a=[0,-1,1], u=[-2,1,0], c=2, s=2, letter=j produces b=[4,-4,2]. The displayed third component requires 1=2, yet native grading accepts stored answer 2. Retained in boundary-subtraction-c2.json.",
+          "requested_change": "Enforce c=1 within subtraction parameter validation, or consistently render and solve the general coefficient. Retain the strict failing rejection test; no engine change is needed.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/repair-history.json",
+          "line": 59,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/review-0-policy-2-92c215d6c6ddfe7e"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Scale original vector/bank profiles while binding consistency, sign and answer rank to variable labels or homogeneous wording.",
+      "semantic_loss": "Vector-blind labels and bank signatures solve54/54 controls; homogeneous prompts always mean No solution instead of requiring component consistency.",
+      "causal_evidence_assessment": "Direct normal-sampling witnesses. Separate c=2 subtraction defect is an explicit-parameter validation bug, not semantic interpretation evidence.",
+      "counterevidence_and_scope_limits": "Normal arithmetic was correct. Zero RHS is a legitimate situation with both possible outcomes. Two demonstrated historical items remained documented separately from generator acceptance.",
+      "patterns": [
+        "incidental_template_feature_hardened",
+        "fixed_bank_relationship_leaks_key",
+        "implementation_bug_separate",
+        "runtime_repair_not_pool_repair"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119805/review-1-policy-2-fbda2dd665dd1a5a/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The revision resolves all four retained generator failures. All eight checks pass, and package files remain unchanged. Two affected historical inventory records are documented separately; no database remediation is claimed.",
+        "decision_variation": "Relevant and irrelevant counterfactuals agree across mathematics, solutions, rendering and native grading. Conditional shortcut probes demonstrate no current bypass. The exact batch and captured inventory limitations are assessed separately."
+      },
+      "publication_basis": 5399,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186119847,
+      "title": "Determining the Rank of a Matrix Given the Number of Pivot Columns",
+      "intended_learner_operation": "Determine rank from pivot count, or subtract non-pivot count from total columns.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Determine rank from pivot count, or subtract non-pivot count from total columns.",
+          "reasoning_steps": [
+            "Identify whether the supplied count describes pivot or non-pivot columns.",
+            "Use rank = pivots, or rank = columns minus non-pivots.",
+            "Select the matching integer."
+          ],
+          "invariants": [
+            "Rank cannot exceed either matrix dimension.",
+            "Five distinct numeric radio choices contain one correct answer.",
+            "Easy uses direct definition recall; moderate uses one subtraction."
+          ],
+          "permitted_variations": [
+            "Vary feasible dimensions, counts, matrix names and answer positions.",
+            "Include feasible cases where rank equals rows or non-pivot count.",
+            "Preserve complete source banks on replay; replace colliding distractors in extensions."
+          ],
+          "source_refs": [
+            "7cce27e9-e2b2-599c-9f4e-437caf1a23ae: canonical example computes 7-3=4.",
+            "186b4c12-6daf-5415-8147-526533c01a95: five rows, seven columns, three non-pivots.",
+            "Tutorial c062d466-946c-526b-aba8-0a0895671218: rank equals pivot count."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "restriction",
+          "description": "valid() requires distinct original recipe values before constructing distractors. Every moderate recipe includes both rows and rank, excluding full-row-rank matrices—including canonical 4×7 with three non-pivots. Every profile also rejects 3×4 with two non-pivots, although rank two is feasible and five distinct choices are readily available.",
+          "source_refs": [
+            "7cce27e9-e2b2-599c-9f4e-437caf1a23ae",
+            "186b4c12-6daf-5415-8147-526533c01a95",
+            "generate/principles.md sections 1 and 2"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B restriction-regression.py. The strict expected-success test exits 1. audit-canonical.py reproduces rejection across all six profiles for seed=17, rows=4, columns=7, count=3, kind=non-pivot.",
+          "requested_change": "Separate mathematical feasibility from distractor uniqueness. Preserve complete replay banks, replace colliding distractors for valid extensions, and admit full-row-rank and rank-equals-nonpivot constructions. Retain the strict regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-3-policy-2-092f7adc069513f2"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Require five distinct outputs from the original distractor recipe before considering a mathematical instance valid.",
+      "semantic_loss": "Valid full-row-rank and rank-equals-nonpivot cases are rejected because incidental wrong-answer recipes collide, although alternative plausible distractors can be built.",
+      "causal_evidence_assessment": "Direct archived valid() implementation mixes feasibility and recipe uniqueness. Strong example of a construction convenience becoming an instructional constraint.",
+      "counterevidence_and_scope_limits": "Distinct answer choices remain necessary; the remedy is to rebuild colliding distractors, not accept ambiguous banks or prohibit the math case. No universal shortcut was shown in the requested batch.",
+      "patterns": [
+        "distractor_recipe_controls_math_domain",
+        "implementation_domain_narrows_skill"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-4-policy-2-f0e377c88f1ec20e/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The retained restriction is fixed. All eight checks pass for the current package and exact five-question batch. Package unchanged. One historical inventory weakness is documented separately.",
+        "decision_variation": "Relevant changes alter decisions; feasible irrelevant changes preserve responses through delivery, grading and rendering. No reproducible tested shortcut answers the exact batch. Historical inventory findings and selection limitations are recorded separately."
+      },
+      "publication_basis": 5414,
+      "additional_archival_evidence": [
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-3-policy-2-092f7adc069513f2/relocated/17592186119847.py",
+          "line": 50,
+          "supports": "Mathematical validity requires original recipe uniqueness before variant bank creation."
+        }
+      ]
+    },
+    {
+      "kp": 17592186124479,
+      "title": "Finding the Number of Pivot Columns of a Matrix",
+      "intended_learner_operation": "Reduce a matrix to row echelon form, determine which residual rows vanish, and count pivots.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Reduce a matrix to row echelon form, determine which residual rows vanish, and count pivots.",
+          "reasoning_steps": [
+            "Identify entries requiring elimination.",
+            "Apply elementary row replacements.",
+            "Count pivots and select the corresponding integer."
+          ],
+          "invariants": [
+            "Numeric pivot-count question with five radio choices.",
+            "Comparable one- or two-operation reduction workload.",
+            "The answer follows actual dependence after elimination."
+          ],
+          "permitted_variations": [
+            "Vary residual survival and rank within the same matrix shape.",
+            "Vary pivot locations, coefficients, matrix labels, and option order."
+          ],
+          "source_refs": [
+            "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+            "8a6c1395-93b3-574c-b784-2d33009b00c0",
+            "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+            "Tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: first convert the matrix to row echelon form.",
+            "generate/principles.md §2"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "The exact surviving batch permits a shape-only answer strategy: count rows and subtract one. It bypasses deciding dependence after elimination. This is specific to batch selection, not a demonstrated universal generator defect.",
+          "source_refs": [
+            "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+            "8a6c1395-93b3-574c-b784-2d33009b00c0",
+            "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+            "generate/principles.md §2"
+          ],
+          "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python check_batch_shortcut.py --input delivery-batch/accepted.json` from evidence_root. It exits 1. Seeds 315106964–315106968 yield row/rank pairs (4,3), (4,3), (3,2), (3,2), (5,4). Complete records and parameters are retained. The same test passes on counterfactual-records.json.",
+          "requested_change": "Revise batch assembly to include supported same-shape cases with different residual survival outcomes. Retain the strict post-delivery shortcut regression and conditional checks. Preserve valid generator families; this finding does not justify engine changes or sampler restrictions.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/review-0-policy-2-aac6b6dace0e282d"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Global controls with varied ranks were taken as adequate, while the delivered five-question sample all had rank=rows-1.",
+      "semantic_loss": "Counting rows replaced performing elimination to determine residual survival.",
+      "causal_evidence_assessment": "Direct batch-only witness5/5 against81/204 controls; no evidence of universal fixed-template defect.",
+      "counterevidence_and_scope_limits": "All17 source cases and230 math records passed; controlled changes were correct and no stored-pool-wide defect was shown. Repair should retain valid families and alter batch construction, not impose broad source exclusions.",
+      "patterns": [
+        "catalog_coverage_not_delivered_variation",
+        "batch_specific_shortcut"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/review-1-policy-2-010907021c6c5547/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The retained batch shortcut is repaired. All eight checks pass; no current defect was demonstrated. Package files remain unchanged.",
+        "decision_variation": "The strict test rejects the old batch. Rows-minus-one succeeds on only 2/5 current delivered records. Controlled changes pass grading and rendering. Captured inventory shows no demonstrated affected records; live histories and future inventory remain outside the captured evidence."
+      },
+      "publication_basis": 5363,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186124674,
+      "title": "Modeling Inhibited Growth",
+      "intended_learner_operation": "Translate inhibited-growth prose into dX/dt=k(a-X), distinguishing equilibrium from initial population, and select one equation.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Translate inhibited-growth prose into dX/dt=k(a-X), distinguishing equilibrium from initial population, and select one equation.",
+          "reasoning_steps": [
+            "Identify the dependent variable and equilibrium capacity.",
+            "Distinguish capacity from any initial population.",
+            "Express positive growth proportional to the remaining gap.",
+            "Select the matching whole-equation radio choice."
+          ],
+          "invariants": [
+            "Positive proportionality constant and growth from below equilibrium.",
+            "Five radio alternatives with one correct equation.",
+            "No integration, parameter fitting, or explicit solution required."
+          ],
+          "permitted_variations": [
+            "Context, units, variable, capacity, and below-capacity initial population.",
+            "Correct option position and plausible distractor capacities.",
+            "Which candidate capacity matches the equilibrium stated in the prompt."
+          ],
+          "source_refs": [
+            "a568fc63-e81c-5210-93f0-bcbd429a9e40: fish capacity 200 gives k(200-P).",
+            "5651275c-fd64-5799-85e0-52ab15ebd288: initial 10, capacity 95, candidate capacities 95/30/60/100/950.",
+            "3974627f-3801-52ea-b93f-3d1a3033e2cc: distinguish capacity 1000 from initial population 320.",
+            "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285: rate depends on distance from equilibrium; dP/dt=r(a-P), r>0, P<a."
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-replay-results.json",
+            "source-math-results.json"
+          ]
+        },
+        {
+          "skill": "Translate inhibited-growth prose into dX/dt=k(a-X), identifying the equilibrium and selecting the correct equation.",
+          "reasoning_steps": [
+            "Identify the dependent quantity and equilibrium.",
+            "Distinguish equilibrium from any initial stock.",
+            "Recognize positive growth proportional to the remaining gap.",
+            "Select the equation with the appropriate capacity, sign and population factors."
+          ],
+          "invariants": [
+            "Positive proportionality constant and growth from below equilibrium.",
+            "One whole-equation radio response from five choices.",
+            "No integration or parameter fitting."
+          ],
+          "permitted_variations": [
+            "Context, capacity, variable, units and below-capacity initial stock.",
+            "Correct option position and eligible equilibrium assignments.",
+            "Wrong structural equations may share the correct equilibrium without becoming correct."
+          ],
+          "source_refs": [
+            "54bac72f-651e-55b5-8b4b-fbc4e753ebc5: all five equations contain capacity 150; signs and population factors distinguish them.",
+            "5651275c-fd64-5799-85e0-52ab15ebd288: distinguish initial stock 10 from equilibrium 95 among competing capacities.",
+            "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285: dP/dt=r(a-P), with r>0 and P<a."
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-replay-results.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "The correct default easy equation is always uniquely shortest. Every distractor adds a minus sign, population factor, or power. Choosing by length bypasses modeling and answers the entire delivered batch.",
+          "source_refs": [
+            "a568fc63-e81c-5210-93f0-bcbd429a9e40",
+            "5651275c-fd64-5799-85e0-52ab15ebd288",
+            "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285"
+          ],
+          "reproduction": "From evidence_root run: /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_shortcut.py --input boundary-records.json --index 0 --output shortcut-minimal.json. Expected exit 1. Minimal instance: generate_easy(seed=88, parameters={'context':'deer','capacity':20}). check_shortcuts.py reproduces 40/40 fresh and 5/5 delivered successes.",
+          "requested_change": "Revise easy bank construction so equation length cannot identify correctness within recognizable templates. Include plausible same-method alternatives requiring the stated equilibrium. Regenerate the batch and retain the strict shortcut regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-0-policy-2-2563c730827bc9a7"
+        },
+        {
+          "kind": "restriction",
+          "description": "Normal easy sampling excludes source banks whose alternatives differ by capacity. Historical distractor ratios additionally reject valid equilibrium reassignment: tutoring capacity 60 and initial 10 fails despite requiring the same source reasoning.",
+          "source_refs": [
+            "5651275c-fd64-5799-85e0-52ab15ebd288",
+            "3974627f-3801-52ea-b93f-3d1a3033e2cc",
+            "4108ce6a-5d28-540e-b8c0-e4b52161a458"
+          ],
+          "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B fixed_bank_probe.py. generate_easy(seed=624, template='source_17592186308739', parameters={'capacity':60,'initial':10}) raises 'whole observed bank needs bounded integer constants'. fixed-bank-records.json demonstrates the valid unchanged-bank capacity95→60 reference pair; actual grading and rendering confirm the changed correct choice.",
+          "requested_change": "Include competing-capacity banks in normal easy sampling. Generate distinct plausible distractor capacities from instructional constraints rather than exact historical ratios, and derive correctness from the stated equilibrium. Preserve exact source replay separately.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-0-policy-2-2563c730827bc9a7"
+        },
+        {
+          "kind": "decision_shortcut",
+          "description": "Mixed banks assign distinct capacities to every option, so only the correct equation contains the prompt’s sole positive numeral. Copying that numeral bypasses sign and population-factor reasoning. It solves 14/14 fresh mixed questions and all 5 batch survivors. This finding does not reject the source’s legitimate all-capacity equilibrium-selection task.",
+          "source_refs": [
+            "54bac72f-651e-55b5-8b4b-fbc4e753ebc5",
+            "19a4e47b-fcd5-50aa-804a-b275eeea23d5",
+            "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285"
+          ],
+          "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_number_match.py --output number-match-results.json; expected exit 1. Minimal case: generate_easy(seed=3, parameters={\"context\":\"deer\",\"capacity\":60}). Options are k(60-N), -k(84-N), -k(89+N), k(91-N), k(66-N); only the correct option contains 60. Add --input delivery-batch/accepted.json to reproduce the delivered 5/5 failure.",
+          "requested_change": "Revise mixed-bank construction so wrong structural equations can share the stated equilibrium and learners must inspect sign/factor relationships. Require distinct equations rather than distinct constants. Preserve competing-capacity variation and the original length regressions, retain the new numeral-copy regression, and regenerate the batch.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/repair-history.json",
+          "line": 42,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-1-policy-2-f08a3651ea6369b6"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Fixed error types first made the correct equation shortest. The repair then made every candidate capacity distinct in mixed banks.",
+      "semantic_loss": "After the first repair, copying the prompt’s sole positive numeral identifies the key without checking sign or population factors. Distinct constants were mistaken for distinct equations.",
+      "causal_evidence_assessment": "Direct sequential repair history with14/14 mixed control and5/5 delivered witnesses. Strong local-fix regression example.",
+      "counterevidence_and_scope_limits": "All-capacity source banks legitimately test equilibrium identification; copying the capacity is intended there. The defect is mixed banks that claim to assess sign/factors but let the same copy action bypass them. Reviewer explicitly preserves this distinction.",
+      "patterns": [
+        "fixed_bank_relationship_leaks_key",
+        "local_fix_creates_new_shortcut",
+        "distractor_uniqueness_overgeneralized",
+        "counterevidence_to_blanket_shortcut_bans"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-2-policy-2-0c443b1fb34647f2/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "All eight checks pass. The three retained defects are repaired; no new concrete generator or batch failure was demonstrated. Package files remain unchanged. Full report: result.json.",
+        "decision_variation": "Retained shortcut probes fail historical fixtures and pass current cases. Relevant and irrelevant counterfactuals agree across content, grading and rendering. Filtering retained 24/24 fresh and 5/5 batch records. Conditional coincidences and finite-sample limits are recorded. Captured inventory contains no generated easy records; all ten generated moderate/hard records reproduce."
+      },
+      "publication_basis": 5384,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186129176,
+      "title": "Identifying the Leading Entries of a Matrix",
+      "intended_learner_operation": "Find the first nonzero entry in each requested row, add those entries, and select the matching numeric answer.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Find the first nonzero entry in each requested row, add those entries, and select the matching numeric answer.",
+          "reasoning_steps": [
+            "Identify the requested rows.",
+            "Scan each requested row from left to right for its first nonzero entry.",
+            "Add the signed entries and select the matching radio choice."
+          ],
+          "invariants": [
+            "Only requested rows contribute.",
+            "Every requested row has a leading entry.",
+            "Five distinct numeric choices contain exactly one correct answer.",
+            "The explanation identifies and adds the appropriate leading entries."
+          ],
+          "permitted_variations": [
+            "Two- or three-row subsets.",
+            "Leading columns and signed integer values.",
+            "Trailing entries and unselected rows.",
+            "Positive, negative, and zero sums.",
+            "Choice positions and numeric answer ranks."
+          ],
+          "source_refs": [
+            "Canonical e-6166 / 7fd5c01f-c20e-5c47-b8d9-8cfbe634c14d",
+            "Tutorial 3148 / 24451a80-db9f-5a0f-a591-41500a69774c: definition of leading entry",
+            "q-129207 / 0d70558d-9878-55b8-b37b-3292e69959ea"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "source_fidelity",
+          "description": "q-129207 is missing from the embedded source and CASES. Its matrix is [[2,-5,9,3],[0,7,0,8],[0,0,3,1],[0,0,-7,-1]], with zero-based target rows [1,2,3]. The correct sum is 7+3-7=3 and the complete bank is {3,12,9,-3,1}. Requesting this profile raises ValueError. Its sorted bank gap pattern [4,2,6,3] matches no available profile, so translation cannot reproduce it.",
+          "source_refs": [
+            "q-129207 / 0d70558d-9878-55b8-b37b-3292e69959ea",
+            "generate/principles.md §1: reproduce complete source answer banks"
+          ],
+          "reproduction": "From evidence_root, run /home/jake/Developer/Course_Academy/.venv/bin/python -B assert_source_coverage.py. It exits 1 on q-129207 using seed 817 and its original parameters. Exact input and exception are retained in unsupported-source.json and source-coverage-failure.json.",
+          "requested_change": "Refresh the embedded source and derive profiles from every captured complete bank, including q-129207. Preserve its bank and verified solution while retaining current decision variation. Make the strict source-coverage regression pass. No stored generated instance was demonstrated affected; affected-inventory.json is empty, with inspection limits recorded in inventory-audit.json.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-0-policy-2-076dabcdc2433c9a"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Embedded source and CASES were stale:14 of15 current banks present.",
+      "semantic_loss": "One source matrix/target-row/bank case was unreachable; no semantic failure in generated supported tasks was demonstrated.",
+      "causal_evidence_assessment": "Operational source snapshot/coverage failure. No evidence for original literal-instruction mechanism.",
+      "counterevidence_and_scope_limits": "406 independently checked records and conditional shortcut probes passed; affected-inventory was empty. Missing source fidelity alone should not be counted as answer leakage.",
+      "patterns": [
+        "operational_source_snapshot_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The missing q-129207 source bank is restored. All eight checks pass; no demonstrated defect remains. Package files are unchanged.",
+        "decision_variation": "Relevant and irrelevant changes agree across prompts, explanations, native grading and rendering. Conditional shortcut probes found no demonstrated bypass. Delivery and learner selection were examined using captured inventory and explicit policy/history scenarios; live-state limits are documented."
+      },
+      "publication_basis": 5356,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186161966,
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix",
+      "intended_learner_operation": "Infer two missing additive column operations that zero the nonpivot entries of one row in a 4x4 matrix.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Infer two missing additive column operations that zero the nonpivot entries of one row in a 4x4 matrix.",
+          "reasoning_steps": [
+            "Identify the unchanged source column and the row reduced to zeros.",
+            "Calculate each missing multiplier using k = -a_ri/a_rp.",
+            "Select the correct operation pair and verify the matrix transformation."
+          ],
+          "invariants": [
+            "Three additive operations use the same unchanged source column.",
+            "One operation is supplied and two are missing.",
+            "One radio choice contains the correct operation pair.",
+            "Displayed intermediate matrices must follow the stated operations."
+          ],
+          "permitted_variations": [
+            "Pivot row and column, supplied operation, multiplier signs and magnitudes, and nonpivot entries.",
+            "Distractor relationships and displayed positions may vary; their source-example assignments are not essential constraints."
+          ],
+          "source_refs": [
+            "cbf8e85c-ffa6-55b9-a087-2a5272f10f25",
+            "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+            "2ce8c9c4-6db5-5686-9935-94470a40d94f",
+            "0caa2d92-c312-53e1-9069-1f7c037c78ef",
+            "3848739a-fbe2-5165-96e8-1543cf1c6383",
+            "6a7661d7-492c-5a50-9552-67599c715cea",
+            "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: adding a multiple of one column to another",
+            "Lesson step cdb6468b-12bc-5624-9941-9d18a55ef6f9: make entries beside the pivot equal to zero"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-inputs.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "For q-130619, q-130627 and q-130624, four choices share an ordered absolute multiplier pair and one swaps those magnitudes. If the singleton is (u,v), selecting (-v,-u) identifies the correct answer without inspecting either matrix. This also affects two surviving records in the exact runner batch.",
+          "source_refs": [
+            "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+            "2ce8c9c4-6db5-5686-9935-94470a40d94f",
+            "0caa2d92-c312-53e1-9069-1f7c037c78ef"
+          ],
+          "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce.py --case shortcut. The strict regression fails. Seed 1118318699, profile q-130619 produces coefficient pairs (-3,2), (-3,-2), (2,3), (3,2), (3,-2). Singleton (2,3) predicts correct (-3,-2). Complete delivered record: minimal-shortcut.json.",
+          "requested_change": "Change the family-wide distractor construction so the singleton does not encode the correct pair through an invariant negative swap. Preserve source replay and the intended column-operation task. Verify alternative bank relationships within each recognizable subgroup, then regenerate and review the candidate batch.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186161966/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161966/review-0-policy-2-13839960db50e8f3"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "The embedded source snapshot omits current moderate questions q-130617 and q-130630. Neither complete bank can be replayed; both incorrectly raise 'Unrated source profile excluded'.",
+          "source_refs": [
+            "3848739a-fbe2-5165-96e8-1543cf1c6383",
+            "6a7661d7-492c-5a50-9552-67599c715cea"
+          ],
+          "reproduction": "Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce.py --case sources. It fails on q-130617. review.py independently tests both original parameter sets, retained in source-replay.json.",
+          "requested_change": "Reconcile the embedded inventory with the supplied rated source questions. Add complete replay support and justified sampling for both missing profiles, including q-130617's nonunit pivot example.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186161966/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161966/review-0-policy-2-13839960db50e8f3"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Preserve an ordered pair of absolute multiplier magnitudes across four choices and swap it in one singleton distractor.",
+      "semantic_loss": "The singleton reveals the correct negative-swapped pair without inspecting the displayed matrices.",
+      "causal_evidence_assessment": "Direct family-specific witness36/36 applicable controls and2/2 applicable batch members.",
+      "counterevidence_and_scope_limits": "Source replay may faithfully contain such a bank; repeating its relationship across variations creates the cue. Current snapshot also omitted two rated source profiles, a separate synchronization failure. No stored generated records existed in captured inventory.",
+      "patterns": [
+        "fixed_bank_relationship_leaks_key",
+        "surface_variation_not_decision_variation",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186161966/review-1-policy-2-e55c87e6d377c9fb/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both prior defects are resolved. All eight checks pass for the revised generator and five-question batch. No remaining defect was demonstrated; package files are unchanged.",
+        "decision_variation": "The prior shortcut succeeds on 6/25 applicable fresh records and 0/3 batch records. Controlled identical-bank cases defeat fixed answer assignments. All 60 fresh and five batch records survive delivery filtering. Selection limits are documented; captured inventory contains no historical generated records."
+      },
+      "publication_basis": 5581,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186172040,
+      "title": "Identifying a Possible Slope Field Based on the Type of Equation",
+      "intended_learner_operation": "Identify possible or impossible slope fields by inspecting dependence on x and y.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Identify possible or impossible slope fields by inspecting dependence on x and y.",
+          "reasoning_steps": [
+            "Determine the equation’s dependence on each coordinate.",
+            "Inspect slope variation along horizontal and vertical lines.",
+            "Apply could/cannot polarity and select the qualifying image."
+          ],
+          "invariants": [
+            "One correct image selection.",
+            "Coordinate-dependence reasoning remains central.",
+            "Practice sources have five choices; the canonical composite has four panels.",
+            "No differential-equation solving is required."
+          ],
+          "permitted_variations": [
+            "Coefficients, signs, and supported field shapes.",
+            "Correct-image position.",
+            "Either x-only or y-only impossible outlier.",
+            "Consistent changes to equations, diagrams, keys, and explanations."
+          ],
+          "source_refs": [
+            "3602a14d-6bd7-5586-a6e8-51d069dc8641: canonical x+y example",
+            "8e4e2c73-61a2-51eb-9aeb-b173fc18ef10: xy",
+            "a04c1b90-953c-573f-89ab-d961bb6587e1: y-x^2",
+            "5ca31a32-1c1a-5bad-882d-872d4b1f5188: exp(xy)",
+            "b2eadfcb-db6a-5800-9cd9-5adcd903a84a: x-only impossible field",
+            "6e290eb2-4c30-594d-9303-2ef73ece0ff6: y-only impossible field",
+            "Lesson step 17592186172978: horizontal and vertical slope-field symmetry"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "canonical-source-bank.png",
+            "source-banks.png"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "packaging",
+          "description": "Uncached generation depends on machine-specific runtime components absent from the manifest.",
+          "source_refs": [
+            "workspace/package.json: dependencies",
+            "workspace/17592186172040.py: RENDERER and render_plots",
+            "workspace/17592186172040/render.py: cached dependency paths"
+          ],
+          "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python cold_dependency_probe.py` from evidence_root. Moderate seed 801239 with an empty plot cache fails when only the undeclared Python 3.10 executable is hidden. The identical `--allow-external` control succeeds. Complete commands and outputs are retained.",
+          "requested_change": "Use relocatable, declared runtime dependencies for every cold-render path; remove absolute interpreter/cache requirements and retain the strict cold-cache test.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186172040/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186172040/review-0-policy-2-4c6625aaf57ad834"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Canonical e-8507’s four-panel bank is unavailable for replay; the authored x+y instance substitutes five different choices.",
+          "source_refs": [
+            "3602a14d-6bd7-5586-a6e8-51d069dc8641 (e-8507)",
+            "generate/principles.md: reproduce complete source answer banks"
+          ],
+          "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python canonical_replay_probe.py`. Profile e-8507 raises `Unknown bank profile`. The supported linear instance with seed 991 and a=b=1, c=0 instead produces the five-field authored bank. Complete source and generated records are in canonical-replay-case.json.",
+          "requested_change": "Provide faithful canonical replay preserving the original four-panel bank and worked content. Keep authored linear practice identified as an extension.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186172040/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186172040/review-0-policy-2-4c6625aaf57ad834"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Warm/local rendering success and authored same-equation example were treated as sufficient for portability and canonical replay.",
+      "semantic_loss": "Cold generation depended on an undeclared absolute interpreter/cache; an authored five-choice x+y bank substituted for the canonical four-panel bank.",
+      "causal_evidence_assessment": "Technical packaging and replay-fidelity failures. No demonstrated current mathematical or pedagogical shortcut.",
+      "counterevidence_and_scope_limits": "All40 source practice images matched bytes, dependence reasoning and keys were correct, and no tested current fixed-action cue was shown. Treat this as technical/snapshot fidelity, not established intent loss.",
+      "patterns": [
+        "technical_packaging_failure",
+        "operational_source_snapshot_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186172040/review-1-policy-2-e0ceec0efc26ec01/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects are resolved. All eight checks pass for the current package and exact five-record batch. No new defect demonstrated; package unchanged.",
+        "decision_variation": "Relevant and irrelevant changes propagate correctly through displayed content and grading. All five batch records survive delivery; tested position and annotation cues reveal no shortcut. Selection rules were examined with live-state limits recorded. Captured inventory contains no generated records."
+      },
+      "publication_basis": 5389,
+      "additional_archival_evidence": []
+    },
+    {
+      "kp": 17592186184219,
+      "title": "Finding the Rank or Nullity of a Matrix Using the Rank-Nullity Theorem",
+      "intended_learner_operation": "Find rank or nullity using rank(A) + nullity(A) = number of columns.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Find rank or nullity using rank(A) + nullity(A) = number of columns.",
+          "reasoning_steps": [
+            "Identify the column count.",
+            "Identify the supplied and requested dimensions.",
+            "Subtract the supplied dimension from the column count.",
+            "Select the resulting integer."
+          ],
+          "invariants": [
+            "Rank must lie between zero and min(rows, columns).",
+            "Rank plus nullity equals columns.",
+            "Preserve easy, one-step substitution and the five-choice radio response."
+          ],
+          "permitted_variations": [
+            "Vary feasible dimensions and supplied values.",
+            "Vary the requested rank/nullity role.",
+            "Vary distractors and correct numerical roles without introducing extra prerequisites."
+          ],
+          "source_refs": [
+            "a05d1874-f484-5b03-a7ba-b2697b84a74b",
+            "245a8171-aeb5-5caf-950d-44cbb3c0aece",
+            "e9ab814e-2358-5160-95c5-d43671e5affe",
+            "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank(A)+nullity(A)=n, where n is columns"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "Translated source banks preserve a recognizable correct numerical role. Seed 829013 offers [2,3,4,5,6] for a rank question; choosing the second-largest value gives 5 without using the dimensions or supplied nullity. This consecutive-bank rank shortcut succeeds on 34/34 control instances. The broader target/gap lookup answers every delivered control and all five batch questions. UI shuffling does not remove it.",
+          "source_refs": [
+            "e9ab814e-2358-5160-95c5-d43671e5affe",
+            "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc",
+            "generate/principles.md: fixed decision structure"
+          ],
+          "reproduction": "Run the package CLI with --difficulty easy --seed 829013 --count 1. Complete record: minimal-shortcut-record.json. Native acceptance is recorded under minimal-shortcut-seed-829013 in grader-input.json and grader-report.json. Run regression_tests.py GeneratorRegressions.test_rank_consecutive_bank_does_not_fix_correct_role for a strict failing regression.",
+          "requested_change": "Change the family-wide distractor construction so recognizable bank shapes do not fix the correct numerical role. Preserve explicit source replay, introduce counterexamples to these cue rules, and regenerate the five-question batch. More translations or option shuffling alone cannot fix this.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "The package supports 11 source banks while the current source supplies 14. Missing q-141221, q-142482 and q-141190 cannot replay through any supported profile. Minimal case q-141221 requires a 4×5 matrix with rank 4, nullity answer 1, and complete bank {0,1,2,4,5}.",
+          "source_refs": [
+            "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6",
+            "419374b5-8846-5602-9c56-203ab6362cc4",
+            "7e28e70a-8db7-56d6-8e9d-6424a558b67a"
+          ],
+          "reproduction": "Run verify_source_banks.py; missing-bank-exhaustion.json records every eligible-profile trial at the original parameters. Run regression_tests.py GeneratorRegressions.test_all_current_source_banks_replay for a strict failing regression.",
+          "requested_change": "Add complete replay support for all three current source cases, preserving prompts, banks, correct values and solution stages. Keep their generated extensions subject to the independent shortcut regression.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/repair-history.json",
+          "line": 25,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Faithful source banks were encoded as opaque offsets from the key, then translated as whole profiles.",
+      "semantic_loss": "Target word plus recognizable sorted gaps fixes the correct numerical role;264/264 raw and257/257 delivered controls can be solved without rank-nullity reasoning.",
+      "causal_evidence_assessment": "Direct archived extraction explicitly declares opaque c+offset recipes and no psychological interpretation. Strong evidence of surface-fidelity generalization losing the task’s purpose.",
+      "counterevidence_and_scope_limits": "Separating faithful replay from new generation is needed; exact source-bank preservation is valid for replay. The reviewer demands varied decision roles, not arbitrary noise. Original source-only inventory had no affected generated records.",
+      "patterns": [
+        "literal_bank_fidelity_loses_instructional_purpose",
+        "fixed_bank_relationship_leaks_key",
+        "surface_variation_not_decision_variation",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-1-policy-2-acb771abb89de2f4/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "Both retained defects are repaired. All eight checks pass, including the exact five-question batch. Package files remain unchanged; no database writes or asset publication occurred.",
+        "decision_variation": "Every profile supports five answers with bank and size held fixed; relevant evidence changes keys, while row-only changes preserve answers. The old shortcut answers 1/5 batch questions. Every surviving control signature contains all five roles. Captured inventory contains only 14 original questions. Selection conclusions are conditional on supplied inventory and explicitly exclude unknown live learner policy/history."
+      },
+      "publication_basis": 5447,
+      "additional_archival_evidence": [
+        {
+          "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d/relocated-package/17592186184219/template-extraction.md",
+          "line": 9,
+          "supports": "Original extraction specifies opaque whole-bank c+offset generalization."
+        }
+      ]
+    },
+    {
+      "kp": 17592186229182,
+      "title": "Constructing and Solving a Dilution Model",
+      "intended_learner_operation": "Construct and solve unequal-flow dilution models; easy questions use Q(0) to recover alpha+beta.",
+      "source_analysis_reviewed": [
+        {
+          "skill": "Construct and solve unequal-flow dilution models; easy questions use Q(0) to recover alpha+beta.",
+          "reasoning_steps": [
+            "Compute volume and solute flow rates.",
+            "Construct and solve the linear ODE when required.",
+            "Apply the initial condition.",
+            "Extract coefficients or evaluate the requested amount."
+          ],
+          "invariants": [
+            "Positive physical volume and a completely mixed solution.",
+            "Five numeric radio choices with one correct answer.",
+            "The normalized easy model implies alpha+beta=Q(0)."
+          ],
+          "permitted_variations": [
+            "Initial mass, volume, concentration, compatible flows, and evaluation time.",
+            "Source-supported coefficient signs and rational quantities.",
+            "Distractor values and correct-choice position."
+          ],
+          "source_refs": [
+            "5708b503-7d42-5d87-80c5-062229fe4d3c: normalized coefficient-sum question.",
+            "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f: alpha=6, beta=3.",
+            "d0340e70-b947-5b25-8e24-a63ff0f87f38: initial mass 2.2 kg.",
+            "Lesson 70852def-fb14-50cc-b88d-6fe2af2343bf: construct Q'=inflow-outflow."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        }
+      ],
+      "demonstrated_findings": [
+        {
+          "kind": "decision_shortcut",
+          "description": "When all five easy choices are single digits, the second-smallest value is always correct, bypassing the model.",
+          "source_refs": [
+            "5708b503-7d42-5d87-80c5-062229fe4d3c",
+            "generate/principles.md §2"
+          ],
+          "reproduction": "Run regression-tests.py RepairAcceptance.test_no_single_digit_rank_bypass. Natural seed 8114 produces V=100, q0=3, c=.04, rin=8, rout=12; choices {1,3,4,5,7}, correct 3.",
+          "requested_change": "Revise the family-wide distractor construction and length rejection to remove conditional rank predictors while retaining these valid inputs.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/repair-history.json",
+          "line": 8,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598"
+        },
+        {
+          "kind": "restriction",
+          "description": "The generator requires a negative transient, excluding source-supported positive coefficients and valid zero transients.",
+          "source_refs": [
+            "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f"
+          ],
+          "reproduction": "Run regression-tests.py RepairAcceptance.test_positive_transient_is_eligible. Easy seed 619 with V=240, q0=15, c=.05, rin=16, rout=24 should give alpha+beta=15 and beta=3; it raises 'Nonzero negative transient required'.",
+          "requested_change": "Allow eligible coefficient signs and derive sign-safe solutions and banks rather than rejecting those cases.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/repair-history.json",
+          "line": 24,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598"
+        },
+        {
+          "kind": "restriction",
+          "description": "Integer-mass and hundredth-concentration restrictions exclude quantities explicitly supplied by the source.",
+          "source_refs": [
+            "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+            "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f"
+          ],
+          "reproduction": "Run regression-tests.py RepairAcceptance.test_fractional_source_mass_is_eligible. V=320, q0=2.2, c=.05, rin=8, rout=4, T=5 should yield 4.01 kg; the integer-quantity guard rejects it.",
+          "requested_change": "Support the source rational quantities using exact arithmetic without increasing the assessed workload.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/repair-history.json",
+          "line": 39,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598"
+        },
+        {
+          "kind": "source_fidelity",
+          "description": "Replay uses an outdated source snapshot: q-336738 drops available attributes, while q-336746, q-339403, and q-336744 lack executable profiles.",
+          "source_refs": [
+            "310f29d9-e5f9-5829-9c84-72d1324e1777",
+            "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f",
+            "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+            "b6915e10-1543-50b0-a358-2c56a1366444"
+          ],
+          "reproduction": "Run regression-tests.py RepairAcceptance.test_current_source_key_and_solution_replay; inspect source-replay-results.json for the missing profiles.",
+          "requested_change": "Reconcile executable replay with the supplied source, including complete banks, correct links, difficulty, and worked solutions.",
+          "evidence_path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/repair-history.json",
+          "line": 55,
+          "original_review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598"
+        }
+      ],
+      "literal_interpretation_or_proxy": "Keep a negative transient and simple integer/hundredth domains, with a length-conditioned numeric bank recipe.",
+      "semantic_loss": "Legitimate positive/zero transient and rational source quantities are excluded; single-digit easy banks reveal the second-smallest key without using the model.",
+      "causal_evidence_assessment": "Direct restriction and conditional witness. Motive for restrictions is inferred, not established.",
+      "counterevidence_and_scope_limits": "Easy alpha+beta=Q(0) is itself the intended source shortcut; do not require solving the full ODE when the prompt only assesses initial condition. The bad cue is answer-rank, not efficient use ofQ(0). Defective subgroup absent from exact batch and seven stored records.",
+      "patterns": [
+        "implementation_domain_narrows_skill",
+        "fixed_bank_relationship_leaks_key",
+        "counterevidence_to_blanket_shortcut_bans",
+        "source_coverage_gap"
+      ],
+      "recorded_final_review": {
+        "path": "generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-1-policy-2-0b46c9bd473243f1/result.json",
+        "line": 3,
+        "verdict": "accepted",
+        "summary": "The four prior defects are repaired. All eight checks pass for the current package and exact five-record batch. No new concrete failure was demonstrated. Package unchanged; no database writes or publication.",
+        "decision_variation": "Controlled changes propagate through prompts, explanations, grading and rendering. The former conditional shortcut fails. All 100 audit samples and five batch records survive delivery filtering. Selection conclusions are limited to captured inputs and inspected rules."
+      },
+      "publication_basis": 5395,
+      "additional_archival_evidence": []
+    }
+  ],
+  "patterns": [
+    {
+      "pattern": "Source-bank fidelity generalized as fixed answer relationships",
+      "cases": [
+        17592186087877,
+        17592186096842,
+        17592186161966,
+        17592186184219
+      ],
+      "finding": "Preserving each wrong option as a mathematically coherent recipe does not prevent the complete bank from encoding the key. Translation/scaling leaves ranks, spacing or pair relations invariant."
+    },
+    {
+      "pattern": "Implementation convenience defines the mathematical curriculum",
+      "cases": [
+        17592186096613,
+        17592186119847,
+        17592186119771,
+        17592186229182
+      ],
+      "finding": "Nonunit coefficients, fixed density, recipe uniqueness and quantity formats exclude valid source reasoning. The best direct trace is valid() rejecting mathematical instances because distractor recipes collide."
+    },
+    {
+      "pattern": "Correctness obligations can disclose the answer or narrow it to engine capacity",
+      "cases": [
+        17592186068841,
+        17592186054816
+      ],
+      "finding": "Domain assumptions included solved primitives; a nonconstant-only blank avoided genuine solution-family equivalence; explicit-None adaptation left advice inconsistent with the keyed response."
+    },
+    {
+      "pattern": "The concrete delivered batch matters",
+      "cases": [
+        17592186059775,
+        17592186119771,
+        17592186124479
+      ],
+      "finding": "Broader controls and valid counterfactuals do not prevent a small selected pool from accidentally preserving a cue. These are explicitly batch-specific observations, not universal generator conclusions."
+    },
+    {
+      "pattern": "A repair can satisfy the previous test and introduce another bypass",
+      "cases": [
+        17592186124674
+      ],
+      "finding": "Replacing uniquely shortest equations with unique candidate capacities made copying the prompt numeral sufficient. Distinct equations were the meaningful requirement; distinct constants were an overgeneralization."
+    },
+    {
+      "pattern": "Review must distinguish incidental shortcuts from intended efficient reasoning",
+      "cases": [
+        17592186124674,
+        17592186229182,
+        17592186119771,
+        17592186059771
+      ],
+      "finding": "Selecting the stated capacity is legitimate for all-capacity banks; usingQ(0) is the intended alpha+beta task; sparse triangular witnesses retain the skill; a valid swap-only batch need not contain every row-operation type. Final review also rejected an unstable UI-order coincidence."
+    },
+    {
+      "pattern": "Some repaired cases are operational, not established semantic loss",
+      "cases": [
+        17592186096745,
+        17592186129176,
+        17592186172040
+      ],
+      "finding": "Stale registries and undeclared cold-render dependencies do not demonstrate literal instruction misunderstanding. These should remain distinct in any frequency summary."
+    }
+  ],
+  "causal_limit": "Historical defect evidence supports behavior and, for cited archived accounts, stated construction rationale. It does not directly establish internal thought processes or identify a particular original prompt unless paired with the root prompt-history audit. Source omissions often represent snapshot drift rather than pedagogical misunderstanding."
+}

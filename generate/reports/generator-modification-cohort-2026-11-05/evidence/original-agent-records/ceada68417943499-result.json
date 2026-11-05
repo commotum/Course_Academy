@@ -1,0 +1,116 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete generator defect reproduced. All eight checks passed. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Calculate an initial amount by reversing continuous growth or decay.",
+    "reasoning_steps": [
+      "Identify the final amount, signed decimal rate and matching elapsed-time units.",
+      "Substitute into P=P_0e^{rt} and divide by the exponential factor.",
+      "Evaluate, round as instructed and select the matching amount."
+    ],
+    "invariants": [
+      "The unknown remains the initial amount.",
+      "Continuous compounding, signed rates and matching time units are preserved.",
+      "Standalone responses use five radio choices with dollar or cent rounding.",
+      "The source exclusion ledger is empty."
+    ],
+    "permitted_variations": [
+      "Vary positive amounts, rates and durations within the same calculation.",
+      "Use growth or decay in either supported context.",
+      "Vary correct-choice rank and position independently of source arrangements."
+    ],
+    "source_refs": [
+      "q-24145 / 4eff42d8-d1d0-524c-93c8-09ae369be166: annual profit growth; nearest-dollar five-choice bank.",
+      "q-69937 / 6b6ec097-b6d5-5784-87e4-5077b4b39769: monthly gas-price decay; nearest-cent five-choice bank.",
+      "e-5166 / ee196034-5e9c-599f-8b74-c11221b64593: substitute, divide by the exponential factor and round.",
+      "Tutorial 3396 / 72601328-d52f-5d63-b3a2-6ef43ce652ce: continuous-growth equation; time inherits its unit from the rate.",
+      "e-5185 / 90177be7-ab0c-531b-b07b-778004ad6f2b: depreciation uses a negative rate."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "lineage-inventory.json"
+      ],
+      "details": "Both eligible standalone prompts and complete banks replayed. Missing source keys were independently reconstructed; source presentation corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "boundaries.json",
+        "review.py"
+      ],
+      "details": "87 records checked from displayed givens using 70-digit Decimal arithmetic, including signs, exponents, rounding and every choice."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "raw-coverage.json",
+        "batch-coverage.json",
+        "stage-comparison.json",
+        "resampling.json"
+      ],
+      "details": "Fresh samples cover both contexts and signs. The actual five-item batch covers all five numerical answer ranks; delivery preserves these cases."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-records.json",
+        "report_checks.py"
+      ],
+      "details": "152 sampled and delivered paths traced to instructional support. An equivalent but unshown logarithmic key conversion correctly fails the negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grading.json",
+        "delivered-grader-input.json",
+        "delivered-grading.json"
+      ],
+      "details": "Native grading passed 480 checks: 96 correct choices accepted and 384 wrong choices rejected, including normalized batch records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-delivered/rendering.json",
+        "render-other-controls/rendering.json",
+        "render-position-control/rendering.json",
+        "render-content-checks.json",
+        "visual-inspection.md"
+      ],
+      "details": "21 actual-UI cases verified. Intended math spans, all five solution rows, cells, fractions, currency, percentages and emphasis survive rendering. Screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "runtime.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.md"
+      ],
+      "details": "Exact runtime matches the manifest. Declared files relocate and reproduce the deterministic CLI batch. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "stage-comparison.json",
+        "selection.json",
+        "ui-position-probe.json"
+      ],
+      "details": "Controlled dependencies, conditional shortcuts and delivery stages checked. A perfect preview-position fit breaks when the irrelevant item ID changes. Conclusions explicitly retain captured-inventory and unknown future-ID limits."
+    }
+  },
+  "findings": []
+}

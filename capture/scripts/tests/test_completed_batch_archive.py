@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts.database.archive import compact_completed_batch, content_digest, read_manifest
+from scripts.database.archive import compact_completed_batch, content_digest, read_manifest, read_member_content, snapshot_path
 from scripts.database.batch import ActivityBatch
 from scripts.storage import atomic_json, write_json_backup
 
@@ -130,6 +130,17 @@ class CompletedBatchArchiveTests(unittest.TestCase):
         self.assertEqual(summary['before_bytes'],before)
         self.assertFalse(path.with_name(path.name+'.previous.gz').exists())
         self.assertEqual(read_manifest(path)['result'],self.manifest['result'])
+
+    def test_original_capture_survives_later_source_repairs_and_corrupt_snapshot_fails(self):
+        compact_completed_batch(self.directory)
+        member = read_manifest(self.directory/'manifest.json')['members'][0]
+        expected = self.manifest['members'][0]['content']
+        atomic_json(Path(member['directory'])/'content.json', {'later':'source repair'})
+        self.assertEqual(read_member_content(self.directory, member),expected)
+        snapshot = snapshot_path(self.directory,member['content_sha256'])
+        snapshot.chmod(0o644);snapshot.write_bytes(b'corrupt')
+        with self.assertRaises((ValueError,OSError)):
+            read_member_content(self.directory,member)
 
 
 if __name__ == '__main__':

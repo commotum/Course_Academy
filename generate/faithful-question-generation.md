@@ -1,37 +1,11 @@
 # Building a faithful question generator
 
-The goal is to reproduce the structure and teaching style of the existing question bank while generating new mathematical instances. Mathematical correctness is necessary, but fidelity also depends on the question wording, notation, difficulty boundaries, answer choices, and the sequence of steps in the worked solution.
+Faithfulness means preserving the learner’s task and the source evidence while creating useful new mathematical instances. Exact replay records what the source contained; fresh practice must also require the intended decisions and recall, offer meaningful variation and remain within scope. An observed answer arrangement is not automatically an instructional invariant.
 
-Start with the complete source questions for one knowledge point. A difficulty level can contain several structural templates, so analyze those separately before deciding which parameters to vary. Distinguish patterns observed in the source from assumptions about how the original questions were generated, especially when inferring distractor transformations.
+The current authority is [Question generation principles](principles.md). The [pipeline guide](README.md) describes investigation, authorship, verification and durable publication. Content agents use the runner’s fixed-basis capture; they do not independently select new database evidence. Manual capture maintenance uses the project’s EDB integration and skill.
 
-A shared prompt/solution template may have several distinct choice-bank profiles. Map every original incorrect option to a parameterized recipe before merging patterns, preserving compound transformations and altered constants. Select a complete observed profile rather than the first valid recipes from a pooled list. Replay all source banks at their original parameters and compare complete equations or expressions, including valid equation rescaling and domain restrictions; report fidelity independently of mathematical correctness and grader compatibility. Every supported source bank must match in full, with source errors and exclusions recorded explicitly.
+Use [classification](docs/3-classify.md) and [template extraction](docs/4-template-extraction.md) to identify the operation, supplied information, response endpoint, domains, observed banks and supported variation. The [implementation guide](docs/6-template-generator.md) separates source replay from fresh banks, defines package/response contracts and links applicable topic and presentation checks. [Shared validation tools](pipeline/validation-tools.md) exercise the actual grader, player and publication filter.
 
-Answer-field type is part of the template. A single-answer multiple-choice (`radio`) field presents choices and identifies the correct option; a typed-answer (`blank`) field expects an expression that the learner's grader can evaluate. Generate distractors only for choice fields. For blanks, record the field key, placeholder position, supplied notation, and exact portion of the answer the learner must enter.
+For a blank followed by `=1`, the requested answer is the left-hand expression; a blank preceded by `y=` requests the right-hand expression. Neither automatically requests a complete equation. This illustrates why algebraic equivalence alone cannot determine the response contract. Each generated instance needs a concrete solution and canonical fragment agreeing with its displayed givens.
 
-For example, **Finding the Cartesian Equation of a Curve Defined Parametrically With Trigonometric Functions**, knowledge point `17592186100890`, contains both types. An ellipse blank followed by `=1` expects only the left-hand expression, while a blank preceded by `y=` expects only the right-hand expression. Neither expects a complete equation. Its draft generator is in `generate/scratch/17592186100890.py`; it supports only field-type combinations observed in the source and uses positive scaling by default for moderate questions, retaining source coefficient provenance.
-
-In the current schema, a blank still has an owned canonical answer entity referenced by both `:answer-field/choices` and `:answer-field/correct`; that answer is a grading reference, not a displayed distractor. Preserve delimiter-free mathematical answer values and render surrounding notation through the prompt. Check accepted equivalent entries and rejected incorrect entries with the learner's actual grader before serving questions: SymPy checks in the generator do not establish engine grading compatibility. Retain domain and branch restrictions separately from the expression, and identify source errors instead of copying them.
-
-Each generated question should have one concrete worked solution, regardless of the learner's selected answer. Preserve the source's repeated instructional sentences and intermediate algebra as a parameterized backbone. Values and eligible target references change together through defined slots; the mathematical method, response contract, and solution stages stay stable. Where the originals provide no option feedback or distractor reasoning, keep those explanations out of the question presentation; internal error recipes can still guide choice generation.
-
-Our first example was **Using the Product Rules for Differentiation**, knowledge point `17592186115393`: easy questions use scalar–vector products, moderate questions use dot products, and hard questions use cross products. Some moderate and hard questions involve a derivative as one factor, and one moderate template evaluates the result at zero. That first draft was removed and has not yet been rebuilt.
-
-This workflow produces a reviewable generator before database integration. Match the existing schema's field types and answer representations, and retain enough version and parameter information to reproduce an instance. Database writes and decisions about storing generator recipes belong to a later stage.
-
-## Step-by-step process
-
-1. Pull every source question, answer field, choice, correct answer, and worked solution.
-2. Group questions by structural template and answer-field type within each difficulty.
-3. Record each template's notation, domains, parameter ranges, answer shapes, and grading rules.
-4. Preserve its repeated wording, field placeholders, supplied notation, and ordered solution steps.
-5. Define which values and eligible targets can change within the same backbone and answer-field contract, including their constraints and dependent references.
-6. Map every original incorrect choice to an explicit parameterized recipe and complete source bank profile.
-7. Generate parameters and compute the exact correct answer or required blank fragment.
-8. Select a source bank profile and build all its distinct distractors, or retain only the canonical answer for blanks.
-9. Render the prompt, answer fields, and one concrete worked solution from the same instance through the preserved template.
-10. Replay every source bank at its original parameters and require a complete mathematical match independent of option order.
-11. Check correctness, actual grading, profile selection, parameter boundaries, declared-slot coverage, backbone preservation, formatting, ownership, and schema compatibility.
-12. Report source-bank fidelity separately from correctness and grading, including every missing or extra option.
-13. Review originals and variants side by side before freezing the generator version.
-
-For choice fields, use the observed choice count: these source banks have four distractors for five-choice questions. Blank fields have no distractor-generation step. Follow the numbered [generation guide](docs/3-classify.md) for implementation and validation details.
+This introduction adds no separate requirements or draft-specific examples. Follow the current role prompt and canonical contract rather than historical scratch-generator behavior.

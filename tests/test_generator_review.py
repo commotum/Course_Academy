@@ -24,7 +24,7 @@ class ReviewEvidenceTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.directory = Path(self.temp.name)
-        (self.directory / "source-analysis.json").write_text('{"skill":"read an entry"}')
+        
         (self.directory / "measurements.json").write_text('{"targets":["11","12","21","22"]}')
         self.review = {
             "verdict": "accepted", "summary": "Source-supported entry reading with four targets.",
@@ -38,6 +38,9 @@ class ReviewEvidenceTests(unittest.TestCase):
             "band_verification": write_band_evidence(self.directory),
         }
 
+        (self.directory / "source-analysis.json").write_text(json.dumps(self.review["source_analysis"]))
+        self.review["checks"]["grading"]["evidence_paths"] = ["grading.json"]
+        self.review["checks"]["rendering"]["evidence_paths"] = ["rendering.json"]
         evidence = write_decision_evidence(self.directory)
         self.review["checks"]["decision_variation"]["evidence_paths"] = [evidence]
         self.review["checks"]["scope"]["evidence_paths"] = ['solution-paths.json']

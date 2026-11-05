@@ -4,7 +4,7 @@ import random
 import sympy as s
 
 X,U=s.symbols('x u',real=True)
-VERSION='inverse-substitution-quality-4'
+VERSION='inverse-substitution-quality-5'
 KPS={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 
 def tex(v):

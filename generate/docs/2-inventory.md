@@ -1,6 +1,6 @@
 # 2. Inventory
 
-For each existing generator, aim to maintain five fresh questions in every difficulty per KP. An unobserved band needs classification and review; absence alone does not prove it can or cannot be generated. Record unsupported bands and finite limits explicitly.
+For each existing generator, aim to maintain five fresh questions in every difficulty per KP. An unobserved band needs classification and review; absence alone does not prove it can or cannot be generated. Current builds verify all three bands; record genuine finite limits and unresolved inherent constraints explicitly.
 
 | Background reserve | Easy | Moderate | Hard | Scope |
 |---|---:|---:|---:|---|
@@ -34,6 +34,6 @@ Use the most efficient practices supported by [$edb](../../skills/edb/SKILL.md):
 
 Previously shown questions do not return to available inventory. The per-band reserves support weighted selection rather than specifying how many questions of each difficulty an activity must serve.
 
-A verified generator package may record an unsupported band or a finite variant limit. Keep the exception and its evidence visible; do not repeatedly demand impossible questions or claim that a shortage is filled. New source evidence reopens classification. Legacy unrated banks need classification before they contribute to difficulty-weighted assessments.
+A current verified package covers all three bands and may record a finite variant limit. Historical single-band or unsupported declarations are migration evidence, not the contract for new approval. Keep genuine limits and their evidence visible; do not repeatedly demand impossible questions or claim that a shortage is filled. Empty deduplicated output alone does not prove exhaustion. Material new source evidence reopens the relevant interpretation. Legacy unrated banks need classification before difficulty-weighted assessment use.
 
 The native `/api/inventory` read batches selection and counts at one captured EDB basis. The live worker uses the [finder's ordering rules](../scripts/README.md): actual active/requested/remedial shortages, other activity shortages, distinct-topic assessment variety, then advance preparation and routine replenishment. Self-directed new lessons use Study's bounded scope and band filter; roots and depth-two prerequisites share one relevance tier, and earlier deficient lessons come first. The five-per-band reserve does not gate this work; the direct-selection completion gate remains specific to course mode. Durable jobs in `.local/learning/inventory/<database>/<learner>/` deduplicate builds per KP and refills per KP/band. The server checks committed changes and time-based eligibility, and rechecks preparation after verified replenishment. Reuse native batched reads rather than adding independent per-question queries.

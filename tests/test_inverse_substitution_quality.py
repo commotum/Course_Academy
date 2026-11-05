@@ -37,11 +37,12 @@ class InverseSubstitutionQualityTests(unittest.TestCase):
         r=rows(17592186064220)[0];r['generation']['bank_recipes'][0]='endpoint_offset_2'
         with self.assertRaisesRegex(ValueError,'filler'):validate_delivery_batch([r],17592186064220)
 
-    def test_endpoint_coverage_is_checked_on_the_delivered_batch(self):
-        kp=17592186064220;pool=rows(kp)[16:]
-        for r in pool:
-            p=r['generation']['parameters'];p['normalized_lower']='0';p['normalized_upper']='1'
-        with self.assertRaisesRegex(ValueError,'Endpoint coverage'):validate_delivery_batch(pool,kp)
+    def test_valid_single_family_refill_does_not_require_population_quotas(self):
+        kp=17592186064220
+        ev=json.loads((H/str(kp)/'package/source-evidence.json').read_text())
+        pool=model.batch(kp,'moderate',8,41,evidence=ev,template='sine')
+        validate_delivery_batch(pool,kp)
+        self.assertEqual({r['generation']['family']for r in pool},{'sine'})
 
     def test_false_recipe_metadata_cannot_hide_arbitrary_offsets(self):
         kp=17592186064220;r=rows(kp)[0];f=r['question'][':question/answer-fields'][0]
@@ -55,15 +56,23 @@ class InverseSubstitutionQualityTests(unittest.TestCase):
         wrong[':answer/value']='4x+C'
         with self.assertRaisesRegex(ValueError,'Displayed.*filler'):validate_delivery_batch([r],kp)
 
-    def test_original_conditional_smallest_option_shortcut_is_rejected(self):
+    def test_original_smallest_option_mechanism_is_absent_across_fresh_draws(self):
         from scripts.inverse_substitution_batch_policy import pi_coefficient
         kp=17592186064220
         old=json.loads((H.with_name('2026-10-25-inverse-trig-quality')/str(kp)/'accepted-pool.json').read_text())[:8]
-        for r in old:
+        def rank(r):
             f=r['question'][':question/answer-fields'][0]
             key=next(a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1])
-            r['generation']['bank_correct_rank']=sum(pi_coefficient(a[':answer/value'])<pi_coefficient(key)for a in f[':answer-field/choices'])
-        with self.assertRaisesRegex(ValueError,'Conditional numerical rank'):validate_delivery_batch(old,kp)
+            return sum(pi_coefficient(a[':answer/value'])<pi_coefficient(key)for a in f[':answer-field/choices'])
+        # Retain the original construction counterexample; do not convert its
+        # repair into an equal-rank requirement for every small delivered batch.
+        self.assertEqual({rank(r)for r in old if r['generation']['family']=='sine'},{0})
+        ev=json.loads((H/str(kp)/'package/source-evidence.json').read_text())
+        fresh=[r for seed in (7,31,112358)for r in model.batch(kp,'easy',8,seed,evidence=ev)]
+        for family in ('sine','tangent'):
+            ranks={rank(r)for r in fresh if r['generation']['family']==family}
+            self.assertGreater(len(ranks),1)
+            self.assertNotEqual(ranks,{0})
 
     def test_sampling_retains_the_progression_for_new_seeds(self):
         for kp in KPS:

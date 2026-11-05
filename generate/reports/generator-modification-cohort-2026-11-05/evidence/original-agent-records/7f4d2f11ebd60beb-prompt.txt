@@ -1,0 +1,138 @@
+Investigate one Course Academy knowledge point and leave complete instructional examples that the next phase can build from. You own a usable result. Use the supplied script-selected database snapshots and reference KP; database selection and publication are handled by scripts, not by ad hoc agent queries.
+
+For a shared repository repair, stage a unified diff against the current files under your own workspace without first applying it to the shared tree. Run the argv in `shared_repair_command` from context with `--patch <workspace/repair.patch>` and one or more `--check-json '["executable","argument",...]'` options. The helper serializes the shared edit and its regression commands and reverses your patch if a check fails. It also restores the previous native grader binary; list any other rebuilt output with repeated `--artifact <repo-relative-path>` options so those files are restored on failure too. Resolve any patch conflict yourself by reading the current files, updating the patch, and retrying the relevant checks. Keep ownership of the repair; do not create another handoff. This coordination is only for shared code such as the renderer or engine. Edit your own KP package and evidence directly.
+
+Job context:
+{
+  "repo_root": "/home/jake/Developer/Course_Academy",
+  "workspace": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/workspace",
+  "source_root": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/source",
+  "source_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/source/source.json",
+  "inventory_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/source/inventory.json",
+  "publisher_file": "/home/jake/Developer/Course_Academy/scripts/generator_publish.py",
+  "question_selection_file": "/home/jake/Developer/Course_Academy/engine/rust/question_selection.rs",
+  "publication_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/publication/preparation.json",
+  "existing_entrypoint": null,
+  "feedback_file": null,
+  "previous_review": null,
+  "interrupted_review": null,
+  "evidence_root": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/investigation",
+  "package_root": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/workspace",
+  "manifest_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/workspace/package.json",
+  "requested_difficulty": "unclassified",
+  "count": 5,
+  "sample_seed": 369576327,
+  "knowledge_point": 17592186059665,
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "review_policy_version": 6,
+  "review_binding": {
+    "policy_version": 6,
+    "package_hash": null,
+    "batch_hash": null,
+    "source_hash": "e96a76fc73dc848ce8f5b0b22eaedaaa3449309ea6451f1d613944d2ea0ec329",
+    "inventory_hash": "00f6dc0062e786db92e594515d894527b5de7154c68e3b29f074a20f79f668f5",
+    "assets": null,
+    "effective_difficulty": null,
+    "verification_batches": {}
+  },
+  "math_root": "/media/jake/SSD/EDB/math",
+  "batch_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/samples.json",
+  "verification_bands": [
+    "easy",
+    "moderate",
+    "hard"
+  ],
+  "verification_batches": {},
+  "sampling_errors": {},
+  "prior_verification": null,
+  "repair_history_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/repair-history.json",
+  "repair_mode": "targeted",
+  "repair_regressions_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/workspace/repair-regressions.json",
+  "repair_preflight_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/repair-preflight.json",
+  "engine_repair_allowed": true,
+  "investigation_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/investigation/investigation-input.json",
+  "investigation_result": null,
+  "exemplars_file": null,
+  "assets_directory": null,
+  "finalize_review_command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "/home/jake/Developer/Course_Academy/scripts/finalize_generator_review.py",
+    "--job",
+    "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2",
+    "--evidence-root",
+    "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/investigation"
+  ],
+  "shared_repair_command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "/home/jake/Developer/Course_Academy/scripts/generator_shared_repair.py"
+  ],
+  "database": "math",
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "basis": 8015,
+  "kp_id": 17592186059665,
+  "observed_coverage": [
+    "moderate",
+    "hard"
+  ],
+  "complete_examples": {
+    "easy": 0,
+    "moderate": 1,
+    "hard": 13
+  },
+  "incomplete_imports": [
+    {
+      "question_id": "b7de6c52-4228-5d94-88f7-fec44c37c50f",
+      "entity_id": 17592186060104,
+      "missing": [
+        ":question/worked-solution",
+        ":question/difficulty",
+        "answer-fields[0].correct"
+      ]
+    },
+    {
+      "question_id": "641fc75f-8c1c-588f-b1c6-9dde40645507",
+      "entity_id": 17592186060114,
+      "missing": [
+        ":question/worked-solution",
+        ":question/difficulty",
+        "answer-fields[0].correct"
+      ]
+    },
+    {
+      "question_id": "609d2236-8468-565e-9ebe-8fd019ac095c",
+      "entity_id": 17592186233455,
+      "missing": [
+        ":question/answer-fields"
+      ]
+    },
+    {
+      "question_id": "11214dee-7d32-5b34-bc7e-86bbedbaab36",
+      "entity_id": 17592186234046,
+      "missing": [
+        ":question/answer-fields"
+      ]
+    }
+  ],
+  "construction_needed": true,
+  "preparation_key": "41d9218cff8eb1cf09a35fa3901e1a6bfa560175df751c7a2237067acbed4450",
+  "needs_exemplars": true,
+  "reference_kp_id": 17592186054787,
+  "reference_file": "/home/jake/Developer/Course_Academy/.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051/0d8f6dfe058f421f3bdc922660dde5be0c8dd6858c0783ea3f66db6fb718d0a6.pipeline/2/investigation/reference.json",
+  "investigation_feedback": null
+}
+
+Read the target KP, its lesson, canonical example, question banks, diagrams, prerequisite context, observed level coverage, and the supplied reference questions. Read `generate/principles.md` and `generate/docs/3-classify.md` under repo_root. The reference KP has at least two complete imported questions at each of easy, moderate, and hard. Study how its target reasoning, support, scaffolding, and response demands progress. Adapt the pedagogical progression to this KP's actual skill; do not copy unrelated mathematics or call larger coefficients a harder level.
+
+Incomplete imported questions are ordinary partial evidence. Leave them exactly as stored. Missing difficulty, answer fields, answer keys, or worked solutions are not inventory defects, repair tasks, or reasons to block. Retain the important scaffolding, diagrams, response structure, and instructional components that the target evidence does supply. Distinguish the work that must be done before choosing an answer from explanatory work only shown afterward. Observed level coverage records imported labels, even on incomplete questions; your authored examples do not change observed coverage.
+
+You are the sole judge of the instructional design for this phase. Existing notes and shared policies may contain mistakes; repair relevant scripts, rendering helpers, or the answer engine if they prevent you from completing this task. Reproduce the defect, fix its rule, and verify the intended behavior in this session. Coordinate shared edits with the supplied repository repair mechanism when present. Do not edit another KP's job, overwrite imported questions, restart services, or invent Math Academy provenance. A broken helper is part of your task, not a reason to leave a handoff.
+
+Write a concise investigation account in workspace/investigation.md. Explain the target learner operation, source components retained, intended easy-to-moderate-to-hard progression, and the checks you performed. Cite the supplied target and reference question IDs. Earlier requirements may be corrected when evidence and pedagogy justify it; record the reason rather than preserving a mistaken restriction.
+
+If source evidence is incomplete or does not supply usable examples across all three levels, write exactly three fully complete questions, one easy, one moderate, and one hard, to workspace/exemplars.json. Use a JSON array of records in the existing generator format, each with a `question` object. Each question needs a fresh UUID :question/id, problem, worked solution, explicit :question/difficulty, and complete answer fields with UUIDs, keys, types, answer choices/values and correct-answer references. Preserve meaningful source scaffolding while filling the missing parts using your best instructional judgment. Do not put :question/math-academy-id on new questions, and do not add authored/reconstructed labels or tags. The runner publishes these ordinary questions under their KP using the authoring agent's database source; provenance is sufficient. Write new image assets under workspace, outside runtime package directories, and report their paths through the record's normal image references.
+
+If the source already provides sufficient complete examples and no reconstruction is needed, return exemplars_file null and identify the existing examples in your account. Do not recreate adequate evidence or modify the imports.
+
+Validate the three exemplars when created: solve them independently, check all correct and plausible wrong responses through the actual native grader, and render their prompts, answer controls, diagrams and solutions through `generate/pipeline/render_preview.py`. Inspect both screenshots and reports; opened dropdown menus count as learner-visible content. Use `generate/pipeline/validation-tools.md` for existing tools. Repair generator-tool or grader defects and rerun affected checks rather than handing the failure away. Keep evidence and a brief session-state.md in workspace so interrupted work continues from completed steps.
+
+Return status ready when the account and any required three exemplars exist and have been checked, with workspace-relative exemplars_file and evidence_paths. Missing imported evidence is never an unsupported result. Use blocked only for a demonstrated external prerequisite you cannot obtain or repair after concrete attempts; include the exact remaining failure and evidence. Do not stop for a fixable script bug, a prior agent's assumption, or report formatting.

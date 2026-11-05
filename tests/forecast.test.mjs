@@ -28,7 +28,7 @@ function fixture({ tasks = true } = {}) {
     ...changesFor(5, { 'unit/modules': [6] }), ...changesFor(6, { 'module/topics': [133, 134, 135] }),
     ...changesFor(7, { 'unit/modules': [8] }),
   ];
-  for (let id = 100; id <= 135; id++) {
+  for (let id = 75; id <= 135; id++) {
     initial.push(...changesFor(id, { 'topic/id': `topic-${id}`, 'topic/title': `Topic ${id}` }));
     if (id < 135) initial.push([id, 'topic/next', id + 1, true]);
     initial.push(...changesFor(1000 + id, { 'activity/id': `lesson-${id}`, 'activity/type': 11,
@@ -189,7 +189,7 @@ test('the final graph handles layer cutoff, course filters, Queue independence a
   x.event(19, [[1, 'learner/queue', 129, true], [1, 'learner/targets', 120, true], [1, 'learner/queue', 135, true]]);
   const graph = forecastGraph(x.f, 1);
   const selected = projectTargetScope(graph, { courses: [], includeQueue: true });
-  assert.ok(selected.nodeIds.has(129)); // L30 is retained.
+  assert.ok(selected.nodeIds.has(129)); // L55 is retained.
   assert.ok(!selected.nodeIds.has(128));
   assert.ok(!selected.nodeIds.has(120));
   assert.ok(selected.nodeIds.has(135)); // Queue bypasses course switches.

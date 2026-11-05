@@ -1,0 +1,186 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired a delivered easy-batch answer-position shortcut. Final easy, moderate and hard batches pass independent verification against one final package and native engine binding.",
+  "source_analysis": {
+    "skill": "Recognize cosine double-angle identities, double the angle, and evaluate exactly; hard adds perfect-square recognition and evaluation.",
+    "reasoning_steps": [
+      "Recognize the applicable cosine double-angle identity.",
+      "Double the degree or radian argument.",
+      "Evaluate the special-angle cosine with the correct quadrant sign.",
+      "For hard expressions, factor the expanded square and square the evaluated cosine."
+    ],
+    "invariants": [
+      "Shared angle across identity terms.",
+      "Correct identity coefficients and exponents.",
+      "Exact evaluation without a calculator.",
+      "Required transformations shown in solutions."
+    ],
+    "permitted_variations": [
+      "Degree and radian representations.",
+      "Reference angles, quadrants, signs and legitimate zero outcomes.",
+      "Lesson-supported alternative cosine identities.",
+      "Correct choice positions and plausible exact-value distractors.",
+      "Source-supported perfect-square expressions."
+    ],
+    "source_refs": [
+      "e617aaf2-1232-57cc-8644-2467effda030: standard difference at 22.5 degrees.",
+      "baeab088-833a-54f7-96df-e4a2e1a80c83: easy radio expression at pi/12.",
+      "7557cacf-886f-55fb-9076-1837e9a0913c: easy exact-entry expression.",
+      "a0283435-c23b-5d26-b5af-8d4a513ca18b: alternative sine identity and quadrant evaluation.",
+      "7227f9ac-0ffc-5d99-83ac-2d10c6986d6c: expanded perfect-square expression.",
+      "0d3b4ee6-98d1-5207-a0a1-2482e40fe54d: legitimate hard cancellation to zero.",
+      "Tutorial 8597693a-d6bd-59b2-bc3a-6922057a55be: cosine double-angle identity.",
+      "Tutorial 5da93916-34c4-5c5a-806c-82bae4dc1e02: alternative cosine double-angle identities."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "solution-chain-results.json"
+      ],
+      "details": "All 15 source cases retain their mathematical forms, response types, complete banks and correct values. Imported questions remain unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-math.json",
+        "final-math.json",
+        "solution-chain-results.json",
+        "verify.py"
+      ],
+      "details": "Exact arithmetic independently verified 164 finite controls, 15 source replays, 12 counterfactual records and all 15 final records, including numerical solution rows and every choice."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "control-records.json",
+        "repair-regression.json",
+        "final-math.json",
+        "selection-results.json"
+      ],
+      "details": "All 34 mathematical instances and 164 presentation/bank slots tested. Each final batch contains five distinct mathematical instances. Deterministic replay and capacity rejection passed."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-records.json",
+        "scope-negative-result.json",
+        "solution-chain-results.json"
+      ],
+      "details": "Every served family and response shape reaches its field-scoped key through justified displayed steps. An equivalent but unshown trig-key conversion was rejected as a negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "The native grader passed 974 response checks: 330 accepted, 644 rejected and none unresolved. Includes equivalent radicals, trailing-zero zero entries, incorrect signs and stale counterfactual answers."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "ui-boundary-audit.json",
+        "contact-01-05.png",
+        "contact-06-10.png",
+        "contact-11-15.png",
+        "contact-16-21.png",
+        "contact-22-27.png"
+      ],
+      "details": "All 27 actual-UI previews passed and screenshots were inspected. Authored math spans and multiline rows match rendered nodes; emphasis and controls display correctly. Shared prose boundary validation passed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "binding-confirmation.json",
+        "final-binding.json",
+        "commands.json",
+        "report-validation.json"
+      ],
+      "details": "Exact runtime dependencies, relocation and deterministic replay passed. Current package, engine, source, inventory and batches match the final binding. Report validation passed."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "repair-regression.json",
+        "before-shortcut.json",
+        "grader-report.json"
+      ],
+      "details": "Preserved and reproduced the easy batch\u2019s four fifth-position answers, then repaired construction with seeded per-form position cycles. Controlled pairs and conditional position, rank and sign-pair probes passed before and after delivery. Finite-family limits are documented."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "source-analysis.json",
+        "counterfactual-records.json",
+        "final-math.json",
+        "render-all/rendering.json"
+      ],
+      "details": "Matched angles distinguish direct recognition, alternative-identity recognition, and perfect-square recognition plus squaring. Support, response demand, source-label overlap and legitimate zero cancellation were assessed across all three bands."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "6abf55f6cba79c0497acb7cc41250df92cb1dace25418ed5802a5134ecda72b3",
+      "evidence_paths": [
+        "final-easy.json",
+        "final-math.json",
+        "final-delivery-easy/delivery.json",
+        "final-delivery-easy/accepted.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "ui-boundary-audit.json",
+        "shortcut-results.json",
+        "position-easy.json"
+      ],
+      "details": "All five final records passed mathematics, grading, rendering and applicable coverage/shortcut checks; all five survive captured-inventory delivery."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "f55926ede319375bdc8ed2aece32f8c622600826d6fad90b4377033c9e70225f",
+      "evidence_paths": [
+        "final-moderate.json",
+        "final-math.json",
+        "final-delivery-moderate/delivery.json",
+        "final-delivery-moderate/accepted.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "ui-boundary-audit.json",
+        "shortcut-results.json",
+        "position-moderate.json"
+      ],
+      "details": "All five final records passed mathematics, grading, rendering and applicable coverage/shortcut checks; all five survive captured-inventory delivery."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "c7c7bbb8fc4cd335f0259e2a89e854a81cb60d14a4d7bfb56122a83d990921db",
+      "evidence_paths": [
+        "final-hard.json",
+        "final-math.json",
+        "final-delivery-hard/delivery.json",
+        "final-delivery-hard/accepted.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "ui-boundary-audit.json",
+        "shortcut-results.json",
+        "position-hard.json"
+      ],
+      "details": "All five final records passed mathematics, grading, rendering and applicable coverage/shortcut checks; all five survive captured-inventory delivery. Verification does not claim publication."
+    }
+  }
+}

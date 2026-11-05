@@ -31,10 +31,12 @@ class IntegrationBatchPolicyTests(unittest.TestCase):
  def test_sign_flip_does_not_count_as_a_different_structure(self):
   rows=g.sample(KP,5,41,'moderate');clone=copy.deepcopy(rows[0]);clone['generation']['input_terms'][0][0]=str(-g.F(clone['generation']['input_terms'][0][0]));rows[1]=clone
   with self.assertRaisesRegex(ValueError,'sign-only clone'):validate_delivery_batch(rows,KP)
- def test_after_deduplication_losing_other_families_rejects_publication(self):
+ def test_deduplicated_refill_need_not_represent_every_family(self):
   candidates=g.sample(KP,20,71,'moderate');radicals=[r for r in candidates if r['generation']['family']=='radical-product'][:2];others=[next(r for r in candidates if r['generation']['family']==family)for family in ('power-quotient','direct-quotient-blank')]
-  with self.assertRaisesRegex(ValueError,'family coverage'):
-   prepare_records(radicals+others,KP,g.IDS[KP],{content_fingerprint(r['question'])for r in others},ROOT,ROOT,localizer=lambda r,*args:copy.deepcopy(r))
+  accepted,duplicates=prepare_records(radicals+others,KP,g.IDS[KP],{content_fingerprint(r['question'])for r in others},ROOT,ROOT,localizer=lambda r,*args:copy.deepcopy(r))
+  self.assertEqual(len(accepted),2)
+  self.assertTrue(all(r['generation']['family']=='radical-product' for r in accepted))
+  self.assertEqual(duplicates,2)
  def test_scope_crossing_rejected(self):
   rows=g.sample(KP,5,41,'easy');rows[0]['generation']['input_terms'][0][1]='-1'
   with self.assertRaisesRegex(ValueError,'elementary power'):validate_delivery_batch(rows,KP)

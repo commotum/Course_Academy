@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "The retained midpoint shortcut is repaired. All eight checks pass; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Recover a continuously compounded rate or elapsed time using natural logarithms and requested rounding.",
+    "reasoning_steps": [
+      "Identify amounts and compatible units.",
+      "Isolate the exponential and take natural logarithms.",
+      "Divide by the known coefficient, convert percentages and round."
+    ],
+    "invariants": [
+      "Use P=P0 exp(rt) with positive amounts and compatible units.",
+      "Preserve the five-choice response contracts and rounding instructions."
+    ],
+    "permitted_variations": [
+      "Amounts, ratios and known coefficients.",
+      "Rate or time targets.",
+      "Correct-choice ranks, positions and bank assignments."
+    ],
+    "source_refs": [
+      "q-1434 / 6b547ba8-6bef-5f97-b295-98d6170d064b",
+      "q-1435 / f32196ff-a1c3-58c8-8249-0c13bdced6e4",
+      "e-5167 / 822f40ce-c449-5193-9585-8fea63d0db67",
+      "Tutorial 3396; prerequisites e-4103 and e-4104"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json",
+      "source-replay.json",
+      "lineage.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replays.json",
+        "lineage.json",
+        "prior-inventory-inspection.json"
+      ],
+      "details": "Both eligible standalone prompts and complete banks replay. Missing source keys and solutions are explicitly reconstructed."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivered-math.json",
+        "delivery-content-invariance.json"
+      ],
+      "details": "64 current samples and 35 delivered records agree with independent 60-digit calculations."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "rejection-trace.json",
+        "delivery-comparison.json"
+      ],
+      "details": "Both operations and all five ranks occur in the fresh control. Rejection and delivery preserve decision coverage."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json"
+      ],
+      "details": "Displayed paths use licensed conversions. The equivalent but unshown base-10 conversion negative control fails as expected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading.json",
+        "delivered-grading.json"
+      ],
+      "details": "495 native response checks: 99 accepted, 396 rejected, zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-boundary-checks.json",
+        "ui-content-checks.json",
+        "visual-inspection.json"
+      ],
+      "details": "27 actual-UI renders preserve every equation row, prompt quantity and answer choice. Shared prose validation and screenshot inspection pass."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-before.json",
+        "package-after.json",
+        "execution.json"
+      ],
+      "details": "Dependencies, deterministic replay, relocation and request handling pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "repair-verification.json",
+        "regression-negative-control.json",
+        "same-bank-results.json",
+        "delivery-comparison.json",
+        "selection.json",
+        "ui-order-independent.json"
+      ],
+      "details": "Old witnesses still fail both probes. Current identical span-30 banks support all five keys in each family; midpoint succeeds only once in five. Controlled dependencies and batch shortcut checks pass."
+    }
+  },
+  "findings": []
+}

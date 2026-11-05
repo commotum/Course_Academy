@@ -127,7 +127,11 @@ def _rank(point, target):
 
 
 def prepare_investigation(publisher, source, directory):
-    """Select a complete single-KP reference without agent database searches."""
+    """Capture target evidence first, then offer optional complete donor candidates.
+
+    A candidate's completeness does not establish instructional compatibility.
+    The investigator chooses what transfers (or no donor) from this bounded set.
+    """
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     basis = int(source['basis'])
@@ -148,27 +152,46 @@ def prepare_investigation(publisher, source, directory):
                # coverage requires construction of additional examples.
                'construction_needed': any(not complete[b] for b in BANDS)}
     reference_file = directory / 'reference.json'
-    preparation_key = _hash(source)
+    from scripts.generator_publish import instructional_material
+    preparation_key = _hash({key: source[key] for key in ('database', 'lineage', 'kp_id')} | {
+        'material': instructional_material(source['material']), 'preparation_policy': 2})
     input_file = directory / 'investigation-input.json'
     summary['preparation_key'] = preparation_key
     summary['needs_exemplars'] = summary['construction_needed']
+    summary['missing_example_bands'] = [b for b in BANDS if not complete[b]]
     if input_file.exists() and reference_file.exists():
         saved = json.loads(input_file.read_text())
         if saved.get('preparation_key') == preparation_key:
             # Reuse the selected questions, but refresh derived decisions in
             # both artifacts so later agents read the same facts as admission.
             reference = json.loads(reference_file.read_text())
-            if (reference.get('preparation_key') != preparation_key
-                    or reference.get('basis') != basis):
+            if reference.get('preparation_key') != preparation_key:
                 raise ValueError('Cached reference belongs to a different source snapshot; preserve it and use a matching investigation directory')
-            current = {**saved, **summary}
-            refreshed_reference = {**reference, **summary}
+            # Retain the exact basis of the donor capture on inventory-only
+            # refreshes. A newer database basis is not new instructional input.
+            current = {**saved, **summary, 'basis': saved['basis']}
+            refreshed_reference = {**reference, **summary, 'basis': reference['basis']}
             if current != saved:
                 atomic_json(input_file, _json(current))
             if refreshed_reference != reference:
                 atomic_json(reference_file, _json(refreshed_reference))
             return {**current, 'investigation_file': str(input_file),
-                    'reference_file': str(reference_file)}
+                    'reference_file': str(reference_file) if reference.get('candidates') else None,
+                    'reference_candidates': reference.get('candidates', [])}
+        # Never replace evidence underneath a retained account or result.
+        archive = directory / ('source-revision-' + str(saved.get('preparation_key', 'legacy'))[:20])
+        archive.mkdir(exist_ok=True)
+        for path in (input_file, reference_file):
+            if path.exists():
+                destination = archive / path.name
+                if destination.exists() and destination.read_bytes() != path.read_bytes():
+                    raise ValueError('Conflicting saved investigation revision')
+                destination.write_bytes(path.read_bytes())
+    if not summary['construction_needed']:
+        atomic_json(reference_file, _json({**summary, 'candidates': []}))
+        atomic_json(input_file, _json(summary))
+        return {**summary, 'investigation_file': str(input_file),
+                'reference_file': None, 'reference_candidates': []}
     # Select IDs through the three observed refs before loading any metadata.
     # Global nested Pulls and KP x difficulty input products exceed the live
     # EDB allocation budget even when their final projection looks small.
@@ -186,21 +209,26 @@ def prepare_investigation(publisher, source, directory):
         metadata.extend({':db/id': kp, ':knowledge-point/title': title} for kp, title in publisher.client.query(
             '[:find ?kp ?title :in $ [?kp ...] :where [?kp :knowledge-point/title ?title]]',
             [ids[start:start + 100]], directory, f'reference-titles-{start}', basis))
-    metadata.sort(key=lambda value: _rank(value, target))
+    # Load prerequisites before global ranking; ranking within lexical chunks
+    # could omit the candidate preferred by the ranking function itself.
+    full_metadata = []
+    for start in range(0, len(metadata), 25):
+        pattern = '[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}]'
+        full_metadata.extend(row[0] for row in publisher.client.query(
+            '[:find (pull ?kp ' + pattern + ') :in $ [?kp ...] :where [?kp :knowledge-point/id _]]',
+            [[point[':db/id'] for point in metadata[start:start + 25]]], directory,
+            f'reference-kp-metadata-{start}', basis))
+    metadata = sorted(full_metadata, key=lambda value: _rank(value, target))
     def qualified_points():
         for start in range(0, len(metadata), 25):
-            group_ids = [point[':db/id'] for point in metadata[start:start + 25]]
-            pattern = '[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}]'
-            group = [row[0] for row in publisher.client.query(
-                '[:find (pull ?kp ' + pattern + ') :in $ [?kp ...] :where [?kp :knowledge-point/id _]]',
-                [group_ids], directory, f'reference-kp-metadata-{start}', basis)]
-            group.sort(key=lambda value: _rank(value, target))
+            group = metadata[start:start + 25]
             rows = publisher.client.query(COUNTS_QUERY, [[point[':db/id'] for point in group]],
                                           directory, f'candidate-counts-{start}', basis)
             counts = defaultdict(dict)
             for kp, band, count in rows:
                 counts[int(kp)][str(band).rsplit('/', 1)[-1]] = int(count)
             yield from (point for point in group if all(counts[point[':db/id']].get(b, 0) >= 2 for b in BANDS))
+    candidates = []
     for point in qualified_points():
         kp = int(point[':db/id'])
         ids = sorted({r[0] for r in publisher.client.query(
@@ -222,13 +250,17 @@ def prepare_investigation(publisher, source, directory):
                         and not question.get(':knowledge-point/_canonical-example') and not completeness(question)):
                     selected[band].append(question)
             if all(len(selected[b]) == 2 for b in BANDS):
-                reference = {**summary, 'reference_kp': point, 'questions': selected}
-                atomic_json(reference_file, _json(reference))
-                summary['reference_kp_id'] = kp
-                atomic_json(directory / 'investigation-input.json', _json(summary))
-                return {**summary, 'investigation_file': str(directory / 'investigation-input.json'),
-                        'reference_file': str(reference_file)}
-    raise ValueError('Imported reference candidates had incomplete response fields; inspect retained query evidence')
+                candidates.append({'reference_kp': point, 'questions': selected})
+                break
+        if len(candidates) >= 3:
+            break
+    reference = {**summary, 'candidates': candidates,
+                 'instruction': 'Compare target operation, endpoint and practice stage; choose compatible evidence or no donor.'}
+    atomic_json(reference_file, _json(reference))
+    atomic_json(input_file, _json(summary))
+    return {**summary, 'investigation_file': str(input_file),
+            'reference_file': str(reference_file) if candidates else None,
+            'reference_candidates': candidates}
 
 
 def _schema_forms():

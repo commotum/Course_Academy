@@ -28,7 +28,7 @@ export function indexTargetGraph(data) {
 
 export function targetSelectors(snapshot, graph, options = {}, calendar = null) {
   const {nodeById}=graph, targetCourseCodes=TARGET_COURSE_CODES;
-  const targetTopicVisible=id=>nodeById.get(id)?.layer>=29;
+  const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
   const enabledTargetCourses=new Set(options.courses ?? targetCourseCodes);
   const targetQueueEnabled=options.includeQueue!==false;
   const targetCalendar=calendar ?? buildTargetCalendar(snapshot?.targetSchedule || []);
@@ -88,7 +88,7 @@ export function targetSelectors(snapshot, graph, options = {}, calendar = null) 
 export function assignTargetCourses(snapshot, graph, targetCalendar, nodeIds) {
     const {nodeById,inMap,outMap}=graph;
     const targetCourseCodes=TARGET_COURSE_CODES;
-    const targetTopicVisible=id=>nodeById.get(id)?.layer>=29;
+    const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
     const courses=targetCourseCodes.map(code=>({key:code,label:'MTH '+code,nodeIds:new Set()}));
     const direct=new Map(), placement=new Map(), workload=new Map(courses.map(course=>[course.key,0]));
     const addMembership=(id,code)=>{
@@ -158,7 +158,7 @@ export function projectTargetScope(snapshot, options = {}, graph = indexTargetGr
     const id=pending[i],d=distances.get(id);
     if(d>=depth)continue;
     for(const next of graph.inMap.get(id) || []) {
-      if(!distances.has(next)&&graph.nodeById.get(next)?.layer>=29){distances.set(next,d+1);pending.push(next);}
+      if(!distances.has(next)&&graph.nodeById.get(next)?.layer>=54){distances.set(next,d+1);pending.push(next);}
     }
   }
   const nodeIds=new Set(distances.keys());

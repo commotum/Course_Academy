@@ -1,0 +1,2472 @@
+{
+  "scope": "Phase 1 deep review: 13 assigned integration/differentiation KPs. Read-only evidence analysis; no generator/database edits.",
+  "coverage": {
+    "expected": 13,
+    "reviewed": 13,
+    "kp_ids": [
+      17592186064218,
+      17592186064219,
+      17592186064220,
+      17592186064250,
+      17592186064281,
+      17592186068915,
+      17592186068916,
+      17592186068917,
+      17592186068918,
+      17592186184349,
+      17592186184350,
+      17592186184351,
+      17592186184352
+    ]
+  },
+  "method": "Read retained old code, generated pre-repair records, contemporaneous contracts/audits, own-KP source prompts, repair outcomes and negative regressions. File line references checked when writing. Later prevention prompts are not treated as evidence of original instructions.",
+  "cases": [
+    {
+      "kp": 17592186064218,
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine",
+      "intended_learner_decision": "Recognize and normalize an inverse-sine antiderivative form, choose u, account for the outside differential factor, and return the complete antiderivative.",
+      "own_source_anchor": {
+        "source_id": "q-2505",
+        "entity_id": 17592186064647,
+        "prompt": "$$\n\\displaystyle \\int \\frac{1}{\\sqrt{1-4{x}^{2}}}\\,\\text{d}x=\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064218/source.json",
+          "line": 162,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-2505\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "cc411b53-59e8-5c6e-aca6-364024091383",
+        "prompt": "Use the substitution $u=4 x$. Which integral is obtained?\n\n$$\n\\int \\frac{3}{\\sqrt{1 - 16 x^{2}}}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-2505",
+          "q-49547",
+          "q-114022",
+          "q-114023",
+          "q-114024",
+          "q-114025",
+          "q-114027",
+          "q-114030",
+          "q-114032",
+          "q-2503",
+          "q-2506",
+          "q-4334",
+          "q-49535",
+          "q-73712",
+          "q-49545",
+          "e-470"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064218/source.json",
+          "line": 162,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-2505\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064218/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=4 x$. Which integral is obtained?\\n\\n$$\\n\\\\int \\\\frac{3}{\\\\sqrt{1 - 16 x^{2}}}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064218/records-before.json",
+          "line": 96,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "hardness_from_stacked_features",
+          "finding": "Early hard contract explicitly rejected cancellation and required an irrational radical substitution factor; later quality repair also required inspecting difficulty after simplification, rather than raw coefficients.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-inverse-trig-bands/packages/17592186064218/inverse_trig.py",
+              "line": 169,
+              "end_line": 180,
+              "supports": "Both nonunit coefficients, noncancellation and extra radical factor are explicit hard invariants.",
+              "excerpt": "if band == 'hard' and not (A > 1 and B > 1): raise ValueError('Hard requires both nonunit coefficients')"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+              "line": 16,
+              "end_line": 20,
+              "supports": "Later repair requires meaningful coprime normalization and permits simple cancellations in easy.",
+              "excerpt": "- Indefinite sine/tangent hard requires combined coprime normalization. The"
+            }
+          ],
+          "evidence_strength": "direct code/contract and retained outcomes"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "No imported hard anchors exist for this KP. The reports explicitly call the hard band authored; there is no empirical difficulty calibration in the reviewed evidence.",
+        "Full-answer multiple choice was retained because inverse-function exact entry was unsupported by the native engine. That response-format choice has an engineering cause and is not itself evidence of pedagogy failure."
+      ],
+      "receipt_matched_republication_t": [
+        6562,
+        6582,
+        6740,
+        7068,
+        7104,
+        7112
+      ]
+    },
+    {
+      "kp": 17592186064219,
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Tangent",
+      "intended_learner_decision": "Recognize and normalize an inverse-tangent antiderivative form, choose u, account for the outside differential factor, and return the complete antiderivative.",
+      "own_source_anchor": {
+        "source_id": "q-49540",
+        "entity_id": 17592186064874,
+        "prompt": "$$\n\\displaystyle \\int \\frac{6}{1+9{x}^{2}}\\,\\text{d}x=\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064219/source.json",
+          "line": 92,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49540\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "e71b6dde-1c12-54b1-92fd-83bba7e53414",
+        "prompt": "Use the substitution $u=2 x$. Which integral is obtained?\n\n$$\n\\int \\frac{2}{4 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-49540",
+          "q-49548",
+          "q-114033",
+          "q-114035",
+          "q-114036",
+          "q-114040",
+          "q-114045",
+          "q-114046",
+          "q-2504",
+          "q-2507",
+          "q-49505",
+          "q-49550",
+          "q-49551",
+          "q-73714",
+          "q-73713",
+          "q-114039",
+          "e-471"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064219/source.json",
+          "line": 92,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49540\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064219/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=2 x$. Which integral is obtained?\\n\\n$$\\n\\\\int \\\\frac{2}{4 x^{2} + 1}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064219/records-before.json",
+          "line": 97,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "raw_parameters_as_difficulty_proxy",
+          "finding": "Early hard contract disallowed factor cancellation. Later repaired square-normalization sampler could nevertheless produce 4/(16x^2+4), a direct-form problem after cancellation, while calling it hard. Nonunit raw A and B did not guarantee extra learner work.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-inverse-trig-bands/packages/17592186064218/inverse_trig.py",
+              "line": 169,
+              "end_line": 173,
+              "supports": "Initial hard invariant rejects cancelled outside/final factors.",
+              "excerpt": "if band == 'hard' and not (A > 1 and B > 1): raise ValueError('Hard requires both nonunit coefficients')"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+              "line": 35,
+              "end_line": 54,
+              "supports": "Shared inverse sampler chooses raw A/B squares and numerator independently.",
+              "excerpt": "a=s.Integer(rng.randint(2,5));n=s.Integer(rng.randint(1,4));lo=hi=None;notes=[];facts=[]"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+              "line": 16,
+              "end_line": 20,
+              "supports": "Reported 4/(16x^2+4) exposes raw coefficient size as an inadequate hard-band criterion.",
+              "excerpt": "- Indefinite sine/tangent hard requires combined coprime normalization. The"
+            }
+          ],
+          "evidence_strength": "direct code/contract and retained outcomes"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "No imported hard anchors exist for this KP. The reports explicitly call the hard band authored; there is no empirical difficulty calibration in the reviewed evidence.",
+        "Full-answer multiple choice was retained because inverse-function exact entry was unsupported by the native engine. That response-format choice has an engineering cause and is not itself evidence of pedagogy failure."
+      ],
+      "receipt_matched_republication_t": [
+        6565,
+        6583,
+        6741,
+        7069,
+        7105,
+        7113
+      ]
+    },
+    {
+      "kp": 17592186064220,
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions",
+      "intended_learner_decision": "Recognize the inverse-trig family, normalize it, change both limits and evaluate the antiderivative at those limits.",
+      "own_source_anchor": {
+        "source_id": "q-19394",
+        "entity_id": 17592186064544,
+        "prompt": "Evaluate the integral $$\n\\displaystyle {\\int }_{0}^{1}\\frac{2}{\\sqrt{2-{x}^{2}}}\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064220/source.json",
+          "line": 260,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-19394\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "72307b4e-6785-5b3a-956a-ba0b7f481f48",
+        "prompt": "Use the substitution $u=5 x$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\frac{1}{10}} \\frac{3}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-19394",
+          "q-19397",
+          "q-114074",
+          "q-114078",
+          "q-114080",
+          "q-114084",
+          "q-19393",
+          "q-19395",
+          "q-19396",
+          "q-346451",
+          "q-346458",
+          "q-351291",
+          "q-351827",
+          "q-351834",
+          "q-351835",
+          "q-351839",
+          "q-351855",
+          "q-49538",
+          "q-49546",
+          "q-351850",
+          "q-351845",
+          "q-114075",
+          "q-114073",
+          "q-49549",
+          "q-49536",
+          "q-351854",
+          "q-19398",
+          "e-472"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064220/source.json",
+          "line": 260,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-19394\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064220/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=5 x$. Which integral is obtained?\\n\\n$$\\n\\\\int_{0}^{\\\\frac{1}{10}} \\\\frac{3}{\\\\sqrt{1 - 25 x^{2}}}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064220/records-before.json",
+          "line": 108,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "difficulty_variety_and_bank_shortcuts",
+          "finding": "Original hard validator demanded irrational normalization plus two unlike nonzero bounds. First simplification then fixed endpoint families to zero-to-1/2 for sine, zero-to-1 for tangent, or symmetric hard bounds. Later delivered sine banks always made the smallest answer correct. Many distinct records and balanced overall ranks did not ensure useful endpoint variation or conditional decision variation.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-inverse-trig-bands/packages/17592186064218/inverse_trig.py",
+              "line": 153,
+              "end_line": 163,
+              "supports": "Definite hard contract stacks normalization, irrational factor, and unlike nonzero bounds.",
+              "excerpt": "if kind == 'definite':"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+              "line": 55,
+              "end_line": 59,
+              "supports": "Subsequent shared sampler fixes endpoint targets by family and band.",
+              "excerpt": "if definite:"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+              "line": 11,
+              "end_line": 15,
+              "supports": "Final quality repair adds familiar endpoint, sign, symmetry and contribution variety.",
+              "excerpt": "- Definite integration now varies familiar endpoint values, signs, symmetric"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+              "line": 24,
+              "end_line": 31,
+              "supports": "Diagnostic banks and per-visible-family rank checks replace metadata/aggregate proxies.",
+              "excerpt": "- Banks use identifiable differential-factor, argument-scale and endpoint"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-inverse-bank-balance/rank-verification.json",
+              "line": 18,
+              "supports": "Retained negative control records four original sine ranks, all zero.",
+              "excerpt": "\"original_sine_ranks\": ["
+            }
+          ],
+          "evidence_strength": "direct code/contract and retained outcomes"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6567,
+        6585,
+        6743,
+        7071,
+        7107,
+        7115
+      ]
+    },
+    {
+      "kp": 17592186064250,
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant",
+      "intended_learner_decision": "Recognize the inverse-secant form with its absolute-value factor, choose u, preserve the domain and scale relation, and complete the antiderivative.",
+      "own_source_anchor": {
+        "source_id": "q-69476",
+        "entity_id": 17592186064941,
+        "prompt": "$$\n\\displaystyle \\int \\frac{8\\,\\text{d}x}{|8x|\\sqrt{(8x)^{2}-1}}=\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064250/source.json",
+          "line": 92,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-69476\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "5a88e33b-bcc9-5d5e-854e-716b08caf25b",
+        "prompt": "Use the substitution $u=4 x$. Which integral is obtained?\n\n$$\n\\int \\frac{1}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-69476",
+          "q-73717",
+          "q-114051",
+          "q-114052",
+          "q-114053",
+          "q-114054",
+          "q-114055",
+          "q-114056",
+          "q-114057",
+          "q-49519",
+          "q-49554",
+          "q-49555",
+          "q-69475",
+          "q-69477",
+          "q-73715",
+          "q-73716",
+          "q-73718",
+          "e-5014"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064250/source.json",
+          "line": 92,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-69476\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064250/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=4 x$. Which integral is obtained?\\n\\n$$\\n\\\\int \\\\frac{1}{|4 x|\\\\sqrt{16 x^{2} - 1}}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186064250/records-before.json",
+          "line": 98,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "target_scale_relation_requires_own_progression",
+          "finding": "Easy supplied-u format erased recognition; a subsequent repair also moved two moderate questions out of an inappropriate band and distinguished matching differential, fractional adjustment and absolute-value normalization.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 18,
+              "end_line": 24,
+              "supports": "Secant progression distinguishes actual mathematical operations.",
+              "excerpt": "unsupported. For inverse secant specifically, easy has an exact differential"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+              "line": 43,
+              "end_line": 49,
+              "supports": "Shared secant generator handles visible |a x| versus |x| conversion.",
+              "excerpt": "if fn=='secant':"
+            }
+          ],
+          "evidence_strength": "direct code/contract and retained outcomes"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "There are no imported easy anchors for secant; a conservative authored easy band can be justified, but cannot silently remove the target recognition/integration task.",
+        "Full-answer multiple choice was retained because inverse-function exact entry was unsupported by the native engine. That response-format choice has an engineering cause and is not itself evidence of pedagogy failure."
+      ],
+      "receipt_matched_republication_t": [
+        6566,
+        6584,
+        6742,
+        7070,
+        7106,
+        7114
+      ]
+    },
+    {
+      "kp": 17592186064281,
+      "title": "Differentiating a Trigonometric Function Using the Chain Rule",
+      "intended_learner_decision": "Differentiate a cosine of a linear expression and a cubic using the chain and power rules, then recognize that derivative in the answer bank using the same inner argument as the taught derivation.",
+      "failure_pattern": "symbolic_equivalence_substituted_for_instructional_representation",
+      "failed_literal_interpretation_or_proxy": "Separate requirements to reproduce source prompt/worked-solution text and produce mathematically correct symbolic answer values were satisfied independently. Symbolic equality checks were treated as sufficient agreement between the answer and explanation.",
+      "lost_meaning": "The prompt/solution preserve 12-2x, but independently rendered correct choice uses -18x^2-2sin(2x-12). Matching it to 2sin(12-2x)-18x^2 requires an unshown sine oddness conversion outside the recorded chain-rule method.",
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/README.md",
+          "line": 3,
+          "supports": "Legacy in-place generator repair and T6121 question correction.",
+          "excerpt": "Fixed generated question **17592186491432** in `math` at **T6121**, attributed to `:agent/codex`. The registered generator remains `generate/scratch/17592186064281.py`, now version 1.0.1."
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/README.md",
+          "line": 5,
+          "end_line": 9,
+          "supports": "Reported exact before/after expressions and prerequisite mismatch.",
+          "excerpt": "The prompt and solution use `12-2x`. Independently rendering SymPy's evaluated answer expressions changed the correct choice to `-18x²-2sin(2x-12)`. Its equality with the solution's `2sin(12-2x)-18x²` requires the sine odd-function identity. The recorded key prerequisites are topics 280 (Differentiating Trigonometric Functions) and 1108 (The Chain Rule for Differentiation); this question's source method preserves the inner argument and requires no parity conversion."
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/generator-before.py",
+          "line": 34,
+          "end_line": 35,
+          "supports": "Model constructs derivative using t-2x, letting symbolic evaluation choose representation.",
+          "excerpt": "u=t-2*X;f=sp.cos(u)-6*X**3;at=None;answer=2*sp.sin(u)-18*X**2"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/generator-before.py",
+          "line": 51,
+          "end_line": 59,
+          "supports": "Prompt/solution are generated by source text substitution, separate from symbolic choices.",
+          "excerpt": "q=ORIGINALS[profile];p=q[':question/problem'];s=q[':question/worked-solution'];original=PROFILES[profile][2]"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/generator-before.py",
+          "line": 85,
+          "end_line": 91,
+          "supports": "Choice values independently use the SymPy printer and key equality.",
+          "excerpt": "choices=[];correct=None"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/validate-before.py",
+          "line": 62,
+          "supports": "Pre-repair answer validator tests symbolic equality.",
+          "excerpt": "hits=[i for i,z in enumerate(values) if sp.simplify((z-expected).rewrite(sp.cos))==0]"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/validate-before.py",
+          "line": 93,
+          "supports": "Pre-repair worked-solution final equality check uses symbolic equivalence.",
+          "excerpt": "assert sp.simplify((expr(last)-expected).rewrite(sp.cos))==0,last"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/validate-before.py",
+          "line": 140,
+          "end_line": 144,
+          "supports": "Source bank matching is symbolic while solution replay is literal.",
+          "excerpt": "matches=[[i for i,z in enumerate(new_vals) if sp.simplify(sp.trigsimp(z-w))==0] for w in old_vals]"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/regression.json",
+          "line": 2,
+          "end_line": 4,
+          "supports": "Regression enumerates 74 instances, 16 corrected family cases and 16 rejected prior mismatches.",
+          "excerpt": "\"total_instances\": 74,"
+        }
+      ],
+      "repair": "Preserve the chosen inner trig expression in all five choices, derive the displayed key from the lesson's worked method, and independently check displayed argument/final-to-key transition rather than mathematical equivalence alone.",
+      "repair_sequence": [
+        {
+          "event": "representation_repair",
+          "committed_t": 6121,
+          "note": "Same legacy registration string; code changed in place to 1.0.1, with retained generator-before.py. No attribution of first author prompt is possible from this evidence."
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct old generator and old validator plus retained failing-regression counts",
+        "contract_to_behavior": "direct split implementation and symbolic test contract",
+        "literal_instruction_following_cause": "Inference: an implementation/test-proxy mismatch is demonstrated; no retained initial instruction has been established that explicitly demanded the harmful normalization."
+      },
+      "other_causes_and_counterevidence": [
+        "SymPy automatic evaluation/printing, not an explicit authored parity rewrite, produces the representation change.",
+        "The old validator was substantial: independent calculus, native grading, complete source-bank matching and exhaustive bounded cases. The gap is what those checks establish, not absence of testing.",
+        "Mathematical correctness and answer identities were retained; the failure concerns unnecessary learner conversion and explanation continuity."
+      ],
+      "receipt_matched_republication_t": []
+    },
+    {
+      "kp": 17592186068915,
+      "title": "Integrating Trigonometric Functions With Linear Arguments",
+      "intended_learner_decision": "Choose the linear inner substitution, account for dx, retrieve the sine/cosine primitive, and complete the antiderivative or definite evaluation.",
+      "own_source_anchor": {
+        "source_id": "q-10061",
+        "entity_id": 17592186237798,
+        "prompt": "Calculate $$\n\\displaystyle \\int \\operatorname{sin}⁡(2x)\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068915/source.json",
+          "line": 435,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-10061\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "fdf6518e-e8a4-59f1-9024-2dc25c55475a",
+        "prompt": "Use the substitution $u=2 x$. Which integral is obtained?\n\n$$\n\\int_{\\frac{\\pi}{2}}^{\\frac{3 \\pi}{4}} 2 \\cos{\\left(2 x \\right)}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.",
+        "source_ids": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068915/source.json",
+          "line": 435,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-10061\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068915/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=2 x$. Which integral is obtained?\\n\\n$$\\n\\\\int_{\\\\frac{\\\\pi}{2}}^{\\\\frac{3 \\\\pi}{4}} 2 \\\\cos{\\\\left(2 x \\\\right)}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068915/records-before.json",
+          "line": 83,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 227,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\\n\\n$$\\n'+original+'\\n$$'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 250,
+          "end_line": 256,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 229,
+          "end_line": 241,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n$$\\n'+original+'\\n$$\\n\\n'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "hardness_from_stacked_features",
+          "finding": "Original hard construction required fractional slopes/amplitudes, phase shifts, unlike nonzero radical endpoint values, and independent exact entry together. A code-enforced feature checklist replaced a calibrated increase in linear-substitution work.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/originals/17592186068915.py",
+              "line": 114,
+              "end_line": 122,
+              "supports": "Sampler stacks fractional slope, fractional outside ratio, phase and distinct special-angle families.",
+              "excerpt": "else:"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/originals/17592186068915.py",
+              "line": 191,
+              "end_line": 195,
+              "supports": "Hard response must be exact entry.",
+              "excerpt": "def build(level, case, values, *, response='blank', seed=0):"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/originals/17592186068915.py",
+              "line": 223,
+              "end_line": 226,
+              "supports": "Validator requires unlike nonzero radical endpoint magnitudes.",
+              "excerpt": "if level == 'hard':"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/originals/17592186068915.py",
+              "line": 261,
+              "supports": "Generator explicitly admits no imported hard anchors.",
+              "excerpt": "'difficulty_origin':'authored compound of established skills; no imported hard examples' if level=='hard' else 'source-supported workload; labels are not copied from individual templates',"
+            }
+          ],
+          "evidence_strength": "direct code/contract and retained outcomes"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6391,
+        6526,
+        6736,
+        7064
+      ]
+    },
+    {
+      "kp": 17592186068916,
+      "title": "Integrating Reciprocal Trigonometric Functions With Linear Arguments",
+      "intended_learner_decision": "Recognize the reciprocal-trig derivative pair after a linear substitution, carry its differential factor, retrieve the primitive, and evaluate any bounds.",
+      "own_source_anchor": {
+        "source_id": "q-13524",
+        "entity_id": 17592186580882,
+        "prompt": "Calculate the integral $$\n\\displaystyle {\\int }_{\\pi /6}^{\\pi /4}\\operatorname{csc}⁡(2x)\\operatorname{cot}⁡(2x)\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068916/source.json",
+          "line": 693,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-13524\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "86df9637-597a-5564-98ec-e1285a2b614d",
+        "prompt": "Use the substitution $u=4 x$. Which integral is obtained?\n\n$$\n\\int \\tan{\\left(4 x \\right)} \\sec{\\left(4 x \\right)}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.",
+        "source_ids": [
+          "q-10143",
+          "q-2203",
+          "q-13663",
+          "q-350053",
+          "q-350055",
+          "q-13524"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068916/source.json",
+          "line": 693,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-13524\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068916/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=4 x$. Which integral is obtained?\\n\\n$$\\n\\\\int \\\\tan{\\\\left(4 x \\\\right)} \\\\sec{\\\\left(4 x \\\\right)}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068916/records-before.json",
+          "line": 85,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 227,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\\n\\n$$\\n'+original+'\\n$$'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 250,
+          "end_line": 256,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 229,
+          "end_line": 241,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n$$\\n'+original+'\\n$$\\n\\n'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6527,
+        6737,
+        7065
+      ]
+    },
+    {
+      "kp": 17592186068917,
+      "title": "Integrating Products Containing Trigonometric Functions Using Substitution",
+      "intended_learner_decision": "Recognize the inner power, reciprocal or root inside a trig product and its matching derivative factor, then complete integration.",
+      "own_source_anchor": {
+        "source_id": "q-13469",
+        "entity_id": 17592186658964,
+        "prompt": "Calculate the integral $$\n\\displaystyle \\int 2{x}^{2}{csc}^{2}⁡({x}^{3})\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068917/source.json",
+          "line": 1075,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-13469\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "84f073b5-e3b1-59e9-a055-a6e9dcf4b5cf",
+        "prompt": "Use the substitution $u=x^{2}$. Which integral is obtained?\n\n$$\n\\int 2 x \\cos{\\left(x^{2} \\right)}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.",
+        "source_ids": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068917/source.json",
+          "line": 1075,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-13469\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068917/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=x^{2}$. Which integral is obtained?\\n\\n$$\\n\\\\int 2 x \\\\cos{\\\\left(x^{2} \\\\right)}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068917/records-before.json",
+          "line": 88,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 227,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\\n\\n$$\\n'+original+'\\n$$'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 250,
+          "end_line": 256,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 229,
+          "end_line": 241,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n$$\\n'+original+'\\n$$\\n\\n'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6422,
+        6528,
+        6738,
+        7066
+      ]
+    },
+    {
+      "kp": 17592186068918,
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution",
+      "intended_learner_decision": "Recognize a denominator/composite trig substitution, account for its derivative and any supported quotient rearrangement, then complete integration.",
+      "own_source_anchor": {
+        "source_id": "q-49557",
+        "entity_id": 17592186069378,
+        "prompt": "What is $$\n\\displaystyle \\int\\frac{2\\cos y}{\\sin y}dy\n$$?",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068918/source.json",
+          "line": 136,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49557\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "f0a8c230-87a3-5723-b85f-4967952af1c4",
+        "prompt": "Use the substitution $u=\\tan{\\left(x \\right)} + 2$. Which integral is obtained?\n\n$$\n\\int \\frac{\\sec^{2}{\\left(x \\right)}}{\\tan{\\left(x \\right)} + 2}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.",
+        "source_ids": [
+          "q-49557",
+          "q-113998",
+          "q-350887",
+          "q-350901",
+          "q-350908",
+          "q-350892",
+          "q-73679",
+          "q-113987",
+          "q-73674",
+          "q-114004",
+          "q-113997",
+          "q-113992"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068918/source.json",
+          "line": 136,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49557\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068918/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=\\\\tan{\\\\left(x \\\\right)} + 2$. Which integral is obtained?\\n\\n$$\\n\\\\int \\\\frac{\\\\sec^{2}{\\\\left(x \\\\right)}}{\\\\tan{\\\\left(x \\\\right)} + 2}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186068918/records-before.json",
+          "line": 93,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-substitution transformation stage, modeled on imported q-49529/q-49532 scaffolding; own KP sources anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 227,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\\n\\n$$\\n'+original+'\\n$$'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 250,
+          "end_line": 256,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/package/trig_scaffold.py",
+          "line": 229,
+          "end_line": 241,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n$$\\n'+original+'\\n$$\\n\\n'"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6423,
+        6529,
+        6739,
+        7067
+      ]
+    },
+    {
+      "kp": 17592186184349,
+      "title": "Integrating Products Containing the Exponential Function",
+      "intended_learner_decision": "Recognize a power/composite exponent as u and match its derivative in a product with e^u; complete the antiderivative.",
+      "own_source_anchor": {
+        "source_id": "q-2382",
+        "entity_id": 17592186290509,
+        "prompt": "$$\n\\displaystyle \\int z{e}^{{z}^{2}}\\,\\text{d}z=\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184349/source.json",
+          "line": 303,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-2382\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "f7131eaa-146e-51c1-a2fb-f1a082e72cea",
+        "prompt": "Use the substitution $u=x^{3} + 2$. Which integral is obtained?\n\n$$\n\\int x^{2} e^{x^{3} + 2}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-13737",
+          "q-73663",
+          "q-113847",
+          "q-2382",
+          "q-73662",
+          "q-73664",
+          "q-73798",
+          "q-13738",
+          "e-14402"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184349/source.json",
+          "line": 303,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-2382\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184349/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=x^{3} + 2$. Which integral is obtained?\\n\\n$$\\n\\\\int x^{2} e^{x^{3} + 2}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184349/records-before.json",
+          "line": 90,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "The first two-topic deployment was initial registration for this KP, not a repair of a prior published generator. Subsequent hint removal and objective restoration are actual re-repairs."
+      ],
+      "receipt_matched_republication_t": [
+        6586,
+        6744,
+        7072
+      ]
+    },
+    {
+      "kp": 17592186184350,
+      "title": "Integrating Products Containing Other Exponential Functions",
+      "intended_learner_decision": "Recognize a power/composite exponent as u, match its derivative, and account for ln(base) when integrating a non-natural exponential.",
+      "own_source_anchor": {
+        "source_id": "q-73801",
+        "entity_id": 17592186342085,
+        "prompt": "Calculate the integral $$\n\\displaystyle \\int 2x{6}^{{x}^{2}+1}\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184350/source.json",
+          "line": 503,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-73801\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "fe01eccb-793a-59d6-a00c-81c9b20ac1cd",
+        "prompt": "Use the substitution $u=x^{3} + 1$. Which integral is obtained?\n\n$$\n\\int 2^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184350/source.json",
+          "line": 503,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-73801\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184350/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=x^{3} + 1$. Which integral is obtained?\\n\\n$$\\n\\\\int 2^{x^{3} + 1} x^{2}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184350/records-before.json",
+          "line": 92,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [
+        {
+          "pattern": "base_only_variety",
+          "finding": "Before the two-topic redesign, the registered generator changed only the exponential base in a small source subset, keeping the substitution relationship and problem shape fixed. This is documented in the contemporaneous audit, but the original code for that earliest stage was not recovered in this review.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 9,
+              "supports": "Contemporaneous repair record describes base-only variation and distinguishes absent other registrations.",
+              "excerpt": "The active other-base exponential generator changed only the base in a small source subset, keeping exponent, differential relationship, and most question structure fixed. The other three exponential KPs had local drafts but no registered generator. Registration and executable delivery, rather than the presence of a draft, determine coverage."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 11,
+              "end_line": 13,
+              "supports": "Own-source examples vary exponent/derivative structure.",
+              "excerpt": "The imports' strengths are compact derivative relationships and controlled structural changes. Examples: inverse sine q-2505 recognizes 2x, while q-2503 factors a square constant; inverse tangent q-49540 accounts for a differential factor, while q-49548 normalizes 9+x². Secant q-69476 keeps |8x| visible; q-73717 instead requires rewriting |x| after substitution. Exponential q-2382 uses x², q-73798 uses x³, and q-113847 introduces a negative derivative. Other-base canonical e-14403 supplies a negative-inner example, and q-73801 has a matching 2x differential; q-211992 changes the power to four without requiring integration by parts. Complex-case q-49577/q-73670 change the outer function to a "
+            }
+          ],
+          "evidence_strength": "contemporaneous diagnosis; earliest code not recovered"
+        }
+      ],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift."
+      ],
+      "receipt_matched_republication_t": [
+        6569,
+        6587,
+        6745,
+        7073
+      ]
+    },
+    {
+      "kp": 17592186184351,
+      "title": "More Complex Cases",
+      "intended_learner_decision": "Recognize an entire exponential expression or composite denominator as u; select and complete the resulting power/root/log integration.",
+      "own_source_anchor": {
+        "source_id": "q-49577",
+        "entity_id": 17592186332748,
+        "prompt": "Calculate the integral $$\n\\displaystyle \\int 5{e}^{x}\\sqrt{{e}^{x}+4}\\,\\text{d}x.\n$$",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184351/source.json",
+          "line": 541,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49577\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "43505f39-47bc-5bcb-a52a-404c18fa49ce",
+        "prompt": "Use the substitution $u=2^{x} + 2$. Which integral is obtained?\n\n$$\n\\int 3 \\cdot 2^{x} \\left(2^{x} + 2\\right)^{3}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-113852",
+          "q-113876",
+          "q-73670",
+          "q-113873",
+          "q-31478",
+          "q-31480",
+          "q-49577",
+          "q-73669",
+          "q-49574",
+          "q-113875",
+          "q-73666",
+          "q-113872",
+          "e-14404"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184351/source.json",
+          "line": 541,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-49577\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184351/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=2^{x} + 2$. Which integral is obtained?\\n\\n$$\\n\\\\int 3 \\\\cdot 2^{x} \\\\left(2^{x} + 2\\\\right)^{3}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184351/records-before.json",
+          "line": 94,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "The first two-topic deployment was initial registration for this KP, not a repair of a prior published generator. Subsequent hint removal and objective restoration are actual re-repairs."
+      ],
+      "receipt_matched_republication_t": [
+        6589,
+        6746,
+        7074
+      ]
+    },
+    {
+      "kp": 17592186184352,
+      "title": "Evaluating Definite Integrals",
+      "intended_learner_decision": "Recognize a substitution in an exponential definite integral, transform both limits, account for the differential and base, and evaluate the final value.",
+      "own_source_anchor": {
+        "source_id": "q-346400",
+        "entity_id": 17592186319097,
+        "prompt": "Evaluate the following integral. Do not round the answer.\n\n$$\n\\displaystyle {\\int }_{0}^{1}2x\\cdot {3}^{{x}^{2}}\\,\\text{d}x=\n$$  \n{{field-1}}",
+        "evidence": {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184352/source.json",
+          "line": 496,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-346400\","
+        }
+      },
+      "failure_pattern": "borrowed_scaffolding_changes_assessed_objective",
+      "failed_literal_interpretation_or_proxy": "Making easy explicitly guided, keeping arithmetic small, and following a legitimate nearby scaffolding example were treated as sufficient evidence that the new question still exercised this KP. The generator retained a related integrand while changing what the learner had to decide.",
+      "lost_meaning": "The prompt performs substitution selection for the learner and the response stops before integration. Full-calculation variants also supplied the mastered primitive/endpoint facts, replacing retrieval with transcription. The task is mathematically related but assesses less of the intended skill.",
+      "pre_repair_example": {
+        "record_id": "76f7ab34-158b-5e28-b158-c95c23947019",
+        "prompt": "Use the substitution $u=2 x^{2} + 1$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 2 x e^{2 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+        "declared_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+        "source_ids": [
+          "q-13751",
+          "q-30977",
+          "q-30953",
+          "q-30978",
+          "q-346400",
+          "q-350740",
+          "q-350743",
+          "q-350751",
+          "q-30947",
+          "q-30954",
+          "e-14407"
+        ],
+        "note": "Concrete retained example; not asserted to be a one-to-one mutation of the own-source anchor."
+      },
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184352/source.json",
+          "line": 496,
+          "supports": "Own-KP imported source anchor; adjacent prompt asks for the complete calculation.",
+          "excerpt": "\":question/math-academy-id\": \"q-346400\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184352/records-before.json",
+          "line": 10,
+          "supports": "Actual retained pre-repair easy prompt supplies u and requests only transformation.",
+          "excerpt": "\":question/problem\": \"Use the substitution $u=2 x^{2} + 1$. Which integral is obtained?\\n\\n$$\\n\\\\int_{0}^{\\\\sqrt{\\\\ln{\\\\left(2 \\\\right)}}} 2 x e^{2 x^{2} + 1}\\\\,\\\\mathrm{d}x\\n$$\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/17592186184352/records-before.json",
+          "line": 92,
+          "supports": "Contemporaneous generated metadata explicitly cites another KP's guided-stage exemplars.",
+          "excerpt": "\"band_origin\": \"Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.\","
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 124,
+          "supports": "Retained pre-repair renderer directly enforces supplied-u transformation in every easy task.",
+          "excerpt": "problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\\n\\n'+block(original)"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 137,
+          "end_line": 147,
+          "supports": "Easy branch returns transformed integral rather than a completed integral.",
+          "excerpt": "if easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/17592186064218/package/substitution_pedagogy.py",
+          "line": 125,
+          "end_line": 127,
+          "supports": "Full-calculation renderer adds the familiar primitive and endpoint facts before response.",
+          "excerpt": "if not easy:"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Repair diagnosis ties objective loss to borrowed guided format.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ],
+      "repair": "Use small supported complete-calculation questions, require the learner to choose u, and keep rules and intermediate work in the worked solution. Select response types compatible with the native grader without silently changing the assessed objective.",
+      "repair_sequence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "secondary_failures": [],
+      "evidence_strength": {
+        "behavior": "direct retained generated record and old executable renderer",
+        "contract_to_behavior": "direct contemporaneous README, band_origin metadata, and renderer",
+        "literal_instruction_following_cause": "Strong direct evidence for applying the explicit authored scaffold contract; inference only that a broader instruction-following tendency caused the design. No claim of recovering hidden thought or exact original author prompt."
+      },
+      "other_causes_and_counterevidence": [
+        "The retained code and contracts establish the behavior and explicit design rationale, not the author's private reasoning or an unseen original system prompt.",
+        "Supplied substitutions are legitimate in other KPs whose actual requested operation is transformation; the defect is transplanting that task into these complete-calculation KPs.",
+        "This family shares implementations: twelve affected KPs are twelve occurrences, not twelve independent causal designs.",
+        "The redesign was explicit and reviewed as an authored extension, rather than falsely represented as an exact replay. Source-fidelity labels alone did not prevent objective drift.",
+        "The first two-topic deployment was initial registration for this KP, not a repair of a prior published generator. Subsequent hint removal and objective restoration are actual re-repairs."
+      ],
+      "receipt_matched_republication_t": [
+        6591,
+        6747,
+        7075
+      ]
+    }
+  ],
+  "pattern_notes": [
+    {
+      "id": "repair_reversal",
+      "finding": "The strongest causal trace is not merely an originally bad generator: a difficulty repair introduced guided-u/primitive scaffolding, a first hint repair preserved guided-u as legitimate, and a later repair recognized that this changed the target skill and reversed all twelve easy bands.",
+      "evidence": [
+        {
+          "event": "scaffolding_redesign",
+          "scope": "All twelve eventually inherited the same contract; trig KPs first, inverse/exponential next.",
+          "change": "Easy supplied u and requested transformation only; full-calculation bands supplied primitive formulas and routine endpoint facts.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+              "line": 21,
+              "end_line": 29,
+              "supports": "Design explicitly imports the supplied-substitution examples from a different KP.",
+              "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md",
+              "line": 32,
+              "end_line": 45,
+              "supports": "Same scaffolded replacement contract applied across inverse/exponential KPs.",
+              "excerpt": "Easy supplies u and asks only for the transformed integral, with five distinct choices. Moderate asks for the supported full calculation with a supplied primitive. Hard keeps that support and adds one target condition:"
+            }
+          ]
+        },
+        {
+          "event": "first_hint_repair",
+          "change": "Removed blanket primitive and endpoint hints from full calculations, but explicitly preserved the supplied-u easy tasks.",
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 5,
+              "supports": "First hint repair treats generated guided easy stages as legitimate.",
+              "excerpt": "Scope: the four recently repaired trig-substitution KPs and the eight inverse-trig/exponential-substitution KPs that inherited the same blanket support policy. Ordinary full-calculation prompts will require retrieval of mastered primitive formulas and routine endpoint facts. Explicitly guided transformation tasks retain their given substitutions. Domain assumptions and complete worked solutions remain."
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md",
+              "line": 21,
+              "supports": "Reported guided question 17592186678309 specifically retained unchanged.",
+              "excerpt": "The three reported hinted question versions are retired, with their replacement identities in `replacement-map.json`. Question 17592186678309 remains active and unchanged: its supplied substitution belongs to the explicitly guided transformation task."
+            }
+          ]
+        },
+        {
+          "event": "objective_restoration",
+          "change": "Reversed the supplied-u easy task across all twelve KPs: choose substitution and complete integral; replaced 96 transformations and two misplaced secant moderate questions.",
+          "basis_readback": 7075,
+          "evidence": [
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 7,
+              "end_line": 13,
+              "supports": "Later repair explicitly recognizes changed assessed objective and wrong-KP borrowing.",
+              "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+            },
+            {
+              "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+              "line": 23,
+              "end_line": 27,
+              "supports": "Extent of replacements.",
+              "excerpt": "Retired and replaced 98 generated questions: 96 supplied-u transformations and"
+            }
+          ]
+        }
+      ],
+      "counting_note": "One shared design propagated to twelve KPs; do not present as twelve independent decisions."
+    },
+    {
+      "id": "objective_vs_surface_fidelity",
+      "finding": "Own-source integrands plus other-KP scaffolding were combined while the assessed action changed. Source-ID traceability and explicit authored-extension labels did not establish that learner decisions were preserved.",
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+          "line": 21,
+          "end_line": 29,
+          "supports": "Borrowed exemplar is explicitly identified.",
+          "excerpt": "The design follows the [source comparison](../../audits/2026-10-24-difficulty-pedagogy/README.md), including the six complete easy/moderate/hard examples from KP 17592186064172 and the supplied-substitution tasks from KP 17592186064209."
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/README.md",
+          "line": 7,
+          "end_line": 13,
+          "supports": "Later target-objective mismatch is explicit.",
+          "excerpt": "The defect was a change in the assessed objective: the previous easy bands"
+        }
+      ]
+    },
+    {
+      "id": "hard_label_as_feature_checklist",
+      "finding": "Retained validators enforced compound fractions, irrational normalization, unlike radicals and noncancellation. They made an authored difficulty definition executable without independently validating its pedagogical meaning. Later raw-square normalization could also collapse to an easy task.",
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/17592186068915/originals/17592186068915.py",
+          "line": 223,
+          "end_line": 226,
+          "supports": "Hard radical endpoints are a pass/fail invariant.",
+          "excerpt": "if level == 'hard':"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-inverse-trig-bands/packages/17592186064218/inverse_trig.py",
+          "line": 162,
+          "end_line": 175,
+          "supports": "Irrational factor and unlike endpoints are required.",
+          "excerpt": "if band == 'hard' and not (A > 1 and B > 1 and not sp.sqrt(B/A).is_Rational and lo != 0 and hi != 0 and abs(lo) != abs(hi)):"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+          "line": 16,
+          "end_line": 20,
+          "supports": "Hard label can survive raw-coefficient complexity that disappears on simplification.",
+          "excerpt": "- Indefinite sine/tangent hard requires combined coprime normalization. The"
+        }
+      ]
+    },
+    {
+      "id": "bank_metadata_and_aggregate_diversity",
+      "finding": "Named error recipes, shuffled answer order and aggregate variation were insufficient: definite inverse-trig sine banks had a conditional all-smallest shortcut. A later negative regression checks rank within the visible family.",
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-inverse-trig-quality/README.md",
+          "line": 24,
+          "end_line": 31,
+          "supports": "Recipe names do not substitute for reading choices; conditional ranks require testing.",
+          "excerpt": "- Banks use identifiable differential-factor, argument-scale and endpoint"
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-25-inverse-bank-balance/rank-verification.json",
+          "line": 18,
+          "supports": "Negative control records all-zero old ranks.",
+          "excerpt": "\"original_sine_ranks\": ["
+        }
+      ]
+    },
+    {
+      "id": "correct_math_not_complete_pedagogy",
+      "finding": "Derivative checks, native grading, source replay and display parse checks can all pass while the problem asks for too little, demands gratuitous prerequisite work, or uses an unexplained equivalent form. The repaired code needs contracts over learner decisions and displayed steps, not merely stronger counts of the same checks.",
+      "evidence": [
+        {
+          "path": "reference/edb-math/repairs/2026-10-23-trig-chain-rule/README.md",
+          "line": 7,
+          "supports": "Explicit account of how existing validation passed the representation defect.",
+          "excerpt": "The defect was a split between symbolic answer generation and source-template solution rendering. Both sides were verified only up to mathematical equivalence. Consequently, source-bank replay, derivative checks, and radio grading all passed while the learner faced an unexplained change of representation. The new checks independently enforce the displayed trig argument and agreement between the final solution and keyed answer. Authoring guidance now requires deriving the answer and explanation from the lesson's ordered steps and checking the prerequisite scope of conversions."
+        },
+        {
+          "path": "reference/edb-math/repairs/2026-10-24-trig-scaffolding/README.md",
+          "line": 47,
+          "end_line": 55,
+          "supports": "Extensive validation of the later-reversed scaffold contract.",
+          "excerpt": "- **192 sampled records** across two seeds were checked from their actual printed prompts, derivatives, bounds, transformations, integration steps and keys. All 96 surviving delivery records were checked again. The 64 sampled easy banks, each with five choices, were checked for a unique correct answer and mathematical nonduplication."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "This report identifies supported causal mechanisms, not model internal reasoning. Root is separately tracing historical pipeline prompts.",
+    "Cases share helpers and repair episodes, so prevalence across KPs does not imply independent recurrence.",
+    "Imported anchors establish requested operations; they are family analogues, not claimed exact parents of the generated examples.",
+    "Reported transaction matches are inherited from the root's earlier EDB cohort capture; this review did not query or mutate EDB."
+  ]
+}

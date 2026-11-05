@@ -399,7 +399,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function targetSelectors(snapshot, graph, options = {}, calendar = null) {
     const {nodeById}=graph, targetCourseCodes=TARGET_COURSE_CODES;
-    const targetTopicVisible=id=>nodeById.get(id)?.layer>=29;
+    const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
     const enabledTargetCourses=new Set(options.courses ?? targetCourseCodes);
     const targetQueueEnabled=options.includeQueue!==false;
     const targetCalendar=calendar ?? buildTargetCalendar(snapshot?.targetSchedule || []);
@@ -459,7 +459,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function assignTargetCourses(snapshot, graph, targetCalendar, nodeIds) {
       const {nodeById,inMap,outMap}=graph;
       const targetCourseCodes=TARGET_COURSE_CODES;
-      const targetTopicVisible=id=>nodeById.get(id)?.layer>=29;
+      const targetTopicVisible=id=>nodeById.get(id)?.layer>=54;
       const courses=targetCourseCodes.map(code=>({key:code,label:'MTH '+code,nodeIds:new Set()}));
       const direct=new Map(), placement=new Map(), workload=new Map(courses.map(course=>[course.key,0]));
       const addMembership=(id,code)=>{
@@ -659,8 +659,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   // global layer order, collapsing independent layers; badges keep global ranks.
   function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
   function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
-  // Displayed layers are one-based: L30 is the first retained target layer.
-  function targetTopicVisible(id) { return assignmentScope ? nodeById.has(id) : nodeById.get(id)?.layer >= 29; }
+  // Displayed layers are one-based: L55 is the first retained target layer.
+  function targetTopicVisible(id) { return assignmentScope ? nodeById.has(id) : nodeById.get(id)?.layer >= 54; }
   function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
   function resetSelection() {
     state.followTargets=targetsView;

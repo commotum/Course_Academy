@@ -6,14 +6,14 @@ import { projectTargetScope } from '../ui/target-scope.js';
 
 test('target projection defaults to focused depth zero and preserves explicit depth controls', () => {
   const snapshot = {
-    nodes: Array.from({ length: 33 }, (_, id) => ({ id, name: `Topic ${id}` })),
-    links: Array.from({ length: 32 }, (_, id) => ({ source: id, target: id + 1 })),
-    learner: { targets: [32], queue: [] }, courses: [],
+    nodes: Array.from({ length: 58 }, (_, id) => ({ id, name: `Topic ${id}` })),
+    links: Array.from({ length: 57 }, (_, id) => ({ source: id, target: id + 1 })),
+    learner: { targets: [57], queue: [] }, courses: [],
   };
-  assert.deepEqual([...projectTargetScope(snapshot).nodeIds].sort(), [30, 31, 32]);
+  assert.deepEqual([...projectTargetScope(snapshot).nodeIds].sort(), [55, 56, 57]);
   snapshot.studyDefaults = { targetPrerequisiteDepth: 0 };
-  assert.deepEqual([...projectTargetScope(snapshot).nodeIds], [32]);
-  assert.deepEqual([...projectTargetScope(snapshot, { prerequisiteDepth: 1 }).nodeIds].sort(), [31, 32]);
+  assert.deepEqual([...projectTargetScope(snapshot).nodeIds], [57]);
+  assert.deepEqual([...projectTargetScope(snapshot, { prerequisiteDepth: 1 }).nodeIds].sort(), [56, 57]);
 });
 
 test('actual graph initialization uses the server code policy for the targets overview', async () => {

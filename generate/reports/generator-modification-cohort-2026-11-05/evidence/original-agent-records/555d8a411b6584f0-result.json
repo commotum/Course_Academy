@@ -1,0 +1,170 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired the hard binomial answer-bank shortcut and strengthened deterministic batch ordering. Easy, moderate, and hard passed together. The report validator passed; publication remains runner-owned.",
+  "source_analysis": {
+    "skill": "Simplify trigonometric ratios using the sine double-angle identity, cancellation, reciprocal ratios, and source-supported Pythagorean identities and factoring.",
+    "reasoning_steps": [
+      "Recognize doubled and half-angle arguments.",
+      "Expand sin(2x) and rewrite reciprocal or quotient functions.",
+      "Cancel nonzero factors on the original domain.",
+      "For hard cases, apply the Pythagorean identity and factor before cancelling.",
+      "Select the matching complete expression."
+    ],
+    "invariants": [
+      "Retain ratio simplification and the five-choice radio response.",
+      "Preserve the original expression domain.",
+      "Require one correct answer and distinct, plausible distractors."
+    ],
+    "permitted_variations": [
+      "Angles and degree/radian notation.",
+      "Which factor cancels and which function survives.",
+      "Small coefficients, binomial signs, and term order.",
+      "Complete error profiles and answer ordering."
+    ],
+    "source_refs": [
+      "e-3619 / b03496ac-c3b2-5d65-a3e3-2a33ea0cb862",
+      "q-65612 / dde407ba-34c3-55d5-a98c-cb0e2c5bb577",
+      "q-24642 / b2050e06-0476-56c1-a7a1-1d0ef234a4b2",
+      "q-120026 / 74e533d9-bd5f-54c8-8f89-0e39d86558a9",
+      "q-120030 / 20492e7a-2ad5-5346-9935-34abf42dcea6",
+      "q-24641 / 4eaa49cb-94d5-5c4a-8e77-4592aca20df1",
+      "Tutorial d14ca467-0ecd-5ac3-ab88-9bc2182a02ce: sine double-angle identity",
+      "Prerequisite topic 611: reciprocal trigonometric ratios"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "Independently replayed 12 complete source prompts, all 60 choices, and their keys. Partial imports remain unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "boundary-records.json",
+        "rejection.json"
+      ],
+      "details": "Checked 134 records, every choice and displayed derivation row, and 20 generic symbolic shapes. Every final question has one correct answer and distinct distractors."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-shortcuts.json",
+        "counterfactual-tests.json",
+        "selection-witness.json",
+        "selection-analysis.json"
+      ],
+      "details": "Verified seven supported families, both function roles, hard signs, error profiles, notation, rejection/resampling, deduplication, and selection behavior. Delivery retained all five final and all 24 fresh records per band."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json"
+      ],
+      "details": "Traced every served family through displayed, source-supported conversions to its key. An equivalent but unshown parity rewrite fails the negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-cases.json",
+        "native-grading.json"
+      ],
+      "details": "The actual native grader accepted 134 correct selections and rejected 536 distractor selections, with zero unresolved outcomes. All fields are radio."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-final/rendering.json",
+        "render-boundaries.json",
+        "boundary-negative-controls.json",
+        "contact-easy.png",
+        "contact-moderate.png",
+        "contact-hard.png"
+      ],
+      "details": "Rendered and inspected all 15 final questions plus 19 controlled records. Every intended math span and aligned row reached the UI; five answer controls and bold emphasis render correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "final-binding.json",
+        "regression-commands.json",
+        "report-validation.json"
+      ],
+      "details": "Verified exact Python 3.13.5 dependency declarations, deterministic replay, relocation, and current package/engine identities. Finalization regenerated all bands. No shared-code changes were needed."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "repairs.json",
+        "pair-before.json",
+        "pair-after.json",
+        "pair-final.json",
+        "ui-positions.json"
+      ],
+      "details": "The original bank-only shortcut succeeded on 6/6 controlled binomial cases; after repair it succeeds on 0/6. Relevant and irrelevant counterfactuals, conditional probes, delivered batches, and actual UI ordering were checked separately."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "counterfactual-records.json",
+        "render-final-records.json"
+      ],
+      "details": "All bands retain unguided ratio simplification and radio selection. Progression adds reciprocal/residual-factor decisions, then Pythagorean replacement and factoring, while keeping arithmetic manageable. Imported labels and level coverage remain unchanged."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "c54f1a81f60795dfa7c15f92354cf73eaefbf5c2503958295ece79b842afcbc8",
+      "evidence_paths": [
+        "band-easy.json",
+        "final-easy.json",
+        "delivery-final-easy/accepted.json",
+        "native-grading.json",
+        "render-final/rendering.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "All five final questions passed correctness, native grading, rendering, delivery, and applicable coverage/shortcut checks."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "e6b3af325b69417ebb0efea1d3da8281cdff6d982af78bc9e59fe08bf5e32a8f",
+      "evidence_paths": [
+        "band-moderate.json",
+        "final-moderate.json",
+        "delivery-final-moderate/accepted.json",
+        "native-grading.json",
+        "render-final/rendering.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "All five final questions passed correctness, native grading, rendering, delivery, and applicable coverage/shortcut checks."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "b1ffb7f36076767962079a9001ed3a7375927d1aba9d995a29b33ee6e6351415",
+      "evidence_paths": [
+        "band-hard.json",
+        "final-hard.json",
+        "delivery-final-hard/accepted.json",
+        "native-grading.json",
+        "render-final/rendering.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "All five final questions passed correctness, native grading, rendering, delivery, and applicable coverage/shortcut checks, including the repaired binomial banks."
+    }
+  }
+}

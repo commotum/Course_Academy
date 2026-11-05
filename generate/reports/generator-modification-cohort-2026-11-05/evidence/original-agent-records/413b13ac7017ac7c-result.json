@@ -1,0 +1,198 @@
+{
+  "verdict": "accepted",
+  "summary": "All three final bands passed independent verification. No current defect required a generator or shared-code edit. The report validator passed; publication remains with the runner.",
+  "source_analysis": {
+    "skill": "Recognize a common angle in a difference of squared cosine and sine, extract any common coefficient, and express the result as a single scaled cosine of twice that angle.",
+    "reasoning_steps": [
+      "Identify the shared argument and common coefficient.",
+      "Factor the coefficient when present.",
+      "Apply cos\u00b2u \u2212 sin\u00b2u = cos(2u).",
+      "Simplify the doubled argument and retain the external coefficient.",
+      "Select the matching complete expression."
+    ],
+    "invariants": [
+      "Both trigonometric terms share an argument and coefficient.",
+      "The assessed operation is expression rewriting rather than exact-value evaluation.",
+      "Necessary factoring and angle simplification appear in the worked solution.",
+      "The response is a complete scaled trigonometric ratio."
+    ],
+    "permitted_variations": [
+      "Degree and rational-pi arguments.",
+      "Modest integer, rational and radical common factors.",
+      "Different correct positions and complete plausible error profiles.",
+      "Authored fourth-power differences reduced through difference-of-squares factoring and the known Pythagorean identity."
+    ],
+    "source_refs": [
+      "e-3666 / 7826cd52-8603-51ff-902e-c7764639dccd",
+      "q-24488 / eda88667-03a3-54d2-bc45-5bd8cd910c52",
+      "q-7690 / d5d50fd1-bc8e-514c-8dca-56cd8a6999fe",
+      "q-120347 / 6bb4ecb6-0b76-51e4-aa33-5be6f12e1dbb",
+      "q-120348 / cf1faff6-afe0-59ea-a58f-f8289c637840",
+      "q-120352 / a4d26858-a337-5218-af76-0e3d4aac3fca",
+      "Tutorial 2638 / 8597693a-d6bd-59b2-bc3a-6922057a55be",
+      "Tutorial 2639 / 5da93916-34c4-5c5a-806c-82bae4dc1e02"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json",
+      "investigation-check.json",
+      "source-correction.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "investigation-check.json",
+        "investigation-exemplars.json"
+      ],
+      "details": "Replayed 13 canonical/source givens and independently checked three investigation exemplars. Captured alternative values were retained in fixtures. Two ambiguous historical banks remain evidence only; imports were unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent_review.py",
+        "final-math.json",
+        "sample-math.json",
+        "boundaries.json",
+        "boundary-records.json"
+      ],
+      "details": "Independently checked displayed mathematics for all 15 final records and 90 fresh samples. Every generated bank has exactly one correct alternative. Exact identities and forced ambiguous-bank resampling passed."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-sample.json",
+        "sample-math.json",
+        "counterfactuals.json",
+        "delivery-stages.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Fresh samples cover both angle units, eligible answer roles, and integer/rational/radical factors. Same-bank controls change the answer-bearing angle and coefficient. All final records survive delivery."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-extra-records.json",
+        "scope-negative-control.json",
+        "investigation-check.json"
+      ],
+      "details": "Traced every final solution and representative remaining factor/unit cases. Necessary conversions are justified and displayed. The hard extension uses familiar algebra and the known Pythagorean identity. An equivalent but unshown periodic-answer mutation correctly fails the scope control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "native-grading.json",
+        "final-identity-check.json"
+      ],
+      "details": "The native learner grader tested all five choices in 117 records: 117 accepted, 468 rejected, zero unresolved. All final records and controlled changes are included. The engine identity matches the final binding."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-controls/rendering.json",
+        "render-boundary-audit.json",
+        "prose-boundaries.json",
+        "render/question-005.png",
+        "render/question-006.png",
+        "render/question-011.png",
+        "render-controls/question-010.png"
+      ],
+      "details": "Rendered all 15 final records and 12 controls through the actual UI. Shared boundary validation passed, and every intended aligned row appears in rendered MathML. Inspected screenshots show complete equations, choices and bold labels without exposed TeX or clipping."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "independent_review.py",
+        "final-binding.json",
+        "final-identity-check.json",
+        "verification-provenance.json"
+      ],
+      "details": "The exact Python 3.13.5 dependency declaration matches the runtime. The two declared files reproduce all three runner batches after relocation. Count boundaries passed. Final package, engine and batch identities were reconfirmed."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactuals.json",
+        "native-grading.json",
+        "delivery-stages.json",
+        "selection-trace.json",
+        "ui-choice-order.json"
+      ],
+      "details": "Relevant angle/factor changes update prompts, solutions, keys and grading; choice reversal preserves the answer. Bank-only position, numerical-rank, angle-rank and modal-intersection probes found no perfect predictor in tested multi-item final subgroups, before or after delivery. Actual UI positions were checked separately. Live-history and policy limits are documented."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "matched-progression.json",
+        "investigation-check.json",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json"
+      ],
+      "details": "Easy requires identity recognition; moderate adds common-factor extraction; hard adds fourth-power factorization and Pythagorean reduction. Matched instances control arithmetic and retain the same radio response demand. Hard is an explicitly justified authored progression. Imported level-coverage remains unchanged."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "c3c65e967516f214ffbb10ad2bd105ddaae38dff8ff0fef1345054d8643df006",
+      "evidence_paths": [
+        "final-easy.json",
+        "final-math.json",
+        "native-grading.json",
+        "render/rendering.json",
+        "delivery-easy/delivery.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json",
+        "render-boundary-audit.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 3624861747: all five final records passed mathematics, native grading, rendering and applicable coverage/shortcut checks; all five survived captured-inventory delivery."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "ee80a68f01df7504eff5da3915a47e5a576512b5a333d527c5bf27eafdde3eb5",
+      "evidence_paths": [
+        "final-moderate.json",
+        "final-math.json",
+        "native-grading.json",
+        "render/rendering.json",
+        "delivery-moderate/delivery.json",
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json",
+        "render-boundary-audit.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 3624861746: all five final records passed mathematics, native grading, rendering and applicable coverage/shortcut checks; all five survived captured-inventory delivery."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "a90bf0b09b11ce294e44098602b86786e7b51b707545b798b61e0e6473402941",
+      "evidence_paths": [
+        "final-hard.json",
+        "final-math.json",
+        "native-grading.json",
+        "render/rendering.json",
+        "delivery-hard/delivery.json",
+        "delivery-hard/accepted.json",
+        "shortcut-results.json",
+        "render-boundary-audit.json",
+        "progression.json",
+        "final-identity-check.json"
+      ],
+      "details": "Seed 3624861749: all five final records passed mathematics, native grading, rendering and applicable coverage/shortcut checks; all five survived captured-inventory delivery. Structural progression was independently justified."
+    }
+  }
+}

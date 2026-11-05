@@ -1,0 +1,191 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired missing fractional-coefficient practice; all nine checks and all three finalized five-question bands pass. Imported questions and level coverage remain unchanged.",
+  "source_analysis": {
+    "skill": "Recognize a common sine/cosine argument, extract twice their product, and replace it by sine of the doubled argument, retaining scalar and surrounding algebra.",
+    "reasoning_steps": [
+      "Identify matching arguments in sine and cosine.",
+      "Rewrite c sin(t) cos(t) as (c/2)[2 sin(t) cos(t)].",
+      "Apply 2 sin(t) cos(t)=sin(2t), simplify the argument and coefficient.",
+      "For compound expressions, expand a square and combine sin\u00b2+cos\u00b2=1, or simplify sin(2t)/cos(2t) to tan(2t), showing those transitions."
+    ],
+    "invariants": [
+      "Matching sine and cosine arguments for direct collapse",
+      "Correct factor c/2 and argument 2t",
+      "One correct expression in each radio bank, with plausible instance-specific mistakes",
+      "No forced evaluation of special angles or repeated double-angle chaining"
+    ],
+    "permitted_variations": [
+      "Scalar including unity, fractions and negative signs; coefficient cancellation is legitimate.",
+      "Angle magnitude, degrees/radians, and symbolic arguments under the all-real identity.",
+      "Product order, option order and complete error profiles.",
+      "Plus/minus square cross term and scalar algebra where expansion is displayed.",
+      "For a ratio family exclude cosine-zero denominators and display sine-over-cosine conversion."
+    ],
+    "source_refs": [
+      "e-3614 / e95210c5-adb4-519e-bbec-e240dac32fd8: 2 sin15\u00b0 cos15\u00b0 = sin30\u00b0",
+      "q-43462 / 099149c9-1e5d-5a49-aba3-6528a838f44d: 6 sin(3\u03c0/10) cos(3\u03c0/10)=3 sin(3\u03c0/5)",
+      "q-119947 / 807c1c95-6fea-5d65-a59b-b497c894ecc9: expand (sin(\u03c0/6)+cos(\u03c0/6))\u00b2, use Pythagoras, obtain 1+sin(\u03c0/3)",
+      "q-119948 / 984868e6-9b0d-5753-97a4-a56b885226b2: 2 sin(\u03c0/10) cos(\u03c0/10)/cos(\u03c0/5)",
+      "q-7326 / 29b3c524-7b23-5771-a9d9-d475ba18867c: fractional scalar, partial imported radio bank",
+      "tutorial 2609 / d14ca467-0ecd-5ac3-ab88-9bc2182a02ce / step17592186060523: derives sin2x=2sinxcosx from sum formula; true for all x",
+      "neighbor e-3618 belongs to repeated double-angle use, e-3623 to exact values; neither alone authorizes replacing this KP objective"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "replay-records.json",
+        "source-partial-replay.json"
+      ],
+      "details": "Independent original-source account saved before author inspection. Reexecuted six complete original banks and three published exemplars, all five choices and keys checked; partial imports retain their available components. Exclusion ledger is empty. Hard is an authored factoring extension."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "identity-proofs.json",
+        "final-math-easy.json",
+        "final-math-moderate.json",
+        "final-math-hard.json",
+        "audit-summary.json",
+        "audit.py"
+      ],
+      "details": "Generic family identities proved symbolically; independent public-TeX prompt, five-choice and displayed-final evaluation covers 108 fresh, 15 final, 16 boundary and 12 counterfactual records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit-summary.json",
+        "fraction-before.log",
+        "commands.json",
+        "fraction-regression.py",
+        "package-repair.diff",
+        "delivery-stages.json"
+      ],
+      "details": "Repaired absent source-supported half scalars; tested both signs and units, cancellation, square signs and quotient regions, complete bank profiles and moderate family schedule. No fixed answer-bearing source coefficient or choice position is required."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json",
+        "source-analysis.json"
+      ],
+      "details": "Every served family, sign/angle/denominator boundary and final item is traced through displayed conversions to complete-expression radio keys. Unshown equivalent parity conversion fails the negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "commands.json"
+      ],
+      "details": "Real learning::grade_field accepts 151 independently established correct selections and rejects 604 distractor selections across all bands and controls. Only radio is served; no free-entry equivalence or rounding contract applies."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-final/rendering.json",
+        "render-counterfactual/rendering.json",
+        "ui-boundary-checks.json",
+        "visual-inspection.md"
+      ],
+      "details": "All 15 final records and 12 controlled-pair records rendered with actual unmodified UI. All mathematical blocks and every aligned row checked in actual SVG plus screenshots. Shared prose/TeX boundary validator run on all generated prompts, solutions and choices; no text feedback is served."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "binding-confirmation.json",
+        "final-binding.json",
+        "commands.json"
+      ],
+      "details": "Declared Python3.13.5 and empty third-party package map match runtime. Declared files relocate and replay exact final batches in all bands; deterministic counts and invalid-count behavior checked. No external assets. Finalized identities match tested bytes and current native engine."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "probe-results.json",
+        "bank-judgment.json",
+        "counterfactual-records.json",
+        "learner-selection.json"
+      ],
+      "details": "Relevant/irrelevant controlled pairs pass actual grading/rendering. Conditional bank-only and numeric probes inspect each family and exact delivered batches before/after filtering; tested shortcuts do not solve a final band or substantive family sample. Tiny abstaining subsets and finite-pool limits are explicit."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Same five-choice complete-expression response and manageable arithmetic throughout. Direct compression advances to expansion/quotient reduction and then hidden-product factoring plus Pythagoras. Hard adds structural recognition, not coefficient size; no imported hard calibration exists. Imported coverage unchanged."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "6fbfc53f1c98b42e49fc4f0b2eface6ff0b03b00d5ecc821d51ae87fb7b35cc8",
+      "evidence_paths": [
+        "final-easy.json",
+        "final-math-easy.json",
+        "final-delivery-easy/delivery.json",
+        "final-delivery-easy/accepted.json",
+        "grader-results.json",
+        "render-final/rendering.json",
+        "ui-boundary-checks.json",
+        "probe-results.json",
+        "pedagogical-variation.json",
+        "progression.json",
+        "binding-confirmation.json"
+      ],
+      "details": "All five exact finalized records independently checked for correctness, all five native choice outcomes, actual rendered UI and solution rows, delivery survivors and applicable within-family cues. Same final package and engine as the other bands; verification is not a publication receipt."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "b7884989d4c99faa60f8de857fdeafa0f0e5b9700494ef4aa82ae2baf5b92035",
+      "evidence_paths": [
+        "final-moderate.json",
+        "final-math-moderate.json",
+        "final-delivery-moderate/delivery.json",
+        "final-delivery-moderate/accepted.json",
+        "grader-results.json",
+        "render-final/rendering.json",
+        "ui-boundary-checks.json",
+        "probe-results.json",
+        "pedagogical-variation.json",
+        "progression.json",
+        "binding-confirmation.json"
+      ],
+      "details": "All five exact finalized records independently checked for correctness, all five native choice outcomes, actual rendered UI and solution rows, delivery survivors and applicable within-family cues. Same final package and engine as the other bands; verification is not a publication receipt."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "b1f470a1aa8935d93c43a09194be9813e9f67506cceda283ea5429112c753047",
+      "evidence_paths": [
+        "final-hard.json",
+        "final-math-hard.json",
+        "final-delivery-hard/delivery.json",
+        "final-delivery-hard/accepted.json",
+        "grader-results.json",
+        "render-final/rendering.json",
+        "ui-boundary-checks.json",
+        "probe-results.json",
+        "pedagogical-variation.json",
+        "progression.json",
+        "binding-confirmation.json"
+      ],
+      "details": "All five exact finalized records independently checked for correctness, all five native choice outcomes, actual rendered UI and solution rows, delivery survivors and applicable within-family cues. Same final package and engine as the other bands; verification is not a publication receipt."
+    }
+  }
+}

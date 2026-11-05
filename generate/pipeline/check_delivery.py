@@ -11,6 +11,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 from scripts.generator_publish import ImageLibrary, enum, localize_record, prepare_records
 from scripts.generator_source_policy import POLICY_VERSION, reject_excluded_sources
+from scripts.generator_evidence import batch_sha256, implementation_hashes, record_sha256, sha256_file
 
 
 class AuditImages(ImageLibrary):
@@ -59,8 +60,22 @@ def audit(records, inventory, source, difficulty, output, asset_root, math_root)
     accepted, duplicates = prepare_records(records, source['kp_id'], kp_uuid,
         inventory['fingerprints'], staged, asset_root, localizer=localize)
     output.mkdir(parents=True, exist_ok=True)
+    (output / 'input.json').write_text(json.dumps(records, indent=2, ensure_ascii=False) + '\n')
+    (output / 'source.json').write_text(json.dumps(source, indent=2, ensure_ascii=False) + '\n')
+    (output / 'inventory.json').write_text(json.dumps(inventory, indent=2, ensure_ascii=False) + '\n')
     (output / 'accepted.json').write_text(json.dumps(accepted, indent=2, ensure_ascii=False) + '\n')
     report = {
+        'format': 'course-academy-delivery-v1', 'passed': bool(records),
+        'input_file': 'input.json', 'input_sha256': sha256_file(output / 'input.json'),
+        'record_sha256': [record_sha256(row) for row in records],
+        'checked_record_sha256': [record_sha256(row) for row in records],
+        'batch_sha256': batch_sha256(records),
+        'accepted_sha256': sha256_file(output / 'accepted.json'),
+        'accepted_record_sha256': [record_sha256(row) for row in accepted],
+        'captured_inputs': {name: {'file': name + '.json', 'sha256': sha256_file(output / (name + '.json'))}
+                            for name in ('source', 'inventory')},
+        'implementation_sha256': implementation_hashes([Path(__file__), REPO / 'scripts/generator_publish.py',
+                                                        REPO / 'capture/scripts/database/images.py']),
         'database_writes': 0, 'inventory_basis': inventory['basis'],
         'kp_id': source['kp_id'], 'difficulty': difficulty,
         'input_count': len(records), 'duplicate_count': duplicates, 'accepted_count': len(accepted),
@@ -87,9 +102,7 @@ def main():
     data = {name: json.loads(path.read_text()) for name, path in paths.items()}
     report = audit(data['input'], data['inventory'], data['source'], args.difficulty,
                    args.output, args.asset_root or args.input.resolve().parent, args.math_root)
-    report['input_sha256'] = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()}
-    report['implementation_sha256'] = {str(path.relative_to(REPO)): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in (Path(__file__), REPO / 'scripts/generator_publish.py', REPO / 'capture/scripts/database/images.py')}
+    report['original_input_sha256'] = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()}
     (args.output / 'delivery.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({key: report[key] for key in ('input_count', 'duplicate_count', 'accepted_count', 'inventory_basis')}
                      | {'report': str(args.output / 'delivery.json')}))

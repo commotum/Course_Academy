@@ -687,7 +687,7 @@ class Publisher:
         return result
 
     def prepare(self, kp_id, records, generator_path, package_hash, directory, *, source_snapshot=None, assets_directory=None,
-                expected_registered_generator=None):
+                expected_registered_generator=None, records_validator=None):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         if (directory / 'request.json').exists():
@@ -721,6 +721,9 @@ class Publisher:
         accepted, duplicate_count = prepare_records(
             records, kp_id, kp[':knowledge-point/id'], seen,
             self.config.math_root, assets_directory or directory)
+        delivery_validation = (records_validator(accepted, {'fingerprints': sorted(seen),
+            'questions': jsonable(existing), 'canonical_example': jsonable(canonical)}, directory / 'delivery-validation')
+                               if records_validator is not None else None)
         identities = [uuid.UUID(qid) for rec in accepted for qid in [rec['question'][':question/id']] + [f[':answer-field/id'] for f in rec['question'][':question/answer-fields']] + [a[':answer/id'] for f in rec['question'][':question/answer-fields'] for a in f[':answer-field/choices']]]
         if identities:
             collisions = self.client.query('[:find ?e ?id :in $ [?id ...] :where (or-join [?e ?id] [?e :question/id ?id] [?e :answer-field/id ?id] [?e :answer/id ?id])]', [identities], directory, 'identity-collisions', basis)
@@ -757,6 +760,7 @@ class Publisher:
         prepared = {'database': status['database'], 'lineage': status['lineage'], 'basis': basis, 'kp_id': int(kp_id),
                     'package_sha256': package_hash, 'generator_path': generator_path, 'generator_id': str(generator_uuid),
                     'new_questions': len(accepted), 'duplicates': duplicate_count,
+                    **({'delivery_validation': delivery_validation} if delivery_validation is not None else {}),
                     'batch_edn': dumps(batch), 'snapshot_edn': dumps(snapshot), 'before_edn': dumps(kp), 'records': jsonable(accepted)}
         atomic_json(directory / 'preparation.json', prepared)
         verify_assets(accepted, self.config.math_root)

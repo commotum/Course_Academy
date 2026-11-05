@@ -222,7 +222,7 @@ export function topicDueDays(snapshot, scope, options, datedOnly = false) {
       dueDays.set(id, Math.min(dueDays.get(id) ?? Infinity, day));
       if (distance >= 2) continue;
       for (const previous of scope.graph.inMap.get(id) || []) {
-        if (!seen.has(previous) && scope.graph.nodeById.get(previous)?.layer >= 29) {
+        if (!seen.has(previous) && scope.graph.nodeById.get(previous)?.layer >= 54) {
           seen.add(previous); pending.push([previous, distance + 1]);
         }
       }

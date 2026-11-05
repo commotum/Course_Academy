@@ -1,8 +1,9 @@
-"""Topic478: scaffolded substitution, with controlled prerequisite work.
+"""Topic478: independent substitution practice with controlled prerequisite work.
 
 Easy asks for a complete integral with full-answer choices. Moderate asks for
-the whole calculation through exact entry. Hard changes one target condition, keeping arithmetic
-small. Full calculations retrieve mastered primitive formulas and endpoint values; the worked solution explains their use.
+the whole calculation through exact entry. Bands use overlapping, bounded
+arithmetic; a sign is not a difficulty definition. Full calculations retrieve
+mastered primitive formulas and endpoint values; the solution explains their use.
 """
 import argparse
 import hashlib
@@ -18,7 +19,7 @@ from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
 R,PI=s.Rational,s.pi
-VERSION='6.0.0-substitution-recognition'
+VERSION='7.0.0-substitution-recognition'
 TRIG=('sin','cos','sec2','csc2','sec_tan','csc_cot')
 RECIP=TRIG[2:]
 LINEAR=('indef_sin','indef_cos','def_sin','def_cos')
@@ -81,8 +82,8 @@ def task_key(body,lo=None,hi=None):
 def endpoint_pair(fn,rng):
     if fn in ('sin','cos'):
         pairs=((0,PI/2),(PI/2,PI),(0,PI),(PI,3*PI/2),(3*PI/2,2*PI))
-        # Skip cancellations that make the integral zero.
-        return rng.choice([pair for pair in pairs if s.simplify(h(fn,pair[1])-h(fn,pair[0]))!=0])
+        # A zero result still requires finding and evaluating the primitive.
+        return rng.choice(pairs)
     return rng.choice({
         'sec2':((0,PI/4),(-PI/4,0),(-PI/4,PI/4)),
         'csc2':((PI/4,PI/2),(PI/2,3*PI/4),(PI/4,3*PI/4)),
@@ -95,19 +96,22 @@ def trig_instance(kp,level,case,rng):
     linear=kp==17592186068915
     definite=case.startswith('def_')
     fn=case.removeprefix('indef_').removeprefix('def_')
-    a=s.Integer(rng.choice((2,3,4)))
+    # The canonical linear source includes 2 sin(x/3). A single reciprocal
+    # slope is familiar scaling, not a compound fractional-amplitude task.
+    slopes=(1,2) if level=='easy' else (2,3,R(1,2),R(1,3)) if level=='moderate' and linear else (2,3,4)
+    a=s.sympify(rng.choice(slopes))
     if not linear and definite:a=s.Integer(2)
     A=s.Integer(rng.randint(1,3 if level=='easy' else 4))
     if level=='easy' and A*a>8:A=s.Integer(1)
     b=s.Integer(0)
     if level=='moderate' and not definite:b=s.Integer(rng.randint(0,3))
     if level=='hard':
-        a=-a
+        a*=rng.choice((-1,1))
         if not definite:b=s.Integer(rng.randint(1,3))
     lo=hi=None
     if definite:
         u0,u1=endpoint_pair(fn,rng)
-        if level=='hard':
+        if a<0:
             u0,u1=u1,u0
             b=u0 # start x at zero; preserve familiar transformed angles
         lo,hi=s.simplify((u0-b)/a),s.simplify((u1-b)/a)
@@ -116,7 +120,7 @@ def trig_instance(kp,level,case,rng):
         transformed=g(fn,U),primitive_u=r*h(fn,U),primitive=r*h(fn,inner),
         lo=lo,hi=hi,scale=a,amplitude=A,
         parameters={'slope':str(a),'shift':str(b),'amplitude':str(A)},
-        challenge='supplied_substitution' if level=='easy' else 'positive_affine' if level=='moderate' else 'negative_inner_derivative',
+        challenge='linear_substitution' if level=='easy' else 'reciprocal_scaling' if a.q!=1 else 'affine_substitution',
         source_questions=['q-10061','q-10064','q-350039','q-350040'] if linear else ['q-10143','q-2203','q-13663','q-350053','q-350055','q-13524'])
 
 
@@ -187,7 +191,7 @@ def primitive_tex(m,z):
 
 def render(kp,level,case,m,seed,evidence,rng):
     inner,du,r,lo,hi=(m[k]for k in ('inner','du','factor','lo','hi'))
-    definite=lo is not None;easy=level=='easy'
+    definite=lo is not None;easy=level=='easy';choice=easy
     body=m.get('body_tex',tex(m['body']));original=integral(body,lo=lo,hi=hi)
     fp=task_key(m['body'],lo,hi)
     u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
@@ -233,30 +237,37 @@ def render(kp,level,case,m,seed,evidence,rng):
             for node in sorted(value.atoms(s.log),key=str):
                 text=text.replace(tex(node),logabs(node.args[0]))
             return text
-        bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
-                         lower=lo,upper=hi,max_number=12)
-        key=next(value for value,label in bank if label=='correct').removesuffix('+C')
-        prefix,_,suffix=sol.rsplit('$$',2)
-        sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
+        try:
+            bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
+                             lower=lo,upper=hi,max_number=12)
+        except ValueError:
+            # A collapsed error bank does not invalidate the integral. Exact
+            # entry preserves the same task without invented filler choices.
+            choice=False
+            problem=problem.rsplit('Choose ',1)[0]+'{{answer}}'+(''if definite else ' $+C$')
+        else:
+            key=next(value for value,label in bank if label=='correct').removesuffix('+C')
+            prefix,_,suffix=sol.rsplit('$$',2)
+            sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
     uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+'evaluate'+':'+role))
     answers=[{':answer/id':uid('answer:'+text),':answer/type':':answer.type/math',':answer/value':normalize_tex(text)}for text,_ in bank]
     correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
     question={':question/id':uid('question'),':question/problem':normalize_prose(problem),
               ':question/worked-solution':normalize_prose(sol),':question/difficulty':':question.difficulty/'+level,
               ':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',
-                  ':answer-field/type':':answer-field.type/radio'if easy else ':answer-field.type/blank',
+                  ':answer-field/type':':answer-field.type/radio'if choice else ':answer-field.type/blank',
                   ':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
     model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,
         derivative=du,factor=r,transformed=m['transformed'],primitive=m['primitive'],
         lower=lo,upper=hi,result=answer).items()}
     return {'knowledge_point':evidence['kp'],'question':question,'generation':{
-        'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],
+        'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if choice else m['challenge'],
         'parameters':m['parameters'],'mathematical_fingerprint':fp,'model':model,
-        'batch_contract':'trig-substitution-recognition-v6','source_questions':m['source_questions'],
+        'batch_contract':'trig-substitution-recognition-v7','source_questions':m['source_questions'],
         'source_basis':evidence['basis'],'band_origin':evidence['band_origin'][level],
         'operation':'evaluate','provided_substitution':False,
         'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall',
-        'bank_profile':'complete antiderivative or exact value with authored error choices'if easy else 'exact fragment with external C for antiderivatives',
+        'bank_profile':'complete antiderivative or exact value with authored error choices'if choice else 'exact fragment with external C for antiderivatives',
         'bank_recipes':[label for _,label in bank],'dependencies':{'sympy':s.__version__},
         'domain':'Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles.'}}
 
@@ -278,7 +289,6 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
         except ValueError:continue
         meta=record['generation']
         if meta['mathematical_fingerprint']in excluded:continue
-        if meta['model']['lower']is not None and not meta['provided_substitution']and s.simplify(s.sympify(meta['model']['result']))==0:continue
         return record
     raise ValueError('No eligible bounded variant; no duplicate padding')
 

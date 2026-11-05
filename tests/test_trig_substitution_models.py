@@ -40,8 +40,8 @@ class TrigSubstitutionTests(unittest.TestCase):
                 q=row['question'];f=q[':question/answer-fields'][0]
                 self.assertNotIn('Use the substitution',q[':question/problem'])
                 self.assertIn('Use the integration rule:',q[':question/worked-solution'])
-                self.assertEqual(f[':answer-field/type'],':answer-field.type/radio')
-                self.assertEqual(len(f[':answer-field/choices']),5)
+                self.assertIn(f[':answer-field/type'],(':answer-field.type/radio',':answer-field.type/blank'))
+                self.assertEqual(len(f[':answer-field/choices']),5 if f[':answer-field/type'].endswith('/radio')else 1)
                 self.assertTrue(all(r'\int'not in a[':answer/value']for a in f[':answer-field/choices']))
                 self.assertEqual(row['generation']['operation'],'evaluate')
 

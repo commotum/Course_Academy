@@ -1,3 +1,5 @@
+> Historical campaign instructions at captured basis 1356, retained for provenance. Current generation uses [the pipeline guide](../../README.md), [principles](../../principles.md), and `generate/pipeline` role prompts. The native grader harness stored here remains supported; these campaign constraints do not govern new jobs.
+
 # Per-KP generator assignment
 
 Work only on your assigned KP's `generate/scratch/<db-id>.py` and `generate/scratch/<db-id>/` evidence. Do not overwrite another KP or shared files. No database transactions, engine edits, commits, or image models. Use `.venv/bin/python`.
