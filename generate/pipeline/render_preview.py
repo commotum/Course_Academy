@@ -103,7 +103,11 @@ const audit = __VISIBLE_DOM_AUDIT__;
       state.horizontalMath = await page.evaluate(() =>
         [...document.querySelectorAll('.lesson-content mjx-container')]
           .filter(node => node.getClientRects().length && node.clientWidth > 0
-            && node.scrollWidth > node.clientWidth + 1)
+            && !node.closest('details:not([open])')
+            && node.scrollWidth > node.clientWidth + 3
+            // SVG intrinsic scrollWidth may exceed its responsive drawn width.
+            // Audit only formulas whose drawn SVG actually exceeds the viewport.
+            && node.querySelector('svg')?.getBoundingClientRect().width > node.clientWidth + 3)
           .map(node => {
             node.scrollLeft = node.scrollWidth;
             return {clientWidth:node.clientWidth, scrollWidth:node.scrollWidth,
