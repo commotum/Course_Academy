@@ -24,6 +24,34 @@ def account_markdown(account):
         for key, value in account.items()) + '\n'
 
 
+def aggregate_source_budget(phase_root, default_limit=3):
+    """Migrate legacy launches without invalidating exact stop-credit witnesses."""
+    from generator_lifecycle import credit_interruption
+    phase_root = Path(phase_root)
+    budget = phase_root / 'execution.json'
+    execution = read(budget) if budget.exists() else {'launches': 0}
+    if execution.get('source_account_aggregate'):
+        return budget
+    legacy = sorted(phase_root.glob('correction-*/execution.json'))
+    # A stop witness hashes the original execution. Consume it before adding
+    # migration fields or changing counters, including correction-only budgets.
+    execution = credit_interruption(budget, execution, default_limit)
+    rows = [execution, *(credit_interruption(path, read(path), default_limit) for path in legacy)]
+    credits = {}
+    base_limits = []
+    for row in rows:
+        row_credits = {item['launch_id']: item for item in row.get('controlled_interruptions', [])}
+        credits.update(row_credits)
+        base_limits.append(row.get('launch_limit', default_limit) - len(row_credits))
+    execution.update(launches=sum(row.get('launches', 0) for row in rows),
+        launch_limit=max(base_limits) + len(credits), source_account_aggregate=True,
+        legacy_budget_files=[str(path) for path in legacy])
+    if credits:
+        execution['controlled_interruptions'] = list(credits.values())
+    save(budget, execution)
+    return budget
+
+
 class InstructionalPhases:
     def phase_source_identity(self):
         from generator_pipeline import source_identity, asset_hashes
@@ -55,18 +83,7 @@ class InstructionalPhases:
         # Revision directories isolate prompts/results and account bytes, while
         # every revision spends the same durable role launch budget. Existing
         # fixed-directory executions remain authoritative during migration.
-        budget = phase_root / 'execution.json'
-        execution = read(budget) if budget.exists() else {'launches': 0}
-        if not execution.get('source_account_aggregate'):
-            legacy = list(phase_root.glob('correction-*/execution.json'))
-            rows = [read(path) for path in legacy]
-            execution['launches'] = execution.get('launches', 0) + sum(row.get('launches', 0) for row in rows)
-            limits = [row['launch_limit'] for row in [execution, *rows] if 'launch_limit' in row]
-            if limits:
-                execution['launch_limit'] = max(limits)
-            execution['source_account_aggregate'] = True
-            execution['legacy_budget_files'] = [str(path) for path in legacy]
-            save(budget, execution)
+        budget = aggregate_source_budget(phase_root, getattr(self.session, 'max_launches', 3))
         captured = read(self.directory / 'source/source.json')
         material = instructional_material(captured['material'])
         target_only = {key: captured[key] for key in ('database', 'lineage', 'basis', 'kp_id')}

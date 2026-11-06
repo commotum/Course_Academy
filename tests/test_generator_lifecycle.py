@@ -130,6 +130,35 @@ class LifecycleTests(unittest.TestCase):
         save(revision / 'result.json', {'status': 'ready'})
         self.assertEqual(credit_interruption(self.execution_path, execution, 3), execution)
 
+    def test_source_budget_migration_preserves_exact_legacy_stop_credits_once(self):
+        from generator_phase_gate import aggregate_source_budget
+        self.launch(3)
+        correction = self.directory / 'correction-1'; correction.mkdir()
+        begin_launch(correction / 'execution.json', {'launches': 1, 'status': 'running'},
+                     {OWNER_ENV: str(self.owner)}, self.spawn)
+        self.assertEqual(len(mark_stopped(self.owner)['sessions']), 2)
+        aggregate_source_budget(self.directory)
+        migrated = read(self.execution_path)
+        self.assertEqual((migrated['launches'], migrated['launch_limit']), (4, 5))
+        self.assertEqual(len(migrated['controlled_interruptions']), 2)
+        self.assertEqual(read(correction / 'execution.json')['launch_limit'], 4)
+        aggregate_source_budget(self.directory)
+        self.assertEqual(read(self.execution_path), migrated)
+        self.assertEqual(credit_interruption(self.execution_path, migrated, 3), migrated)
+
+    def test_source_budget_migration_preserves_correction_credit_without_root_execution(self):
+        from generator_phase_gate import aggregate_source_budget
+        correction = self.directory / 'correction-1'; correction.mkdir()
+        begin_launch(correction / 'execution.json', {'launches': 3, 'status': 'running'},
+                     {OWNER_ENV: str(self.owner)}, self.spawn)
+        mark_stopped(self.owner)
+        aggregate_source_budget(self.directory)
+        migrated = read(self.execution_path)
+        self.assertEqual((migrated['launches'], migrated['launch_limit']), (3, 4))
+        self.assertEqual(len(migrated['controlled_interruptions']), 1)
+        aggregate_source_budget(self.directory)
+        self.assertEqual(read(self.execution_path), migrated)
+
     def test_stopped_owner_prevents_actual_agent_spawn_without_spending_launch(self):
         mark_stopped(self.owner)
         with patch('generator_pipeline.subprocess.Popen') as spawn:
