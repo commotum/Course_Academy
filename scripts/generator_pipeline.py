@@ -813,6 +813,53 @@ class Pipeline(InstructionalPhases):
                          'previous_binding_directory': str(archive)})
         return True
 
+    def recover_finalized_review_state(self):
+        """Recover a finalizer receipt lost by an older waiting parent's save.
+
+        This restores candidate identities only, never approval or retry budgets.
+        Every current package/source/batch/asset/dependency guard still runs.
+        """
+        active = self.state.get('active_review_directory') or self.state.get('report_repair_directory')
+        if (self.is_refill or self.state['stage'] != 'validate' or not active
+                or self.state.get('publication') or (self.directory / 'publication/request.json').exists()):
+            return False
+        evidence = inside(self.directory, active)
+        path = evidence / 'final-binding.json'
+        if not path.is_file():
+            return False
+        binding = read(path)
+        if (binding == self.review_binding() or binding.get('policy_version') != REVIEW_POLICY_VERSION
+                or binding.get('source_hash') != self.state.get('source_hash')
+                or binding.get('inventory_hash') != self.state.get('inventory_hash')):
+            return False
+        saved_batches = self.state.get('verification_batches', {})
+        final_batches = binding.get('verification_batches', {})
+        if set(saved_batches) != set(final_batches) or set(final_batches) != set(VERIFICATION_BANDS):
+            return False
+        batches = {}
+        for band, final in final_batches.items():
+            saved = saved_batches[band]
+            if any(final.get(key) != saved.get(key) for key in ('seed', 'count', 'requested_count', 'maximum_distinct_batch')):
+                return False
+            batches[band] = {**saved, **final}
+        keys = ('package_hash', 'batch_hash', 'assets', 'effective_difficulty', 'engine_hash',
+                'grader_sha256', 'instructional_evidence', 'refill_plan')
+        updates = {key: binding[key] for key in keys if key in binding}
+        updates['verification_batches'] = batches
+        previous = self.state
+        try:
+            self.state = {**previous, **updates}
+            if self.review_binding() != binding:
+                return False
+            self.verify_approval_inputs()
+        except (OSError, ValueError, KeyError):
+            return False
+        finally:
+            self.state = previous
+        save(evidence / ('state-before-finalizer-recovery-' + str(time.time_ns()) + '.json'), previous)
+        self.persist(**updates, approval_recorded=False)
+        return True
+
     def restore_misplaced_final_binding(self, evidence):
         """Recover an exact finalizer receipt saved under the old doubled path."""
         evidence = inside(self.directory, evidence)
@@ -897,6 +944,9 @@ class Pipeline(InstructionalPhases):
                 return None
             self.persist(active_review_directory=str(evidence))
             result = self.session_call('review', context, directory)
+            # A separate finalizer writes the durable candidate while this
+            # process waits. Reload before any parent persist can overwrite it.
+            self.state = read(self.path)
             self.persist(review_thread=session_thread(directory) or self.state.get('review_thread'))
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
@@ -1566,6 +1616,7 @@ class Pipeline(InstructionalPhases):
                     and not self.exemplar_gate_current(revalidate_tools=False)):
                 self.persist(stage='investigate', investigation_complete=False)
                 continue
+            self.recover_finalized_review_state()
             if self.refresh_active_engine():
                 continue
             error = self.state.get('error')
