@@ -40,13 +40,33 @@ class InstructionalPhases:
         key = 'target_account' if role == 'investigate' else 'verifier_account'
         source = self.phase_source_identity()
         policy = policy_identity(self.root, role)
-        account_identity = digest({'source': source, 'policy': policy})
+        isolation_version = 1
+        account_identity = digest({'source': source, 'policy': policy, 'isolation_version': isolation_version})
+        phase_root = self.directory / ('investigation' if role == 'investigate' else 'verification') / 'source-account'
+        directory = phase_root / 'revisions' / account_identity
         saved = self.state.get(key)
-        if saved and saved['source'] == source and saved.get('policy') == policy:
+        if (saved and saved['source'] == source and saved.get('policy') == policy
+                and saved.get('isolation_version') == isolation_version
+                and saved.get('revision_identity') == account_identity
+                and Path(saved['path']).resolve().is_relative_to(directory.resolve())):
             validate_source_account_checkpoint(saved['path'], saved['sha256'])
             return saved
-        directory = self.directory / ('investigation' if role == 'investigate' else 'verification') / 'source-account'
         directory.mkdir(parents=True, exist_ok=True)
+        # Revision directories isolate prompts/results and account bytes, while
+        # every revision spends the same durable role launch budget. Existing
+        # fixed-directory executions remain authoritative during migration.
+        budget = phase_root / 'execution.json'
+        execution = read(budget) if budget.exists() else {'launches': 0}
+        if not execution.get('source_account_aggregate'):
+            legacy = list(phase_root.glob('correction-*/execution.json'))
+            rows = [read(path) for path in legacy]
+            execution['launches'] = execution.get('launches', 0) + sum(row.get('launches', 0) for row in rows)
+            limits = [row['launch_limit'] for row in [execution, *rows] if 'launch_limit' in row]
+            if limits:
+                execution['launch_limit'] = max(limits)
+            execution['source_account_aggregate'] = True
+            execution['legacy_budget_files'] = [str(path) for path in legacy]
+            save(budget, execution)
         captured = read(self.directory / 'source/source.json')
         material = instructional_material(captured['material'])
         target_only = {key: captured[key] for key in ('database', 'lineage', 'basis', 'kp_id')}
@@ -72,6 +92,9 @@ class InstructionalPhases:
             current.mkdir(parents=True, exist_ok=True)
             context = {'phase': 'source_account', 'source_account_role': role,
                 'source_account_identity': account_identity,
+                'source_account_isolation': isolation_version,
+                'source_account_revision': str(directory),
+                '_execution_budget_file': str(budget),
                 'repo_root': str(self.root), 'knowledge_point': self.state['request']['kp'],
                 'source_file': str(source_path),
                 'source_root': str(source_path.parent), 'math_root': str(self.math_root),
@@ -86,7 +109,9 @@ class InstructionalPhases:
             # exemplar, generator, repair history or previous interpretation.
             source_sessions = self.state.get('source_account_sessions', {})
             active = source_sessions.get(role, {})
-            thread = active.get('thread') if active.get('identity') == account_identity else None
+            thread = active.get('thread') if (active.get('identity') == account_identity
+                and active.get('isolation_version') == isolation_version
+                and active.get('revision') == str(directory)) else None
             if thread:
                 context['resume_session_id'] = thread
             if role == 'review' and not self.admit_review_session(current):
@@ -95,7 +120,8 @@ class InstructionalPhases:
             save(current / 'result.json', result)
             thread = session_thread(current) or thread
             self.persist(source_account_sessions={**source_sessions, role: {
-                'identity': account_identity, 'thread': thread}})
+                'identity': account_identity, 'thread': thread,
+                'isolation_version': isolation_version, 'revision': str(directory)}})
             self.reload_repaired_runner()
             try:
                 if result.get('status') != 'ready' or result.get('account_file') != 'source-analysis.json':
@@ -105,7 +131,8 @@ class InstructionalPhases:
                 checkpoint = directory / ('original-' + identity + '.json')
                 if not checkpoint.exists():
                     shutil.copy2(produced, checkpoint)
-                value = {'path': str(checkpoint), 'sha256': identity, 'source': source, 'policy': policy}
+                value = {'path': str(checkpoint), 'sha256': identity, 'source': source, 'policy': policy,
+                    'isolation_version': isolation_version, 'revision_identity': account_identity}
                 self.persist(**{key: value, role + '_thread': session_thread(current) or thread,
                                 key + '_error': None})
                 if role == 'investigate':
@@ -170,6 +197,11 @@ class InstructionalPhases:
                 raise ValueError('Source changed since its independent account')
             if account.get('policy') != policy_identity(self.root, role):
                 raise ValueError('Instructions changed since the source-only account')
+            revision = (self.directory / ('investigation' if role == 'investigate' else 'verification') /
+                        'source-account/revisions' / str(account.get('revision_identity', '')))
+            if (account.get('isolation_version') != 1 or not account.get('revision_identity')
+                    or not Path(account['path']).resolve().is_relative_to(revision.resolve())):
+                raise ValueError('Source-only account needs an isolated revision checkpoint')
             validate_source_account_checkpoint(account['path'], account['sha256'])
         upstream = {}
         for key in ('investigation_file', 'investigation_result', 'reference_file'):

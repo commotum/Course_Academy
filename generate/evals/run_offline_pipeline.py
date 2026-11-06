@@ -153,6 +153,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory', type=Path, default=Path('/tmp/generator-live-pipeline'))
     parser.add_argument('--seed', type=int, default=60419)
+    parser.add_argument('--resume-reason', help='Explicit recorded production allowance for a blocked job; never resets counters')
     args = parser.parse_args()
     directory = args.directory.resolve()
     if not directory.is_relative_to(Path('/tmp')):
@@ -171,7 +172,7 @@ def main():
         session=CodexSession(ROOT, environment), investigation_preparer=prepare_investigation)
     if pipeline.state['stage'] == 'source':
         pipeline.persist(seed=args.seed)
-    result = pipeline.run(stop_after='validate')
+    result = pipeline.run(stop_after='validate', resume_reason=args.resume_reason)
     save(directory / 'offline-result.json', result)
     print(json.dumps({'event': 'offline_pipeline_result', 'stage': result['stage'],
         'review': result.get('review'), 'exemplar_gate': result.get('exemplar_gate', {}).get('report'),

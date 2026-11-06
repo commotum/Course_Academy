@@ -50,8 +50,9 @@ class RunnerChanged(RuntimeError):
 
 
 class SessionRetryExhausted(RuntimeError):
-    def __init__(self, role, directory, execution):
+    def __init__(self, role, directory, execution, *, execution_path=None):
         self.role, self.directory, self.execution = role, Path(directory), execution
+        self.execution_path = Path(execution_path) if execution_path is not None else self.directory / 'execution.json'
         super().__init__(f'{role} session failed after {execution["launches"]} launches; '
                          f'workspace retained at {directory}: {execution.get("error", "interrupted")}')
 
@@ -159,7 +160,8 @@ class CodexSession:
         template = templates / ('source-account.md' if phase == 'source_account' else
             'exemplar-review.md' if phase == 'exemplars' else
             {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role])
-        prompt = template.read_text().replace('{{role}}', role).replace('{{context}}', json.dumps(context, indent=2))
+        visible_context = {key: value for key, value in context.items() if not key.startswith('_')}
+        prompt = template.read_text().replace('{{role}}', role).replace('{{context}}', json.dumps(visible_context, indent=2))
         output = directory / 'result.json'
         bind_session(directory, input_binding(role, context, self.root))
         # A completed structured result survives a parent crash. The caller
@@ -169,19 +171,24 @@ class CodexSession:
                 return read(output)
             except json.JSONDecodeError:
                 output.unlink()
-        execution_path = directory / 'execution.json'
+        execution_path = (Path(context['_execution_budget_file']) if phase == 'source_account'
+                          and context.get('_execution_budget_file') else directory / 'execution.json')
         execution = read(execution_path) if execution_path.exists() else {'launches': 0}
         from generator_lifecycle import begin_launch, credit_interruption, finish_launch
         execution = credit_interruption(execution_path, execution, self.max_launches)
         launch_limit = execution.get('launch_limit', self.max_launches)
         if execution['launches'] >= launch_limit:
-            raise SessionRetryExhausted(role, directory, execution)
+            raise SessionRetryExhausted(role, directory, execution, execution_path=execution_path)
         (directory / 'prompt.txt').write_text(prompt)
         executable = self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE') or shutil.which('codex', path=self.environment.get('PATH')) or str(Path.home() / '.local/bin/codex')
         source_revision_changed = (phase == 'source_account' and
-            execution.get('source_account_identity') != context.get('source_account_identity'))
-        resume_id = context.get('resume_session_id') or (None if source_revision_changed else
+            (execution.get('source_account_identity') != context.get('source_account_identity')
+             or execution.get('source_account_isolation') != context.get('source_account_isolation')
+             or execution.get('source_account_revision') != context.get('source_account_revision')))
+        resume_id = None if source_revision_changed else (context.get('resume_session_id') or
             (execution.get('thread_id') or session_thread(directory) if execution.get('persistent_session') else None))
+        if source_revision_changed:
+            execution.pop('thread_id', None)
         command = [executable, 'exec',
                    '--sandbox', 'workspace-write', '-c', 'approval_policy="never"',
                    '-c', 'sandbox_workspace_write.network_access=true',
@@ -198,9 +205,11 @@ class CodexSession:
         # Count before spawning so parent/process crashes cannot reset an
         # unfinished ephemeral session's budget and launch it forever.
         execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running',
-                     'persistent_session': True}
+                     'persistent_session': True, 'result_directory': str(directory)}
         if phase == 'source_account':
             execution['source_account_identity'] = context.get('source_account_identity')
+            execution['source_account_isolation'] = context.get('source_account_isolation')
+            execution['source_account_revision'] = context.get('source_account_revision')
         execution.pop('error', None)
         try:
             with (directory / 'events.jsonl').open('a') as log:
@@ -224,7 +233,7 @@ class CodexSession:
             execution.update(status='failed', error=str(error))
             finish_launch(execution_path, execution)
             if execution['launches'] >= launch_limit:
-                raise SessionRetryExhausted(role, directory, execution) from error
+                raise SessionRetryExhausted(role, directory, execution, execution_path=execution_path) from error
             raise
         finish_launch(execution_path, {**execution, 'status': 'completed',
                                      'thread_id': session_thread(directory) or resume_id})
@@ -626,9 +635,10 @@ class Pipeline(InstructionalPhases):
             context = {**self.context(evidence), **prepared,
                        'investigation_feedback': self.state.get('investigation_error')}
             context['phase'] = 'design_anchors'
-            context['resume_session_id'] = session_thread(evidence) or self.state.get('investigate_thread')
+            context['resume_session_id'] = self.state.get('investigate_thread') or session_thread(evidence)
             result = self.session_call('investigate', context, directory)
             save(directory / 'result.json', result)
+            self.persist(investigate_thread=session_thread(directory) or self.state.get('investigate_thread'))
             self.reload_repaired_runner()
             if result.get('status') != 'ready':
                 error = {'error': 'Finish the target-grounded account and three local anchors; references are optional and cannot supply a different target task. Repair relevant tools yourself.',
@@ -1332,7 +1342,8 @@ class Pipeline(InstructionalPhases):
         stage = stage or ('validate' if prior_stage == 'report-repair' else 'generate')
         cause = error.get('cause', error) if isinstance(error, dict) else {}
         if isinstance(cause, dict) and cause.get('code') == 'agent_session_retry_exhausted':
-            execution_path = inside(self.directory, cause['session_directory']) / 'execution.json'
+            execution_path = (inside(self.directory, cause['execution_path']) if cause.get('execution_path') else
+                              inside(self.directory, cause['session_directory']) / 'execution.json')
             execution = read(execution_path)
             save(execution_path, {**execution, 'launch_limit': execution['launches'] + getattr(self.session, 'max_launches', 3)})
         events = self.state.get('resume_events', [])
@@ -1373,6 +1384,7 @@ class Pipeline(InstructionalPhases):
             except SessionRetryExhausted as error:
                 reason = {'code': 'agent_session_retry_exhausted', 'role': error.role,
                           'session_directory': str(error.directory), 'launches': error.execution['launches'],
+                          'execution_path': str(error.execution_path),
                           'error': error.execution.get('error', 'Session was interrupted')}
                 self.block('agent_session_retry_exhausted', reason, self.state['stage'])
                 return self.state

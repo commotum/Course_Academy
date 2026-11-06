@@ -34,6 +34,13 @@ def completed_result(directory):
         return False
 
 
+def completed_execution(path, execution):
+    """Shared budgets retain the result location of their exact current launch."""
+    root = Path(path).resolve().parent
+    directory = Path(execution.get('result_directory', root)).resolve()
+    return directory.is_relative_to(root) and completed_result(directory)
+
+
 @contextmanager
 def locked(owner):
     with (Path(owner) / 'owner.lock').open('a') as lock:
@@ -123,11 +130,11 @@ def mark_stopped(owner):
         sessions = []
         for directory, launch_id in identity['sessions'].items():
             directory = Path(directory)
-            if completed_result(directory):
-                continue
             try:
                 execution = read(directory / 'execution.json')
             except (OSError, ValueError):
+                continue
+            if completed_execution(directory / 'execution.json', execution):
                 continue
             if (execution.get('status') == 'running'
                     and execution.get('owner_id') == identity['owner_id']
@@ -152,7 +159,7 @@ def credit_interruption(path, execution, default_limit):
     """A marked running launch gets one replacement; actual failures never do."""
     path = Path(path).resolve()
     owner_name = execution.get('service_owner')
-    if not owner_name or execution.get('status') != 'running' or completed_result(path.parent):
+    if not owner_name or execution.get('status') != 'running' or completed_execution(path, execution):
         return execution
     owner = Path(owner_name)
     if not (owner / 'stopped.json').is_file():
