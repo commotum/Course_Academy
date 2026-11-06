@@ -35,6 +35,8 @@ struct Witness {
 pub struct Context {
     /// Sigma indices and vector basis labels use i as a formal symbol.
     pub symbolic_i: bool,
+    /// Variable-entry matrix prompts can use e as a formal scalar variable.
+    pub symbolic_e: bool,
     /// Sequence/sigma indices n, k, j, and i are integers in these prompts.
     pub integer_indices: bool,
     /// In natural-exponential prompts, lowercase e is Euler's constant even
@@ -1862,7 +1864,7 @@ impl Algebra {
             Ast::Symbol(s) => {
                 let atom = match s.as_str() {
                     "pi" => Atom::Pi,
-                    "e" => Atom::E,
+                    "e" if !self.context.symbolic_e => Atom::E,
                     "i" if !self.context.symbolic_i => Atom::I,
                     _ => Atom::Variable(s.clone()),
                 };
@@ -1998,7 +2000,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                 at += 1;
             }
             if at < chars.len() && (chars[at] == 'E'
-                || (chars[at] == 'e' && !context.natural_exponential)) {
+                || (chars[at] == 'e' && !context.natural_exponential && !context.symbolic_e)) {
                 let exp = at;
                 let mut end = at + 1;
                 if end < chars.len() && matches!(chars[end], '+' | '-') {

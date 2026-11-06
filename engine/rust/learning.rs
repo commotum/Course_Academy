@@ -2181,7 +2181,7 @@ fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
     let (original_a, original_b) = (a, b);
     // The numeric shortcut must use the same e interpretation as the exact
     // symbolic path, including when the canonical result happens to be numeric.
-    if context.natural_exponential {
+    if context.natural_exponential || context.symbolic_e {
         return symbolic::compare(original_a, original_b, context);
     }
     let a = normalize_math(a);
@@ -2704,12 +2704,21 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
     let conflict = positive_variables & negative_variables;
     positive_variables &= !conflict;
     negative_variables &= !conflict;
+    // A real variable-entry matrix names formal scalar symbols. Its owning
+    // KP/title supplies this declaration, rather than the submitted answer.
+    // Keep explicit natural-exponential and complex-number conventions intact.
+    let natural_exponential = NATURAL_EXPONENTIAL.is_match(&wording)
+        || wording.contains(r"\exp");
+    let variable_matrix = wording.contains("variable entries")
+        && !wording.contains("complex") && !wording.contains("imaginary")
+        && [r"\begin{bmatrix}", r"\begin{pmatrix}", r"\begin{array}"]
+            .iter().any(|environment| prompt.contains(environment));
     symbolic::Context {
+        symbolic_e: variable_matrix && !wording.contains("exponential") && !wording.contains("euler"),
         positive_variables,
         negative_variables,
-        natural_exponential: NATURAL_EXPONENTIAL.is_match(&wording)
-            || wording.contains(r"\exp"),
-        symbolic_i: ["riemann", "sigma", "\\sum", "vector"]
+        natural_exponential,
+        symbolic_i: variable_matrix || ["riemann", "sigma", "\\sum", "vector"]
             .iter()
             .any(|v| wording.contains(v)),
         integer_indices: [
@@ -5856,5 +5865,32 @@ mod reciprocal_derivative_source_domain_tests {
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(r"Given $x=y^2-y$, express $\frac{dy}{dx}$ as a function of $y$. {{x}}"));
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("1/(2*y-1)"));
         assert!(grade_field(&s,100,200,"y/(y*(2*y-1))").is_err());
+    }
+}
+
+#[cfg(test)]
+mod variable_matrix_symbol_regressions {
+    use super::{comparison_context, compare_math};
+    #[test]
+    fn variable_matrix_symbols_preserve_polynomial_meaning() {
+        let title = vec!["Calculating a Minor in a 3x3 Matrix With Variable Entries".into()];
+        let prompt = r"Find the minor in $A=\begin{bmatrix}e & f \\ 3d & 2\end{bmatrix}$.";
+        let c = comparison_context(prompt, &title);
+        assert!(c.symbolic_e && c.symbolic_i);
+        assert_eq!(compare_math("2e-3df", "2*e-3*d*f", c), Ok(true));
+        assert_eq!(compare_math("2e-3df", "0.002df", c), Ok(false));
+        assert_eq!(compare_math("2e-3df", "2exp(1)-3df", c), Ok(false));
+        assert_eq!(compare_math("i^2+1", "0", c), Ok(false));
+        assert_eq!(compare_math("1E-3", "0.001", c), Ok(true));
+        let powers = comparison_context(r"Minor in $A=\begin{bmatrix}e^2 & i^2\end{bmatrix}$.", &title);
+        assert_eq!(compare_math("e^2", "e*e", powers), Ok(true));
+        assert_eq!(compare_math("e^2", "exp(2)", powers), Ok(false));
+        let numeric = comparison_context("Evaluate the decimal.", &[]);
+        assert_eq!(compare_math("1e-3", "0.001", numeric), Ok(true));
+        let exponential = comparison_context(r"Evaluate $e^{x}$.", &[]);
+        assert_eq!(compare_math("6e-6", "6*(e-1)", exponential), Ok(true));
+        let complex = comparison_context(r"Complex matrix $\begin{bmatrix}i & e\end{bmatrix}$.", &title);
+        assert_eq!(compare_math("i^2", "-1", complex), Ok(true));
+        assert_eq!(compare_math("e", "exp(1)", complex), Ok(true));
     }
 }
