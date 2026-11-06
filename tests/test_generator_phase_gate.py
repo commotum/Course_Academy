@@ -63,6 +63,46 @@ class PhaseGateTests(unittest.TestCase):
         self.assertEqual(result['stage'], 'blocked')
         self.assertEqual(session.calls, [])
 
+    def test_exemplar_cli_uses_runner_binding_and_rejects_missing_tool_report(self):
+        import subprocess
+        import sys
+        from generator_review import validate_review
+        class BindingPresent(FakeSession):
+            def phase_call(inner, role, context, directory):
+                if context['phase'] == 'exemplars':
+                    binding = json.loads((Path(directory) / 'final-binding.json').read_text())
+                    self.assertEqual(binding, context['review_binding'])
+                    self.assertEqual(binding['phase'], 'exemplars')
+                    self.assertNotIn('refill_plan', binding)
+                return super().phase_call(role, context, directory)
+        pipeline = self.prepare(BindingPresent()); pipeline.investigate()
+        self.assertEqual(pipeline.state['stage'], 'generate')
+        gate = pipeline.state['exemplar_gate']
+        result = Path(gate['report']); evidence = result.parent
+        command = [sys.executable, str(Path(__file__).resolve().parents[1] / 'scripts/generator_review.py'),
+                   '--result', str(result), '--evidence-root', str(evidence)]
+        valid = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(valid.returncode, 0, valid.stderr)
+        self.assertTrue(json.loads(valid.stdout)['valid'])
+        # Exemplar dispatch is a CLI convenience, never a relaxation of final
+        # generator review when the runner invokes that validator directly.
+        with self.assertRaisesRegex(ValueError, 'refill review plan'):
+            validate_review(json.loads(result.read_text()), evidence, gate['binding'])
+        binding_file = evidence / 'final-binding.json'
+        binding_file.write_text(json.dumps({**gate['binding'], 'phase': 'unrecognized'}))
+        unknown = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(unknown.returncode, 1)
+        self.assertIn('refill review plan', json.loads(unknown.stderr)['error'])
+        binding_file.write_text('[]')
+        malformed = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(malformed.returncode, 1)
+        self.assertIn('must be an object', json.loads(malformed.stderr)['error'])
+        binding_file.write_text(json.dumps(gate['binding']))
+        (evidence / 'easy-grading.json').unlink()
+        invalid = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(invalid.returncode, 1)
+        self.assertIn('easy-grading.json', json.loads(invalid.stderr)['error'])
+
     def test_missing_exemplars_never_calls_author(self):
         class Missing(FakeSession):
             def __call__(inner, role, context, directory):

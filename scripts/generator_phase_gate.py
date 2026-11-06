@@ -279,6 +279,7 @@ class InstructionalPhases:
             'exemplar_inputs': inputs, 'verification_batches': batches,
             'engine_hash': self.engine_identity(),
             'grader_sha256': sha(helper) if helper.is_file() else None}
+        save(evidence / 'final-binding.json', binding)
         return binding, batches
 
     def review_exemplars(self):

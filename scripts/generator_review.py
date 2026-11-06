@@ -667,7 +667,14 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         result = json.loads(args.result.read_text())
-        validate_review(result, args.evidence_root)
+        binding_path = args.evidence_root / 'final-binding.json'
+        binding = json.loads(binding_path.read_text()) if binding_path.exists() else None
+        if binding is not None and not isinstance(binding, dict):
+            raise ValueError("runner's final-binding.json must be an object")
+        if binding is not None and binding.get('phase') == 'exemplars':
+            validate_exemplar_review(result, args.evidence_root, binding)
+        else:
+            validate_review(result, args.evidence_root, binding)
     except (OSError, UnicodeError, ValueError) as error:
         print(json.dumps({'valid': False, 'error': str(error)}), file=sys.stderr)
         return 1

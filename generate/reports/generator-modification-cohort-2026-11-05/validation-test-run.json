@@ -40,8 +40,8 @@
     "passed": true,
     "log": "/tmp/generator-intent-final-affected.log"
   },
-  "current_unique_tests_covered": 528,
-  "current_status": "All 528 covered non-browser tests pass after the broad run and bounded corrective/affected reruns; there was not a single clean 528-test invocation. Eight separate browser tests also passed. Source-account isolation/migration review and its focused regressions are complete; live agent semantic evaluation is separate.",
+  "current_unique_tests_covered": 529,
+  "current_status": "All 529 covered non-browser tests pass after the broad run and bounded corrective/affected reruns; there was not a single clean 529-test invocation. Eight separate browser tests also passed. Source-account isolation/migration and exemplar CLI review/regressions are complete; live agent semantic evaluation is separate.",
   "browser": {
     "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_render -q",
     "tests": 8,
@@ -91,5 +91,21 @@
       "test_generator_lifecycle.LifecycleTests.test_source_budget_migration_preserves_correction_credit_without_root_execution"
     ],
     "independent_review": "No remaining must-fix in the inspected source-account directory isolation, cache/resume identity, aggregate launch-budget migration, revision-scoped feedback, or controlled-stop result routing."
+  },
+  "exemplar_report_cli_rerun": {
+    "reason": "The documented generic report CLI previously applied final-generator refill requirements to exemplar reports. Runner now saves its phase-tagged exemplar final-binding.json; CLI dispatches exact exemplars phase to the exemplar validator.",
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_phase_gate test_generator_review -q",
+    "tests": 54,
+    "seconds": 10.715,
+    "passed": true,
+    "log": "/tmp/generator-intent-exemplar-cli-tests.log",
+    "new_regression": "test_generator_phase_gate.PhaseGateTests.test_exemplar_cli_uses_runner_binding_and_rejects_missing_tool_report",
+    "controls": [
+      "Runner binding exists and matches context before exemplar reviewer entry.",
+      "Actual subprocess CLI accepts the valid exemplar report and rejects missing native grading evidence.",
+      "Direct final-generator validator still requires the refill plan, even with a phase-tagged exemplar binding.",
+      "Unknown phases use strict final-generator validation; malformed non-object binding returns structured failure."
+    ],
+    "independent_review": "Narrow code-only dispatch; no prompt or schema changes. Final pipeline validation remains a direct strict validate_review call using runner-owned bindings."
   }
 }
