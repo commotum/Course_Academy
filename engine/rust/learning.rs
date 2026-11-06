@@ -2840,6 +2840,23 @@ impl<'a> RationalParser<'a> {
         }
         Some(value)
     }
+    fn tex_argument(&mut self) -> Option<BigRational> {
+        // TeX consumes one token for an unbraced fraction argument. Reading
+        // an entire numeral would make \frac43(8-1) mean 43/(8-1), even
+        // though its displayed value is (4/3)*(8-1). Braces retain grouping.
+        if let Some(digit) = self.input.get(self.index).copied().filter(u8::is_ascii_digit) {
+            self.index += 1;
+            return Some(BigRational::from_integer((digit - b'0').into()));
+        }
+        if self.input.get(self.index) == Some(&b'{')
+            || self.input[self.index..].starts_with(b"\\frac")
+        {
+            self.atom()
+        } else {
+            // Leave unsupported macro arguments to the symbolic parser.
+            None
+        }
+    }
     fn atom(&mut self) -> Option<BigRational> {
         if self.depth >= 64 {
             return None;
@@ -2847,8 +2864,8 @@ impl<'a> RationalParser<'a> {
         if self.input[self.index..].starts_with(b"\\frac") {
             self.index += 5;
             self.depth += 1;
-            let numerator = self.atom()?;
-            let denominator = self.atom()?;
+            let numerator = self.tex_argument()?;
+            let denominator = self.tex_argument()?;
             self.depth -= 1;
             if denominator.is_zero() {
                 return None;
@@ -5360,6 +5377,31 @@ pub(crate) mod tests {
             assert_eq!(compare_math_in_context("1", "1.000", prompt, context), Ok(false), "{prompt}");
             assert_eq!(compare_math_in_context("1.0000", "1.000", prompt, context), Ok(false), "{prompt}");
         }
+    }
+
+    #[test]
+    fn tex_fraction_arguments_precede_implicit_factors() {
+        for value in [
+            r"\frac43(8-1)-(64-1)",
+            r"\frac{4}3(8-1)-(64-1)",
+            r"\frac4{3}(8-1)-(64-1)",
+            r"\dfrac43(8-1)-(64-1)",
+            r"\tfrac43(8-1)-(64-1)",
+            r"\frac{4}{3}(8-1)-(64-1)",
+        ] {
+            assert_eq!(compare_math(value, "-161/3", symbolic::Context::default()), Ok(true), "{value}");
+        }
+        for value in [
+            r"\frac{43}{8-1}-(64-1)",
+            r"\frac{4}{3(8-1)}-(64-1)",
+            r"\frac43(8+1)-(64-1)",
+            r"\frac43(8-1)-1256/21",
+        ] {
+            assert_eq!(compare_math(value, "-161/3", symbolic::Context::default()), Ok(false), "{value}");
+        }
+        assert_eq!(RationalParser::parse(r"\frac43"), RationalParser::parse("4/3"));
+        assert!(RationalParser::parse(r"\frac40").is_none());
+        assert!(RationalParser::parse(r"\frac4").is_none());
     }
 
     #[test]
