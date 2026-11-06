@@ -54,6 +54,30 @@ class SessionInputTests(unittest.TestCase):
             self.pipeline.session_call('author', self.context, self.directory)
         self.assertEqual(start.call_count, 1)
 
+    def test_investigator_ignores_downstream_accounts_but_relaunches_on_upstream_changes(self):
+        self.setup_call()
+        reference = self.job / 'reference.json'; reference.write_text('{"operation":"independent"}')
+        target = self.job / 'target-account.json'; target.write_text('{"skill":"initial target account"}')
+        self.context.update(phase='design_anchors', reference_file=str(reference), target_account_file=str(target))
+        self.pipeline.session.max_launches = 4
+        with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+            self.pipeline.session_call('investigate', self.context, self.directory)
+            verifier = self.job / 'verifier.json'; verifier.write_text('{"skill":"downstream verifier"}')
+            self.context['initial_source_analysis_file'] = str(verifier)
+            (self.job / 'workspace/instructional-account.md').write_text('Later author output')
+            self.pipeline.session_call('investigate', self.context, self.directory)
+            self.assertEqual(start.call_count, 1)
+            self.assertNotIn('initial_source_analysis_file', (self.directory / 'prompt.txt').read_text())
+            reference.write_text('{"operation":"changed reference"}')
+            self.pipeline.session_call('investigate', self.context, self.directory)
+            target.write_text('{"skill":"changed immutable target account"}')
+            self.pipeline.session_call('investigate', self.context, self.directory)
+            self.publisher.material['question'] = 'Changed target source.'
+            self.publisher.extract_source(123, self.job / 'source')
+            self.pipeline.session_call('investigate', self.context, self.directory)
+        self.assertEqual(start.call_count, 4)
+        self.assertEqual(json.loads((self.directory / 'execution.json').read_text())['launches'], 4)
+
     def test_changed_target_or_completed_account_invalidates_result(self):
         for kind in ('target', 'account'):
             with self.subTest(kind=kind):

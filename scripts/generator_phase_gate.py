@@ -83,10 +83,11 @@ class InstructionalPhases:
         from generator_pipeline import digest
         identity = self.investigation_input_identity(context)
         draft = self.state.get('investigation_draft')
-        if draft:
-            path = Path(draft['result_file'])
-            if draft['inputs'] == identity and path.is_file() and digest(read(path)) == draft['result_sha256']:
-                return path, read(path)
+        if 'investigation_draft' in self.state:
+            if draft:
+                path = Path(draft['result_file'])
+                if draft['inputs'] == identity and path.is_file() and digest(read(path)) == draft['result_sha256']:
+                    return path, read(path)
             return None
         # Migrate an already-ready design whose parent stopped in exemplar
         # review. A faulty old circular binding may have archived its result;

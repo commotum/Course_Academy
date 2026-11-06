@@ -40,8 +40,8 @@
     "passed": true,
     "log": "/tmp/generator-intent-final-affected.log"
   },
-  "current_unique_tests_covered": 529,
-  "current_status": "All 529 covered non-browser tests pass after the broad run and bounded corrective/affected reruns; there was not a single clean 529-test invocation. Eight separate browser tests also passed. Source-account isolation/migration and exemplar CLI review/regressions are complete; live agent semantic evaluation is separate.",
+  "current_unique_tests_covered": 532,
+  "current_status": "All 532 covered non-browser tests pass after the broad run and bounded corrective/affected reruns; there was not a single clean 532-test invocation. Eight separate browser tests also passed. Source isolation/migration, exemplar CLI, and investigation-restart reviews/regressions are complete; live agent semantic evaluation is separate.",
   "browser": {
     "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_render -q",
     "tests": 8,
@@ -107,5 +107,26 @@
       "Unknown phases use strict final-generator validation; malformed non-object binding returns structured failure."
     ],
     "independent_review": "Narrow code-only dispatch; no prompt or schema changes. Final pipeline validation remains a direct strict validate_review call using runner-owned bindings."
+  },
+  "investigation_restart_rerun": {
+    "reason": "Live smoke exposed circular investigation input binding on restart after exemplar review. A ready draft checkpoint now binds immutable upstream source/reference/target-account/policy inputs; current handoff and anchor bytes remain exemplar-gate inputs, preserving legitimate verifier repairs.",
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_pipeline test_generator_phase_gate test_generator_orchestration_boundaries test_generator_all_bands test_generator_three_phase -q",
+    "tests": 107,
+    "seconds": 152.28,
+    "passed": true,
+    "log": "/tmp/generator-intent-investigation-restart-tests.log",
+    "new_regressions": [
+      "test_generator_phase_gate.PhaseGateTests.test_ready_investigator_survives_verifier_repairs_and_parent_reload_without_launch",
+      "test_generator_phase_gate.PhaseGateTests.test_missing_ready_design_output_reaches_bounded_repair_instead_of_empty_retries",
+      "test_generator_orchestration_boundaries.SessionInputTests.test_investigator_ignores_downstream_accounts_but_relaunches_on_upstream_changes"
+    ],
+    "controls": [
+      "Actual CodexSession admission/cache mechanics preserve verifier-edited handoff and anchors across a simulated parent reload after accepted exemplar return, without another investigator launch.",
+      "Recovery of the old false budget block requires an intact ready result and matching archived immutable input binding; durable launch counter and allowance remain unchanged.",
+      "New verifier accounts and later author accounts do not become investigator inputs or outputs; legacy output indexes cannot reintroduce those author paths.",
+      "Changed reference, target account, and target source still invalidate investigation and spend the existing bounded launch allowance.",
+      "Missing required draft files clear the ready checkpoint and reach a bounded correction instead of repeatedly reusing unusable output."
+    ],
+    "independent_review": "No remaining must-fix in inspected role-input separation, draft checkpoint, archived-result migration, or current-output exemplar gating. Child transport and semantic judgments are test doubles; actual CodexSession orchestration is exercised."
   }
 }

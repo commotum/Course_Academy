@@ -189,6 +189,20 @@ class PhaseGateTests(unittest.TestCase):
         self.assertEqual(invalid.returncode, 1)
         self.assertIn('easy-grading.json', json.loads(invalid.stderr)['error'])
 
+    def test_missing_ready_design_output_reaches_bounded_repair_instead_of_empty_retries(self):
+        class CountDesigns(FakeSession):
+            designs = 0
+            def __call__(inner, role, context, directory):
+                if role == 'investigate': inner.designs += 1
+                return super().__call__(role, context, directory)
+        session = CountDesigns(); pipeline = self.prepare(session); pipeline.investigate()
+        (self.job / 'workspace/exemplars.json').unlink()
+        pipeline.persist(stage='investigate')
+        pipeline.investigate()
+        self.assertEqual(pipeline.state['stage'], 'generate')
+        self.assertEqual(session.designs, 2)
+        self.assertEqual(pipeline.state['investigation_rounds'], 1)
+
     def test_missing_exemplars_never_calls_author(self):
         class Missing(FakeSession):
             def __call__(inner, role, context, directory):
