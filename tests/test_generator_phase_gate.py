@@ -32,7 +32,7 @@ class PhaseGateTests(unittest.TestCase):
                 return super().__call__(role, context, directory)
         def donor(publisher, source, directory):
             events.append(('runner', 'donors'))
-            self.assertTrue(list((self.job / 'investigation/source-account').glob('original-*.json')))
+            self.assertTrue(list((self.job / 'investigation/source-account/revisions').glob('*/original-*.json')))
             return fixture_investigation(publisher, source, directory)
         session = Session()
         pipeline = Pipeline(self.job, self.request, self.publisher, root=self.root,
@@ -215,6 +215,93 @@ class PhaseGateTests(unittest.TestCase):
         self.assertNotEqual(snapshots[0], snapshots[1])
         self.assertEqual(snapshots[0].read_text(), '<svg>original diagram</svg>')
         self.assertEqual(snapshots[1].read_text(), '<svg>revised diagram</svg>')
+
+    def test_fixed_directory_account_is_not_reused_and_new_workspace_has_no_prior_outputs(self):
+        import hashlib
+        from generator_session_binding import policy_identity
+        contexts = []
+        class Isolated(FakeSession):
+            def phase_call(inner, role, context, directory):
+                if context['phase'] == 'source_account':
+                    contexts.append(dict(context))
+                    self.assertFalse((Path(context['workspace']) / 'source-analysis.json').exists())
+                    self.assertFalse((Path(context['workspace']) / 'result.json').exists())
+                    self.assertFalse((Path(context['workspace']) / 'session-outputs.json').exists())
+                    self.assertIsNone(context.get('resume_session_id'))
+                    self.assertIsNone(context.get('feedback'))
+                return super().phase_call(role, context, directory)
+        pipeline = self.prepare(Isolated())
+        old = self.job / 'investigation/source-account'; old.mkdir(parents=True)
+        original = old / 'source-analysis.json'; original.write_text(json.dumps(FakeSession.source_account()))
+        (old / 'result.json').write_text('{"status":"ready","account_file":"source-analysis.json"}')
+        (old / 'session-outputs.json').write_text(json.dumps({'files': {str(original): 'old'}}))
+        (old / 'execution.json').write_text(json.dumps({'launches': 3, 'thread_id': 'contaminated', 'persistent_session': True}))
+        pipeline.persist(target_account={'path': str(original), 'sha256': hashlib.sha256(original.read_bytes()).hexdigest(),
+            'source': pipeline.phase_source_identity(), 'policy': policy_identity(self.root, 'investigate')},
+            target_account_error='Old account at ' + str(original), investigate_thread='contaminated')
+        saved = pipeline.source_account_phase('investigate')
+        self.assertEqual(saved['isolation_version'], 1)
+        self.assertTrue(Path(saved['path']).is_relative_to(old / 'revisions'))
+        self.assertEqual(json.loads((old / 'execution.json').read_text())['launches'], 3)
+        self.assertTrue(original.exists())
+        self.assertEqual(len(contexts), 1)
+
+    def test_missing_legacy_root_budget_still_retains_correction_launches(self):
+        pipeline = self.prepare(FakeSession())
+        phase = self.job / 'investigation/source-account'
+        correction = phase / 'correction-1'; correction.mkdir(parents=True)
+        (correction / 'execution.json').write_text(json.dumps({'launches': 2, 'launch_limit': 4}))
+        pipeline.source_account_phase('investigate')
+        budget = json.loads((phase / 'execution.json').read_text())
+        self.assertEqual((budget['launches'], budget['launch_limit']), (2, 4))
+        pipeline.source_account_phase('investigate')
+        self.assertEqual(json.loads((phase / 'execution.json').read_text())['launches'], 2)
+
+    def test_actual_session_gets_clean_revision_for_changed_source_and_policy_with_one_budget(self):
+        from unittest.mock import Mock, patch
+        from generator_pipeline import CodexSession, SessionRetryExhausted
+        templates = self.root / 'generate/pipeline'; templates.mkdir(parents=True)
+        prompt = templates / 'source-account.md'; prompt.write_text('Read target only. {{context}}')
+        (templates / 'source-account.schema.json').write_text('{}')
+        workspaces = []
+        class Inspecting(CodexSession):
+            def __call__(inner, role, context, directory):
+                workspaces.append(Path(context['workspace']))
+                self.assertFalse((Path(context['workspace']) / 'source-analysis.json').exists())
+                self.assertIsNone(context.get('resume_session_id'))
+                return super().__call__(role, context, directory)
+        session = Inspecting(root=self.root)
+        pipeline = Pipeline(self.job, self.request, self.publisher, root=self.root,
+            environment=self.environment, session=session, investigation_preparer=fixture_investigation)
+        self.publisher.extract_source(123, self.job / 'source')
+        (self.job / 'workspace').mkdir()
+        commands = []
+        def spawn(command, **kwargs):
+            commands.append(command)
+            output = Path(command[command.index('--output-last-message') + 1])
+            process = Mock(returncode=0, pid=-1)
+            def completed(*args, **kwargs):
+                output.with_name('source-analysis.json').write_text(json.dumps(FakeSession.source_account()))
+                output.write_text('{"status":"ready","account_file":"source-analysis.json"}')
+            process.communicate.side_effect = completed
+            return process
+        with patch('generator_pipeline.subprocess.Popen', side_effect=spawn):
+            first = pipeline.source_account_phase('investigate')
+            self.publisher.material['question'] = 'Square 8.'
+            self.publisher.extract_source(123, self.job / 'source')
+            second = pipeline.source_account_phase('investigate')
+            prompt.write_text('Changed target-only instructions. {{context}}')
+            third = pipeline.source_account_phase('investigate')
+            self.publisher.material['question'] = 'Square 9.'
+            self.publisher.extract_source(123, self.job / 'source')
+            with self.assertRaises(SessionRetryExhausted):
+                pipeline.source_account_phase('investigate')
+        self.assertEqual(len(commands), 3)
+        self.assertEqual(len(set(workspaces)), 4)
+        self.assertTrue(all('resume' not in command for command in commands))
+        self.assertTrue(all(Path(account['path']).exists() for account in (first, second, third)))
+        budget = json.loads((self.job / 'investigation/source-account/execution.json').read_text())
+        self.assertEqual(budget['launches'], 3)
 
     def test_active_approval_binds_retained_counterexample_and_nested_input_bytes(self):
         pipeline = self.pipeline(FakeSession())

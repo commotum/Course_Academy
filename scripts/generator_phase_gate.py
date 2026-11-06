@@ -104,7 +104,7 @@ class InstructionalPhases:
                 'python': python_executable(self.root, self.environment),
                 'shared_repair_command': [python_executable(self.root, self.environment),
                     str(self.root / 'scripts/generator_shared_repair.py')],
-                'feedback': self.state.get(key + '_error')}
+                'feedback': self.state.get(key + '_error') if self.state.get(key + '_error_identity') == account_identity else None}
             # This context intentionally has no donor, authored workspace,
             # exemplar, generator, repair history or previous interpretation.
             source_sessions = self.state.get('source_account_sessions', {})
@@ -134,7 +134,7 @@ class InstructionalPhases:
                 value = {'path': str(checkpoint), 'sha256': identity, 'source': source, 'policy': policy,
                     'isolation_version': isolation_version, 'revision_identity': account_identity}
                 self.persist(**{key: value, role + '_thread': session_thread(current) or thread,
-                                key + '_error': None})
+                                key + '_error': None, key + '_error_identity': None})
                 if role == 'investigate':
                     handoff = self.directory / 'workspace/investigation.md'
                     handoff.parent.mkdir(parents=True, exist_ok=True)
@@ -145,7 +145,7 @@ class InstructionalPhases:
             except (OSError, ValueError) as error:
                 count += 1
                 rounds[role] = count
-                self.persist(source_account_rounds=rounds, **{key + '_error': str(error)})
+                self.persist(source_account_rounds=rounds, **{key + '_error': str(error), key + '_error_identity': account_identity})
         self.block('source_account_unfinished', self.state.get(key + '_error'), 'investigate')
         return None
 

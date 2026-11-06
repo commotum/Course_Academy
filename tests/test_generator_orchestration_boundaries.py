@@ -135,6 +135,52 @@ class SessionInputTests(unittest.TestCase):
         self.assertNotIn('thread-already-saw-author-output', command)
         self.assertEqual(json.loads((self.directory / 'execution.json').read_text())['launches'], 2)
 
+    def test_isolated_revisions_share_launch_budget_and_hide_budget_path_from_prompt(self):
+        from generator_pipeline import SessionRetryExhausted
+        self.setup_call()
+        phase = self.job / 'source-account'; phase.mkdir()
+        budget = phase / 'execution.json'
+        budget.write_text(json.dumps({'launches': 2, 'thread_id': 'old-account-thread', 'persistent_session': True}))
+        session = CodexSession(root=ROOT)
+        contexts = []
+        for identity in ('revision-a', 'revision-b'):
+            self.directory = phase / 'revisions' / identity; self.directory.mkdir(parents=True)
+            contexts.append({'workspace': str(self.directory), 'evidence_root': str(self.directory),
+                'phase': 'source_account', 'source_account_identity': identity, 'source_account_isolation': 1,
+                'source_account_revision': str(self.directory), '_execution_budget_file': str(budget)})
+        self.directory = Path(contexts[0]['workspace'])
+        with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+            session('investigate', contexts[0], self.directory)
+            self.directory = Path(contexts[1]['workspace'])
+            with self.assertRaises(SessionRetryExhausted) as stopped:
+                session('investigate', contexts[1], self.directory)
+        self.assertEqual(start.call_count, 1)
+        self.assertEqual(stopped.exception.execution_path, budget)
+        self.assertEqual(json.loads(budget.read_text())['launches'], 3)
+        prompt = (Path(contexts[0]['workspace']) / 'prompt.txt').read_text()
+        self.assertNotIn('_execution_budget_file', prompt)
+        self.assertNotIn(str(budget), prompt)
+
+    def test_crash_persists_no_old_thread_under_new_source_revision(self):
+        self.setup_call()
+        self.directory.mkdir(parents=True)
+        execution = self.directory / 'execution.json'
+        execution.write_text(json.dumps({'launches': 1, 'thread_id': 'contaminated',
+            'persistent_session': True, 'source_account_identity': 'old'}))
+        context = {**self.context, 'phase': 'source_account', 'source_account_identity': 'new',
+            'source_account_isolation': 1, 'source_account_revision': str(self.directory)}
+        class ParentCrash(BaseException): pass
+        with patch('generator_pipeline.subprocess.Popen', side_effect=ParentCrash):
+            with self.assertRaises(ParentCrash):
+                CodexSession(root=ROOT)('review', context, self.directory)
+        persisted = json.loads(execution.read_text())
+        self.assertNotIn('thread_id', persisted)
+        self.assertEqual(persisted['source_account_identity'], 'new')
+        with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+            CodexSession(root=ROOT)('review', context, self.directory)
+        self.assertNotIn('resume', start.call_args.args[0])
+        self.assertEqual(json.loads(execution.read_text())['launches'], 3)
+
 
 class LegacyExemplarRecoveryTests(unittest.TestCase):
     setUp = fixtures.GeneratorPipelineTests.setUp

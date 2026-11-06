@@ -120,6 +120,16 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual(len(mark_stopped(self.owner)['sessions']), 1)
         self.assertEqual(credit_interruption(self.execution_path, execution, 3)['launch_limit'], 4)
 
+    def test_shared_budget_uses_revision_result_not_legacy_root_result(self):
+        revision = self.directory / 'revisions/current'; revision.mkdir(parents=True)
+        save(self.directory / 'result.json', {'status': 'ready', 'old': True})
+        execution = begin_launch(self.execution_path, {'launches': 3, 'status': 'running',
+            'result_directory': str(revision)}, {OWNER_ENV: str(self.owner)}, self.spawn)[0]
+        self.assertEqual(len(mark_stopped(self.owner)['sessions']), 1)
+        self.assertEqual(credit_interruption(self.execution_path, execution, 3)['launch_limit'], 4)
+        save(revision / 'result.json', {'status': 'ready'})
+        self.assertEqual(credit_interruption(self.execution_path, execution, 3), execution)
+
     def test_stopped_owner_prevents_actual_agent_spawn_without_spending_launch(self):
         mark_stopped(self.owner)
         with patch('generator_pipeline.subprocess.Popen') as spawn:

@@ -138,13 +138,15 @@ class OfflinePipeline(Pipeline):
                 'Use only source.md/source-cases.json as synthetic source; do not inspect the prebuilt generator, '
                 'build.py or decision_variation.py in generate/pipeline/fixtures or another evaluation solution. '
                 'Normal source-first accounts, independent exemplar gate, authoring and final review all remain required.'}}
-        event = {'event': 'real_agent_launch', 'role': role, 'phase': context.get('phase', role),
+        # A production session call may reuse cached output or reject an
+        # exhausted budget. Its execution.json/events.jsonl record real launches.
+        event = {'event': 'pipeline_session_call', 'role': role, 'phase': context.get('phase', role),
                  'directory': str(directory), 'at': time.time()}
         print(json.dumps(event), flush=True)
         with (self.directory / 'offline-events.jsonl').open('a') as output:
             output.write(json.dumps(event) + '\n')
         result = super().session_call(role, context, directory)
-        print(json.dumps({'event': 'real_agent_return', 'role': role, 'phase': context.get('phase', role),
+        print(json.dumps({'event': 'pipeline_session_return', 'role': role, 'phase': context.get('phase', role),
                           'status': result.get('status', result.get('verdict')), 'at': time.time()}), flush=True)
         return result
 
