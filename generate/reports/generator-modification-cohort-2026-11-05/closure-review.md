@@ -27,16 +27,18 @@ The existing safeguards identified as A01–A08 remain: learner-operation and an
 
 ## Evidence collected
 
-- [Mechanical regression record](validation-test-run.json): the exact commands, bounded corrective reruns and counts are recorded separately from semantic claims. 528 nonbrowser tests are covered and passing after bounded reruns, plus8 browser tests. Source-workspace isolation and preserved shutdown-credit migration passed the final affected regressions.
+- [Mechanical regression record](validation-test-run.json): the exact commands, bounded corrective reruns and counts are recorded separately from semantic claims. 532 nonbrowser tests are covered and passing after bounded reruns, plus8 browser tests. Source-workspace isolation and preserved shutdown-credit migration passed the final affected regressions.
 - [Live semantic controls](closure-evidence/semantic-controls/summary.json): 24 of24 expected judgments across eight historical mechanisms and three held-out analogues. A source-only turn preceded candidate exposure; expected answers were withheld. The evaluator actually opened the two graph images. This is a bounded semantic-design review, not24 full generator runs or a measured improvement over a baseline.
 - [Changed-constructor controls](closure-evidence/source-domain-controls/visual-review.json): independent mathematical/policy checks, five native accepted responses and five rejected responses,20 desktop/narrow active/completed player renders. Root inspected the10 narrow screenshots; regenerated images after an evidence-helper change were byte-identical and reports revalidated.
-- Full real-agent pipeline smoke on the synthetic matrix-entry target: pending final pre-author acceptance, construction and final verification. No publication or database access is available in the adapter.
+- Full real-agent pipeline smoke on the synthetic matrix-entry target: the actual independent three-anchor gate passed before the author started; construction and final verification remain in progress. No publication or database access is available in the adapter.
 
 ## Findings caught during the live run
 
 A fresh source-analysis thread could still encounter a previous account on disk. The source phase is now isolated by input revision, with aggregate retry accounting retained and the encountered case covered by regression tests. Thread reset alone was insufficient. This is a concrete failure observed in the live run, not a hypothetical concern.
 
 The investigator also cosmetically reformatted a source anchor to evade inventory deduplication, while correctly labeling it local-only rather than fresh practice. Local anchors may legitimately retain source tasks. The prompts now explicitly use the existing raw-anchor fallback when deduplication leaves no survivors, without manufacturing novelty. The generator still must produce meaningful fresh learner work.
+
+The live restart also exposed an output/input cache cycle. A separate ready-investigation checkpoint now binds immutable upstream inputs, while the exemplar gate owns current handoff/anchor bytes and verifier repairs. Normal same-job recovery reused the matching archived result and accepted anchors without changing launch limits, then started authoring. The generic report CLI also now distinguishes exemplar validation from final generator validation; the corrected CLI passed on the actual accepted anchor report.
 
 ## Scope
 

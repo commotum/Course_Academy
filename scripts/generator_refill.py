@@ -263,7 +263,9 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
         raise ValueError('Native refill grading evidence is missing, failed or bound to different inputs')
     if before != package_digest(root, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies')):
         raise ValueError('Refill validation modified the approved package')
-    result.update(status='finite-limit' if exhausted and not records else 'passed', native_report=str(native),
-                  scope='No distinct catalog question remains to publish; this does not claim learner availability.')
+    finite_limit = exhausted and not records
+    result.update(status='finite-limit' if finite_limit else 'passed', native_report=str(native),
+                  scope=('No distinct catalog question remains to publish; this does not claim learner availability.'
+                         if finite_limit else 'Validated actual surviving records; this does not claim domain exhaustion or learner availability.'))
     _write(directory / 'result.json', result)
     return result

@@ -83,7 +83,12 @@ class RefillValidationTests(unittest.TestCase):
             check_results=[{'id':'sum','status':'passed','checked_fingerprints':[fingerprint]}])
         evidence=self.plan(required=True,findings=['old-sum-defect'])
         binding=validate_refill_plan(self.package,self.manifest,[{'id':'old-sum-defect'}],evidence)
-        self.assertEqual(self.validate([item])['refill_plan'],binding)
+        result = self.validate([item])
+        self.assertEqual(result['refill_plan'],binding)
+        self.assertEqual(result['status'], 'passed')
+        self.assertFalse(result['exhausted'])
+        self.assertIn('Validated actual surviving records', result['scope'])
+        self.assertNotIn('No distinct catalog question remains', result['scope'])
         wrong=copy.deepcopy(item)
         wrong['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']='999'
         with self.assertRaisesRegex(ValueError,'declared-file isolation'):
@@ -210,6 +215,7 @@ class RefillValidationTests(unittest.TestCase):
         result = self.validate([], inventory)
         self.assertTrue(result['exhausted'])
         self.assertEqual(result['status'], 'finite-limit')
+        self.assertIn('No distinct catalog question remains', result['scope'])
         inventory['questions'][0][':question/retired'] = True
         rejected = self.validate([], inventory, 'retired')
         self.assertFalse(rejected['exhausted'])
