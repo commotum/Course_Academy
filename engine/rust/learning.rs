@@ -2358,11 +2358,22 @@ fn comma_values(value: &str, prompt: &str) -> Option<Vec<String>> {
 }
 
 
-/// Use only a single explicit f(x) definition in a request for its symbolic
-/// derivative. A mention of a rational expression in unrelated practice must
+/// Use only a single explicit function definition in a symbolic derivative
+/// request, including dy/dx given x(y). Unrelated rational practice must
 /// not weaken ordinary answer-domain checks.
 fn derivative_source_function(prompt: &str) -> Option<String> {
     let compact = normalize_math(prompt);
+    let differential = compact.replace(r"\mathrm", "").replace(r"\textrm", "")
+        .replace(r"\text", "").replace(['{', '}'], "");
+    if differential.contains(r"\fracdydx")
+        && !["point", "tangent", "slope"].iter().any(|word| prompt.contains(word))
+    {
+        let definitions: Vec<_> = compact.split('$')
+            .filter_map(|part| part.strip_prefix("x="))
+            .map(|value| value.trim_end_matches([',', '.']).to_owned()).collect();
+        return (definitions.len() == 1 && !definitions[0].is_empty())
+            .then(|| definitions[0].clone());
+    }
     let request = compact.replace("\\prime", "'").replace('′', "'")
         .replace(['{', '}', '^'], "");
     if !request.contains("f'(x)")
@@ -5765,5 +5776,43 @@ mod derivative_source_domain_tests {
             s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(prompt));
             assert!(grade_field(&s,100,200,"-1/(x-1)^2").is_err(),"{prompt}");
         }
+    }
+}
+
+#[cfg(test)]
+mod reciprocal_derivative_source_domain_tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn reverse_derivatives_keep_source_holes_and_shared_derivative_poles() {
+        let mut s = tests::fixture();
+        s.entities.get_mut(&200).unwrap().insert("answer-field/type".into(),json!("answer-field.type/blank"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("y^3/(4*y^4-3*y+2)"));
+        for prompt in [
+            r"Given that $x=2y^2+3/y-1/y^2,$ express $\frac{\mathrm{d}y}{\mathrm{d}x}$ as a function of $y$. {{x}}",
+            r"If $x=2y^2+3/y-1/y^2$, find $\dfrac{\text{d}y}{\text{d}x}$. {{x}}",
+            r"If $x=2y^2+3/y-1/y^2$, find $\frac{\textrm dy}{\textrm dx}$. {{x}}",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(prompt));
+            for value in ["1/(4*y-3/y^2+2/y^3)", "y^3/(4*y^4-3*y+2)"] {
+                assert_eq!(grade_field(&s,100,200,value),Ok(true),"{prompt}: {value}");
+            }
+            for value in ["y^3/(4*y^4+3*y+2)", "4*y-3/y^2+2/y^3"] {
+                assert_eq!(grade_field(&s,100,200,value),Ok(false),"{value}");
+            }
+            assert!(grade_field(&s,100,200,"y^3*(y-1)/((4*y^4-3*y+2)*(y-1))").is_err());
+        }
+        for prompt in [
+            r"Simplify $x=2y^2+3/y-1/y^2$. {{x}}",
+            r"Find an expression equal to $y^3/(4y^4-3y+2)$. {{x}}",
+            r"Given $x=2y^2+3/y-1/y^2$ and $x=3y$, find $\frac{dy}{dx}$. {{x}}",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(prompt));
+            assert!(grade_field(&s,100,200,"1/(4*y-3/y^2+2/y^3)").is_err(),"{prompt}");
+        }
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(r"Given $x=y^2-y$, express $\frac{dy}{dx}$ as a function of $y$. {{x}}"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("1/(2*y-1)"));
+        assert!(grade_field(&s,100,200,"y/(y*(2*y-1))").is_err());
     }
 }

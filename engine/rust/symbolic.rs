@@ -2757,15 +2757,20 @@ pub fn compare_rational_on_source_domain(
         product = algebra.pmul(&product, p)?;
     }
     let squarefree = |p: &Poly| p.squarefree_univariate_base().unwrap_or_else(|| p.clone()).monic();
-    let original = squarefree(&product);
-    for condition in ca.iter().chain(cb.iter()) {
-        let Condition::Nonzero(p) = condition else { return Ok(None); };
-        // Nonzero(D) implies Nonzero(p) precisely when p adds no factor to
-        // squarefree(D). Bounded univariate reduction proves this sufficient
-        // condition; multivariate or oversized cases conservatively fall back.
-        let combined = algebra.pmul(&product, p)?;
-        if squarefree(&combined) != original { return Ok(None); }
+    // Compare both answer domains after intersecting with the source domain.
+    // Reciprocal derivatives can have poles at zeros of dx/dy even when the
+    // source itself is defined there. Those shared poles are legitimate; a
+    // hole present only in one answer still fails this exact comparison.
+    let mut domains = Vec::new();
+    for conditions in [&ca, &cb] {
+        let mut combined = product.clone();
+        for condition in conditions {
+            let Condition::Nonzero(p) = condition else { return Ok(None); };
+            combined = algebra.pmul(&combined, p)?;
+        }
+        domains.push(squarefree(&combined));
     }
+    if domains[0] != domains[1] { return Ok(None); }
     let left = algebra.pmul(&a.num, &b.den)?;
     let right = algebra.pmul(&b.num, &a.den)?;
     Ok(Some(left == right))
