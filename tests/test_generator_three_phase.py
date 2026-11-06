@@ -58,7 +58,7 @@ class ThreePhaseTests(unittest.TestCase):
 
         session = Session()
         pipeline = Pipeline(self.job, self.request, publisher, root=self.root, environment=self.environment,
-                            session=session, investigation_preparer=prepare)
+                            session=fixtures.PhaseSession(session), investigation_preparer=prepare)
         result = pipeline.run()
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual(events, ['prepare_reference', 'investigate', 'author', 'review'])

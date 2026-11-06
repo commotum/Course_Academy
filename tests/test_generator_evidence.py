@@ -66,6 +66,12 @@ class ToolEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'inventory hash mismatch'):
             validate_tool_report(path, self.root)
 
+    def test_rendered_screenshot_cannot_be_replaced_after_capture(self):
+        path, report = self.report('rendering')
+        (self.root / report['cases'][0]['screenshot']).write_bytes(b'a different screenshot')
+        with self.assertRaisesRegex(ValueError, 'screenshot bytes differ'):
+            validate_tool_report(path, self.root)
+
     def test_native_harness_rejects_zero_input_and_zero_checks(self):
         binary = ROOT / 'generate/runs/current/check-engine'
         if not binary.is_file():

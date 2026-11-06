@@ -33,25 +33,36 @@ class InstructionalPhases:
 
     def source_account_phase(self, role):
         """Checkpoint an independently produced account before downstream exposure."""
-        from generator_pipeline import session_thread
+        from generator_pipeline import session_thread, digest
+        from generator_publish import instructional_material, digest as source_digest
         from generator_review import validate_source_account_checkpoint
+        from generator_session_binding import policy_identity
         key = 'target_account' if role == 'investigate' else 'verifier_account'
         source = self.phase_source_identity()
+        policy = policy_identity(self.root, role)
         saved = self.state.get(key)
-        if saved and saved['source'] == source:
+        if saved and saved['source'] == source and saved.get('policy') == policy:
             validate_source_account_checkpoint(saved['path'], saved['sha256'])
             return saved
         directory = self.directory / ('investigation' if role == 'investigate' else 'verification') / 'source-account'
         directory.mkdir(parents=True, exist_ok=True)
+        captured = read(self.directory / 'source/source.json')
+        material = instructional_material(captured['material'])
+        target_only = {key: captured[key] for key in ('database', 'lineage', 'basis', 'kp_id')}
+        target_only.update(material=material, source_sha256=source_digest(material))
+        source_path = directory / 'source-inputs' / digest(target_only) / 'source.json'
+        if not source_path.exists():
+            save(source_path, target_only)
         rounds = self.state.get('source_account_rounds', {})
         count = rounds.get(role, 0)
-        while count < self.max_attempts:
+        limit = self.state.get('source_account_limits', {}).get(role, self.max_attempts)
+        while count < limit:
             current = directory if count == 0 else directory / ('correction-' + str(count))
             current.mkdir(parents=True, exist_ok=True)
             context = {'phase': 'source_account', 'source_account_role': role,
                 'repo_root': str(self.root), 'knowledge_point': self.state['request']['kp'],
-                'source_file': str(self.directory / 'source/source.json'),
-                'source_root': str(self.directory / 'source'),
+                'source_file': str(source_path),
+                'source_root': str(source_path.parent), 'math_root': str(self.math_root),
                 'workspace': str(current), 'evidence_root': str(current),
                 'account_file': str(current / 'source-analysis.json'),
                 'python': self.environment.get('COURSE_ACADEMY_GENERATOR_PYTHON'),
@@ -65,6 +76,7 @@ class InstructionalPhases:
                 return None
             result = self.session_call(role, context, current)
             save(current / 'result.json', result)
+            self.reload_repaired_runner()
             try:
                 if result.get('status') != 'ready' or result.get('account_file') != 'source-analysis.json':
                     raise ValueError('Finish the source-only account before exposing downstream artifacts')
@@ -73,7 +85,7 @@ class InstructionalPhases:
                 checkpoint = directory / ('original-' + identity + '.json')
                 if not checkpoint.exists():
                     shutil.copy2(produced, checkpoint)
-                value = {'path': str(checkpoint), 'sha256': identity, 'source': source}
+                value = {'path': str(checkpoint), 'sha256': identity, 'source': source, 'policy': policy}
                 self.persist(**{key: value, role + '_thread': session_thread(current) or thread,
                                 key + '_error': None})
                 if role == 'investigate':
@@ -127,16 +139,26 @@ class InstructionalPhases:
     def exemplar_inputs(self):
         from generator_pipeline import asset_hashes
         from generator_review import validate_source_account_checkpoint
+        from generator_session_binding import policy_identity
         path, records = self.exemplar_records()
         target, verifier = self.state.get('target_account'), self.state.get('verifier_account')
         if not target or not verifier:
             raise ValueError('Both source-only accounts must be checkpointed before exemplar review')
         source = self.phase_source_identity()
-        for account in (target, verifier):
+        for role, account in (('investigate', target), ('review', verifier)):
             if account['source'] != source:
                 raise ValueError('Source changed since its independent account')
+            if account.get('policy') != policy_identity(self.root, role):
+                raise ValueError('Instructions changed since the source-only account')
             validate_source_account_checkpoint(account['path'], account['sha256'])
-        return {'source': source, 'target_account_sha256': target['sha256'],
+        upstream = {}
+        for key in ('investigation_file', 'investigation_result', 'reference_file'):
+            if self.state.get(key):
+                item = Path(self.state[key])
+                upstream[str(item)] = {'sha256': sha(item), 'assets': asset_hashes(read(item), item.parent, self.math_root)}
+        return {'source': source, 'upstream': upstream,
+            'account_policies': {'investigate': target['policy'], 'review': verifier['policy']},
+            'target_account_sha256': target['sha256'],
             'initial_source_analysis_sha256': verifier['sha256'],
             'investigation_sha256': sha(self.required_investigation_handoff()),
             'exemplars_sha256': sha(path), 'assets': asset_hashes(records, path.parent, self.math_root)}
@@ -199,7 +221,8 @@ class InstructionalPhases:
             return False
         count = self.state.get('exemplar_review_rounds', 0)
         root = self.directory / 'verification/exemplars'
-        while count < self.max_attempts * 3:
+        limit = self.state.get('exemplar_review_limit', self.max_attempts * 3)
+        while count < limit:
             evidence = root if count == 0 else root / ('correction-' + str(count))
             binding, batches = self.prepare_exemplar_binding(evidence)
             if not self.admit_review_session(evidence):
@@ -220,6 +243,7 @@ class InstructionalPhases:
                 'resume_session_id': self.state.get('review_thread')}
             result = self.session_call('review', context, evidence)
             save(evidence / 'result.json', result)
+            self.reload_repaired_runner()
             self.persist(review_thread=session_thread(evidence) or self.state.get('review_thread'))
             try:
                 if result.get('verdict') != 'accepted':

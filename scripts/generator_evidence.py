@@ -222,7 +222,10 @@ def validate_tool_report(path, evidence_root, *, engine_sha256=None):
             viewport = row.get('viewport', {})
             if any(type(viewport.get(k)) is not int or viewport[k] <= 0 for k in ('width', 'height')):
                 raise ValueError('rendering viewport is missing')
-            _local(row.get('screenshot', ''), path.parent, 'rendering screenshot')
+            for captured in [row, *row.get('dropdowns', [])]:
+                screenshot = _local(captured.get('screenshot', ''), path.parent, 'rendering screenshot')
+                if captured.get('screenshot_sha256') != sha256_file(screenshot):
+                    raise ValueError('rendering screenshot bytes differ from captured evidence')
         if {row['record_sha256'] for row in rows} != set(checked):
             raise ValueError('rendering checked coverage differs from actual cases')
     else:

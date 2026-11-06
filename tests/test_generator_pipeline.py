@@ -98,6 +98,12 @@ def finalize_fixture_review(pipeline, context):
         (workspace / 'repair_check.py').write_text('from helper import square\nassert square(7) == 49\nassert square(3) == 9\n')
         (workspace / 'repair-regressions.json').write_text(json.dumps({'findings': [
             {'id': row['id'], 'script': 'repair_check.py'} for row in findings]}))
+        path = workspace / 'refill-review-plan.json'
+        plan = json.loads(path.read_text())
+        plan['finding_exemptions'] = [{'id': row['id'],
+            'reason': 'Synthetic retained-finding fixture is exercised by repair_check.py; it does not claim a real survivor-dependent defect.',
+            'source_refs': ['fixture-source-1'], 'evidence_paths': ['source-analysis.json']} for row in findings]
+        path.write_text(json.dumps(plan))
     pipeline.finalize_review(Path(context['evidence_root']))
     return pipeline.context(Path(context['evidence_root']))
 
@@ -219,6 +225,10 @@ class PhaseSession:
     def __getattr__(self, name):
         return getattr(self.session, name)
 
+    @property
+    def lock_owner(self):
+        return self.session
+
 
 class FakePublisher:
     """Durable fake commit acknowledgement separates pipeline recovery from EDB tests."""
@@ -338,8 +348,8 @@ class GeneratorPipelineTests(unittest.TestCase):
         pipeline = self.pipeline(session)
         result = pipeline.run()
         self.assertEqual(result['stage'], 'blocked')
-        self.assertEqual(result['error']['code'], 'verification_unfinished')
-        self.assertEqual([r for r, _ in session.calls], ['author'] + ['review'] * 6)
+        self.assertEqual(result['error']['code'], 'review_sessions_exhausted')
+        self.assertEqual([r for r, _ in session.calls], ['author'] + ['review'] * 4)
         self.assertEqual(result['attempt'], 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         self.assertFalse((self.math / 'generators').exists())
@@ -389,8 +399,8 @@ class GeneratorPipelineTests(unittest.TestCase):
         session = BrokenReport()
         result = self.pipeline(session).run()
         self.assertEqual(result['stage'], 'blocked')
-        self.assertEqual(result['error']['code'], 'verification_unfinished')
-        self.assertEqual([role for role, _ in session.calls], ['author'] + ['review'] * 6)
+        self.assertEqual(result['error']['code'], 'review_sessions_exhausted')
+        self.assertEqual([role for role, _ in session.calls], ['author'] + ['review'] * 4)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         self.assertTrue((self.job / 'workspace/generator.py').exists())
         cached_samples = (self.job / 'samples.json').read_bytes()
@@ -509,7 +519,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertTrue((interrupted / 'result.json').exists())
         self.assertEqual(json.loads((interrupted / 'shortcut-results.json').read_text()), {'correct': 4, 'total': 4})
         self.assertEqual(result['review_session_limit'], limit)
-        self.assertEqual(len(result['review_sessions']), 1)
+        self.assertEqual(len(result['review_sessions']), 3)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_interrupted_review_hint_requires_matching_inputs_and_incomplete_other_directory(self):
@@ -698,7 +708,7 @@ class GeneratorPipelineTests(unittest.TestCase):
             self.assertEqual(state['stage'], 'verified')
         self.assertEqual([role for role, _ in session.calls], ['author', 'review'])
         self.assertEqual(state['review_session_limit'], 3)
-        self.assertEqual(len(state['review_sessions']), 1)
+        self.assertEqual(len(state['review_sessions']), 3)
         self.assertEqual(Path(state['review']).read_bytes(), original_review)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 

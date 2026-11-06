@@ -104,7 +104,7 @@ class RefillValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'declared-file isolation'):
             self.validate([item],name='undeclared-import')
         self.manifest['files'].append('secret_support.py')
-        self.checker([item],body='import secret_support\nassert secret_support.VALUE==42\nassert "PYTHONPATH" not in os.environ\nassert "COURSE_ACADEMY_WORKSPACE" not in os.environ\nassert Path.cwd()!=Path('+repr(str(self.package))+')')
+        self.checker([item],body='import secret_support,sympy\nassert secret_support.VALUE==42\nassert sympy.Integer(2)+1==3\nassert "PYTHONPATH" not in os.environ\nassert "COURSE_ACADEMY_WORKSPACE" not in os.environ\nassert Path.cwd()!=Path('+repr(str(self.package))+')')
         self.assertEqual(self.validate([item],name='declared-import')['status'],'passed')
 
     def test_checker_receives_usable_inventory_questions_and_content_hashes(self):
@@ -114,6 +114,23 @@ class RefillValidationTests(unittest.TestCase):
                    'questions':[old['question'],retired['question'],{':question/problem':'incomplete'}]}
         self.checker([survivor],body='assert len(i["questions"])==1\nassert i["questions"][0][":question/problem"]=="Compute 2+1."\nassert len(i["questions_sha256"])==64\nassert len(i["usable_fingerprints"])==1\nassert len(i["fingerprints"])==2')
         self.assertEqual(self.validate([survivor],inventory)['status'],'passed')
+
+    def test_contextual_equivalent_and_wrong_controls_run_through_native_grader(self):
+        item=record(2);fingerprint=content_fingerprint(item['question'])
+        self.checker([item],check_results=[{'id':'sum','status':'passed','checked_fingerprints':[fingerprint]}])
+        self.plan(required=True)
+        checker=self.package/'check_refill.py'
+        text=checker.read_text()
+        extra=[{'fingerprint':fingerprint,'checks':[
+            {'field_index':0,'submitted':'3.0','expected':'accepted','purpose':'Same exact integer in decimal notation.'},
+            {'field_index':0,'submitted':'4','expected':'rejected','purpose':'Off-by-one sum.'}]}]
+        checker.write_text(text.replace('json.dump({','json.dump({"native_checks":'+repr(extra)+','))
+        result=self.validate([item])
+        native=json.loads(Path(result['native_report']).read_text())
+        self.assertEqual((native['accepted_checks'],native['rejected_checks']),(2,1))
+        checker.write_text(checker.read_text().replace("'submitted': '3.0'","'submitted': '4'"))
+        with self.assertRaisesRegex(ValueError,'Native refill grading failed'):
+            self.validate([item],name='failed-native-control')
 
     def test_legacy_fallback_is_explicit_and_approved_plan_cannot_disappear(self):
         self.assertTrue(self.validate([record(2)])['legacy_fallback'])
@@ -127,9 +144,11 @@ class RefillValidationTests(unittest.TestCase):
     def test_new_approval_executes_retained_checks_after_real_three_band_deduplication(self):
         from generator_source_policy import POLICY_VERSION
         batches,old_rows,expected={},{},{}
-        for band in ('easy','moderate','hard'):
-            old,new=record(2),record(8)
-            for row in (old,new):row['question'][':question/difficulty']=':question.difficulty/'+band
+        for index,band in enumerate(('easy','moderate','hard')):
+            old,new=record(2+index),record(8)
+            for row in (old,new):
+                row['knowledge_point']=123
+                row['question'][':question/difficulty']=':question.difficulty/'+band
             old_rows[band]=old
             expected[':question.difficulty/'+band]=content_fingerprint(new['question'])
             path=self.root/(band+'.json');path.write_text(json.dumps([old,new]))

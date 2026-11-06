@@ -202,6 +202,27 @@ class ReviewEvidenceTests(unittest.TestCase):
         path.write_text(json.dumps(report))
         validate_review(self.review, self.directory)
 
+    def test_representative_cannot_silently_omit_a_source_step(self):
+        import hashlib
+        self.review['source_analysis']['reasoning_steps'].append('Independently select the requested operation')
+        source = self.directory / 'source-analysis.json'; source.write_text(json.dumps(self.review['source_analysis']))
+        binding = json.loads((self.directory / 'final-binding.json').read_text())
+        binding['initial_source_analysis_sha256'] = hashlib.sha256(source.read_bytes()).hexdigest()
+        with self.assertRaisesRegex(ValueError, 'every source reasoning obligation'):
+            validate_review(self.review, self.directory, binding)
+
+    def test_fresh_shortcut_confirmation_cannot_relabel_discovery_bytes(self):
+        path = self.directory / 'pedagogical-variation.json'; report = json.loads(path.read_text())
+        (self.directory / 'renamed-discovery.json').write_bytes((self.directory / 'decision-samples.json').read_bytes())
+        report['shortcut_probes'][0].update(claim='confirmed', confirmation={
+            'method': 'fresh_cases', 'allowed_information': 'Visible operand', 'bypassed_work': 'Squaring',
+            'subgroup_selection': 'Predeclared template', 'mechanism': 'Operand copied as answer',
+            'evidence_paths': ['decision-samples.json'], 'discovery_refs': ['decision-samples.json'],
+            'confirmation_refs': ['renamed-discovery.json']})
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'same evidence bytes'):
+            validate_review(self.review, self.directory)
+
     def test_generator_acceptance_requires_bound_reviewed_refill_plan(self):
         self.review['checks']['packaging']['evidence_paths'] = ['measurements.json']
         with self.assertRaisesRegex(ValueError, 'packaging must assess'):

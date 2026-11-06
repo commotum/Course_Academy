@@ -248,6 +248,8 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
         result['package_check_scope'] = 'survivors' if records else 'existing_catalog'
     inputs, native = directory / 'native-input.json', directory / 'native-report.json'
     _write(inputs, cases)
+    from scripts.generator_native_build import ensure_native_grader
+    ensure_native_grader(repo_root, environment)
     completed = subprocess.run([str(Path(repo_root) / 'generate/runs/current/check-engine'), str(inputs), str(native)],
         cwd=repo_root, env=environment, capture_output=True, text=True, timeout=180)
     (directory / 'native.stderr').write_text(completed.stderr)

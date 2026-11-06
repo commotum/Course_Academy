@@ -55,7 +55,8 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None, captu
                  "selection": {"input_count": len(records), "selected_indices": list(range(len(records))), "omitted_indices": []},
                  "runtime": {"browser_sha256": "b" * 64, "node_sha256": "c" * 64},
                  "implementation_sha256": implementation, "cases": [{"record_sha256": identity, "passed": True,
-                 "state": state, "viewport": {"width": 1280, "height": 1000}, "screenshot": screenshot}
+                 "state": state, "viewport": {"width": 1280, "height": 1000}, "screenshot": screenshot,
+                 "screenshot_sha256": sha256_file(directory / screenshot)}
                  for identity in identities for state in ('active', 'completed')]}
     paths = {}
     for kind, report in (("grading", grading), ("rendering", rendering), ("delivery", delivery)):
@@ -165,7 +166,7 @@ def complete_review_fixture(directory, review, binding=None):
                     'conclusion': 'Exact fixture endpoint', 'conversion_review': {'status': 'none', 'reason': 'Same literal endpoint',
                     'evidence_paths': [f'{band}-accepted.json']}})
             account['representatives'].append({'record_sha256': identity, 'family': family, 'given': 'Operand only',
-                'required_work': ['Square the operand'], 'source_reasoning_steps': [0], 'preservation': 'Independent calculation remains',
+                'required_work': ['Square the operand'], 'source_reasoning_steps': list(range(len(review['source_analysis']['reasoning_steps']))), 'preservation': 'Independent calculation remains',
                 'difficulty_justification': 'Fixture only', 'fields': judgments,
                 'narrow_layout': {'status': 'not_applicable', 'reason': 'Synthetic boundary fixture'}})
         account['bands'][band] = {'records': mappings, 'progression': 'Fixture compares the actual required operation'}

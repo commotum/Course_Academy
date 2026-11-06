@@ -158,7 +158,7 @@ class CodexSession:
         template = templates / ('source-account.md' if phase == 'source_account' else
             'exemplar-review.md' if phase == 'exemplars' else
             {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role])
-        prompt = template.read_text().replace('{{context}}', json.dumps(context, indent=2))
+        prompt = template.read_text().replace('{{role}}', role).replace('{{context}}', json.dumps(context, indent=2))
         output = directory / 'result.json'
         bind_session(directory, input_binding(role, context, self.root))
         # A completed structured result survives a parent crash. The caller
@@ -436,7 +436,9 @@ class Pipeline(InstructionalPhases):
             self.persist(inventory_hash=fingerprint)
 
     def review_directory(self):
-        binding = digest(self.review_binding())[:16]
+        # The plan is already covered by package_hash; validating its rationale
+        # in this directory must not change the directory's own identity.
+        binding = digest({key: value for key, value in self.review_binding().items() if key != 'refill_plan'})[:16]
         return self.directory / f'review-{self.state["attempt"]}-policy-{REVIEW_POLICY_VERSION}-{binding}'
 
     def has_current_review(self):
@@ -624,7 +626,7 @@ class Pipeline(InstructionalPhases):
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
             if result.get('status') != 'ready':
-                error = {'error': 'Finish the investigation and construct the missing examples using the supplied reference. Repair relevant tools yourself.',
+                error = {'error': 'Finish the target-grounded account and three local anchors; references are optional and cannot supply a different target task. Repair relevant tools yourself.',
                          'result': result}
             else:
                 try:
@@ -844,6 +846,8 @@ class Pipeline(InstructionalPhases):
             # new package/asset/engine identities during this same session.
             self.state = read(self.path)
             try:
+                if result.get('verdict') == 'accepted':
+                    self.prepare_refill_review(evidence)
                 self.verify_approval_inputs()
                 if result.get('verdict') == 'accepted':
                     final_path = evidence / 'final-binding.json'
@@ -1312,6 +1316,8 @@ class Pipeline(InstructionalPhases):
         report_limits = {key: count + 3 for key, count in self.state.get('review_report_rounds', {}).items()}
         self.persist(stage=stage, author_attempt_limit=self.state['attempt'] + self.max_attempts,
                      resume_events=events, progress_failures={}, review_report_limits=report_limits,
+                     source_account_limits={role: count + self.max_attempts for role, count in self.state.get('source_account_rounds', {}).items()},
+                     exemplar_review_limit=self.state.get('exemplar_review_rounds', 0) + self.max_attempts * 3,
                      review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3,
                      needs_repair=True)
 
@@ -1323,8 +1329,9 @@ class Pipeline(InstructionalPhases):
             self.state = read(self.path)
             self.recover_legacy_exemplars()
             self.upgrade_phases()
-            if isinstance(self.session, CodexSession):
-                self.session.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())
+            lock_owner = getattr(self.session, 'lock_owner', self.session)
+            if isinstance(lock_owner, CodexSession):
+                lock_owner.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())
             if 'author_attempt_limit' not in self.state:
                 # Existing attempts count, including jobs admitted by older
                 # runners. A deployment must not rearm a runaway job.
@@ -1348,12 +1355,13 @@ class Pipeline(InstructionalPhases):
         """One evidence-changing migration; retain drafts and unresolved writes."""
         if self.is_refill or self.state.get('phase_policy_version', 0) >= PHASE_POLICY_VERSION:
             return
-        if self.state['stage'] == 'verified' or (self.directory / 'publication/request.json').exists():
+        if self.state['stage'] in {'verified', 'blocked', 'failed', 'unsupported'} or (self.directory / 'publication/request.json').exists():
             return
-        save(self.directory / 'job-before-three-phase.json', self.state)
+        revision = str(time.time_ns())
+        save(self.directory / ('job-before-phase-' + revision + '.json'), self.state)
         source = self.directory / 'source/source.json'
         if source.exists():
-            save(source.with_name('source-before-three-phase.json'), read(source))
+            save(source.with_name('source-before-phase-' + revision + '.json'), read(source))
             fresh = self.publisher.extract_source(self.state['request']['kp'], source.parent)
             save(source, fresh)
         self.persist(stage='source', phase_policy_version=PHASE_POLICY_VERSION,

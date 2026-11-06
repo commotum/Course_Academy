@@ -85,6 +85,43 @@ class SessionInputTests(unittest.TestCase):
         self.assertEqual(start.call_count, 2)
         self.assertEqual(json.loads((self.directory / 'execution.json').read_text())['launches'], 2)
 
+    def test_example_image_change_invalidates_cached_author_for_list_and_wrapper(self):
+        from test_generator_publish import record
+        for wrapper in (False, True):
+            with self.subTest(wrapper=wrapper):
+                self.job = self.root / ('wrapper' if wrapper else 'list')
+                self.setup_call()
+                path = self.job / 'workspace/examples.json'
+                row = record(2); row['question'][':question/problem'] += ' <img src="diagram.svg">'
+                path.write_text(json.dumps({'records': [row]} if wrapper else [row]))
+                diagram = path.with_name('diagram.svg'); diagram.write_text('<svg>original</svg>')
+                self.context['exemplars_file'] = str(path)
+                with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+                    self.pipeline.session_call('author', self.context, self.directory)
+                    diagram.write_text('<svg>changed learner-visible evidence</svg>')
+                    self.pipeline.session_call('author', self.context, self.directory)
+                self.assertEqual(start.call_count, 2)
+                self.assertEqual(json.loads((self.directory / 'execution.json').read_text())['launches'], 2)
+                self.pipeline.persist(exemplars_file=str(path))
+                self.assertIn(str(diagram.resolve()), self.pipeline.instructional_evidence())
+
+    def test_linked_instruction_change_is_bound_and_old_content_retained(self):
+        self.setup_call()
+        policy_root = self.root / 'policy'
+        templates = policy_root / 'generate/pipeline'; templates.mkdir(parents=True)
+        guide = policy_root / 'references/required.md'; guide.parent.mkdir()
+        guide.write_text('Original instructional rule')
+        (templates / 'author.md').write_text('Read [required](../../references/required.md). {{context}}')
+        (templates / 'author.schema.json').write_text('{}')
+        session = CodexSession(root=policy_root)
+        with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+            session('author', self.context, self.directory)
+            guide.write_text('Changed instructional rule')
+            session('author', self.context, self.directory)
+        self.assertEqual(start.call_count, 2)
+        retained = {path.read_text() for path in (self.directory / 'instruction-inputs').glob('*/references/required.md')}
+        self.assertEqual(retained, {'Original instructional rule', 'Changed instructional rule'})
+
 
 class LegacyExemplarRecoveryTests(unittest.TestCase):
     setUp = fixtures.GeneratorPipelineTests.setUp

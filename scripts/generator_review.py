@@ -135,10 +135,14 @@ def _decision_evidence(check, root):
                 _text(confirmation.get(key), 'shortcut confirmation.' + key)
             _evidence(confirmation.get('evidence_paths'), root, 'shortcut confirmation evidence', required=True)
             if confirmation['method'] == 'fresh_cases':
-                discovery = _evidence(confirmation.get('discovery_refs'), root, 'shortcut discovery evidence', required=True)
+                _evidence(confirmation.get('discovery_refs'), root, 'shortcut discovery evidence', required=True)
                 _evidence(confirmation.get('confirmation_refs'), root, 'shortcut held-out evidence', required=True)
                 if set(confirmation['discovery_refs']) & set(confirmation['confirmation_refs']):
                     raise ValueError('fresh shortcut confirmation must be separate from discovery inputs')
+                discovered = {hashlib.sha256((Path(root) / name).read_bytes()).hexdigest() for name in confirmation['discovery_refs']}
+                confirmed = {hashlib.sha256((Path(root) / name).read_bytes()).hexdigest() for name in confirmation['confirmation_refs']}
+                if discovered & confirmed:
+                    raise ValueError('fresh shortcut confirmation cannot relabel the same evidence bytes')
     if applicability['status'] == 'applicable' and not conditional:
         exception = report.get('conditional_probe_not_applicable', {})
         _text(exception.get('reason'), 'conditional shortcut applicability reason')
@@ -337,6 +341,18 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
         steps = representative.get('source_reasoning_steps')
         if (not isinstance(steps, list) or not steps or any(type(i) is not int or not 0 <= i < len(result['source_analysis']['reasoning_steps']) for i in steps)):
             raise ValueError('learner obligation must identify applicable source reasoning steps')
+        exemptions = representative.get('source_step_exemptions', [])
+        if not isinstance(exemptions, list):
+            raise ValueError('source-step exemptions must be explicit judgments')
+        exempted = set()
+        for exemption in exemptions:
+            index = exemption.get('index')
+            if type(index) is not int or index in exempted or index in steps:
+                raise ValueError('invalid or duplicate source-step exemption')
+            _text(exemption.get('reason'), 'source-step exemption reason')
+            exempted.add(index)
+        if set(steps) | exempted != set(range(len(result['source_analysis']['reasoning_steps']))):
+            raise ValueError('representative must account for every source reasoning obligation')
         fields = record['question'][':question/answer-fields']
         judgments = representative.get('fields')
         if (not isinstance(judgments, list) or len(judgments) != len(fields)
