@@ -2858,9 +2858,82 @@ fn disjoint_strict_radical_domains(a: &Value, ca: &BTreeSet<Condition>,
 // trig relations reduce that square to a different-looking polynomial. Power
 // provenance is local to each parse, so compare these guards algebraically.
 // Every guard must match in both directions: extra holes remain obligations.
+
+// For a single principal sqrt(v), polynomial guards can be compared exactly
+// in t=sqrt(v), v=t^2, t>=0. This exposes factors hidden by root reduction:
+// sqrt(v)-10*v^5 = t*(1-10*t^9). Its nonzero guard already excludes v=0.
+// Retain that factor and every other hole. Only simple variable radicands and
+// their own nonnegative/positive guards are supported; other domains fall back.
+fn equivalent_single_root_domains(a: &BTreeSet<Condition>, b: &BTreeSet<Condition>,
+                                  algebra: &mut Algebra) -> Result<bool> {
+    let root = a.iter().chain(b).find_map(|condition| {
+        let Condition::Nonzero(p) = condition else { return None; };
+        p.0.keys().flat_map(|m| m.keys()).find_map(|atom| {
+            let Atom::Root(2, base) = atom else { return None; };
+            let (mono, coefficient) = base.0.first_key_value()?;
+            if base.0.len()!=1 || !coefficient.is_one() || mono.len()!=1 { return None; }
+            let (Atom::Variable(name), exponent) = mono.first_key_value()? else { return None; };
+            (*exponent==1).then(|| (atom.clone(), base.as_ref().clone(), name.clone()))
+        })
+    });
+    let Some((root, base, variable)) = root else { return Ok(false); };
+    let canonical = |conditions: &BTreeSet<Condition>, algebra: &mut Algebra| -> Result<Option<Poly>> {
+        let mut has_root_domain = false;
+        let mut product = Poly::integer(1);
+        for condition in conditions {
+            match condition {
+                Condition::Nonzero(p) => {
+                    let mut terms = BTreeMap::new();
+                    for (mono, coefficient) in &p.0 {
+                        let mut exponent = 0_u16;
+                        for (atom, power) in mono {
+                            let factor = if *atom==root { 1 } else if *atom==Atom::Variable(variable.clone()) { 2 }
+                                else { return Ok(None); };
+                            let Some(value) = power.checked_mul(factor).and_then(|v| exponent.checked_add(v))
+                                else { return Ok(None); };
+                            exponent=value;
+                        }
+                        let mono = if exponent==0 { BTreeMap::new() } else {
+                            BTreeMap::from([(Atom::Variable(variable.clone()), exponent)]) };
+                        *terms.entry(mono).or_insert_with(Q::zero) += coefficient;
+                    }
+                    terms.retain(|_, coefficient| !coefficient.is_zero());
+                    // On t>=0, a same-sign polynomial is nonzero except
+                    // possibly at t=0. Preserve that endpoint factor exactly.
+                    let positive=terms.values().all(|c| c.is_positive());
+                    let negative=terms.values().all(|c| c.is_negative());
+                    let factor=if positive || negative {
+                        let minimum=terms.keys().map(|m| m.values().copied().sum::<u16>()).min().unwrap_or(0);
+                        if minimum==0 { Poly::integer(1) } else {
+                            Poly(BTreeMap::from([(BTreeMap::from([(Atom::Variable(variable.clone()),minimum)]),Q::one())])) }
+                    } else { Poly(terms) };
+                    product=algebra.pmul(&product, &factor)?;
+                }
+                Condition::Nonnegative(value) | Condition::Positive(value) => {
+                    if value.num.monic()!=base || !value.den.constant().is_some_and(|c| c.is_positive())
+                        || !value.num.0.first_key_value().is_some_and(|(_,c)| c.is_positive()) {
+                        return Ok(None);
+                    }
+                    has_root_domain=true;
+                    if matches!(condition, Condition::Positive(_)) {
+                        product=algebra.pmul(&product, &Poly::atom(Atom::Variable(variable.clone())))?;
+                    }
+                }
+            }
+        }
+        if !has_root_domain { return Ok(None); }
+        Ok(Some(product.squarefree_univariate_base().unwrap_or_else(|| product.clone()).monic()))
+    };
+    match (canonical(a, algebra)?, canonical(b, algebra)?) {
+        (Some(a), Some(b)) => Ok(a==b),
+        _ => Ok(false),
+    }
+}
+
 fn equivalent_domain_conditions(a: &BTreeSet<Condition>, b: &BTreeSet<Condition>,
                                 algebra: &mut Algebra) -> Result<bool> {
     if a == b { return Ok(true); }
+    if equivalent_single_root_domains(a, b, algebra)? { return Ok(true); }
     for (left, right) in [(a, b), (b, a)] {
         for condition in left {
             if right.contains(condition) { continue; }
@@ -4516,5 +4589,29 @@ mod absolute_value_domain_regressions {
             (r"|x|", r"x"),
         ] { assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}"); }
         assert!(!matches!(compare(r"sqrt(x)+|x|", r"2*x", c), Ok(true)));
+    }
+}
+
+
+#[cfg(test)]
+mod single_root_domain_regressions {
+    use super::*;
+    #[test]
+    fn reciprocal_radical_guards_expose_hidden_root_factors() {
+        for (a,b) in [
+            ("1/(1/sqrt(y)-10*y^4)", "y/(sqrt(y)-10*y^5)"),
+            ("1/(2/sqrt(y)+15*y^4)", "y/(2*sqrt(y)+15*y^5)"),
+            ("1/(-3/sqrt(x)+8*x)", "x/(-3*sqrt(x)+8*x^2)"),
+        ] {
+            assert_eq!(compare(a,b,Context::default()),Ok(true),"{a} vs {b}");
+            assert_eq!(compare(b,a,Context::default()),Ok(true),"{b} vs {a}");
+        }
+        assert_eq!(compare("-1/(1/sqrt(y)-10*y^4)","y/(sqrt(y)-10*y^5)",Context::default()),Ok(false));
+        // Neither a source-domain assumption nor a sampled value may hide
+        // a new hole, an endpoint change, or an opposite principal branch.
+        assert!(compare("y*(y-1)/((sqrt(y)-10*y^5)*(y-1))","y/(sqrt(y)-10*y^5)",Context::default()).is_err());
+        assert!(compare("sqrt(y)^2","y",Context::default()).is_err());
+        assert!(compare("sqrt(y)/sqrt(y)","1",Context::default()).is_err());
+        assert!(compare("sqrt(y)","sqrt(-y)",Context::default()).is_err());
     }
 }
