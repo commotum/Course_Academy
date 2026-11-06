@@ -98,19 +98,19 @@ const audit = __VISIBLE_DOM_AUDIT__;
       const stem = config.output + '/' + filename;
       await page.screenshot({path:stem+'.png',fullPage:true,animations:'disabled'});
       fs.writeFileSync(stem+'.html',await page.content());
-      // Wide prose math is intentionally horizontally scrollable in the player.
+      // Wide prose math and option labels may scroll in outer prose containers.
       // Retain the left-edge screenshot above, then inspect the hidden right edge.
       state.horizontalMath = await page.evaluate(() =>
-        [...document.querySelectorAll('.lesson-content mjx-container')]
+        [...document.querySelectorAll('.lesson-content mjx-container, .lesson-content .choice .prose, .lesson-content .worked-solution > .prose')]
           .filter(node => node.getClientRects().length && node.clientWidth > 0
             && !node.closest('details:not([open])')
             && node.scrollWidth > node.clientWidth + 3
             // SVG intrinsic scrollWidth may exceed its responsive drawn width.
             // Audit only formulas whose drawn SVG actually exceeds the viewport.
-            && node.querySelector('svg')?.getBoundingClientRect().width > node.clientWidth + 3)
+            && [...node.querySelectorAll('svg')].some(svg => svg.getBoundingClientRect().width > node.clientWidth + 3))
           .map(node => {
             node.scrollLeft = node.scrollWidth;
-            return {clientWidth:node.clientWidth, scrollWidth:node.scrollWidth,
+            return {tagName:node.tagName, className:node.className, clientWidth:node.clientWidth, scrollWidth:node.scrollWidth,
               overflowX:getComputedStyle(node).overflowX, scrollLeft:node.scrollLeft};
           }));
       if (state.horizontalMath.length) {
@@ -118,7 +118,7 @@ const audit = __VISIBLE_DOM_AUDIT__;
         await page.screenshot({path:config.output + '/' + state.horizontalMathScreenshot,
           fullPage:true,animations:'disabled'});
         await page.evaluate(() => {
-          for (const node of document.querySelectorAll('.lesson-content mjx-container')) node.scrollLeft = 0;
+          for (const node of document.querySelectorAll('.lesson-content mjx-container, .lesson-content .choice .prose, .lesson-content .worked-solution > .prose')) node.scrollLeft = 0;
         });
       }
       state.dropdowns = [];
