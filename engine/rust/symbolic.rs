@@ -1903,6 +1903,25 @@ impl Algebra {
                 if name == "sqrt" || name == "cbrt" {
                     return self.eval_root(if name == "sqrt" { 2 } else { 3 }, a);
                 }
+                // Keep a positive base visible before polynomial expansion:
+                // ln(u^n) = n*ln(u) for bounded integer n and a rigorously
+                // positive real base. Exact intervals prove only the sign;
+                // the logarithm equality is algebraic. Unbounded variables
+                // and nonpositive bases retain the ordinary domain rules.
+                if name == "ln"
+                    && let Ast::Binary('^', base, exponent) = a.as_ref()
+                {
+                    let base = self.eval(base)?;
+                    let exponent = self.eval(exponent)?;
+                    if exponent.constant().filter(Q::is_integer)
+                        .and_then(|c| c.to_integer().to_i32())
+                        .is_some_and(|n| n != 0 && n.unsigned_abs() <= MAX_POWER)
+                        && base.interval_at(None).is_some_and(|(lo, _)| lo.is_positive())
+                    {
+                        let logarithm = self.function("ln", &base)?;
+                        return self.mul(&exponent, &logarithm);
+                    }
+                }
                 let a = self.eval(a)?;
                 self.function(name, &a)
             }
@@ -4669,4 +4688,24 @@ mod derivative_root_interior_regressions {
         assert_eq!(compare_rational_on_source_domain("sqrt(y)*(y-1)/((1-10*y^(9/2))*(y-1))",b,"2*sqrt(y)-2*y^5",Context::default()),Ok(None));
         assert_eq!(compare_rational_on_source_domain("-sqrt(y)/(1-10*y^(9/2))",b,"2*sqrt(y)-2*y^5",Context::default()),Ok(None));
     }
+    #[test]
+    fn positive_constant_log_powers_preserve_base_and_domain() {
+        let c = Context::default();
+        for (a, b) in [
+            ("ln((pi/2+3)^2)/2", "ln(pi/2+3)"),
+            ("ln((2*pi+1)^3)/3", "ln(2*pi+1)"),
+            ("ln((sqrt(2)+3)^(-2))/(-2)", "ln(sqrt(2)+3)"),
+            ("ln((4-pi)^2)/2", "ln(4-pi)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+        }
+        for wrong in ["2ln(pi/2+3)", "pi/2+3", "-ln(pi/2+3)"] {
+            assert_eq!(compare("ln((pi/2+3)^2)/2", wrong, c), Ok(false));
+        }
+        assert!(compare("ln(x^2)/2", "ln(x)", c).is_err());
+        assert!(compare("ln((pi-4)^2)/2", "ln(pi-4)", c).is_err());
+        assert!(!supports("ln(0^2)", c));
+        assert!(compare("ln((pi/2+3)^2)*x/x", "2ln(pi/2+3)", c).is_err());
+    }
+
 }
