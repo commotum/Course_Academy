@@ -177,8 +177,10 @@ class CodexSession:
             raise SessionRetryExhausted(role, directory, execution)
         (directory / 'prompt.txt').write_text(prompt)
         executable = self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE') or shutil.which('codex', path=self.environment.get('PATH')) or str(Path.home() / '.local/bin/codex')
-        resume_id = context.get('resume_session_id') or (
-            execution.get('thread_id') or session_thread(directory) if execution.get('persistent_session') else None)
+        source_revision_changed = (phase == 'source_account' and
+            execution.get('source_account_identity') != context.get('source_account_identity'))
+        resume_id = context.get('resume_session_id') or (None if source_revision_changed else
+            (execution.get('thread_id') or session_thread(directory) if execution.get('persistent_session') else None))
         command = [executable, 'exec',
                    '--sandbox', 'workspace-write', '-c', 'approval_policy="never"',
                    '-c', 'sandbox_workspace_write.network_access=true',
@@ -196,6 +198,8 @@ class CodexSession:
         # unfinished ephemeral session's budget and launch it forever.
         execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running',
                      'persistent_session': True}
+        if phase == 'source_account':
+            execution['source_account_identity'] = context.get('source_account_identity')
         execution.pop('error', None)
         try:
             with (directory / 'events.jsonl').open('a') as log:
@@ -653,7 +657,7 @@ class Pipeline(InstructionalPhases):
                     self.persist(investigation_result=str(directory / 'result.json'))
                     if not self.review_exemplars():
                         return
-                    self.persist(stage='sample' if self.state['request'].get('review_existing') and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
+                    self.persist(stage='sample' if (self.state['request'].get('review_existing') or self.state.get('reused_authorship')) and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
                                  investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
                                  investigation_error=None)
                     return
@@ -1460,7 +1464,7 @@ class Pipeline(InstructionalPhases):
                 shutil.copy2(original, destination)
                 artifacts[key] = str(destination)
         self.persist(stage='investigate', investigation_complete=False, **artifacts,
-                     reused_pipeline=str(directory), prior_verification=prior.get('review'))
+                     reused_pipeline=str(directory), reused_authorship=True, prior_verification=prior.get('review'))
         return True
 
     def _run(self, stop_after):

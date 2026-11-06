@@ -176,5 +176,25 @@ class PhaseGateTests(unittest.TestCase):
         for row in pipeline.state['exemplar_gate']['binding']['verification_batches'].values():
             self.assertEqual(len(json.loads(Path(row['batch_file']).read_text())), 1)
 
+    def test_changed_source_after_downstream_exposure_starts_source_only_thread(self):
+        accounts = []
+        class Recording(FakeSession):
+            def phase_call(inner, role, context, directory):
+                if context['phase'] == 'source_account':
+                    accounts.append((role, context.get('resume_session_id'), context['source_account_identity']))
+                return super().phase_call(role, context, directory)
+        session = Recording()
+        pipeline = self.pipeline(session)
+        self.assertEqual(pipeline.run(stop_after='generate')['stage'], 'validate')
+        original = {role: identity for role, _, identity in accounts}
+        self.publisher.material['question'] = 'Square 8 independently.'
+        source = self.publisher.extract_source(123, self.job / 'source')
+        pipeline.persist(stage='investigate', source_hash=digest(source), inventory_hash=None)
+        pipeline.investigate()
+        for role, resumed, identity in accounts[2:]:
+            self.assertIsNone(resumed)
+            self.assertNotEqual(identity, original[role])
+        self.assertEqual(len(accounts), 4)
+
 
 if __name__ == '__main__': unittest.main()

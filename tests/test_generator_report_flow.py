@@ -74,8 +74,10 @@ class GeneratorReportFlowTests(unittest.TestCase):
         self.assertEqual(result["stage"], "blocked")
         self.assertEqual(result["error"]["code"], "verification_unfinished")
         self.assertEqual(result["error"]["resume_stage"], "validate")
-        self.assertEqual([role for role, _ in session.calls], ["author"] + ["review"] * 6)
-        self.assertEqual(list(result["review_report_rounds"].values()), [6])
+        # The same durable six-session cap includes source-account and exemplar
+        # verification, leaving four final-report correction sessions.
+        self.assertEqual([role for role, _ in session.calls], ["author"] + ["review"] * 4)
+        self.assertEqual(list(result["review_report_rounds"].values()), [4])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         original_samples = (self.job / "samples.json").read_bytes()
         restart = UncorrectedReport()

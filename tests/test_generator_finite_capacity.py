@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generator_pipeline import Pipeline, generation_limits
-from test_generator_pipeline import FakePublisher, FakeSession, fixture_investigation, write_package
+from test_generator_pipeline import FakePublisher, FakeSession, PhaseSession, fixture_investigation, write_package
 
 NAME = 'generation-limits.json'
 FORMAT = 'course-academy-generator-limits-v1'
@@ -63,7 +63,7 @@ class GeneratorFiniteCapacityTests(unittest.TestCase):
         request = {'kp': 123, 'difficulty': difficulty, 'count': count, 'existing_entrypoint': None}
         if refill: request.update(job_kind='refill', registered_package=registration)
         return Pipeline(self.root/name, request, publisher or FakePublisher(self.root/(name+'-publisher')),
-                        root=self.root, environment=self.environment, session=session or FakeSession(),
+                        root=self.root, environment=self.environment, session=PhaseSession(session or FakeSession()),
                         investigation_preparer=fixture_investigation)
 
     def sampling_pipeline(self, *, declared=True, difficulty='easy', count=5, refill=False, name='sample'):

@@ -73,29 +73,37 @@ and developer-mode switches control both generation workers.
 
 Each build uses three headless `gpt-6.1-sol` agents with `high` reasoning:
 
-1. **Investigate:** A script captures the target at one database basis. Complete
-   target evidence needs no donor. When examples are missing, the script ranks
-   candidates using prerequisite metadata and title evidence, then supplies a
-   bounded set of complete references. The investigator establishes the target
-   operation first and selects a compatible reference or none, explaining what
-   transfers. Agents consume supplied captures rather than search EDB ad hoc.
-   If needed, the investigator creates and checks three local design exemplars,
-   one per band. They remain local permanently; they are not published inventory,
-   imported evidence, or authority over the target task. Later phases may correct
-   them. Legacy uncertain exemplar requests are reconciled exactly before migration.
-2. **Author:** The author builds or continues one relocatable Python generator
-   covering all three bands from target material and the revisable account/examples.
+1. **Investigate, then verify the anchors:** The investigator first receives only
+   a captured target source. The runner validates and checkpoints its substantive
+   account before fetching or exposing any donor candidates. Complete target
+   evidence needs no donor; otherwise bounded reads and global prerequisite ranking
+   supply optional references. The investigator leaves a required investigation.md
+   handoff and three local anchors, selecting suitable originals or constructing
+   missing examples without changing the target operation.
+   Before seeing those anchors or any author work, the existing verifier produces
+   its own source-only account, which the runner freezes. The same verifier then
+   checks every easy/moderate/hard anchor with record-linked semantic judgments,
+   native grading, and unanswered/completed UI evidence. The author cannot start
+   without passing evidence bound to the exact source, accounts, anchors and image
+   bytes. Missing evidence or later edits invalidate that gate. The examples stay
+   local permanently. Legacy uncertain exemplar writes are recovered exactly first.
+2. **Author:** After the anchor gate passes, the author builds or continues one
+   relocatable Python generator covering all three bands. Both JSON and Markdown
+   instructional accounts are required handoffs; absent files cannot be skipped.
    Source replay records original banks; fresh practice repairs their defects and
    preserves valid mathematical cases. The author may repair shared tools or the
    answer engine. The runner samples every band twice at its saved seed and compares
    records/assets for deterministic replay.
-3. **Verify and repair:** The verifier writes an independent source account before
-   inspecting author work, then tests and repairs in the same persistent session.
+3. **Verify and repair:** The same verifier continues from its pre-author account
+   and anchor review, then tests and repairs the generated package.
    It compares actual pre-feedback decisions, required recall, support and response
    endpoints across every material family and all bands. The initial account stays
    unchanged; conceptual corrections have explicit source-backed amendments linked
    to the final report. Shared-tool defects and report omissions remain this agent's
-   responsibility. There is no fourth approval agent.
+   responsibility. There is no fourth approval agent. A changed source or relevant
+   instruction invalidates active cached work; a new source-only interpretation
+   starts without the earlier thread's downstream context. Same-input retries keep
+   their thread, and revision changes never reset durable launch budgets.
 
 Engine hashes record the environment used for verification. An engine change during
 an active review requires affected compatibility checks to be rerun. Later unrelated
@@ -169,14 +177,15 @@ does not claim that its sampled questions were published. Only needed inventory
 is published, and later refills use the recorded verified band set instead of
 the original review request's difficulty.
 
-Existing single-band approvals require one all-band catch-up review per
-KP/package. That review reuses the completed investigation, exemplars, authored
-package, and applicable evidence; it does not restart those phases merely to
-obtain the other band approvals. A policy upgrade does not relabel old evidence
-as new passes. Earlier published questions remain available, and uncertain
-publication requests are recovered before any new work. Older jobs that never
-completed the three-phase investigation still use its existing migration, which
-retains drafts and error history.
+Existing completed approvals remain valid under their content policy; this phase
+change does not launch bulk re-review or republish questions. An unfinished build
+must establish the source checkpoints and anchor gate before further authoring.
+Migration retains its workspace, history and spent budgets. Explicit catch-up work
+may reuse an unchanged authored package while establishing missing gate evidence
+and verifying the requested scope; it need not author that same package again.
+Earlier publication receipts and questions remain intact. Uncertain durable writes
+are recovered before migration, and a policy upgrade cannot relabel old evidence
+as newly performed checks.
 
 If an existing package cannot initially sample one of the new verification
 bands, the catch-up verifier receives the actual sampling errors and repairs

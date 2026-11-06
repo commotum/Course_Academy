@@ -52,6 +52,9 @@ class CohortTests(unittest.TestCase):
 
     def accepted_review_context(self, pipeline, review):
         """Bind synthetic boundary evidence to explicit captured inputs and batches."""
+        from test_generator_pipeline import FakeSession, write_package
+        from generator_review_fixtures import fixture_record
+        import hashlib
         source_path=pipeline.directory/'source/source.json'
         source=json.loads(source_path.read_text())
         source['material']={'kp':{':knowledge-point/id':123,':knowledge-point/questions':[]},
@@ -60,11 +63,27 @@ class CohortTests(unittest.TestCase):
         save(source_path,source)
         batches={}
         for band in ('easy','moderate','hard'):
-            records=[{'fixture':True,'band':band}]
+            records=[fixture_record(band)]
             path=pipeline.directory/f'verification-{band}.json'
             save(path,records)
             batches[band]={'batch_file':str(path),'batch_hash':batch_sha256(records)}
-        pipeline.persist(verification_batches=batches,source_hash=digest(source))
+        workspace=pipeline.directory/'workspace'
+        write_package(workspace)
+        checkpoint=review/'source-analysis.json'
+        save(checkpoint,FakeSession.source_account())
+        save(review/'fixture-context.json',{'purpose':'Synthetic current-output review; inventory cleanup remains independently tested.'})
+        plan_path=workspace/'refill-review-plan.json'
+        plan=json.loads(plan_path.read_text())
+        history_path=pipeline.directory/'repair-history.json'
+        history=json.loads(history_path.read_text()) if history_path.exists() else {'findings':[]}
+        plan.update(evidence_paths=['fixture-context.json'],finding_exemptions=[{
+            'id':row['id'],'reason':'Synthetic boundary fixture; this test isolates historical inventory handling.',
+            'source_refs':['fixture-source-1'],'evidence_paths':['fixture-context.json']}
+            for row in history['findings'] if row['finding']['kind']!='inventory'])
+        save(plan_path,plan)
+        pipeline.persist(manifest='package.json',verification_batches=batches,source_hash=digest(source),
+            verifier_account={'path':str(checkpoint),'sha256':hashlib.sha256(checkpoint.read_bytes()).hexdigest()})
+        pipeline.prepare_refill_review(review)
         return {'evidence_root':str(review),'verification_batches':batches,
                 'review_binding':pipeline.review_binding(),
                 'source_file':str(pipeline.directory/'source/source.json'),

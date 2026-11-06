@@ -40,6 +40,7 @@ class InstructionalPhases:
         key = 'target_account' if role == 'investigate' else 'verifier_account'
         source = self.phase_source_identity()
         policy = policy_identity(self.root, role)
+        account_identity = digest({'source': source, 'policy': policy})
         saved = self.state.get(key)
         if saved and saved['source'] == source and saved.get('policy') == policy:
             validate_source_account_checkpoint(saved['path'], saved['sha256'])
@@ -60,6 +61,7 @@ class InstructionalPhases:
             current = directory if count == 0 else directory / ('correction-' + str(count))
             current.mkdir(parents=True, exist_ok=True)
             context = {'phase': 'source_account', 'source_account_role': role,
+                'source_account_identity': account_identity,
                 'repo_root': str(self.root), 'knowledge_point': self.state['request']['kp'],
                 'source_file': str(source_path),
                 'source_root': str(source_path.parent), 'math_root': str(self.math_root),
@@ -69,13 +71,18 @@ class InstructionalPhases:
                 'feedback': self.state.get(key + '_error')}
             # This context intentionally has no donor, authored workspace,
             # exemplar, generator, repair history or previous interpretation.
-            thread = self.state.get(role + '_thread') or session_thread(directory)
+            source_sessions = self.state.get('source_account_sessions', {})
+            active = source_sessions.get(role, {})
+            thread = active.get('thread') if active.get('identity') == account_identity else None
             if thread:
                 context['resume_session_id'] = thread
             if role == 'review' and not self.admit_review_session(current):
                 return None
             result = self.session_call(role, context, current)
             save(current / 'result.json', result)
+            thread = session_thread(current) or thread
+            self.persist(source_account_sessions={**source_sessions, role: {
+                'identity': account_identity, 'thread': thread}})
             self.reload_repaired_runner()
             try:
                 if result.get('status') != 'ready' or result.get('account_file') != 'source-analysis.json':

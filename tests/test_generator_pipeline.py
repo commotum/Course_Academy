@@ -754,7 +754,13 @@ class GeneratorPipelineTests(unittest.TestCase):
         idle = FakeSession()
         self.assertEqual(self.pipeline(idle).run()['stage'], 'failed')
         self.assertEqual(idle.calls, [])
-        result = self.pipeline(FakeSession()).run(resume_reason='Repair retained findings after inspecting failure')
+        class Repaired(FakeSession):
+            def __call__(inner, role, context, directory):
+                if role == 'review':
+                    context = finalize_fixture_review(resumed, context)
+                return super().__call__(role, context, directory)
+        resumed = self.pipeline(Repaired())
+        result = resumed.run(resume_reason='Repair retained findings after inspecting failure')
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual((self.job / 'source/source.json').read_bytes(), original)
         self.assertEqual(result['attempt'], 1)
@@ -1187,11 +1193,11 @@ class GeneratorPipelineTests(unittest.TestCase):
         session = FakeSession(reject=True)
         result = self.pipeline(session, publisher=restarted).run()
         self.assertEqual(result["stage"], "blocked")
-        self.assertEqual(result["error"]["code"], "verification_unfinished")
+        self.assertEqual(result["error"]["code"], "review_sessions_exhausted")
         self.assertTrue(result["needs_repair"])
         self.assertTrue(result["publication"]["passed"])
         self.assertEqual(result["publication"]["writes"], 1)
-        self.assertEqual([role for role, _ in session.calls], ["review"] * 6)
+        self.assertEqual([role for role, _ in session.calls], ["review"] * 3)
         self.assertEqual((restarted.prepares, restarted.publishes), (0, 1))
         self.assertEqual((self.job / "publication/request.json").read_bytes(), saved)
         self.assertFalse((self.math / "generators/approvals" / result["package_hash"] / "123.json").exists())

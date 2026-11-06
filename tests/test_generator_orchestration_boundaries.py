@@ -122,6 +122,19 @@ class SessionInputTests(unittest.TestCase):
         retained = {path.read_text() for path in (self.directory / 'instruction-inputs').glob('*/references/required.md')}
         self.assertEqual(retained, {'Original instructional rule', 'Changed instructional rule'})
 
+    def test_source_revision_does_not_resume_execution_thread_or_reset_launches(self):
+        self.setup_call()
+        self.directory.mkdir(parents=True)
+        (self.directory / 'execution.json').write_text(json.dumps({'launches': 1, 'persistent_session': True,
+            'thread_id': 'thread-already-saw-author-output', 'source_account_identity': 'old-source', 'status': 'completed'}))
+        context = {**self.context, 'phase': 'source_account', 'source_account_identity': 'new-source'}
+        with patch('generator_pipeline.subprocess.Popen', return_value=self.process) as start:
+            CodexSession(root=ROOT)('review', context, self.directory)
+        command = start.call_args.args[0]
+        self.assertNotIn('resume', command)
+        self.assertNotIn('thread-already-saw-author-output', command)
+        self.assertEqual(json.loads((self.directory / 'execution.json').read_text())['launches'], 2)
+
 
 class LegacyExemplarRecoveryTests(unittest.TestCase):
     setUp = fixtures.GeneratorPipelineTests.setUp

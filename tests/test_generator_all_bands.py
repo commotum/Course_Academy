@@ -10,7 +10,7 @@ from unittest.mock import patch
 from generator_packages import publish_package
 from generator_pipeline import Pipeline, digest
 from generator_review import REVIEW_POLICY_VERSION
-from test_generator_pipeline import FakePublisher, FakeSession, finalize_fixture_review, fixture_investigation
+from test_generator_pipeline import FakePublisher, FakeSession, PhaseSession, finalize_fixture_review, fixture_investigation
 
 
 BANDS = ('easy', 'moderate', 'hard')
@@ -47,7 +47,7 @@ class GeneratorAllBandsTests(unittest.TestCase):
 
     def pipeline(self, session, *, job=None, publisher=None, request=None):
         return Pipeline(job or self.job, request or self.request, publisher or self.publisher,
-                        root=self.root, environment=self.environment, session=session,
+                        root=self.root, environment=self.environment, session=PhaseSession(session),
                         investigation_preparer=fixture_investigation)
 
     def approval(self, state):
@@ -149,7 +149,7 @@ class GeneratorAllBandsTests(unittest.TestCase):
                                        'registered_package': prior['registration'],
                                        'reuse_pipeline': str(self.job)}).run()
         self.assertEqual(state['stage'], 'verified')
-        self.assertEqual(session.roles, ['review'])
+        self.assertEqual(session.roles, ['investigate', 'review'])
         self.assertEqual(state['reused_pipeline'], str(self.job))
         self.assertEqual(state['package_hash'], prior['package_hash'])
         self.assertEqual(publisher.exemplar_publications, [])
@@ -168,7 +168,7 @@ class GeneratorAllBandsTests(unittest.TestCase):
                                        'registered_package': prior['registration'],
                                        'reuse_pipeline': str(self.job)}).run()
         self.assertEqual(state['stage'], 'verified')
-        self.assertEqual(session.roles, ['review'])
+        self.assertEqual(session.roles, ['investigate', 'review'])
         self.assertEqual(state['manifest'], 'package.json')
         self.assertEqual(state['package_hash'], prior['package_hash'])
         self.assertEqual(json.loads((self.job / 'job.json').read_text())['manifest'],
