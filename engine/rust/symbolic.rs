@@ -2748,9 +2748,42 @@ pub fn compare_rational_on_source_domain(
     let Ok(Answer::Expression(b, cb)) = parse(b, context) else { return Ok(None); };
     let rational = |v: &Value| v.num.0.keys().chain(v.den.0.keys())
         .all(|m| m.keys().all(|atom| matches!(atom, Atom::Variable(_))));
-    if ![&source, &a, &b].into_iter().all(rational) { return Ok(None); }
+    let all_rational = [&source, &a, &b].into_iter().all(rational);
     let mut algebra = Algebra { work: 0, depth: 0, conditions: BTreeSet::new(),
         nonzero_power_bases: BTreeMap::new(), context };
+    if !all_rational {
+        // A symbolic derivative of a source containing sqrt(v), for a simple
+        // real variable v, is assessed on regular interior points v>0. A
+        // rationalized answer may have a removable extension at v=0, where
+        // the source's sqrt term is not differentiable. Intersect BOTH answer
+        // domains with that source derivative domain; never infer this from
+        // the answer alone or discard an additional interior hole.
+        let roots: BTreeSet<_> = source.num.0.keys().chain(source.den.0.keys())
+            .flat_map(|m| m.keys()).filter_map(|atom| match atom {
+                Atom::Root(2, base) => Some(base.as_ref().clone()), _ => None,
+            }).collect();
+        let mut interior = domain.clone();
+        let mut changed = false;
+        for condition in &domain {
+            let Condition::Nonnegative(value) = condition else { continue; };
+            if value.den!=Poly::integer(1) || !roots.contains(&value.num) || value.num.0.len()!=1 { continue; }
+            let (mono, coefficient) = value.num.0.first_key_value().unwrap();
+            if !coefficient.is_one() || mono.len()!=1 { continue; }
+            if !matches!(mono.first_key_value(),Some((Atom::Variable(_),1))) { continue; }
+            interior.remove(condition);
+            interior.insert(Condition::Positive(value.clone()));
+            changed=true;
+        }
+        if !changed { return Ok(None); }
+        let mut left_domain=ca.clone(); left_domain.extend(interior.iter().cloned());
+        let mut right_domain=cb.clone(); right_domain.extend(interior);
+        if !equivalent_domain_conditions(&left_domain,&right_domain,&mut algebra)? { return Ok(None); }
+        let left=algebra.pmul(&a.num,&b.den)?;
+        let right=algebra.pmul(&b.num,&a.den)?;
+        // Exact algebra proves equality; unsupported algebraic inequalities
+        // keep the ordinary counterexample/domain-preserving comparator.
+        return Ok((left==right).then_some(true));
+    }
     let mut product = Poly::integer(1);
     for condition in &domain {
         let Condition::Nonzero(p) = condition else { return Ok(None); };
@@ -4613,5 +4646,25 @@ mod single_root_domain_regressions {
         assert!(compare("sqrt(y)^2","y",Context::default()).is_err());
         assert!(compare("sqrt(y)/sqrt(y)","1",Context::default()).is_err());
         assert!(compare("sqrt(y)","sqrt(-y)",Context::default()).is_err());
+    }
+}
+
+
+#[cfg(test)]
+mod derivative_root_interior_regressions {
+    use super::*;
+    #[test]
+    fn equivalent_radical_derivatives_keep_the_regular_source_interior() {
+        let a="sqrt(y)/(1-10*y^(9/2))";
+        let b="y/(sqrt(y)-10*y^5)";
+        assert_eq!(compare_rational_on_source_domain(a,b,"2*sqrt(y)-2*y^5",Context::default()),Ok(Some(true)));
+        assert_eq!(compare_rational_on_source_domain(b,a,"2*sqrt(y)-2*y^5",Context::default()),Ok(Some(true)));
+        assert_eq!(compare_rational_on_source_domain("sqrt(y)/(2+15*y^(9/2))","y/(2*sqrt(y)+15*y^5)","4*sqrt(y)+3*y^5",Context::default()),Ok(Some(true)));
+        // No derivative source means no permission to drop the endpoint.
+        assert!(compare(a,b,Context::default()).is_err());
+        assert_eq!(compare_rational_on_source_domain(a,b,"y^2-y",Context::default()),Ok(None));
+        // A new hole at an interior point remains unresolved, not accepted.
+        assert_eq!(compare_rational_on_source_domain("sqrt(y)*(y-1)/((1-10*y^(9/2))*(y-1))",b,"2*sqrt(y)-2*y^5",Context::default()),Ok(None));
+        assert_eq!(compare_rational_on_source_domain("-sqrt(y)/(1-10*y^(9/2))",b,"2*sqrt(y)-2*y^5",Context::default()),Ok(None));
     }
 }
