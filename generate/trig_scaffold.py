@@ -20,7 +20,7 @@ from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
 R,PI=s.Rational,s.pi
-VERSION='7.0.0-substitution-recognition'
+VERSION='8.0.0-substitution-recognition'
 TRIG=('sin','cos','sec2','csc2','sec_tan','csc_cot')
 RECIP=TRIG[2:]
 LINEAR=('indef_sin','indef_cos','def_sin','def_cos')
@@ -29,10 +29,10 @@ CASES={
     17592186068915:{level:LINEAR for level in ('easy','moderate','hard')},
     17592186068916:{'easy':RECIP,'moderate':RECIP_CASES,'hard':RECIP_CASES},
     17592186068917:{'easy':TRIG,'moderate':TRIG,
-                   'hard':tuple('reciprocal_'+fn for fn in TRIG)+('sqrt_sin','sqrt_cos')},
+                   'hard':TRIG+tuple('reciprocal_'+fn for fn in TRIG)+('sqrt_sin','sqrt_cos','def_sin','def_cos')},
     17592186068918:{'easy':('sin','cos','tan','sec'),
                    'moderate':('sin','cos','tan','sec','csc','cot','sin2','cos3'),
-                   'hard':('rearranged_tan','rearranged_sec','nested_sin','nested_tan','def_sin2','def_cos3')},
+                   'hard':('sin','cos','tan','sec','csc','cot','sin2','cos3','rearranged_tan','rearranged_sec','nested_sin','nested_tan','def_sin2','def_cos3')},
 }
 
 
@@ -127,7 +127,14 @@ def trig_instance(kp,level,case,rng):
 
 def product_instance(level,case,rng):
     A=s.Integer(rng.randint(1,3));b=s.Integer(rng.randint(0,2))
-    if level=='hard':
+    lo=hi=None
+    if case.startswith('def_'):
+        fn=case.removeprefix('def_');inner=X**2;du=2*X;outer=A*X;r=R(A,2)
+        u0,u1=rng.choice(((0,PI/2),(PI/4,PI/2),(0,PI)))
+        lo,hi=s.sqrt(u0),s.sqrt(u1)
+        params={'inner_role':'power','power':2,'shift':'0','amplitude':str(A)}
+        challenge='recognize_power_and_transform_familiar_bounds'
+    elif case.startswith(('reciprocal_','sqrt_')):
         role,fn=case.split('_',1)
         if role=='reciprocal':
             inner=1/(X+b);du=-1/(X+b)**2;outer=A/(X+b)**2;r=-A
@@ -142,7 +149,7 @@ def product_instance(level,case,rng):
         params={'inner_role':'power','power':n,'shift':str(b),'amplitude':str(A)}
         challenge='recognize_power'
     return dict(kind=fn,inner=inner,du=du,body=outer*g(fn,inner),factor=r,
-        transformed=g(fn,U),primitive_u=r*h(fn,U),primitive=r*h(fn,inner),lo=None,hi=None,
+        transformed=g(fn,U),primitive_u=r*h(fn,U),primitive=r*h(fn,inner),lo=lo,hi=hi,
         scale=s.cancel(outer/r).as_coeff_Mul()[0],amplitude=A,parameters=params,challenge=challenge,
         source_questions=['q-13461','q-13474','q-13464','q-13471','q-13467','q-13470','q-2377','q-3038'])
 
@@ -272,7 +279,7 @@ def render(kp,level,case,m,seed,evidence,rng):
     return {'knowledge_point':evidence['kp'],'question':question,'generation':{
         'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if choice else m['challenge'],
         'parameters':m['parameters'],'mathematical_fingerprint':fp,'model':model,
-        'batch_contract':'trig-substitution-recognition-v7','source_questions':m['source_questions'],
+        'batch_contract':'trig-substitution-recognition-v8','source_questions':m['source_questions'],
         'source_basis':evidence['basis'],'band_origin':band_rationale(kp,level),
         'prior_band_evidence':evidence['band_origin'][level],
         'operation':'evaluate','provided_substitution':False,

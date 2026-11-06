@@ -11,7 +11,7 @@ def validate_delivery_batch(records,kp_id):
  seen=set()
  for record in records:
   q=record['question'];m=record.get('generation',{});band=str(q[':question/difficulty']).rsplit('/',1)[-1]
-  if m.get('batch_contract')not in {'substitution-recognition-3','substitution-recognition-4'}:raise ValueError('Reviewed scaffolded substitution contract required')
+  if m.get('batch_contract')not in {'substitution-recognition-3','substitution-recognition-4','substitution-recognition-5'}:raise ValueError('Reviewed scaffolded substitution contract required')
   if band not in('easy','moderate','hard'):raise ValueError('Unsupported band')
   fields=q[':question/answer-fields'];problem=q[':question/problem'];sol=q[':question/worked-solution']
   from scripts.integration_support_policy import validate_prerequisite_recall
@@ -20,10 +20,10 @@ def validate_delivery_batch(records,kp_id):
   f=fields[0];easy=band=='easy';choices=f[':answer-field/choices'];ref=f[':answer-field/correct'];cid=str(ref.get(':answer/id'))if isinstance(ref,dict)else str(ref[1]);key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==cid)
   if m.get('provided_substitution')or m.get('operation')!='evaluate'or 'Use the substitution' in problem:raise ValueError('Practice must retain substitution recognition')
   if easy:
-   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 :raise ValueError('Easy requires complete-answer choices')
+   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)<2 :raise ValueError('Selection requires distinct complete-answer choices')
    if any(r'\int'in a[':answer/value']for a in choices):raise ValueError('Complete-answer choices required')
   elif kp in(17592186064218,17592186064219,17592186064250):
-   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 :raise ValueError('Inverse full calculations require the supported five-choice response ')
+   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)<2 :raise ValueError('Selection requires distinct complete-answer choices')
   else:
    if f[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1 :raise ValueError('Full calculation needs an exact blank')
    if m['model']['lower']is None and '{{answer}} $+C$'not in problem:raise ValueError('Indefinite C must be external')
@@ -31,7 +31,7 @@ def validate_delivery_batch(records,kp_id):
   if final!=key+('+C'if m['model']['lower']is None and f[':answer-field/type']==':answer-field.type/blank'else ''):raise ValueError('Solution does not reach displayed key')
   if any(int(n)>25 for n in re.findall(r'\d+',problem)):raise ValueError('Rendered numbers exceed reviewed workload')
   p=m['parameters']
-  families={17592186064218:{'sine'},17592186064219:{'tangent'},17592186064250:{'secant'},17592186064220:{'sine','tangent'},17592186184349:{'square','cube'},17592186184350:{'square','cube'},17592186184351:({'power_e','power_base'}if easy else {'log_composite'}if band=='hard'else {'sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'}),17592186184352:({'square_e','linear_e'}if easy else {'log_e'}if band=='hard'else {'square_base','linear_base'})}
+  families={17592186064218:{'sine'},17592186064219:{'tangent'},17592186064250:{'secant'},17592186064220:{'sine','tangent'},17592186184349:{'square','cube','quartic'},17592186184350:{'square','cube','quartic'},17592186184351:{'power_e','power_base','log_composite','sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'},17592186184352:{'square_e','linear_e','log_e','square_base','linear_base'}}
   if m.get('family')not in families[kp]:raise ValueError('Family not supported in this band')
   if kp in(17592186064218,17592186064219,17592186064220):
    a,b=int(p['A']),int(p['B'])
@@ -48,7 +48,7 @@ def validate_delivery_batch(records,kp_id):
    if int(p['A'])not in(1,4,9,16,25)or int(p['B'])not in(1,4,9,16,25):raise ValueError('Only small perfect-square inverse coefficients')
   if 'amplitude'in p and not 1<=int(p['amplitude'])<=4:raise ValueError('Small integer amplitudes required')
   if kp in(17592186184349,17592186184350):
-   if int(p['power'])not in(2,3)or abs(int(p['slope']))not in(1,2)or(int(p['slope'])<0)!=(band=='hard'):raise ValueError('Only hard adds negative inner derivative')
+   if int(p['power'])not in(2,3,4)or abs(int(p['slope']))not in(1,2):raise ValueError('Power substitutions use a supported power and bounded nonzero differential factor')
   identity=(band,m['mathematical_fingerprint'])
   if identity in seen:raise ValueError('Duplicate task in delivered batch')
   seen.add(identity)

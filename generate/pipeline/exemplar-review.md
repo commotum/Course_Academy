@@ -1,0 +1,12 @@
+Continue the same independent verifier session. Your original source-only account has already been checkpointed by the runner. Independently validate and, when necessary, repair the three local design anchors before generator authoring is allowed.
+
+Context:
+{{context}}
+
+Read the frozen initial_source_analysis_file and target source. Then compare investigation_account_file and exemplars_file against that independently established task. Treat the investigation, reference influence, keys, worked solutions and difficulty labels as hypotheses. Check every actual easy/moderate/hard anchor: independently solve it, identify what the learner must choose/recall/inspect before feedback, supplied support, endpoint, scope and any answer-bearing cue. Do not let an exemplar or donor redefine the target operation. Equal reasoning across levels is allowed; supplied target decisions on easy and unrelated additional work on hard are defects.
+
+Use generate/pipeline/validation-tools.md. Every anchor needs actual native grading of its canonical answer, meaningful wrong and equivalent responses where applicable, and actual UI inspection in unanswered and completed states. Record the semantic obligations against the exact anchor fingerprints. Use the input batches in verification_batches; validate all three, not one representative of three different tasks. No generator implementation is needed or admitted here. source_replay means comparing the anchor's learner task with cited original target evidence, not executing a nonexistent runtime.
+
+Use the ordinary nine-check review report, source_analysis, band_verification and the exemplar semantic evidence contract in validation-tools.md. Keep source-analysis.json identical to the frozen original; any conceptual correction uses source-analysis-amendments.json with the original hash and source-backed reasons/counterexamples. If you edit examples or investigation.md, return revise for that round; the runner supplies a fresh exact binding and requires fresh affected checks. Preserve evidence from earlier rounds and reuse unaffected evidence only with exact input identity.
+
+Return accepted only with complete passing evidence for all three exact anchors. The runner will refuse to start the author when evidence is missing, mismatched or stale. Repair the anchors and relevant tools yourself in this same bounded verifier session. No publication, database mutation or service restart is authorized by this task.

@@ -34,7 +34,7 @@ def validate_delivery_batch(records,kp_id):
         fields=q[':question/answer-fields']
         if len(fields)!=1:raise ValueError('One assessed response required')
         f=fields[0];choices=f[':answer-field/choices'];radio=kp!=17592186064220 or band=='easy'
-        if f[':answer-field/type']!=(':answer-field.type/radio'if radio else':answer-field.type/blank')or len(choices)!=(5 if radio else 1):raise ValueError('Unsupported complete-answer response')
+        if f[':answer-field/type']!=(':answer-field.type/radio'if radio else':answer-field.type/blank')or (len(choices)<2 if radio else len(choices)!=1):raise ValueError('Unsupported complete-answer response')
         if any(r'\int'in a[':answer/value']for a in choices):raise ValueError('Complete answers required')
         ref=f[':answer-field/correct'];cid=str(ref.get(':answer/id'))if isinstance(ref,dict)else str(ref[1]);key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==cid)
         blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',q[':question/worked-solution'],re.S)
@@ -58,7 +58,7 @@ def validate_delivery_batch(records,kp_id):
             if not(a.is_Integer and b.is_Integer and 2<=a<=5 and 2<=b<=5 and math.gcd(int(a),int(b))==1):raise ValueError('Hard calibration must survive coefficient cancellation')
         if radio:
             recipes=m['bank_recipes']
-            if len(recipes)!=5 or any('return_substitution'in v or 'offset'in v or 'shift_inner'in v for v in recipes):raise ValueError('Diagnostic distractors required; generic filler is forbidden')
+            if len(recipes)!=len(choices) or any('return_substitution'in v or 'offset'in v or 'shift_inner'in v for v in recipes):raise ValueError('Diagnostic distractors required; generic filler is forbidden')
             if kp==17592186064220:
                 # Easy endpoints and differential factors give positive
                 # rational multiples of pi. Inspect the displayed bank too:

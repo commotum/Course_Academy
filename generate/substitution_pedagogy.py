@@ -1,7 +1,7 @@
-"""Scaffolded inverse-trig and exponential substitution task contracts.
+"""Independent inverse-trig and exponential substitution practice.
 
-Difficulty changes the target decision, not the amount of prerequisite recall.
-No imported difficulty labels are claimed for these authored scaffolded tasks.
+Authored bands preserve the target decisions and prerequisite recall. Source
+families may span bands; neither an extra stage nor a slope sign defines hard.
 """
 import argparse
 import hashlib
@@ -13,13 +13,13 @@ import sympy as s
 from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
-VERSION='substitution-recognition-4'
+VERSION='substitution-recognition-5'
 INV={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
-for k in EXP[:2]:CASES[k]={b:('square','cube')for b in('easy','moderate','hard')}
-CASES[EXP[2]]={'easy':('power_e','power_base'),'moderate':('sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'),'hard':('log_composite',)}
-CASES[EXP[3]]={'easy':('square_e','linear_e'),'moderate':('square_base','linear_base'),'hard':('log_e',)}
+for k in EXP[:2]:CASES[k]={b:('square','cube')if b=='easy'else('square','cube','quartic')for b in('easy','moderate','hard')}
+CASES[EXP[2]]={'easy':('power_e','power_base'),'moderate':('sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'),'hard':('log_composite','log_e','log_base')}
+CASES[EXP[3]]={'easy':('square_e','linear_e'),'moderate':('square_base','linear_base'),'hard':('log_e','square_e','square_base','linear_base')}
 
 def tex(z):
  return s.latex(s.sympify(z)).replace(r'\log',r'\ln').replace(r'\operatorname{asin}',r'\arcsin').replace(r'\operatorname{atan}',r'\arctan').replace(r'\operatorname{asec}',r'\operatorname{arcsec}')
@@ -39,13 +39,13 @@ def instance(kp,band,case,rng,profile=0):
  a=s.Integer(rng.randint(2,5));n=s.Integer(rng.randint(1,4));lo=hi=None;notes=[];facts=[]
  base=s.E if kp==EXP[0]or case.endswith('_e')or case=='log_composite'else s.Integer(rng.choice((2,3,5)))
  if kp in EXP[:2]:
-  power=2 if case=='square'else 3
+  power={'square':2,'cube':3,'quartic':4}[case]
   slope=s.Integer(1 if band=='easy'else rng.choice((1,2)))
-  if band=='hard':slope=-slope
+  if band=='hard':slope*=rng.choice((-1,1))
   shift=s.Integer(rng.randint(0,3));inner=slope*X**power+shift;du=s.diff(inner,X)
   body=n*X**(power-1)*base**inner;factor=n/(slope*power);trans=base**U
   prim=base**U if base==s.E else base**U/s.log(base)
-  challenge='provided_substitution'if band=='easy'else 'positive_power_inner'if band=='moderate'else 'negative_inner_derivative'
+  challenge='recognize_power_inner_and_differential'
   params={'power':power,'slope':str(slope),'shift':str(shift),'amplitude':str(n),'base':str(base)}
  elif kp==EXP[2]:
   c=s.Integer(rng.randint(1,4));slope=s.Integer(rng.choice((1,2)))if base==s.E else s.Integer(1)
@@ -63,23 +63,25 @@ def instance(kp,band,case,rng,profile=0):
   factor=n/(slope*(1 if base==s.E else s.log(base)))
   outer=s.simplify(factor*du)
   body=outer*trans.subs(U,inner)
-  challenge='provided_substitution'if band=='easy'else 'simple_outer_function'if band=='moderate'else 'logarithmic_derivative'
+  challenge='logarithmic_derivative'if role=='log'else 'recognize_outer_function_and_differential'
   params={'base':str(base),'slope':str(slope),'offset':str(c),'amplitude':str(n),'outer':role}
   notes.append('Use a connected real interval on which the integrand is defined.'if role=='log'else 'Work where $'+tex(inner)+'>0$.')
  else:
-  if band=='hard':
+  if case=='log_e':
    c=s.Integer(rng.choice((1,2,3)));d=s.Integer(rng.choice((1,2,3)))
    inner=c*s.exp(X)+d;du=c*s.exp(X);trans=1/U;prim=s.log(U);factor=n
    body=n*du/inner;lo=s.log(2);hi=s.log(3)
    facts=[r'e^{\ln 2}=2',r'e^{\ln 3}=3'];params={'scale':str(c),'offset':str(d),'amplitude':str(n),'base':'E'}
   else:
    power=3 if case=='cube_e'else 1 if case.startswith('linear_')else 2
-   slope=s.Integer(rng.choice((1,2)));shift=s.Integer(rng.randint(0,2));inner=slope*X**power+shift;du=s.diff(inner,X)
+   slope=s.Integer(rng.choice((1,2)));shift=s.Integer(rng.randint(0,2))
+   if band=='hard':slope*=rng.choice((-1,1))
+   inner=slope*X**power+shift;du=s.diff(inner,X)
    factor=n/(slope*power);body=n*X**(power-1)*base**inner;trans=base**U;prim=base**U if base==s.E else base**U/s.log(base)
    lo=s.Integer(0);hi=s.log(2)**s.Rational(1,power)if base==s.E else s.Integer(1)
    facts=[r'e^{\ln 2}=2',r'e^{2\ln 2}=4']if base==s.E else []
    params={'power':power,'slope':str(slope),'shift':str(shift),'amplitude':str(n),'base':str(base)}
-  challenge='provided_substitution'if band=='easy'else 'base_exponential_bounds'if band=='moderate'else 'logarithmic_derivative_bounds'
+  challenge='logarithmic_derivative_bounds'if case=='log_e'else 'exponential_bounds'
  body_tex=tex(body)
  factor=s.simplify(factor);primitive=s.simplify(factor*prim.subs(U,inner))
  return dict(body=body,body_tex=body_tex,inner=inner,du=du,factor=factor,trans=trans,prim=prim,primitive=primitive,lo=lo,hi=hi,notes=notes,facts=facts,params=params,challenge=challenge)
@@ -129,7 +131,7 @@ def render(kp,band,case,m,seed,evidence):
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
  q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
- return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':version,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':version,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'evaluate','provided_substitution':False,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':m.get('bank_correct_rank'),'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
+ return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':version,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':version,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':('Authored bounded instances preserve independent substitution, differential adjustment and full evaluation; bands can share source-supported families and are not empirically calibrated.'if kp in EXP else evidence['band_origin'][band]),'prior_band_evidence':evidence['band_origin'][band],'operation':'evaluate','provided_substitution':False,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':m.get('bank_correct_rank'),'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
 def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if kp not in CASES or level not in CASES[kp]:raise ValueError('Unsupported KP/band')

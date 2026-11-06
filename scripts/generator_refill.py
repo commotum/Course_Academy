@@ -8,8 +8,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
+import shutil
 import subprocess
+import tempfile
 
 from scripts.generator_packages import package_digest
 from scripts.generator_publish import answer_id, content_fingerprint, enum, validate_question, normalized_question
@@ -27,7 +30,15 @@ def _write(path, value):
 def declared_file(root, manifest, name):
     if not isinstance(name, str) or name not in manifest['files']:
         raise ValueError('Refill contract file must be declared in the package: ' + str(name))
-    path = (Path(root) / name).resolve()
+    relative = Path(name)
+    if relative.is_absolute() or '..' in relative.parts:
+        raise ValueError('Refill contract file must be package relative')
+    path = Path(root)
+    for part in relative.parts:
+        path /= part
+        if path.is_symlink():
+            raise ValueError('Refill contract file cannot use symlinks')
+    path = path.resolve()
     if not path.is_relative_to(Path(root).resolve()) or not path.is_file():
         raise ValueError('Refill contract file is missing or escapes the package')
     return path
@@ -91,11 +102,59 @@ def native_cases(records):
     return cases
 
 
+def _run_checker(root, manifest, contract, records, inventory, directory, python):
+    """Relocation check: no workspace/repository path or environment is supplied.
+
+    This is dependency isolation, not a security sandbox against hostile code.
+    Installed declared Python dependencies remain available.
+    """
+    script = declared_file(root, manifest, contract.get('script'))
+    args, files = contract.get('args', []), contract.get('files', [])
+    if (script.suffix != '.py' or not isinstance(args, list) or not isinstance(files, list)
+            or any(not isinstance(arg, str) or '\0' in arg or
+                   Path(arg.split('=', 1)[-1]).is_absolute() or '..' in Path(arg.split('=', 1)[-1]).parts for arg in args)):
+        raise ValueError('Refill check needs a Python script, package-relative arguments and declared files')
+    for name in files:
+        declared_file(root, manifest, name)
+    before = package_digest(root, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies'))
+    with tempfile.TemporaryDirectory(prefix='course-academy-refill-', dir='/tmp') as temporary:
+        temporary = Path(temporary)
+        package, io = temporary / 'package', temporary / 'io'
+        package.mkdir(); io.mkdir(); (temporary / 'home').mkdir(); (temporary / 'tmp').mkdir()
+        for name in manifest['files']:
+            destination = package / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(declared_file(root, manifest, name), destination)
+        for name, value in (('records.json', records), ('inventory.json', inventory)):
+            _write(io / name, value)
+        # -I excludes ambient PYTHONPATH/user-site/cwd. Only the copied package
+        # is deliberately restored for declared sibling imports.
+        bootstrap = ('import runpy,sys; from pathlib import Path; '
+                     'p=Path(sys.argv[1]); sys.path.insert(0,str(p.parent)); '
+                     'sys.argv=sys.argv[1:]; runpy.run_path(str(p),run_name="__main__")')
+        environment = {'PATH': os.defpath, 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8',
+                       'HOME': str(temporary / 'home'), 'TMPDIR': str(temporary / 'tmp')}
+        completed = subprocess.run([str(Path(python).resolve()), '-I', '-B', '-c', bootstrap,
+            str(package / contract['script']), *args, '--records', str(io / 'records.json'),
+            '--inventory', str(io / 'inventory.json'), '--output', str(io / 'report.json')],
+            cwd=package, env=environment, capture_output=True, text=True, timeout=180)
+        (directory / 'package-check.stderr').write_text(completed.stderr)
+        if completed.returncode:
+            raise ValueError('Package refill regression failed in declared-file isolation: ' + completed.stderr[-2000:])
+        if before != package_digest(package, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies')):
+            raise ValueError('Refill validation modified its declared package')
+        report = _read(io / 'report.json')
+    _write(directory / 'package-check.json', report)
+    return report
+
+
 def validate_survivors(records, inventory_snapshot, directory, *, root, manifest,
-                       band, python, repo_root, environment):
+                       band, python, repo_root, environment, expected_plan=None):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     before = package_digest(root, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies'))
+    from scripts.generator_refill_plan import load_refill_plan, validate_check_results
+    plan, plan_binding = load_refill_plan(root, manifest, expected=expected_plan)
     catalog = check_catalog_membership(root, manifest, band, records)
     fingerprints = sorted(content_fingerprint(row['question']) for row in records)
     inventory = sorted(inventory_snapshot['fingerprints'])
@@ -114,6 +173,7 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
     exhausted = catalog is not None and set(catalog['fingerprints']) <= set(eligible)
     result = {'format': 'course-academy-refill-validation-v1', 'checked_fingerprints': fingerprints,
               'records': len(records), 'finite_catalog': catalog, 'exhausted': exhausted,
+              'refill_plan': plan_binding, 'legacy_fallback': plan is None,
               'inventory_sha256': hashlib.sha256(json.dumps(inventory).encode()).hexdigest()}
     if not records and not exhausted:
         result['status'] = 'no-new-records'
@@ -126,41 +186,33 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
     grading_records = records if records else [eligible[fingerprint] for fingerprint in catalog['fingerprints']]
     records_path, inventory_path = directory / 'records.json', directory / 'inventory.json'
     _write(records_path, records)
-    _write(inventory_path, {'fingerprints': inventory})
+    usable_inventory = {'fingerprints': inventory, 'usable_fingerprints': sorted(eligible),
+                        'questions': [eligible[fingerprint]['question'] for fingerprint in sorted(eligible)]}
+    usable_inventory['questions_sha256'] = hashlib.sha256(json.dumps(
+        usable_inventory['questions'], sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    _write(inventory_path, usable_inventory)
     cases = native_cases(grading_records)
     result['limitations'] = [
         {'fingerprint': content_fingerprint(record['question']), 'field_index': index,
-         'scope': 'Legacy fallback checks canonical acceptance only; contextual negatives and equivalents require reviewed package checks.'}
+         'scope': 'Canonical acceptance only; contextual negatives and equivalents require reviewed package checks.'}
         for record in grading_records for index, field in enumerate(record['question'][':question/answer-fields'])
         if enum(field[':answer-field/type']) in (':answer-field.type/blank', ':answer-field.type/free')]
     descriptor_name = 'refill-validation.json'
-    if records and descriptor_name in manifest['files']:
+    if descriptor_name in manifest['files']:
         contract = _read(declared_file(root, manifest, descriptor_name))
         if contract.get('format') != 'course-academy-refill-check-v1':
             raise ValueError('Invalid refill-validation.json format')
-        script = declared_file(root, manifest, contract.get('script'))
-        args = contract.get('args', [])
-        files = contract.get('files', [])
-        if (script.suffix != '.py' or not isinstance(args, list)
-                or any(not isinstance(arg, str) or '\0' in arg for arg in args)
-                or not isinstance(files, list)):
-            raise ValueError('Refill check needs a Python script, string arguments and declared files')
-        for name in files:
-            declared_file(root, manifest, name)
         report_path = directory / 'package-check.json'
         report_path.unlink(missing_ok=True)
-        completed = subprocess.run([python, '-E', '-s', '-B', str(script), *args,
-            '--records', str(records_path), '--inventory', str(inventory_path), '--output', str(report_path)],
-            cwd=root, env=environment, capture_output=True, text=True, timeout=180)
-        (directory / 'package-check.stderr').write_text(completed.stderr)
-        if completed.returncode:
-            raise ValueError('Package refill regression failed: ' + completed.stderr[-2000:])
-        report = _read(report_path)
+        checked_records = records if records else grading_records
+        checked_fingerprints = sorted(content_fingerprint(row['question']) for row in checked_records)
+        report = _run_checker(root, manifest, contract, checked_records, usable_inventory, directory, python)
         covered = report.get('checked_fingerprints', []) if isinstance(report, dict) else None
-        if (not isinstance(report, dict) or report.get('status') != 'passed' or not fingerprints
+        if (not isinstance(report, dict) or report.get('status') != 'passed' or not checked_fingerprints
                 or not isinstance(covered, list) or any(not isinstance(value, str) for value in covered)
-                or sorted(covered) != fingerprints):
+                or sorted(covered) != checked_fingerprints):
             raise ValueError('Package refill check must pass and cover every actual surviving question')
+        validate_check_results(report, plan_binding, checked_fingerprints)
         # Optional extra wrong/equivalent forms must run through the native
         # grader against our actual record, not a checker-supplied replacement.
         by_fingerprint = {content_fingerprint(case['record']['question']): case for case in cases}
@@ -191,6 +243,7 @@ def validate_survivors(records, inventory_snapshot, directory, *, root, manifest
                     raise ValueError('Refill native check selects an unauthored answer')
             target['checks'].extend(extra['checks'])
         result['package_check'] = str(report_path)
+        result['package_check_scope'] = 'survivors' if records else 'existing_catalog'
     inputs, native = directory / 'native-input.json', directory / 'native-report.json'
     _write(inputs, cases)
     completed = subprocess.run([str(Path(repo_root) / 'generate/runs/current/check-engine'), str(inputs), str(native)],

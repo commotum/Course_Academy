@@ -10,7 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_review import CHECKS, validate_review, _inventory_evidence, main
-from generator_review_fixtures import write_decision_evidence, write_band_evidence
+from generator_review_fixtures import write_decision_evidence, write_band_evidence, complete_review_fixture
 
 
 def load(path, name):
@@ -44,6 +44,7 @@ class ReviewEvidenceTests(unittest.TestCase):
         evidence = write_decision_evidence(self.directory)
         self.review["checks"]["decision_variation"]["evidence_paths"] = [evidence]
         self.review["checks"]["scope"]["evidence_paths"] = ['solution-paths.json']
+        complete_review_fixture(self.directory, self.review)
 
     def tearDown(self):
         self.temp.cleanup()
@@ -62,7 +63,8 @@ class ReviewEvidenceTests(unittest.TestCase):
         final = {k: v for k, v in self.review['source_analysis'].items() if k != 'evidence_paths'}
         amendment = {'initial_sha256': hashlib.sha256(initial_bytes).hexdigest(), 'final_source_analysis': final,
                      'amendments': [{'reason': 'Clarify the source operation after inspecting the actual task.',
-                                    'source_refs': ['fixture-q11'], 'evidence_paths': ['measurements.json']}]}
+                                    'source_refs': ['fixture-q11'], 'evidence_paths': ['measurements.json'],
+                                    'preserved_obligation': 'Locate independently', 'valid_case_ref': 'easy-accepted.json'}]}
         (self.directory / 'source-analysis-amendments.json').write_text(json.dumps(amendment))
         self.review['source_analysis']['evidence_paths'].append('source-analysis-amendments.json')
         validate_review(self.review, self.directory)
@@ -115,11 +117,12 @@ class ReviewEvidenceTests(unittest.TestCase):
         validate_review(self.review, self.directory)  # Direct integer answer needs no CAS control.
         report['cases'][0]['conversions'] = [{'rule': 'reduce fraction', 'scope_source': 'fixture-q11',
                                             'shown_step': '18/2=9', 'status': 'passed'}]
+        report['cases'][0]['conversion_review']['status'] = 'verified'
         path.write_text(json.dumps(report))
         with self.assertRaisesRegex(ValueError, 'requires conversion_control'):
             validate_review(self.review, self.directory)
         report['cases'][0]['conversion_control'] = {'candidate': 'sqrt(81)', 'reason': 'No square-root conversion is shown or taught.',
-            'observed': 'The scope check rejects an unexplained rewrite despite equivalence.', 'status': 'passed',
+            'observed': 'rejected', 'expected': 'rejected', 'method': 'Independent comparison with shown steps and source scope', 'status': 'passed',
             'sample_refs': ['decision-samples.json']}
         path.write_text(json.dumps(report))
         validate_review(self.review, self.directory)

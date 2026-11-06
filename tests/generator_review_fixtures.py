@@ -3,6 +3,7 @@ import json
 import hashlib
 from pathlib import Path
 from scripts.generator_evidence import ROOT, TOOL_SOURCES, batch_sha256, record_sha256, sha256_file
+from scripts.generator_native_build import build_inputs, digest
 
 
 def write_tool_evidence(directory, records, prefix="", engine_sha256=None, captured_inputs=None):
@@ -26,16 +27,27 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None, captu
                 "accepted_sha256": sha256_file(directory / accepted_name), "accepted_record_sha256": identities,
                 "input_count": len(records), "accepted_count": len(records), "captured_inputs": captured,
                 "implementation_sha256": implementation}
-    checks = [{"submitted": "4", "expected": "accepted", "purpose": "Boundary fixture only"}]
-    grader_input = [{"record": row, "checks": checks} for row in records]
+    def checks(row):
+        fields = row.get('question', {}).get(':question/answer-fields', [{}])
+        return [{'field_index': index, 'submitted': value, 'expected': expected, 'control': control,
+                 'purpose': 'Synthetic boundary fixture only; no mathematical certification'}
+                for index, field in enumerate(fields)
+                for value, expected, control in [('4', 'accepted', 'correct'), ('fixture-wrong', 'rejected', 'wrong')]]
+    grader_input = [{"record": row, "checks": checks(row)} for row in records]
     grader_name = prefix + "grading-input.json"
     (directory / grader_name).write_text(json.dumps(grader_input))
     grading = {"format": "course-academy-native-grading-v1", "passed": True, "input_file": grader_name,
                "input_sha256": sha256_file(directory / grader_name), "record_sha256": identities,
                "checked_record_sha256": identities, "implementation_sha256": implementation,
-               "engine_sha256": engine_sha256 or "e" * 64, "accepted_checks": len(records), "rejected_checks": 0,
+               "engine_sha256": engine_sha256 or "e" * 64, "accepted_checks": sum(len(row['checks']) // 2 for row in grader_input),
+               "rejected_checks": sum(len(row['checks']) // 2 for row in grader_input),
                "documented_unresolved_checks": 0, "records": [{"record_sha256": identity,
-               "checks": [{"field_index": 0, "submitted_input": "4", "outcome": "accepted"}]} for identity in identities]}
+               "checks": [{"field_index": check['field_index'], "submitted_input": check['submitted'], "outcome": check['expected']}
+                          for check in row['checks']]} for identity, row in zip(identities, grader_input)]}
+    inputs = build_inputs()
+    grading.update(native_build={'format': 'course-academy-native-build-v1', 'inputs': inputs,
+        'inputs_sha256': digest(inputs), 'binary_sha256': grading['engine_sha256'],
+        'compiler': 'synthetic fixture', 'dependencies': {'synthetic': 'a' * 64}}, compiled_inputs_sha256=digest(inputs))
     screenshot = prefix + "fixture.png"
     (directory / screenshot).write_bytes(b"synthetic screenshot boundary fixture")
     rendering = {"format": "course-academy-rendering-v1", "passed": True, "input_file": input_name,
@@ -56,7 +68,7 @@ def write_tool_evidence(directory, records, prefix="", engine_sha256=None, captu
 def write_band_evidence(directory, binding=None, records_by_band=None, captured_inputs=None):
     """Write explicit three-band boundary evidence for structured test agents."""
     directory = Path(directory)
-    records_by_band = records_by_band or {band: [{"fixture": True, "band": band}] for band in ("easy", "moderate", "hard")}
+    records_by_band = records_by_band or {band: [fixture_record(band)] for band in ("easy", "moderate", "hard")}
     if binding is None:
         binding = {'verification_batches': {band: {
             'batch_hash': batch_sha256(records_by_band[band])}
@@ -90,9 +102,11 @@ def write_decision_evidence(directory):
             {'kind': 'irrelevant', 'change': 'Rename the surrounding context.', 'expected': 'Answer remains the square.', 'observed': 'Answer, solution and grading remain equivalent.', 'status': 'passed', 'justification': 'Context name is not an operand.', 'sample_refs': samples},
         ],
         'shortcut_probes': [{'cue': 'First number in prompt', 'subgroup': 'Single squaring template', 'scope': 'within_template', 'strategy': 'Copy operand without squaring.', 'correct': 0, 'total': 2, 'baseline': 0.5, 'disposition': 'not_predictive', 'conclusion': 'Copying the operand fails both controlled inputs.', 'sample_refs': samples}],
+        'shortcut_applicability': {'status': 'applicable', 'reason': 'Copying the operand can be directly tested.', 'sample_refs': samples},
         'delivery': {'stages_examined': ['rejection', 'deduplication', 'difficulty', 'inventory selection'], 'sample_refs': [tools['delivery']], 'result': 'Fixture keeps both distinct inputs in the requested band.'},
         'limitations': ['Boundary fixture only; not a real independent review.'],
     }
+    report['shortcut_probes'][0]['claim'] = 'diagnostic'
     (directory / name).write_text(json.dumps(report))
     (directory / 'solution-paths.json').write_text(json.dumps({'cases': [{
         'template': 'square', 'field_key': 'answer', 'final_expression': '9',
@@ -100,3 +114,64 @@ def write_decision_evidence(directory):
         'sample_refs': samples, 'status': 'passed',
         'conclusion': 'The worked multiplication ends at the keyed integer.'}]}))
     return name
+
+
+def fixture_record(band):
+    return {'fixture': True, 'band': band, 'question': {':question/problem': 'Square 2.',
+        ':question/worked-solution': '2 × 2 = 4.', ':question/answer-fields': [{
+            ':answer-field/type': ':answer-field.type/blank', ':answer-field/key': 'answer',
+            ':answer-field/correct': [':answer/id', 'fixture-answer'],
+            ':answer-field/choices': [{':answer/id': 'fixture-answer', ':answer/value': '4'}]}]}}
+
+
+def complete_review_fixture(directory, review, binding=None):
+    """Supply explicit synthetic coverage; never use outside unit-test agents."""
+    directory = Path(directory)
+    binding = dict(binding or json.loads((directory / 'final-binding.json').read_text()))
+    binding.setdefault('initial_source_analysis_sha256', sha256_file(directory / 'source-analysis.json'))
+    plan = directory / 'refill-review-plan.json'
+    if not plan.exists():
+        plan.write_text(json.dumps({'format': 'course-academy-refill-plan-v1', 'status': 'not_applicable',
+            'reason': 'Synthetic boundary fixture', 'source_refs': ['fixture-source'], 'evidence_paths': ['decision-samples.json'],
+            'checks': [], 'finding_exemptions': []}))
+    binding.setdefault('refill_plan', {'path': plan.name, 'sha256': sha256_file(plan)})
+    review['checks']['packaging']['evidence_paths'].append(plan.name)
+    review['checks']['progression']['evidence_paths'].append('learner-obligations.json')
+    account = {'families': [], 'bands': {}, 'representatives': []}
+    cases = []
+    for band in ('easy', 'moderate', 'hard'):
+        report = json.loads((directory / f'{band}-delivery.json').read_text())
+        records = json.loads((directory / report['accepted_file']).read_text())
+        fallback = not records
+        if fallback:
+            records = json.loads((directory / report['input_file']).read_text())
+        mappings = []
+        for n, record in enumerate(records):
+            identity = record_sha256(record)
+            family = f'{band}-{n}'
+            account['families'].append({'id': family, 'operation': 'Square the operand', 'support': 'No supplied result',
+                'response': 'Actual authored field', 'reason': 'Boundary fixture maps every instance independently', 'source_refs': ['fixture-source']})
+            mappings.append({'record_sha256': identity, 'family': family, 'representative_sha256': identity, 'reason': 'Inspect this exact record'})
+            judgments = []
+            for index, field in enumerate(record['question'][':question/answer-fields']):
+                correct = field[':answer-field/correct']
+                correct = correct[-1] if isinstance(correct, list) else correct.get(':answer/id') if isinstance(correct, dict) else correct
+                value = next(row[':answer/value'] for row in field[':answer-field/choices'] if str(row[':answer/id']) == str(correct))
+                judgments.append({'field_index': index, 'endpoint': 'Produce the requested answer',
+                    'equivalence': {'status': 'not_applicable', 'reason': 'Synthetic boundary fixture does not certify equivalence'}})
+                cases.append({'record_sha256': identity, 'field_index': index, 'template': family,
+                    'field_key': field[':answer-field/key'], 'final_expression': value, 'keyed_answer': value,
+                    'domain': 'Fixture domain', 'conversions': [], 'sample_refs': [f'{band}-accepted.json'], 'status': 'passed',
+                    'conclusion': 'Exact fixture endpoint', 'conversion_review': {'status': 'none', 'reason': 'Same literal endpoint',
+                    'evidence_paths': [f'{band}-accepted.json']}})
+            account['representatives'].append({'record_sha256': identity, 'family': family, 'given': 'Operand only',
+                'required_work': ['Square the operand'], 'source_reasoning_steps': [0], 'preservation': 'Independent calculation remains',
+                'difficulty_justification': 'Fixture only', 'fields': judgments,
+                'narrow_layout': {'status': 'not_applicable', 'reason': 'Synthetic boundary fixture'}})
+        account['bands'][band] = {'records': mappings, 'progression': 'Fixture compares the actual required operation'}
+        if fallback:
+            account['bands'][band]['no_survivor_fallback'] = {'reason': 'All sample questions already exist', 'evidence_paths': [f'{band}-delivery.json']}
+    (directory / 'learner-obligations.json').write_text(json.dumps(account))
+    (directory / 'solution-paths.json').write_text(json.dumps({'cases': cases}))
+    (directory / 'final-binding.json').write_text(json.dumps(binding))
+    return review

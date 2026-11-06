@@ -29,6 +29,12 @@ fn main()->Result<(),Box<dyn Error>> {
  }
  // A failed rerun must not leave a previous passing report at the requested path.
  if Path::new(&args[1]).exists(){fs::remove_file(&args[1])?;}
+ let executable=std::env::current_exe()?;
+ let build:Value=serde_json::from_slice(&fs::read(executable.with_extension("build.json"))?)?;
+ let embedded=option_env!("COURSE_ACADEMY_GRADER_INPUTS_SHA256").ok_or("build using scripts/generator_native_build.py")?;
+ if build["inputs_sha256"].as_str()!=Some(embedded) || build["binary_sha256"].as_str()!=Some(sha(&fs::read(&executable)?).as_str()) {
+  return Err("native build provenance does not identify this compiled binary".into())
+ }
  let input_bytes=fs::read(&args[0])?;
  let input:Value=serde_json::from_slice(&input_bytes)?;
  let items=input.as_array().filter(|items|!items.is_empty()).ok_or("nonempty records array required")?;
@@ -84,6 +90,7 @@ fn main()->Result<(),Box<dyn Error>> {
  fs::write(output,serde_json::to_string_pretty(&json!({"format":"course-academy-native-grading-v1","passed":unresolved==0,
   "input_file":input_name,"input_sha256":sha(&input_bytes),"record_sha256":fingerprints,"checked_record_sha256":fingerprints,
   "engine_sha256":sha(&fs::read(std::env::current_exe()?)?),"implementation_sha256":{"generate/runs/current/check-engine.rs":source_hash},
+  "native_build":build,"compiled_inputs_sha256":embedded,
   "database_writes":0,"entry_point":"course_academy_engine::learning::grade_field","records":reports,
   "accepted_checks":accepted,"rejected_checks":rejected,"documented_unresolved_checks":unresolved}))?+"\n")?;
  println!("Native grading: {accepted} accepted, {rejected} rejected, {unresolved} explicitly unresolved; no database operations.");

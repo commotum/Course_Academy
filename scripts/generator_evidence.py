@@ -156,6 +156,20 @@ def validate_tool_report(path, evidence_root, *, engine_sha256=None):
             raise ValueError('grading checked coverage differs from actual input')
         if not _hash(report.get('engine_sha256')) or (engine_sha256 is not None and report['engine_sha256'] != engine_sha256):
             raise ValueError('grading engine identity differs from the final review')
+        try:
+            from .generator_native_build import build_inputs, digest
+        except ImportError:
+            from generator_native_build import build_inputs, digest
+        build = report.get('native_build', {})
+        if (build.get('format') != 'course-academy-native-build-v1'
+                or build.get('inputs') != build_inputs(ROOT)
+                or build.get('inputs_sha256') != digest(build.get('inputs'))
+                or report.get('compiled_inputs_sha256') != build.get('inputs_sha256')
+                or build.get('binary_sha256') != report['engine_sha256']
+                or not isinstance(build.get('compiler'), str) or not build['compiler'].strip()
+                or not isinstance(build.get('dependencies'), dict) or not build['dependencies']
+                or any(not _hash(value) for value in build['dependencies'].values())):
+            raise ValueError('grading lacks current source-bound native build provenance')
         rows = report.get('records')
         if not isinstance(rows, list) or len(rows) != len(data):
             raise ValueError('grading record coverage is incomplete')

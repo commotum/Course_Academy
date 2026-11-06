@@ -16,9 +16,16 @@ class SubstitutionPedagogyPolicyTests(unittest.TestCase):
   self.assertIn('Endpoint values:',r['question'][':question/worked-solution'])
   r['question'][':question/problem']+='\n\nEndpoint values: $\\arcsin(1/2)=\\pi/6$.'
   with self.assertRaisesRegex(ValueError,'hints'):validate_delivery_batch([r],kp)
- def test_simple_logarithmic_derivative_is_not_a_complex_hard_case(self):
-  kp=17592186184351;r=rows(kp)[16];r['generation']['family']='log_base'
-  with self.assertRaisesRegex(ValueError,'Family'):validate_delivery_batch([r],kp)
+ def test_source_supported_logarithmic_family_can_remain_hard_without_extra_stage(self):
+  # q-31478 explicitly labels 5^x/(5^x+1) hard. A composite numerator is
+  # therefore not a necessary condition of the target's hard band.
+  import sys
+  sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'generate'))
+  import substitution_pedagogy as model
+  kp=17592186184351;ev=json.loads((H/str(kp)/'package/source-evidence.json').read_text())
+  r=model.generate(kp,'hard',7,template='log_base',evidence=ev)
+  validate_delivery_batch([r],kp)
+  self.assertEqual(r['generation']['family'],'log_base')
  def test_fractional_numerator_composition_is_rejected(self):
   kp=17592186064218;r=rows(kp)[16];r['generation']['parameters']['numerator']='3/2'
   with self.assertRaisesRegex(ValueError,'fractional'):validate_delivery_batch([r],kp)

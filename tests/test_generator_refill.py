@@ -10,8 +10,10 @@ import unittest
 import uuid
 from unittest.mock import patch
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from generator_publish import content_fingerprint
 from generator_refill import native_cases, validate_survivors, check_catalog_membership
+from generator_refill_plan import validate_refill_plan, PLAN, FORMAT
 from test_generator_pipeline import write_package
 from test_generator_publish import record
 
@@ -31,6 +33,90 @@ class RefillValidationTests(unittest.TestCase):
         return validate_survivors(records, inventory or {'fingerprints': [], 'questions': []}, self.root / name,
             root=self.package, manifest=self.manifest, band='easy', python=sys.executable,
             repo_root=ROOT, environment=self.env)
+
+    def checker(self, records, body='', *, check_results=None):
+        fingerprints=sorted(content_fingerprint(row['question']) for row in records)
+        report={'status':'passed','checked_fingerprints':fingerprints}
+        if check_results is not None:report['check_results']=check_results
+        path=self.package/'check_refill.py'
+        path.write_text('import argparse,json,os\nfrom pathlib import Path\np=argparse.ArgumentParser()\np.add_argument("--records")\np.add_argument("--inventory")\np.add_argument("--output")\na=p.parse_args()\nr=json.load(open(a.records))\ni=json.load(open(a.inventory))\n'+body+'\njson.dump('+repr(report)+',open(a.output,"w"))\n')
+        (self.package/'refill-validation.json').write_text(json.dumps({
+            'format':'course-academy-refill-check-v1','script':path.name,'args':[],'files':[]}))
+        for name in (path.name,'refill-validation.json'):
+            if name not in self.manifest['files']:self.manifest['files'].append(name)
+
+    def plan(self, *, required=False, findings=(), exemptions=()):
+        evidence=self.root/'evidence';evidence.mkdir(exist_ok=True)
+        (evidence/'source-analysis.json').write_text('{"learner_operation":"Compute the displayed sum independently."}')
+        value={'format':FORMAT,'status':'checks' if required else 'not_applicable',
+               'reason':'Check sums on survivors.' if required else 'No retained semantic survivor condition; contextual checks were separately reviewed.',
+               'source_refs':['fixture-source'],'evidence_paths':['source-analysis.json'],
+               'checks':[{'id':'sum','purpose':'Recompute the answer from the displayed operands.',
+                          'finding_ids':list(findings)}] if required else [],
+               'finding_exemptions':list(exemptions)}
+        (self.package/PLAN).write_text(json.dumps(value))
+        if PLAN not in self.manifest['files']:self.manifest['files'].append(PLAN)
+        return evidence
+
+    def test_new_approval_requires_explicit_applicability_and_every_retained_finding(self):
+        with self.assertRaisesRegex(ValueError,'New approval requires'):
+            validate_refill_plan(self.package,self.manifest,[],self.root)
+        evidence=self.plan()
+        binding=validate_refill_plan(self.package,self.manifest,[],evidence)
+        self.assertEqual(binding['status'],'not_applicable')
+        with self.assertRaisesRegex(ValueError,'every retained finding'):
+            validate_refill_plan(self.package,self.manifest,[{'id':'old-sum-defect'}],evidence)
+        evidence=self.plan(exemptions=[{'id':'old-sum-defect','reason':'Old defect concerned a removed display layout, not surviving arithmetic.',
+            'source_refs':['fixture-source'],'evidence_paths':['source-analysis.json']}])
+        self.assertEqual(validate_refill_plan(self.package,self.manifest,[{'id':'old-sum-defect'}],evidence)['finding_ids'],['old-sum-defect'])
+
+    def test_applicable_retained_check_is_bound_and_runs_on_actual_survivors(self):
+        item=record(11)
+        fingerprint=content_fingerprint(item['question'])
+        self.checker([item],body='assert int(r[0]["question"][":question/answer-fields"][0][":answer-field/choices"][0][":answer/value"]) == int(r[0]["question"][":question/problem"].split()[1].split("+")[0])+1',
+            check_results=[{'id':'sum','status':'passed','checked_fingerprints':[fingerprint]}])
+        evidence=self.plan(required=True,findings=['old-sum-defect'])
+        binding=validate_refill_plan(self.package,self.manifest,[{'id':'old-sum-defect'}],evidence)
+        self.assertEqual(self.validate([item])['refill_plan'],binding)
+        wrong=copy.deepcopy(item)
+        wrong['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']='999'
+        with self.assertRaisesRegex(ValueError,'declared-file isolation'):
+            self.validate([wrong],name='wrong')
+        self.checker([item])
+        with self.assertRaisesRegex(ValueError,'approved check_results'):
+            self.validate([item],name='missing-check')
+
+    def test_undeclared_data_and_imports_cannot_supply_refill_evidence(self):
+        item=record(2)
+        self.checker([item],body='Path("scratch-only.txt").read_text()')
+        with self.assertRaisesRegex(ValueError,'declared-file isolation'):
+            self.validate([item],name='undeclared-data')
+        (self.package/'secret_support.py').write_text('VALUE=42\n')
+        self.env['PYTHONPATH']=str(self.package)
+        self.env['COURSE_ACADEMY_WORKSPACE']=str(self.package)
+        self.checker([item],body='import secret_support')
+        with self.assertRaisesRegex(ValueError,'declared-file isolation'):
+            self.validate([item],name='undeclared-import')
+        self.manifest['files'].append('secret_support.py')
+        self.checker([item],body='import secret_support\nassert secret_support.VALUE==42\nassert "PYTHONPATH" not in os.environ\nassert "COURSE_ACADEMY_WORKSPACE" not in os.environ\nassert Path.cwd()!=Path('+repr(str(self.package))+')')
+        self.assertEqual(self.validate([item],name='declared-import')['status'],'passed')
+
+    def test_checker_receives_usable_inventory_questions_and_content_hashes(self):
+        survivor,old,retired=record(8),record(2),record(3)
+        retired['question'][':question/retired']=True
+        inventory={'fingerprints':[content_fingerprint(row['question']) for row in (old,retired)],
+                   'questions':[old['question'],retired['question'],{':question/problem':'incomplete'}]}
+        self.checker([survivor],body='assert len(i["questions"])==1\nassert i["questions"][0][":question/problem"]=="Compute 2+1."\nassert len(i["questions_sha256"])==64\nassert len(i["usable_fingerprints"])==1\nassert len(i["fingerprints"])==2')
+        self.assertEqual(self.validate([survivor],inventory)['status'],'passed')
+
+    def test_legacy_fallback_is_explicit_and_approved_plan_cannot_disappear(self):
+        self.assertTrue(self.validate([record(2)])['legacy_fallback'])
+        evidence=self.plan();binding=validate_refill_plan(self.package,self.manifest,[],evidence)
+        self.manifest['files'].remove(PLAN)
+        with self.assertRaisesRegex(ValueError,'Approved refill plan is missing'):
+            validate_survivors([record(2)],{'fingerprints':[],'questions':[]},self.root/'missing-plan',
+                root=self.package,manifest=self.manifest,band='easy',python=sys.executable,
+                repo_root=ROOT,environment=self.env,expected_plan=binding)
 
     def catalog(self, records):
         (self.package / 'catalog.json').write_text(json.dumps(records))

@@ -8,9 +8,9 @@ import uuid
 import hashlib
 
 try:
-    from .generator_evidence import FORMATS, batch_sha256, validate_tool_report
+    from .generator_evidence import FORMATS, batch_sha256, record_sha256, validate_tool_report
 except ImportError:
-    from generator_evidence import FORMATS, batch_sha256, validate_tool_report
+    from generator_evidence import FORMATS, batch_sha256, record_sha256, validate_tool_report
 
 
 REVIEW_POLICY_VERSION = 6
@@ -101,7 +101,17 @@ def _decision_evidence(check, root):
     for pair in pairs:
         if pair.get("status") not in {"passed", "not_applicable"}:
             raise ValueError("decision_variation has a failed or untested counterfactual")
-    probes = _rows(report, "shortcut_probes", ("cue", "subgroup", "scope", "strategy", "conclusion"), root)
+    applicability = report.get('shortcut_applicability', {})
+    if applicability.get('status') not in {'applicable', 'not_applicable'}:
+        raise ValueError('decision_variation requires shortcut applicability')
+    _text(applicability.get('reason'), 'shortcut applicability reason')
+    _evidence(applicability.get('sample_refs'), root, 'shortcut applicability evidence', required=True)
+    probes = report.get('shortcut_probes')
+    if applicability['status'] == 'not_applicable':
+        if probes != []:
+            raise ValueError('not-applicable shortcut assessment must not fabricate probes')
+    else:
+        probes = _rows(report, "shortcut_probes", ("cue", "subgroup", "scope", "strategy", "conclusion"), root)
     conditional = False
     for probe in probes:
         scope = probe["scope"]
@@ -115,8 +125,24 @@ def _decision_evidence(check, root):
             raise ValueError("decision_variation shortcut baseline must be a probability")
         if probe.get("disposition") not in {"not_predictive", "intended_skill"}:
             raise ValueError("decision_variation has an unresolved decision shortcut")
-    if not conditional:
-        raise ValueError("decision_variation requires a conditional shortcut probe")
+        if probe.get('claim') not in {'diagnostic', 'confirmed'}:
+            raise ValueError('shortcut probe requires diagnostic or confirmed claim')
+        if probe['claim'] == 'confirmed':
+            confirmation = probe.get('confirmation', {})
+            if confirmation.get('method') not in {'fresh_cases', 'invariant', 'finite_pool'}:
+                raise ValueError('confirmed shortcut needs fresh cases, invariant or finite-pool evidence')
+            for key in ('allowed_information', 'bypassed_work', 'subgroup_selection', 'mechanism'):
+                _text(confirmation.get(key), 'shortcut confirmation.' + key)
+            _evidence(confirmation.get('evidence_paths'), root, 'shortcut confirmation evidence', required=True)
+            if confirmation['method'] == 'fresh_cases':
+                discovery = _evidence(confirmation.get('discovery_refs'), root, 'shortcut discovery evidence', required=True)
+                _evidence(confirmation.get('confirmation_refs'), root, 'shortcut held-out evidence', required=True)
+                if set(confirmation['discovery_refs']) & set(confirmation['confirmation_refs']):
+                    raise ValueError('fresh shortcut confirmation must be separate from discovery inputs')
+    if applicability['status'] == 'applicable' and not conditional:
+        exception = report.get('conditional_probe_not_applicable', {})
+        _text(exception.get('reason'), 'conditional shortcut applicability reason')
+        _evidence(exception.get('sample_refs'), root, 'conditional shortcut applicability evidence', required=True)
     delivery = report.get("delivery")
     if not isinstance(delivery, dict):
         raise ValueError("decision_variation needs delivered-distribution evidence")
@@ -142,6 +168,9 @@ def _solution_path_evidence(check, root):
             raise ValueError("solution path case must be an object")
         for key in ("template", "field_key", "final_expression", "keyed_answer", "domain", "conclusion"):
             _text(case.get(key), "solution_path." + key)
+        if (not isinstance(case.get('record_sha256'), str) or not re.fullmatch(r'[0-9a-f]{64}', case['record_sha256'])
+                or type(case.get('field_index')) is not int or case['field_index'] < 0):
+            raise ValueError('solution path must identify an actual record and field index')
         _evidence(case.get("sample_refs"), root, "solution_path.sample_refs", required=True)
         if case.get("status") != "passed":
             raise ValueError("solution path is failed or untested")
@@ -161,8 +190,10 @@ def _solution_path_evidence(check, root):
             control = case.get('conversion_control')
             if not isinstance(control, dict):
                 raise ValueError('solution path with conversions requires conversion_control')
-            for key in ('candidate', 'reason', 'observed'):
+            for key in ('candidate', 'reason', 'method'):
                 _text(control.get(key), 'solution_path.conversion_control.' + key)
+            if control.get('expected') != 'rejected' or control.get('observed') != 'rejected':
+                raise ValueError('conversion control must demonstrate rejection of the unsupported path')
             if control.get('status') != 'passed':
                 raise ValueError('solution path conversion control is failed or untested')
             _evidence(control.get('sample_refs'), root, 'solution_path.conversion_control.sample_refs', required=True)
@@ -177,10 +208,24 @@ def _source_account(value, label):
     return {field: value[field] for field in SOURCE_FIELDS}
 
 
-def _source_analysis_evidence(analysis, root):
+def validate_source_account_checkpoint(path, expected_sha256=None):
+    """Read substantive account; only the runner may establish its first digest."""
+    path = Path(path)
+    _source_account(json.loads(path.read_text()), 'initial source analysis')
+    identity = hashlib.sha256(path.read_bytes()).hexdigest()
+    if expected_sha256 is not None and identity != expected_sha256:
+        raise ValueError('source analysis differs from the runner-preserved initial account')
+    return identity
+
+
+def _source_analysis_evidence(analysis, root, binding):
     """Keep the initial independent account distinct from later justified changes."""
     root = Path(root)
     initial_path = root / 'source-analysis.json'
+    identity = binding.get('initial_source_analysis_sha256')
+    if not isinstance(identity, str) or not re.fullmatch(r'[0-9a-f]{64}', identity):
+        raise ValueError('accepted review requires runner-preserved initial source account identity')
+    validate_source_account_checkpoint(initial_path, identity)
     try:
         initial = _source_account(json.loads(initial_path.read_text()), 'initial source analysis')
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
@@ -205,9 +250,162 @@ def _source_analysis_evidence(analysis, root):
         _text(change.get('reason'), 'source analysis amendment reason')
         _strings(change.get('source_refs'), 'source analysis amendment source_refs', required=True)
         _evidence(change.get('evidence_paths'), root, 'source analysis amendment evidence_paths', required=True)
+        _text(change.get('preserved_obligation'), 'source analysis amendment preserved obligation')
+        _evidence([change.get('valid_case_ref')], root, 'source analysis amendment valid counterexample', required=True)
 
 
-def _tool_evidence(result, root, binding):
+def _field_shape(record):
+    fields = record.get('question', {}).get(':question/answer-fields')
+    if not isinstance(fields, list) or not fields:
+        raise ValueError('learner obligation coverage requires actual answer fields')
+    return [field.get(':answer-field/type') for field in fields]
+
+
+def _learner_obligations(result, root, records_by_band, reports, *, exemplars=False):
+    """Bind judgments to outputs, not infer the truth of those judgments."""
+    name = 'learner-obligations.json'
+    if name not in result['checks']['progression']['evidence_paths']:
+        raise ValueError('progression requires record-linked learner-obligations.json')
+    _evidence([name], root, 'learner obligations', required=True)
+    account = json.loads((root / name).read_text())
+    families = account.get('families')
+    if not isinstance(families, list) or not families:
+        raise ValueError('learner obligations must declare material families')
+    by_family = {}
+    for family in families:
+        for key in ('id', 'operation', 'support', 'response', 'reason'):
+            _text(family.get(key), 'material family.' + key)
+        _strings(family.get('source_refs'), 'material family source_refs', required=True)
+        if family['id'] in by_family:
+            raise ValueError('duplicate material family')
+        by_family[family['id']] = family
+    bands = account.get('bands', {})
+    if set(bands) != set(DIFFICULTIES):
+        raise ValueError('learner obligations must cover all three bands')
+    representatives = account.get('representatives')
+    if not isinstance(representatives, list) or not representatives:
+        raise ValueError('learner obligations need inspected representatives')
+    by_rep = {row.get('record_sha256'): row for row in representatives}
+    if len(by_rep) != len(representatives):
+        raise ValueError('duplicate learner obligation representative')
+    used_reps, used_families = set(), set()
+    actual = {}
+    for band, (records, fallback) in records_by_band.items():
+        actual.update({record_sha256(record): record for record in records})
+        row = bands[band]
+        _text(row.get('progression'), band + ' actual learner-work progression comparison')
+        if fallback:
+            justification = row.get('no_survivor_fallback', {})
+            _text(justification.get('reason'), band + ' no-survivor fallback reason')
+            _evidence(justification.get('evidence_paths'), root, 'no-survivor fallback evidence', required=True)
+        elif row.get('no_survivor_fallback'):
+            raise ValueError('raw fallback is only permitted when delivery has no survivors')
+        mappings = row.get('records')
+        identities = {record_sha256(record) for record in records}
+        if (not isinstance(mappings, list) or len(mappings) != len(identities)
+                or {mapping.get('record_sha256') for mapping in mappings} != identities):
+            raise ValueError(band + ' learner obligations omit actual delivered records')
+        family_representatives = {}
+        for mapping in mappings:
+            member, representative, family = (mapping.get(k) for k in ('record_sha256', 'representative_sha256', 'family'))
+            if family not in by_family or representative not in identities or representative not in by_rep:
+                raise ValueError('material family lacks an actual same-band representative')
+            if by_rep[representative].get('family') != family:
+                raise ValueError('representative material family differs from coverage mapping')
+            _text(mapping.get('reason'), 'representative coverage reason')
+            if exemplars and representative != member:
+                raise ValueError('every exemplar requires its own independent inspection')
+            if _field_shape(actual[member]) != _field_shape(actual[representative]):
+                raise ValueError('representative does not cover actual response field shapes')
+            family_representatives.setdefault(family, set()).add(representative)
+            used_reps.add(representative); used_families.add(family)
+    if used_reps != set(by_rep) or used_families != set(by_family):
+        raise ValueError('learner obligations contain uncovered representatives or material families')
+    paths = json.loads((root / 'solution-paths.json').read_text())['cases']
+    by_path = {}
+    for case in paths:
+        key = (case.get('record_sha256'), case.get('field_index'))
+        if key in by_path:
+            raise ValueError('duplicate solution path for final response field')
+        by_path[key] = case
+    expected_paths = set()
+    for identity, representative in by_rep.items():
+        record = actual[identity]
+        for key in ('given', 'preservation', 'difficulty_justification'):
+            _text(representative.get(key), 'learner obligation.' + key)
+        _strings(representative.get('required_work'), 'learner required work', required=True)
+        steps = representative.get('source_reasoning_steps')
+        if (not isinstance(steps, list) or not steps or any(type(i) is not int or not 0 <= i < len(result['source_analysis']['reasoning_steps']) for i in steps)):
+            raise ValueError('learner obligation must identify applicable source reasoning steps')
+        fields = record['question'][':question/answer-fields']
+        judgments = representative.get('fields')
+        if (not isinstance(judgments, list) or len(judgments) != len(fields)
+                or {row.get('field_index') for row in judgments} != set(range(len(fields)))):
+            raise ValueError('representative must assess every actual answer field')
+        render_cases = [case for report in reports.values() if FORMATS[report['format']] == 'rendering'
+                        for case in report['cases'] if case['record_sha256'] == identity]
+        viewports = {(case['viewport']['width'], case['viewport']['height']) for case in render_cases}
+        paired = {viewport for viewport in viewports if {case['state'] for case in render_cases
+            if (case['viewport']['width'], case['viewport']['height']) == viewport} == {'active', 'completed'}}
+        if not paired:
+            raise ValueError('each representative requires paired active/completed rendering')
+        narrow = representative.get('narrow_layout', {})
+        if narrow.get('status') not in {'required', 'not_applicable'}:
+            raise ValueError('representative must assess narrow-layout applicability')
+        _text(narrow.get('reason'), 'narrow-layout applicability reason')
+        if narrow['status'] == 'required' and not any(width <= 480 for width, _ in paired):
+            raise ValueError('applicable narrow layout needs paired narrow rendering')
+        for judgment in judgments:
+            index = judgment['field_index']; field = fields[index]
+            _text(judgment.get('endpoint'), 'actual field response endpoint')
+            requested = []
+            for path, report in reports.items():
+                if FORMATS[report['format']] != 'grading':
+                    continue
+                data = json.loads((root / path).parent.joinpath(report['input_file']).read_text())
+                for item in data:
+                    if record_sha256(item['record']) == identity:
+                        requested.extend(check for check in item['checks'] if check.get('field_index', 0) == index)
+            for check in requested:
+                _text(check.get('purpose'), 'native control independent justification')
+            if not ({'accepted', 'rejected'} <= {check.get('expected') for check in requested}):
+                raise ValueError('each represented field needs accepted and wrong-response native coverage')
+            if not any(check.get('control') == 'wrong' and check['expected'] == 'rejected' for check in requested):
+                raise ValueError('wrong-response coverage needs an identified independent control')
+            equivalence = judgment.get('equivalence', {})
+            if equivalence.get('status') not in {'tested', 'not_applicable'}:
+                raise ValueError('field requires equivalent-response applicability judgment')
+            _text(equivalence.get('reason'), 'equivalence applicability reason')
+            if equivalence['status'] == 'tested' and not any(check.get('control') == 'equivalent' and check['expected'] == 'accepted' for check in requested):
+                raise ValueError('applicable equivalent response needs a native acceptance control')
+            key = (identity, index); expected_paths.add(key)
+            case = by_path.get(key)
+            if case is None:
+                raise ValueError('scope omits an actual representative response field')
+            correct = field[':answer-field/correct']
+            correct = correct[-1] if isinstance(correct, list) else correct.get(':answer/id') if isinstance(correct, dict) else correct
+            answer = next((choice for choice in field[':answer-field/choices'] if str(choice[':answer/id']) == str(correct)), None)
+            if answer is None or case['keyed_answer'] != answer[':answer/value']:
+                raise ValueError('solution path keyed answer differs from actual final field')
+            if case['field_key'] != field[':answer-field/key']:
+                raise ValueError('solution path field key differs from actual final field')
+            review = case.get('conversion_review', {})
+            if review.get('status') not in {'none', 'verified', 'formatting_only'}:
+                raise ValueError('solution path needs explicit conversion verification')
+            _text(review.get('reason'), 'conversion verification reason')
+            _evidence(review.get('evidence_paths'), root, 'conversion verification evidence', required=True)
+            if case['conversions']:
+                if review['status'] != 'verified':
+                    raise ValueError('conversion path must be explicitly verified')
+            elif case['final_expression'] != case['keyed_answer'] and review['status'] != 'formatting_only':
+                raise ValueError('different solution/key forms require a conversion or justified formatting-only judgment')
+            elif review['status'] == 'verified':
+                raise ValueError('verified conversion must identify its steps')
+    if set(by_path) != expected_paths:
+        raise ValueError('solution paths must cover exactly the representative final response fields')
+
+
+def _tool_evidence(result, root, binding, *, exemplars=False):
     """Require recognized inputs/results while leaving semantic sufficiency to review."""
     root = Path(root)
     reports = {}
@@ -229,20 +427,25 @@ def _tool_evidence(result, root, binding):
     delivery_paths = set(result['checks']['decision_variation']['evidence_paths']) | set(variation['delivery']['sample_refs'])
     if not any(FORMATS[reports[path]['format']] == 'delivery' for path in delivery_paths if path in reports):
         raise ValueError('decision_variation requires a recognized delivery report')
+    records_by_band = {}
     for band, claim in result['band_verification'].items():
         cited = [reports[path] for path in claim['evidence_paths'] if path in reports]
         deliveries = [r for r in cited if FORMATS[r['format']] == 'delivery' and r['batch_sha256'] == claim['batch_sha256']]
         if not deliveries:
             raise ValueError(f'{band} requires delivery evidence for its final batch')
-        records = set()
+        raw_records, delivered_records = {}, {}
         for report in deliveries:
             report_path = next(root / path for path in claim['evidence_paths'] if reports.get(path) is report)
             for name in ('source', 'inventory'):
                 captured_path = report_path.parent / report['captured_inputs'][name]['file']
                 if binding.get(name + '_hash') is not None and batch_sha256(json.loads(captured_path.read_text())) != binding[name + '_hash']:
                     raise ValueError(f'{band} delivery uses a different captured {name}')
-            records.update(report['record_sha256'])
-            records.update(report['accepted_record_sha256'])
+            for record in json.loads((report_path.parent / report['input_file']).read_text()):
+                raw_records[record_sha256(record)] = record
+            for record in json.loads((report_path.parent / report['accepted_file']).read_text()):
+                delivered_records[record_sha256(record)] = record
+        records = set(delivered_records or raw_records)
+        records_by_band[band] = (list((delivered_records or raw_records).values()), not bool(delivered_records))
         for kind in ('grading', 'rendering'):
             relevant = [r for r in cited if FORMATS[r['format']] == kind and set(r['checked_record_sha256']) & records]
             if not relevant:
@@ -251,6 +454,7 @@ def _tool_evidence(result, root, binding):
                 states = {case['state'] for report in relevant for case in report['cases'] if case['record_sha256'] in records}
                 if states != {'active', 'completed'}:
                     raise ValueError(f'{band} requires unanswered and completed rendering evidence')
+    _learner_obligations(result, root, records_by_band, reports, exemplars=exemplars)
 
 
 def _inventory_evidence(root):
@@ -326,7 +530,19 @@ def _band_verification(result, evidence_root, binding, accepted):
                 raise ValueError(f"band_verification.{band} does not match the final batch")
 
 
-def validate_review(result, evidence_root, binding=None):
+def validate_exemplar_review(result, evidence_root, binding):
+    """Same verifier's pre-construction review; every anchor is representative.
+
+    Runtime replay/packaging checks describe the example artifact at this stage,
+    not a nonexistent generator. Semantic judgments remain the verifier's work.
+    """
+    for row in binding.get('verification_batches', {}).values():
+        if row.get('count', 1) != 1:
+            raise ValueError('exemplar review requires exactly one example per band')
+    return validate_review(result, evidence_root, binding, exemplars=True)
+
+
+def validate_review(result, evidence_root, binding=None, *, exemplars=False, allow_legacy_completed=False):
     """Validate structure and on-disk evidence; never infer pedagogical truth.
 
     Raises ValueError for malformed verdicts or an acceptance without evidence.
@@ -338,6 +554,11 @@ def validate_review(result, evidence_root, binding=None):
     if verdict not in ("accepted", "revise", "unsupported"):
         raise ValueError("invalid review verdict")
     accepted = verdict == "accepted"
+    if accepted and binding is None:
+        try:
+            binding = json.loads((Path(evidence_root) / 'final-binding.json').read_text())
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise ValueError("accepted review requires the runner's final-binding.json") from error
     _text(result.get("summary"), "summary")
     analysis = result.get("source_analysis")
     if not isinstance(analysis, dict):
@@ -349,8 +570,8 @@ def validate_review(result, evidence_root, binding=None):
               "source_analysis.evidence_paths", required=accepted)
     if accepted and "source-analysis.json" not in analysis["evidence_paths"]:
         raise ValueError("accepted review requires independent source-analysis.json")
-    if accepted:
-        _source_analysis_evidence(analysis, evidence_root)
+    if accepted and not allow_legacy_completed:
+        _source_analysis_evidence(analysis, evidence_root, binding)
     checks = result.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(CHECKS):
         raise ValueError("review must contain exactly the nine named checks")
@@ -366,15 +587,26 @@ def validate_review(result, evidence_root, binding=None):
                   required=status == "passed")
         if accepted and status != "passed":
             raise ValueError(f"accepted review requires passing {name}")
-    if checks["decision_variation"]["status"] == "passed":
+    if checks["decision_variation"]["status"] == "passed" and not allow_legacy_completed:
         _decision_evidence(checks["decision_variation"], evidence_root)
-    if checks["scope"]["status"] == "passed":
+    if checks["scope"]["status"] == "passed" and not allow_legacy_completed:
         _solution_path_evidence(checks["scope"], evidence_root)
     _band_verification(result, evidence_root, binding, accepted)
-    if accepted:
-        if binding is None:
-            binding = json.loads((Path(evidence_root) / 'final-binding.json').read_text())
-        _tool_evidence(result, evidence_root, binding)
+    # This private caller capability is only for runner-confirmed historical
+    # completed publication recovery. It is not exposed by the validator CLI,
+    # exemplar gate or agent report and cannot approve active/unpublished work.
+    if accepted and not allow_legacy_completed:
+        _tool_evidence(result, evidence_root, binding, exemplars=exemplars)
+        if not exemplars:
+            plan = binding.get('refill_plan')
+            if not isinstance(plan, dict) or plan.get('path') != 'refill-review-plan.json':
+                raise ValueError('accepted generator review requires runner-bound refill review plan')
+            name = plan['path']
+            if name not in checks['packaging']['evidence_paths']:
+                raise ValueError('packaging must assess the refill review plan')
+            _evidence([name], evidence_root, 'refill review plan', required=True)
+            if hashlib.sha256((Path(evidence_root) / name).read_bytes()).hexdigest() != plan.get('sha256'):
+                raise ValueError('refill review plan differs from runner binding')
     findings = result.get("findings")
     if not isinstance(findings, list):
         raise ValueError("findings must be a list")

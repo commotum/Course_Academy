@@ -16,9 +16,9 @@ RECIP_CASES={prefix+fn for prefix in ('indef_','def_')for fn in RECIP}
 FAMILIES={
     17592186068915:{band:LINEAR for band in ('easy','moderate','hard')},
     17592186068916:{'easy':RECIP,'moderate':RECIP_CASES,'hard':RECIP_CASES},
-    17592186068917:{'easy':TRIG,'moderate':TRIG,'hard':{'reciprocal_'+fn for fn in TRIG}|{'sqrt_sin','sqrt_cos'}},
+    17592186068917:{'easy':TRIG,'moderate':TRIG,'hard':TRIG|{'reciprocal_'+fn for fn in TRIG}|{'sqrt_sin','sqrt_cos','def_sin','def_cos'}},
     17592186068918:{'easy':{'sin','cos','tan','sec'},'moderate':{'sin','cos','tan','sec','csc','cot','sin2','cos3'},
-        'hard':{'rearranged_tan','rearranged_sec','nested_sin','nested_tan','def_sin2','def_cos3'}},
+        'hard':{'sin','cos','tan','sec','csc','cot','sin2','cos3','rearranged_tan','rearranged_sec','nested_sin','nested_tan','def_sin2','def_cos3'}},
 }
 
 
@@ -29,7 +29,7 @@ def validate_delivery_batch(records,kp_id):
     for record in records:
         q,m=record['question'],record.get('generation',{})
         contract=m.get('batch_contract')
-        if contract not in {'trig-substitution-recognition-v6','trig-substitution-recognition-v7'}:
+        if contract not in {'trig-substitution-recognition-v6','trig-substitution-recognition-v7','trig-substitution-recognition-v8'}:
             raise ValueError('Trig substitution requires the reviewed scaffolded band contract')
         band=str(q[':question/difficulty']).rsplit('/',1)[-1];family=m.get('family')
         if family not in FAMILIES[kp].get(band,set()):raise ValueError('Unsupported scaffolded family or difficulty')
@@ -68,8 +68,10 @@ def validate_delivery_batch(records,kp_id):
                 raise ValueError('No fractional amplitude/slope composition or large coefficients')
         if kp==17592186068917:
             role=params.get('inner_role')
-            if(role in('reciprocal','sqrt'))!=(band=='hard'):raise ValueError('Product band must reflect inner recognition, not heavier arithmetic')
-            if m['model']['lower']is not None:raise ValueError('Product recognition tasks must not stack radical bounds')
+            if role not in ('power','reciprocal','sqrt'):raise ValueError('Unsupported product substitution')
+            # Sources include hard power substitutions and familiar radical
+            # bounds (q-13467, q-13533). Extra inner recognition is optional.
+            if m['model']['lower']is not None and role!='power':raise ValueError('Avoid compounding reciprocal/radical inner recognition with definite bounds in this model')
         model=m['model'];shape=(band,family,model['substitution'],model['lower'],model['upper'])
         if shape in shapes:raise ValueError('Amplitude-only repetition in delivered practice')
         shapes.add(shape)

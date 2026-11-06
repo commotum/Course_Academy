@@ -24,8 +24,9 @@ from generator_report_repair import generator_repair_findings, pending_report_re
 from generator_progress import failure_signature, material_identity
 from generator_approval import make_approval, approved_band, ApprovalError
 from generator_session_binding import input_binding, bind_session
+from generator_phase_gate import InstructionalPhases
 
-PHASE_POLICY_VERSION = 2
+PHASE_POLICY_VERSION = 3
 VERIFICATION_BANDS = ('easy', 'moderate', 'hard')
 
 
@@ -153,7 +154,10 @@ class CodexSession:
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         templates = self.root / 'generate/pipeline'
-        template = templates / {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role]
+        phase = context.get('phase')
+        template = templates / ('source-account.md' if phase == 'source_account' else
+            'exemplar-review.md' if phase == 'exemplars' else
+            {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role])
         prompt = template.read_text().replace('{{context}}', json.dumps(context, indent=2))
         output = directory / 'result.json'
         bind_session(directory, input_binding(role, context, self.root))
@@ -185,7 +189,7 @@ class CodexSession:
             command += ['resume']
         command += ['--skip-git-repo-check', '--model', 'gpt-6.1-sol',
                    '-c', 'model_reasoning_effort="high"',
-                   '--output-schema', str(templates / (role + '.schema.json')),
+                   '--output-schema', str(templates / ('source-account.schema.json' if phase == 'source_account' else role + '.schema.json')),
                    '--output-last-message', str(output), '--json']
         command += [resume_id, '-'] if resume_id else ['-']
         # Count before spawning so parent/process crashes cannot reset an
@@ -240,7 +244,7 @@ def session_thread(directory):
     return found
 
 
-class Pipeline:
+class Pipeline(InstructionalPhases):
     def __init__(self, directory, request, publisher, *, root=ROOT, environment=None,
                  session=None, max_attempts=3, investigation_preparer=None):
         self.directory, self.root = Path(directory).resolve(), Path(root).resolve()
@@ -276,7 +280,7 @@ class Pipeline:
         """Bind live upstream inputs, but distinguish this agent's own draft edits."""
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
-        source = source_identity(read(self.directory / 'source/source.json'))
+        source = self.phase_source_identity()
         supplied_path = directory / 'supplied-inputs.json'
         previous = read(supplied_path) if supplied_path.exists() else {}
         outputs_path = directory / 'session-outputs.json'
@@ -286,28 +290,47 @@ class Pipeline:
         def capture(path):
             path = Path(path)
             sha = hashlib.sha256(path.read_bytes()).hexdigest()
-            snapshot = directory / 'supplied-files' / sha / path.name
+            value = read(path) if path.suffix == '.json' else path.read_text()
+            assets = asset_hashes(value, path.parent, self.math_root)
+            snapshot = directory / 'supplied-files' / (digest({'sha256': sha, 'assets': assets}) if assets else sha) / path.name
             snapshot.parent.mkdir(parents=True, exist_ok=True)
             if not snapshot.exists():
                 shutil.copy2(path, snapshot)
-            return {'sha256': sha, 'snapshot': str(snapshot), 'original': str(path)}
+            # Keep relative images beside the frozen artifact. Canonical math
+            # assets also receive immutable snapshots with an explicit mapping.
+            copied = {}
+            for asset, identity in assets.items():
+                source_asset = Path(asset)
+                relative = source_asset.relative_to(path.parent) if source_asset.is_relative_to(path.parent) else Path('assets') / identity / source_asset.name
+                target = snapshot.parent / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if not target.exists():
+                    shutil.copy2(source_asset, target)
+                copied[asset] = str(target)
+            return {'sha256': sha, 'snapshot': str(snapshot), 'original': str(path), 'assets': assets, 'asset_snapshots': copied}
 
         upstream = {}
-        for name in ('investigation_file', 'reference_file', 'investigation_result'):
+        for name in ('investigation_file', 'reference_file', 'investigation_result', 'target_account_file',
+                     'initial_source_analysis_file'):
             if name == 'investigation_result' and role == 'investigate':
                 continue
             value = context.get(name)
             if value and Path(value).is_file():
                 upstream[name] = capture(value)
                 context[name] = upstream[name]['snapshot']
-        mutable_paths = [self.directory / 'workspace/investigation.md',
-                         self.directory / 'workspace/instructional-account.md']
+        mutable_paths = ([] if context.get('phase') == 'source_account' else [
+            self.directory / 'workspace/investigation.md', self.directory / 'workspace/instructional-account.md',
+            self.directory / 'workspace/instructional-account.json'])
         if context.get('exemplars_file'):
             mutable_paths.append(Path(context['exemplars_file']))
         if produced is not None:
             mutable_paths.extend(Path(path) for path in produced.get('files', {}) if Path(path) not in mutable_paths)
         mutable = {str(path): hashlib.sha256(path.read_bytes()).hexdigest()
                    for path in mutable_paths if path.is_file()}
+        for path in mutable_paths:
+            if path.is_file() and path.suffix in ('.json', '.md', '.txt'):
+                value = read(path) if path.suffix == '.json' else path.read_text()
+                mutable.update(asset_hashes(value, path.parent, self.math_root))
         # During an unfinished persistent session these are the agent's draft
         # outputs. After a completed result, a subsequent external edit is new
         # input and must invalidate that result.
@@ -318,7 +341,8 @@ class Pipeline:
         supplied_mutable = previous.get('mutable_inputs', {}) if reuse_draft_inputs else mutable
         supplied = {'source': source, 'upstream': upstream, 'mutable_inputs': supplied_mutable}
         context['session_inputs'] = {**supplied, 'knowledge_point': self.state['request']['kp'],
-            'difficulty': self.state['request']['difficulty'], 'count': self.state['request']['count']}
+            'difficulty': self.state['request']['difficulty'], 'count': self.state['request']['count'],
+            'phase': context.get('phase')}
         if produced is not None and (directory / 'result.json').exists():
             result_hash = digest(read(directory / 'result.json'))
             if result_hash != produced.get('result_sha256'):
@@ -331,9 +355,15 @@ class Pipeline:
             path = inside(self.directory / 'workspace', result['exemplars_file'])
             if path not in mutable_paths:
                 mutable_paths.append(path)
-        save(outputs_path, {'result_sha256': digest(result), 'files': {
+        if context.get('phase') == 'source_account' and result.get('account_file'):
+            mutable_paths.append(inside(context['workspace'], result['account_file']))
+        output_files = {
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in mutable_paths if path.is_file()}})
+            for path in mutable_paths if path.is_file()}
+        for path in mutable_paths:
+            if path.is_file() and path.suffix in ('.json', '.md', '.txt'):
+                output_files.update(asset_hashes(read(path) if path.suffix == '.json' else path.read_text(), path.parent, self.math_root))
+        save(outputs_path, {'result_sha256': digest(result), 'files': output_files})
         return result
 
     def instructional_evidence(self):
@@ -342,13 +372,13 @@ class Pipeline:
                  ('investigation_file', 'investigation_result', 'exemplars_file', 'reference_file')]
         paths.append(str(self.directory / 'workspace/investigation.md'))
         paths.append(str(self.directory / 'workspace/instructional-account.md'))
+        paths.append(str(self.directory / 'workspace/instructional-account.json'))
         result = {str(Path(path).resolve()): hashlib.sha256(Path(path).read_bytes()).hexdigest()
                   for path in paths if path and Path(path).is_file()}
         examples = self.state.get('exemplars_file')
         if examples and Path(examples).is_file():
             records = read(examples)
-            if isinstance(records, list):
-                result.update(asset_hashes(records, Path(examples).parent, self.math_root))
+            result.update(asset_hashes(records, Path(examples).parent, self.math_root))
         return result
 
     def worker_code_identity(self):
@@ -382,6 +412,10 @@ class Pipeline:
                    if 'instructional_evidence' in self.state else {}),
                 **({'finding_dispositions': self.state['finding_dispositions']}
                    if self.state.get('finding_dispositions') else {}),
+                **({'initial_source_analysis_sha256': self.state['verifier_account']['sha256']}
+                   if self.state.get('verifier_account') else {}),
+                **({'exemplar_gate': self.state['exemplar_gate']['inputs']} if self.state.get('exemplar_gate') else {}),
+                **({'refill_plan': self.state['refill_plan']} if self.state.get('refill_plan') else {}),
                 'verification_batches': {band: {key: row[key] for key in
                     ('batch_hash', 'assets', 'seed', 'count', 'requested_count', 'maximum_distinct_batch') if key in row}
                     for band, row in self.state.get('verification_batches', {}).items()}}
@@ -552,6 +586,9 @@ class Pipeline:
                 'repair_preflight_file': str(self.directory / 'repair-preflight.json'),
                 'engine_repair_allowed': True,
                 'investigation_file': self.state.get('investigation_file'),
+                'investigation_account_file': str(self.directory / 'workspace/investigation.md'),
+                'target_account_file': (self.state.get('target_account') or {}).get('path'),
+                'initial_source_analysis_file': (self.state.get('verifier_account') or {}).get('path'),
                 'investigation_result': self.state.get('investigation_result'),
                 'reference_file': self.state.get('reference_file'),
                 'exemplars_file': self.state.get('exemplars_file'),
@@ -567,6 +604,8 @@ class Pipeline:
         from generator_investigation import prepare_investigation
         evidence = self.directory / 'investigation'
         evidence.mkdir(exist_ok=True)
+        if not self.source_account_phase('investigate'):
+            return
         source = read(self.directory / 'source/source.json')
         prepare = self.investigation_preparer or prepare_investigation
         prepared = prepare(self.publisher, source, evidence)
@@ -577,8 +616,8 @@ class Pipeline:
             directory = evidence if attempts == 0 else evidence / f'correction-{attempts}'
             context = {**self.context(evidence), **prepared,
                        'investigation_feedback': self.state.get('investigation_error')}
-            if attempts:
-                context['resume_session_id'] = session_thread(evidence)
+            context['phase'] = 'design_anchors'
+            context['resume_session_id'] = session_thread(evidence) or self.state.get('investigate_thread')
             result = self.session_call('investigate', context, directory)
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
@@ -588,8 +627,8 @@ class Pipeline:
             else:
                 try:
                     filename = result.get('exemplars_file')
-                    if prepared.get('needs_exemplars') and not filename:
-                        raise ValueError('This source needs three complete exemplar questions; save exemplars_file before returning ready')
+                    if not filename:
+                        raise ValueError('Select or construct three complete local anchors for independent verification before authoring')
                     if filename:
                         path = inside(self.directory / 'workspace', filename)
                         records = read(path)
@@ -606,14 +645,16 @@ class Pipeline:
                         asset_hashes(records, path.parent, self.math_root)
                         # Design anchors remain local, even after acceptance.
                         self.persist(exemplars_file=str(path))
+                    self.required_investigation_handoff()
+                    self.persist(investigation_result=str(directory / 'result.json'))
+                    if not self.review_exemplars():
+                        return
                     self.persist(stage='sample' if self.state['request'].get('review_existing') and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
                                  investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
                                  investigation_error=None)
                     return
                 except (OSError, ValueError) as invalid:
-                    # Never replace an unresolved database request. The publisher
-                    # recovers it before evaluating any fresh exemplar proposal.
-                    error = {'error': str(invalid), 'instruction': 'Correct the exemplar records or helper, then finish the same investigation. Do not edit imported questions.'}
+                    error = {'error': str(invalid), 'instruction': 'Correct the local anchors and required account, preserving target learner work. An optional reference is not authority. Do not edit imported questions.'}
             attempts += 1
             self.persist(investigation_rounds=attempts, investigation_error=error)
             save(evidence / 'feedback.json', error)

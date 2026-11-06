@@ -78,13 +78,23 @@ class TrigSubstitutionTests(unittest.TestCase):
         bad=copy.deepcopy(r);bad['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']+=' + 0'
         with self.assertRaisesRegex(ValueError,'canonical answer fragment'):validate_delivery_batch([bad],17592186068918)
 
-    def test_products_hard_uses_inner_recognition_without_radical_bounds(self):
-        rows=self.rows(17592186068917,'hard')
-        self.assertEqual({r['generation']['family']for r in rows},set(self.g.CASES[17592186068917]['hard']))
-        for r in rows:
-            m=r['generation']
-            self.assertIn(m['parameters']['inner_role'],('reciprocal','sqrt'))
-            self.assertIsNone(m['model']['lower'])
+    def test_hard_preserves_source_power_and_familiar_bound_families(self):
+        import sympy as s
+        kp=17592186068917;x=self.g.X
+        for family in ('sec_tan','csc_cot','reciprocal_sec2','sqrt_sin','def_cos'):
+            r=self.g.generate(kp,'hard',17,template=family,evidence=evidence(kp))
+            validate_delivery_batch([r],kp)
+            m=r['generation']['model']
+            primitive=s.sympify(m['primitive'],locals={'x':x})
+            integrand=s.sympify(m['integrand'],locals={'x':x})
+            self.assertEqual(s.simplify(s.diff(primitive,x)-integrand),0)
+            if m['lower'] is not None:
+                value=s.simplify(primitive.subs(x,s.sympify(m['upper']))-primitive.subs(x,s.sympify(m['lower'])))
+                self.assertEqual(s.simplify(value-s.sympify(m['result'])),0)
+        # Hard source q-113998 is the direct csc logarithmic derivative, not
+        # necessarily a nested or rearranged expression.
+        r=self.g.generate(17592186068918,'hard',17,template='csc',evidence=evidence(17592186068918))
+        validate_delivery_batch([r],17592186068918)
 
     def test_actual_batch_rejects_clones_and_legacy_contracts(self):
         kp=17592186068917;r=self.rows(kp,'moderate',1)[0]
