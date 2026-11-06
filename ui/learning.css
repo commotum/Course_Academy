@@ -55,9 +55,11 @@ main.lesson-main { --lesson-toolbar-height: 52px; max-width: 820px; padding: 24p
 .answer-field[data-type="checkbox"] .choice .prose mjx-container:has([data-mml-node="mtable"]) > svg { max-width: 100%; height: auto; }
 /* Fill the label so short answers do not become tiny scrollboxes. Keep wide
    formulas readable without enabling vertical scrollbars on inline math. */
-.answer-field[data-type="radio"] .choice .prose { flex: 1; overflow-x: auto; overflow-y: hidden; padding: 6px 0; }
-/* Preserve natural math size without widening the page for correct-answer summaries. */
-.worked-solution > .response-summary + .prose { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 6px 0; }
+.answer-field[data-type="radio"] .choice .prose,
+.answer-field[data-type="checkbox"] .choice .prose { flex: 1; overflow-x: auto; overflow-y: hidden; padding: 6px 0; }
+/* Preserve natural math size and baseline without widening the page for
+   correct-answer summaries or worked-solution prose. */
+.worked-solution > .prose { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 6px 0; }
 .lesson-main .choice:has(input:disabled):hover { border-color: transparent; }
 .lesson-main .choice:has(input:checked):hover { border-color: var(--tone-99); }
 .lesson-main .answer-actions { margin-top: 20px; }
