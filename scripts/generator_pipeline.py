@@ -300,6 +300,11 @@ class Pipeline(InstructionalPhases):
         outputs_path = directory / 'session-outputs.json'
         produced = read(outputs_path) if outputs_path.exists() else None
         context = dict(context)
+        if role == 'investigate':
+            # A later verifier account and the investigator's own structured
+            # result are never upstream inputs to this role on restart.
+            context.pop('initial_source_analysis_file', None)
+            context.pop('investigation_result', None)
 
         def capture(path):
             path = Path(path)
@@ -333,11 +338,20 @@ class Pipeline(InstructionalPhases):
                 upstream[name] = capture(value)
                 context[name] = upstream[name]['snapshot']
         mutable_paths = ([] if context.get('phase') == 'source_account' else [
-            self.directory / 'workspace/investigation.md', self.directory / 'workspace/instructional-account.md',
-            self.directory / 'workspace/instructional-account.json'])
+            self.directory / 'workspace/investigation.md'])
+        if role != 'investigate' and context.get('phase') != 'source_account':
+            mutable_paths.extend([self.directory / 'workspace/instructional-account.md',
+                self.directory / 'workspace/instructional-account.json'])
         if context.get('exemplars_file'):
             mutable_paths.append(Path(context['exemplars_file']))
-        if produced is not None:
+        if role == 'investigate' and context.get('phase') != 'source_account':
+            result_path = directory / 'result.json'
+            prior_result = read(result_path) if result_path.is_file() else {}
+            if prior_result.get('exemplars_file'):
+                path = inside(self.directory / 'workspace', prior_result['exemplars_file'])
+                if path not in mutable_paths:
+                    mutable_paths.append(path)
+        elif produced is not None:
             mutable_paths.extend(Path(path) for path in produced.get('files', {}) if Path(path) not in mutable_paths)
         mutable = {str(path): hashlib.sha256(path.read_bytes()).hexdigest()
                    for path in mutable_paths if path.is_file()}
@@ -632,14 +646,18 @@ class Pipeline(InstructionalPhases):
         attempts = self.state.get('investigation_rounds', 0)
         while attempts < self.max_attempts:
             directory = evidence if attempts == 0 else evidence / f'correction-{attempts}'
-            context = {**self.context(evidence), **prepared,
-                       'investigation_feedback': self.state.get('investigation_error')}
-            context['phase'] = 'design_anchors'
+            context = self.investigation_context(prepared, evidence)
             context['resume_session_id'] = self.state.get('investigate_thread') or session_thread(evidence)
-            result = self.session_call('investigate', context, directory)
-            save(directory / 'result.json', result)
-            self.persist(investigate_thread=session_thread(directory) or self.state.get('investigate_thread'))
-            self.reload_repaired_runner()
+            draft_inputs = self.investigation_input_identity(context)
+            draft = self.saved_investigation_draft(context, directory)
+            if draft:
+                result_path, result = draft
+            else:
+                result = self.session_call('investigate', context, directory)
+                result_path = directory / 'result.json'
+                save(result_path, result)
+                self.persist(investigate_thread=session_thread(directory) or self.state.get('investigate_thread'))
+                self.reload_repaired_runner()
             if result.get('status') != 'ready':
                 error = {'error': 'Finish the target-grounded account and three local anchors; references are optional and cannot supply a different target task. Repair relevant tools yourself.',
                          'result': result}
@@ -665,14 +683,21 @@ class Pipeline(InstructionalPhases):
                         # Design anchors remain local, even after acceptance.
                         self.persist(exemplars_file=str(path))
                     self.required_investigation_handoff()
-                    self.persist(investigation_result=str(directory / 'result.json'))
+                    self.persist(investigation_result=str(result_path), investigation_draft={
+                        'inputs': draft_inputs, 'result_file': str(result_path),
+                        'result_sha256': digest(result)})
                     if not self.review_exemplars():
                         return
-                    self.persist(stage='sample' if (self.state['request'].get('review_existing') or self.state.get('reused_authorship')) and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
+                    self.persist(stage='sample' if (self.state['request'].get('review_existing') or self.state.get('reused_authorship')) and self.state.get('manifest') else 'generate', investigation_result=str(result_path),
                                  investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
                                  investigation_error=None)
                     return
                 except (OSError, ValueError) as invalid:
+                    # A missing or malformed required artifact needs an actual
+                    # bounded design repair, not repeated reuse of a ready
+                    # result that cannot reconstruct it. Valid verifier edits
+                    # reach the exemplar gate above without clearing this.
+                    self.persist(investigation_draft=None)
                     error = {'error': str(invalid), 'instruction': 'Correct the local anchors and required account, preserving target learner work. An optional reference is not authority. Do not edit imported questions.'}
             attempts += 1
             self.persist(investigation_rounds=attempts, investigation_error=error)
@@ -1366,6 +1391,7 @@ class Pipeline(InstructionalPhases):
             self.state = read(self.path)
             self.recover_legacy_exemplars()
             self.upgrade_phases()
+            self.recover_completed_investigation()
             lock_owner = getattr(self.session, 'lock_owner', self.session)
             if isinstance(lock_owner, CodexSession):
                 lock_owner.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())

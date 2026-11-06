@@ -63,6 +63,92 @@ class PhaseGateTests(unittest.TestCase):
         self.assertEqual(result['stage'], 'blocked')
         self.assertEqual(session.calls, [])
 
+    def test_ready_investigator_survives_verifier_repairs_and_parent_reload_without_launch(self):
+        from unittest.mock import Mock, patch
+        from generator_pipeline import CodexSession, RunnerChanged
+        from generator_session_binding import bind_session
+        pending = {}
+        class RealDesign(FakeSession):
+            repaired = False
+            crash = False
+            def __call__(inner, role, context, directory):
+                if role == 'investigate':
+                    self.assertNotIn('initial_source_analysis_file', context)
+                    self.assertNotIn('investigation_result', context)
+                    pending.update(role=role, context=context, directory=directory)
+                    return CodexSession(root=Path(__file__).resolve().parents[1])(role, context, directory)
+                return super().__call__(role, context, directory)
+            def phase_call(inner, role, context, directory):
+                if context['phase'] == 'exemplars' and not inner.repaired:
+                    account = Path(context['investigation_account_file'])
+                    account.write_text(account.read_text() + '\nVerifier clarified the independent multiplication.\n')
+                    path = Path(context['exemplars_file'])
+                    rows = json.loads(path.read_text())
+                    rows[0]['question'][':question/worked-solution'] += ' Verifier checked this multiplication.'
+                    path.write_text(json.dumps(rows))
+                    inner.repaired = True
+                elif context['phase'] == 'exemplars':
+                    inner.crash = True
+                return super().phase_call(role, context, directory)
+        session = RealDesign()
+        pipeline = self.prepare(session)
+        def spawn(command, **kwargs):
+            process = Mock(returncode=0, pid=-1)
+            def finish(*args, **kwargs):
+                result = FakeSession.__call__(session, pending['role'], pending['context'], pending['directory'])
+                handoff = Path(pending['context']['investigation_account_file'])
+                handoff.write_text(handoff.read_text() + '\nInvestigator completed the design handoff.\n')
+                Path(command[command.index('--output-last-message') + 1]).write_text(json.dumps(result))
+            process.communicate.side_effect = finish
+            return process
+        def reload():
+            if session.crash:
+                session.crash = False
+                raise RunnerChanged('Simulated parent reload after accepted exemplar result')
+        pipeline.reload_repaired_runner = reload
+        with patch('generator_pipeline.subprocess.Popen', side_effect=spawn) as launches:
+            with self.assertRaises(RunnerChanged): pipeline.investigate()
+            self.assertIn('investigation_draft', pipeline.state)
+            handoff = (self.job / 'workspace/investigation.md').read_bytes()
+            anchors = (self.job / 'workspace/exemplars.json').read_bytes()
+            execution = (self.job / 'investigation/execution.json').read_bytes()
+            resumed = self.pipeline(session); resumed.investigate()
+            self.assertEqual(resumed.state['stage'], 'generate')
+            self.assertEqual(launches.call_count, 1)
+            self.assertEqual((self.job / 'investigation/execution.json').read_bytes(), execution)
+            self.assertEqual((self.job / 'workspace/investigation.md').read_bytes(), handoff)
+            self.assertEqual((self.job / 'workspace/exemplars.json').read_bytes(), anchors)
+            self.assertTrue(resumed.exemplar_gate_current())
+            # Reproduce the old archive+exhaustion bug and migrate its intact
+            # ready result, without granting a new execution allowance.
+            resumed.state.pop('investigation_draft')
+            directory = self.job / 'investigation'
+            old = json.loads((directory / 'input-binding.json').read_text())
+            changed = json.loads(json.dumps(old)); changed['inputs']['upstream']['initial_source_analysis_file'] = {'sha256': 'downstream'}
+            bind_session(directory, changed)
+            budget = json.loads((directory / 'execution.json').read_text()); budget['launches'] = 3
+            (directory / 'execution.json').write_text(json.dumps(budget))
+            resumed.persist(stage='blocked', error={'code': 'agent_session_retry_exhausted',
+                'cause': {'role': 'investigate', 'session_directory': str(directory)}, 'resume_stage': 'investigate'})
+            before = (directory / 'execution.json').read_bytes()
+            self.assertTrue(resumed.recover_completed_investigation())
+            resumed.investigate()
+            self.assertEqual(resumed.state['stage'], 'generate')
+            self.assertEqual(launches.call_count, 1)
+            self.assertEqual((directory / 'execution.json').read_bytes(), before)
+            self.assertFalse(resumed.state['completed_result_recoveries'][-1]['launch_budget_changed'])
+            # The recovered checkpoint still binds immutable upstream inputs.
+            context = resumed.investigation_context({'investigation_file': resumed.state['investigation_file'],
+                'reference_file': resumed.state['reference_file']}, directory)
+            for key in ('investigation_file', 'reference_file', 'target_account_file'):
+                with self.subTest(changed=key):
+                    changed_path = self.job / (key + '.json')
+                    changed_path.write_text('{"meaning":"different upstream evidence"}')
+                    self.assertIsNone(resumed.saved_investigation_draft({**context, key: str(changed_path)}, directory))
+            self.publisher.material['question'] = 'Different target operation.'
+            self.publisher.extract_source(123, self.job / 'source')
+            self.assertIsNone(resumed.saved_investigation_draft(context, directory))
+
     def test_exemplar_cli_uses_runner_binding_and_rejects_missing_tool_report(self):
         import subprocess
         import sys

@@ -53,6 +53,90 @@ def aggregate_source_budget(phase_root, default_limit=3):
 
 
 class InstructionalPhases:
+    def investigation_context(self, prepared, evidence):
+        """Design consumes upstream accounts, never later verifier/author work."""
+        context = self.context(evidence)
+        allowed = {'repo_root', 'workspace', 'source_root', 'source_file', 'inventory_file',
+            'publisher_file', 'question_selection_file', 'evidence_root', 'requested_difficulty',
+            'count', 'requested_count', 'sample_seed', 'knowledge_point', 'python', 'math_root',
+            'engine_repair_allowed', 'investigation_file', 'investigation_account_file',
+            'target_account_file', 'reference_file', 'exemplars_file', 'shared_repair_command'}
+        return {**{key: value for key, value in context.items() if key in allowed}, **prepared,
+            'phase': 'design_anchors', 'investigation_feedback': self.state.get('investigation_error')}
+
+    def investigation_input_identity(self, context):
+        from generator_pipeline import asset_hashes
+        from generator_session_binding import policy_identity
+        upstream = {}
+        for key in ('investigation_file', 'reference_file', 'target_account_file'):
+            if context.get(key):
+                path = Path(context[key])
+                value = read(path) if path.suffix == '.json' else path.read_text()
+                upstream[key] = {'sha256': sha(path), 'assets': asset_hashes(value, path.parent, self.math_root)}
+        return {'source': self.phase_source_identity(), 'upstream': upstream,
+            'policy': policy_identity(self.root, 'investigate'), 'phase': 'design_anchors',
+            'knowledge_point': self.state['request']['kp'], 'difficulty': self.state['request']['difficulty'],
+            'count': self.state['request']['count']}
+
+    def saved_investigation_draft(self, context, directory):
+        """Downstream repairs are gate inputs, not a reason to rerun their author."""
+        from generator_pipeline import digest
+        identity = self.investigation_input_identity(context)
+        draft = self.state.get('investigation_draft')
+        if draft:
+            path = Path(draft['result_file'])
+            if draft['inputs'] == identity and path.is_file() and digest(read(path)) == draft['result_sha256']:
+                return path, read(path)
+            return None
+        # Migrate an already-ready design whose parent stopped in exemplar
+        # review. A faulty old circular binding may have archived its result;
+        # recover only exact immutable inputs and an intact recorded result.
+        if not self.state.get('investigation_result'):
+            return None
+        candidates = [Path(self.state['investigation_result']), Path(directory) / 'result.json',
+            *sorted(Path(directory).glob('input-revisions/*/result.json'), reverse=True)]
+        for path in dict.fromkeys(candidates):
+            try:
+                binding = read(path.parent / 'input-binding.json')
+                outputs = read(path.parent / 'session-outputs.json')
+                result = read(path)
+                supplied = binding['inputs']
+                upstream = {key: {'sha256': row['sha256'], 'assets': row.get('assets', {})}
+                    for key, row in supplied['upstream'].items()
+                    if key in ('investigation_file', 'reference_file', 'target_account_file')}
+                prior = {key: supplied[key] for key in ('source', 'phase', 'knowledge_point', 'difficulty', 'count')}
+                prior.update(upstream=upstream, policy=binding['policy'])
+                if (binding['role'] != 'investigate' or prior != identity or result.get('status') != 'ready'
+                        or outputs.get('result_sha256') != digest(result)):
+                    continue
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+            self.persist(investigation_draft={'inputs': identity, 'result_file': str(path),
+                'result_sha256': digest(result), 'recovered_from': str(path.parent)})
+            return path, result
+        return None
+
+    def recover_completed_investigation(self):
+        """A completed design outranks a later false cache-budget exhaustion."""
+        error = self.state.get('error') or {}
+        cause = error.get('cause') or {}
+        evidence = self.directory / 'investigation'
+        if (self.state['stage'] != 'blocked' or error.get('code') != 'agent_session_retry_exhausted'
+                or cause.get('role') != 'investigate' or error.get('resume_stage') != 'investigate'
+                or Path(cause.get('session_directory', '')).parent != self.directory
+                or Path(cause['session_directory']) != evidence):
+            return False
+        context = self.investigation_context({key: self.state.get(key)
+            for key in ('investigation_file', 'reference_file')}, evidence)
+        draft = self.saved_investigation_draft(context, evidence)
+        if draft is None:
+            return False
+        events = self.state.get('completed_result_recoveries', [])
+        self.persist(stage='investigate', error=None, needs_repair=False,
+            completed_result_recoveries=[*events, {'time': time.time(), 'prior_error': error,
+                'result_file': str(draft[0]), 'launch_budget_changed': False}])
+        return True
+
     def phase_source_identity(self):
         from generator_pipeline import source_identity, asset_hashes
         path = self.directory / 'source/source.json'
