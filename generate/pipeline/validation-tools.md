@@ -147,6 +147,9 @@ Save `learner-obligations.json` and cite it in progression evidence:
   `required_work` string list, applicable zero-based `source_reasoning_steps`,
   `preservation`, `difficulty_justification`, and `narrow_layout` with
   `status: required|not_applicable` and a concrete `reason`.
+  Account for every source reasoning step: a genuinely conditional step absent
+  from this family needs `source_step_exemptions: [{index, reason}]`; do not drop
+  a required step merely because the generated prompt already supplies it.
 * Each representative has `fields`, one per actual answer field, containing
   `field_index`, `endpoint`, and `equivalence` with `status: tested|not_applicable`
   plus a source/response-contract reason. Test a valid equivalent when relevant;

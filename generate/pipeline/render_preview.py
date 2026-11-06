@@ -339,6 +339,9 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
         changed_resources.update(name for name, identity in implementation.items() if sha256_file(REPO / name) != identity)
         if changed_resources:
             raise ValueError('Renderer resources changed during inspection: ' + ', '.join(sorted(changed_resources)))
+        for case in report['cases']:
+            for captured in [case, *case.get('dropdowns', [])]:
+                captured['screenshot_sha256'] = sha256_file(output / captured['screenshot'])
         report.update({"format": "course-academy-rendering-v1", "input_file": "input.json",
                        "input_sha256": sha256_file(output / "input.json"), "record_sha256": identities,
                        "checked_record_sha256": [identities[i] for i in selected],

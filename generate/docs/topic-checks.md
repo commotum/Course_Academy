@@ -2,6 +2,11 @@
 
 Read the sections applicable to the target operation and response family. These examples retain concrete lessons from repaired generators; they do not impose another task, prerequisite or balance quota. [The principles](../principles.md) govern their interpretation. Keep a valid nearby case when repairing a restriction.
 
+For the versioned integration constructors, [scoped policy rationales](scoped-policy-rationale.md)
+identify why each retained class of guard exists and the source-supported cases
+that must survive. These boundaries may be revised with evidence; a prior guard
+does not override the target learner operation.
+
 ## Substitution and antiderivatives
 
 When the target requires choosing a substitution and completing an integral, easy practice retains both requirements. A supplied-u task under another KP does not establish the same objective. Simplify mathematical instances or arithmetic, or use source-compatible complete-answer choices; do not stop at a transformed integral. Inspect the displayed prompt and every choice, not support metadata.

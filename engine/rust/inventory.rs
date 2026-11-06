@@ -21,6 +21,12 @@ pub fn content_signals(s: &EntitySnapshot, kp: u64) -> Result<Value> {
                 "answer-field/", "answer/", "multistep/", "multistep-step/", "assigned-problem/",
                 "tutorial/", "text/", "image/", "video/"].iter().any(|prefix| name.starts_with(prefix)));
             row.remove("knowledge-point/question-generator");
+            if row.get("answer-field/type").map(|value| s.ident(value)).transpose()?.as_deref()
+                .is_some_and(|kind| matches!(kind, "answer-field.type/blank" | "answer-field.type/free")) {
+                // Entered learner responses accumulate in these owned banks;
+                // only the canonical answer changes the instructional contract.
+                row.insert("answer-field/choices".into(), json!(s.optional_ref(id, "answer-field/correct")?.into_iter().collect::<Vec<_>>()));
+            }
             if source && row.contains_key("knowledge-point/id") {
                 let imports: Vec<_> = if id == target { s.refs(id, "knowledge-point/questions")?.into_iter()
                     .filter(|q| s.entity(*q).is_ok_and(|q| q.contains_key("question/math-academy-id"))).collect() }
@@ -31,7 +37,7 @@ pub fn content_signals(s: &EntitySnapshot, kp: u64) -> Result<Value> {
             for attr in ["knowledge-point/canonical-example", "topic/knowledge-points", "activity/steps",
                 "step/content", "multistep/steps", "multistep-step/question", "assigned-problem/content",
                 "question/answer-fields", "answer-field/choices", "answer-field/correct"] {
-                if let Some(value) = original.get(attr) {
+                if let Some(value) = row.get(attr) {
                     if let Value::Array(values) = value {
                         for value in values { pending.insert(s.eid(value)?); }
                     } else if !value.is_null() { pending.insert(s.eid(value)?); }
@@ -428,19 +434,23 @@ mod tests {
             (3, json!({"question/id":"generated", "question/problem":"Compute 2+1.",
                        "question/answer-fields":[5]})),
             (4, json!({"question/id":"canonical", "question/problem":"Compute 1+1."})),
-            (5, json!({"answer-field/id":"field", "answer-field/choices":[6], "answer-field/correct":6})),
+            (5, json!({"answer-field/id":"field", "answer-field/type":12, "answer-field/choices":[6], "answer-field/correct":6})),
             (6, json!({"answer/id":"answer", "answer/value":"3"})),
             (7, json!({"activity/id":"lesson", "activity/type":8, "activity/scope":1, "activity/steps":[9]})),
             (8, json!({"db/ident":"activity.type/lesson"})),
             (9, json!({"step/id":"step", "step/content":10})),
             (10, json!({"tutorial/id":"tutorial", "tutorial/content":"Add the operands."})),
             (11, json!({"learner/id":"learner", "learner/activity":[]})),
+            (12, json!({"db/ident":"answer-field.type/blank"})),
         ].into_iter().map(|(id,row)|(id,row.as_object().unwrap().clone())).collect();
         let signal = |records: &BTreeMap<u64, crate::schema::Record>, basis| -> Result<Value> {
             content_signals(&EntitySnapshot::new(records.clone(), basis)?, 2)
         };
         let initial = signal(&records, 1)?;
         records.get_mut(&11).unwrap().insert("learner/activity".into(), json!([7]));
+        assert_eq!(initial, signal(&records, 50)?);
+        records.insert(13, json!({"answer/id":"entered-response", "answer/value":"4"}).as_object().unwrap().clone());
+        records.get_mut(&5).unwrap().insert("answer-field/choices".into(), json!([6,13]));
         assert_eq!(initial, signal(&records, 50)?);
         records.get_mut(&6).unwrap().insert("answer/value".into(), json!("4"));
         let changed_answer = signal(&records, 51)?;
