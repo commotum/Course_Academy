@@ -98,6 +98,25 @@ const audit = __VISIBLE_DOM_AUDIT__;
       const stem = config.output + '/' + filename;
       await page.screenshot({path:stem+'.png',fullPage:true,animations:'disabled'});
       fs.writeFileSync(stem+'.html',await page.content());
+      // Wide prose math is intentionally horizontally scrollable in the player.
+      // Retain the left-edge screenshot above, then inspect the hidden right edge.
+      state.horizontalMath = await page.evaluate(() =>
+        [...document.querySelectorAll('.lesson-content mjx-container')]
+          .filter(node => node.getClientRects().length && node.clientWidth > 0
+            && node.scrollWidth > node.clientWidth + 1)
+          .map(node => {
+            node.scrollLeft = node.scrollWidth;
+            return {clientWidth:node.clientWidth, scrollWidth:node.scrollWidth,
+              overflowX:getComputedStyle(node).overflowX, scrollLeft:node.scrollLeft};
+          }));
+      if (state.horizontalMath.length) {
+        state.horizontalMathScreenshot = filename + '-math-scroll-right.png';
+        await page.screenshot({path:config.output + '/' + state.horizontalMathScreenshot,
+          fullPage:true,animations:'disabled'});
+        await page.evaluate(() => {
+          for (const node of document.querySelectorAll('.lesson-content mjx-container')) node.scrollLeft = 0;
+        });
+      }
       state.dropdowns = [];
       // The completed preview intentionally disables inputs. Load an active
       // presentation through the same unmodified UI to exercise real menus.
@@ -135,6 +154,8 @@ const audit = __VISIBLE_DOM_AUDIT__;
       state.passed=!errors.length && !state.mathErrors.length && !state.brokenImages.length
         && !state.danglingGlyphs.length && !state.rawTex.length && !state.codeMath.length
         && !state.internalFieldLabels.length && state.fonts==='loaded'
+        && state.horizontalMath.every(math => ['auto','scroll'].includes(math.overflowX)
+          && math.scrollLeft > 0)
         && (!config.expectedMath[presentation][index] || state.mathContainers>0)
         && state.dropdowns.every(menu => menu.open && !menu.rawTex.length && !menu.codeMath.length
           && !menu.mathErrors.length && !menu.brokenImages.length && !menu.danglingGlyphs.length
@@ -340,6 +361,8 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
         if changed_resources:
             raise ValueError('Renderer resources changed during inspection: ' + ', '.join(sorted(changed_resources)))
         for case in report['cases']:
+            if case.get('horizontalMathScreenshot'):
+                case['horizontalMathScreenshotSha256'] = sha256_file(output / case['horizontalMathScreenshot'])
             for captured in [case, *case.get('dropdowns', [])]:
                 captured['screenshot_sha256'] = sha256_file(output / captured['screenshot'])
         report.update({"format": "course-academy-rendering-v1", "input_file": "input.json",

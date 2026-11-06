@@ -93,7 +93,9 @@ DOM/typesetting checks do not establish readability, correct cells or absence of
 answer-revealing prompt/choice annotations. Active and completed states support
 different claims. Keep recognized reports and record fingerprints intact; cite
 reports for actual final raw or delivered records. Rendering cannot certify math
-or grading.
+or grading. When prose math overflows horizontally, the report also records its
+scroll geometry and a `horizontalMathScreenshot` at the right edge. Inspect both
+left- and right-edge screenshots; inaccessible overflow fails the helper audit.
 
 ## Shared repository repairs
 
