@@ -21,6 +21,8 @@ class GeneratorFinalBindingRecoveryTests(unittest.TestCase):
         pipeline.ensure_inventory()
         evidence = pipeline.review_directory()
         evidence.mkdir()
+        pipeline.seed_verifier_account(evidence)
+        pipeline.prepare_refill_review(evidence)
         save(evidence / 'review-binding.json', pipeline.review_binding())
         save(evidence / 'execution.json', {'status': 'failed', 'persistent_session': True, 'launches': 1})
         (evidence / 'events.jsonl').write_text(json.dumps({'type': 'thread.started', 'thread_id': 'original-verifier'}) + '\n')

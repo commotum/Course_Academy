@@ -216,5 +216,32 @@ class PhaseGateTests(unittest.TestCase):
         self.assertEqual(snapshots[0].read_text(), '<svg>original diagram</svg>')
         self.assertEqual(snapshots[1].read_text(), '<svg>revised diagram</svg>')
 
+    def test_active_approval_binds_retained_counterexample_and_nested_input_bytes(self):
+        pipeline = self.pipeline(FakeSession())
+        state = pipeline.run(stop_after='validate')
+        evidence = Path(state['review']).parent
+        history = {'findings': [{'id': 'old-given-step', 'finding': {'kind': 'restriction',
+            'description': 'Earlier account required supplying the target operation.'}}], 'events': []}
+        history_path = self.job / 'repair-history.json'; history_path.write_text(json.dumps(history))
+        (evidence / 'rationale.md').write_text('Target source requires the learner to choose the operation independently.')
+        (evidence / 'witness.json').write_text(json.dumps({'given': 'operand only', 'required': 'choose and calculate'}))
+        (evidence / 'counterexample.json').write_text(json.dumps({'input_file': 'witness.json'}))
+        (evidence / 'finding-dispositions.json').write_text(json.dumps({
+            'format': 'course-academy-finding-dispositions-v1', 'findings': [{
+                'id': 'old-given-step', 'disposition': 'superseded', 'reason': 'Original demand removed the target decision.',
+                'source_refs': ['fixture-source-1'], 'evidence_paths': ['rationale.md'],
+                'counterexample_path': 'counterexample.json'}]}))
+        pipeline.check_repair_regressions(evidence)
+        pipeline.verify_approval_inputs()
+        self.assertIn('witness.json', pipeline.state['finding_dispositions']['evidence_binding']['files'])
+        (evidence / 'witness.json').write_text(json.dumps({'given': 'answer supplied'}))
+        with self.assertRaisesRegex(ValueError, 'counterexample changed'):
+            pipeline.verify_approval_inputs()
+        self.assertEqual(json.loads(history_path.read_text()), history)
+        # Historical dispositions have no new marker and are not mass-upgraded.
+        value = dict(pipeline.state['finding_dispositions']); value.pop('evidence_binding')
+        pipeline.persist(finding_dispositions=value)
+        pipeline.verify_approval_inputs()
+
 
 if __name__ == '__main__': unittest.main()

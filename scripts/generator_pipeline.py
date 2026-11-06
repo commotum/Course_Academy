@@ -20,7 +20,8 @@ sys.path.insert(0, str(ROOT))
 from inventory_jobs import save
 from generator_packages import package_digest, publish_package, resolve_registered_script, check_dependencies, verify_package
 from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_only_review
-from generator_report_repair import generator_repair_findings, pending_report_repair, finding_supersessions
+from generator_report_repair import (generator_repair_findings, pending_report_repair,
+    finding_supersessions, finding_evidence_binding, verify_finding_evidence)
 from generator_progress import failure_signature, material_identity
 from generator_approval import make_approval, approved_band, ApprovalError
 from generator_session_binding import input_binding, bind_session
@@ -1065,6 +1066,8 @@ class Pipeline(InstructionalPhases):
         dispositions = self.state.get('finding_dispositions')
         if dispositions and hashlib.sha256(Path(dispositions['path']).read_bytes()).hexdigest() != dispositions['sha256']:
             raise ValueError('Reviewed finding dispositions changed')
+        if dispositions:
+            verify_finding_evidence(dispositions['path'], dispositions.get('evidence_binding'))
         if (not self.is_refill and self.state.get('phase_policy_version', 0) >= PHASE_POLICY_VERSION
                 and self.state.get('exemplar_gate') and not allow_draft_package_change
                 and not (self.state['stage'] == 'verified' and (self.state.get('publication') or {}).get('passed') is True)
@@ -1197,7 +1200,8 @@ class Pipeline(InstructionalPhases):
         if path is not None and path.is_file():
             superseded = finding_supersessions(path, retained)
             self.persist(finding_dispositions={'path': str(path),
-                'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'ids': sorted(superseded)})
+                'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'ids': sorted(superseded),
+                'evidence_binding': finding_evidence_binding(path, retained)})
         required = generator_repair_findings(retained, superseded)
         if not required:
             return

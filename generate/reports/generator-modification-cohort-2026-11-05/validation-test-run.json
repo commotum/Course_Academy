@@ -1,0 +1,66 @@
+{
+  "scope": "Generator, inventory, integration/inverse/trig/scoped-policy Python regressions; browser module separate. Unit fake-agent fixtures do not establish semantic agent behavior.",
+  "full_run": {
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python /tmp/run-generator-intent-final-tests.py <shard 0..3> 4",
+    "runner": "/tmp/run-generator-intent-final-tests.py",
+    "patterns": [
+      "test_generator*.py",
+      "test_inventory*.py",
+      "test_find_candidates*.py",
+      "test_integration_*.py",
+      "test_inverse_*.py",
+      "test_linear_trig*.py",
+      "test_substitution*.py",
+      "test_scoped_generator_constraints.py",
+      "test_trig*.py",
+      "test_recover_engine_only_refills.py"
+    ],
+    "unique_tests": 519,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 1,
+    "logs": [
+      "/tmp/generator-intent-final-shard-0.log",
+      "/tmp/generator-intent-final-shard-1.log",
+      "/tmp/generator-intent-final-shard-2.log",
+      "/tmp/generator-intent-final-shard-3.log"
+    ]
+  },
+  "corrective_rerun": {
+    "reason": "Current interrupted-finalization fixture must save the new refill plan binding before its simulated interruption. Original no-resampling/same-thread assertions retained.",
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_final_binding_recovery -q",
+    "tests": 5,
+    "passed": true,
+    "log": "/tmp/generator-intent-final-binding-tests.log"
+  },
+  "last_change_rerun": {
+    "reason": "Nested counterexample/input identity binding (ORCH07), source-only phase revisions and affected legacy recovery. Includes one new test absent at broad discovery.",
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_phase_gate test_generator_orchestration_boundaries test_generator_report_repair test_generator_all_bands.GeneratorAllBandsTests.test_cached_old_active_review_binding_resumes_same_thread_with_contract_feedback test_generator_all_bands.GeneratorAllBandsTests.test_legacy_nonrequested_band_failure_goes_to_original_verifier_for_repair test_generator_all_bands.GeneratorAllBandsTests.test_unfinalized_workspace_repair_resumes_original_legacy_verifier -q",
+    "tests": 30,
+    "passed": true,
+    "log": "/tmp/generator-intent-final-affected.log"
+  },
+  "current_unique_tests_covered": 520,
+  "current_status": "All covered tests pass after the bounded corrective/affected reruns; there was not a single clean 520-test invocation.",
+  "browser": {
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_render -q",
+    "tests": 8,
+    "passed": true,
+    "execution": "Outside sandbox to allow Chromium startup"
+  },
+  "native_smoke": {
+    "input": "/tmp/generator-intent-smoke/input.json",
+    "report": "/tmp/generator-intent-smoke/provenance-grading.json",
+    "accepted": 3,
+    "rejected": 3,
+    "unresolved": 0,
+    "compiled_inputs_sha256": "4ea7925d0e08dfad5146f79583275ce87f0ff844fdd0ad69872111667400a31e",
+    "linked_dependencies": 37,
+    "report_current_source_validation": "passed"
+  },
+  "retained_sampler_refill_control": {
+    "command": "PYTHONPATH=scripts:tests .venv/bin/python -m unittest test_generator_report_flow.GeneratorReportFlowTests.test_verifier_repairs_batch_rule_and_checks_prospective_then_final_batch -q",
+    "result": "passed; package-isolated checker retests fixed-sampler failure on fresh seed607, checks actual survivor square answers, and runs native wrong-response controls before approval"
+  },
+  "discarded_runner_attempt": "The first expanded temporary shard runner lacked a __main__ guard. It was stopped; those logs were archived as .aborted and are excluded from all counts."
+}

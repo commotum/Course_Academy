@@ -1,6 +1,7 @@
 """Route retained review/report work without turning it into author approval."""
 from generator_review import evidence_only_review
 import json
+import hashlib
 from pathlib import Path
 
 
@@ -43,6 +44,55 @@ def finding_supersessions(path, history):
                 raise ValueError('Supersession evidence is missing or escapes the review directory')
         ids.add(row['id'])
     return ids
+
+
+def finding_evidence_binding(path, history):
+    """Retain bytes of declared counterexamples and their JSON evidence inputs."""
+    path = Path(path).resolve()
+    finding_supersessions(path, history)
+    root = path.parent
+    pending = [root / name for row in json.loads(path.read_text())['findings']
+               for name in [*row['evidence_paths'], row['counterexample_path']]]
+    identities = {}
+    while pending:
+        item = pending.pop().resolve()
+        if not item.is_relative_to(root) or not item.is_file() or not item.stat().st_size:
+            raise ValueError('Retained finding evidence is missing or escapes the review directory')
+        name = str(item.relative_to(root))
+        if name in identities:
+            continue
+        identities[name] = hashlib.sha256(item.read_bytes()).hexdigest()
+        if item.suffix != '.json':
+            continue
+        value = json.loads(item.read_text())
+        def references(value):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    if key in {'input_file', 'accepted_file', 'counterexample_path', 'file'} and isinstance(child, str):
+                        pending.append(item.parent / child)
+                    elif key in {'evidence_paths', 'sample_refs'} and isinstance(child, list):
+                        pending.extend(item.parent / name for name in child if isinstance(name, str))
+                    else:
+                        references(child)
+            elif isinstance(value, list):
+                for child in value:
+                    references(child)
+        references(value)
+    return {'format': 'course-academy-finding-evidence-v1', 'files': identities}
+
+
+def verify_finding_evidence(path, binding):
+    """New bindings are strict; absent legacy markers retain historical scope."""
+    if binding is None:
+        return
+    if not isinstance(binding, dict) or binding.get('format') != 'course-academy-finding-evidence-v1' or not isinstance(binding.get('files'), dict):
+        raise ValueError('Invalid retained finding evidence binding')
+    root = Path(path).resolve().parent
+    for name, expected in binding['files'].items():
+        item = (root / name).resolve()
+        if (not item.is_relative_to(root) or not item.is_file()
+                or hashlib.sha256(item.read_bytes()).hexdigest() != expected):
+            raise ValueError('Reviewed finding evidence or counterexample changed: ' + name)
 
 
 def pending_report_repair(state, history, current_binding=None):
