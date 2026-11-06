@@ -1,0 +1,123 @@
+{
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/jake/Developer/Course_Academy",
+  "commands": [
+    {
+      "purpose": "Verify isolated native grader sources and exact anchor calculations/controls against current production sources.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/tmp/generator-live-pipeline/verification/exemplars/verify-anchors.py"
+      ]
+    },
+    {
+      "purpose": "Use official offline native build interface without shared repository writes; build provenance is native-build.json.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/scripts/generator_native_build.py",
+        "--repo-root",
+        "/tmp/generator-live-pipeline/workspace/evidence/native-root"
+      ]
+    },
+    {
+      "purpose": "Run actual offline prepare_records for the exact easy batch.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "/tmp/generator-live-pipeline/verification/exemplars/easy-anchor.json",
+        "--source",
+        "/tmp/generator-live-pipeline/source/source.json",
+        "--inventory",
+        "/tmp/generator-live-pipeline/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "/tmp/generator-live-pipeline/verification/exemplars/delivery-easy",
+        "--math-root",
+        "/tmp/generator-live-pipeline/math"
+      ]
+    },
+    {
+      "purpose": "Run actual offline prepare_records for the exact moderate batch.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "/tmp/generator-live-pipeline/verification/exemplars/moderate-anchor.json",
+        "--source",
+        "/tmp/generator-live-pipeline/source/source.json",
+        "--inventory",
+        "/tmp/generator-live-pipeline/source/inventory.json",
+        "--difficulty",
+        "moderate",
+        "--output",
+        "/tmp/generator-live-pipeline/verification/exemplars/delivery-moderate",
+        "--math-root",
+        "/tmp/generator-live-pipeline/math"
+      ]
+    },
+    {
+      "purpose": "Run actual offline prepare_records for the exact hard batch.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "/tmp/generator-live-pipeline/verification/exemplars/hard-anchor.json",
+        "--source",
+        "/tmp/generator-live-pipeline/source/source.json",
+        "--inventory",
+        "/tmp/generator-live-pipeline/source/inventory.json",
+        "--difficulty",
+        "hard",
+        "--output",
+        "/tmp/generator-live-pipeline/verification/exemplars/delivery-hard",
+        "--math-root",
+        "/tmp/generator-live-pipeline/math"
+      ]
+    },
+    {
+      "purpose": "Native accepted/equivalent/wrong response controls for every raw/delivered record.",
+      "argv": [
+        "/tmp/generator-live-pipeline/workspace/evidence/native-root/generate/runs/current/check-engine",
+        "/tmp/generator-live-pipeline/verification/exemplars/grading-input.json",
+        "/tmp/generator-live-pipeline/verification/exemplars/grading.json"
+      ]
+    },
+    {
+      "purpose": "Actual unmodified UI in both states and both viewports for all six raw/delivered records.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "/tmp/generator-live-pipeline/verification/exemplars/render-input.json",
+        "--output",
+        "/tmp/generator-live-pipeline/verification/exemplars/render",
+        "--math-root",
+        "/tmp/generator-live-pipeline/math",
+        "--state",
+        "both",
+        "--viewport",
+        "1280x1000",
+        "--viewport",
+        "390x844"
+      ]
+    },
+    {
+      "purpose": "Rebuild semantic evidence/report from retained exact tool outputs; does not edit exemplars, investigation or frozen source account.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/tmp/generator-live-pipeline/verification/exemplars/complete-review.py"
+      ]
+    },
+    {
+      "purpose": "Run official phase-specific exemplar review validation using supplied context binding; the generic generator CLI requires a final generator/refill binding absent in this pre-construction phase.",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/tmp/generator-live-pipeline/verification/exemplars/validate-report.py"
+      ]
+    }
+  ],
+  "visual_inspection": "See visual-inspection.json and actual screenshots; human visual judgments are not regenerated by these commands."
+}

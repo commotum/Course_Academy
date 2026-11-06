@@ -1,0 +1,172 @@
+{
+  "verdict": "accepted",
+  "summary": "All three exact anchors preserve independent one-entry lookup and pass mathematical, native grading, delivery and unanswered/completed UI checks. No edits or source-account amendments were needed. Moderate/hard labels remain authored and uncalibrated.",
+  "source_analysis": {
+    "skill": "Independently read the single integer at position a_ij in a displayed two-by-two integer matrix: recall that i identifies the row and j identifies the column, count from 1 at the top and left, locate their intersection, and enter its value with its sign in one free-entry mathematical blank. No arithmetic is required.",
+    "reasoning_steps": [
+      "Supplied information: each original prompt displays the complete matrix A = ((2, -3), (0, 7)) and requests exactly one named entry a_11, a_12, a_21, or a_22, followed by {{answer}}. The matrix values and target indices are givens; the requested value is not supplied in the question (fixture-q11/q12/q21/q22; question db IDs 910011–910014).",
+      "Before feedback, recall the indexing convention rather than receiving a row/column interpretation in the prompt: the first subscript is the row and the second is the column. The tutorial dff2b933-538b-5a0c-acf6-09aa02994987, Lesson, states: “the first index specifies the row and the second specifies the column.”",
+      "Use the first index to select row 1 or 2, counting downward from the top; use the second index to select column 1 or 2, counting rightward from the left. The same tutorial says: “Count rows from the top and columns from the left, starting at 1.” The off-diagonal cases fixture-q12 and fixture-q21 require distinguishing the order of the two indices.",
+      "Read the value at the selected intersection and preserve integer notation, including a minus sign or zero. Enter that one integer in the blank; neither a matrix nor a row/column description nor an explanation is the required response. Original endpoints are a_11 = 2, a_12 = -3, a_21 = 0, and a_22 = 7 (fixture-q11/q12/q21/q22).",
+      "The lesson and canonical worked example explicitly model the row-then-column procedure as teaching. The standalone original practice prompts only say “find” the named entry; their worked solutions explain the procedure separately. Thus ordinary independent practice must leave index interpretation and entry selection to the learner before feedback. Giving the row/column mapping, highlighting the selected cell, or supplying an intermediate selection would turn that obligation into guided practice."
+    ],
+    "invariants": [
+      "Keep the mathematical object a two-by-two matrix of integers and request exactly one valid entry a_ij with i and j each in {1, 2}. This scope is explicit in tutorial dff2b933-538b-5a0c-acf6-09aa02994987: “reading any entry of a two-by-two matrix with integer entries.”",
+      "Preserve first-index row, second-index column, and one-based counting from top and left. A different indexing convention would change the task. The zero-based row and column values inside synthetic_source_cases are replay parameters, not the learner-facing convention; for example fixture-q21 has row 1, column 0 but asks for a_21.",
+      "Preserve the independent selection work: the learner must interpret the target notation and inspect the matrix before feedback. Explanatory row/column instructions belong in teaching or the worked solution, as in canonical example 910000 and original questions 910011–910014.",
+      "Preserve a single free-entry blank accepting the requested integer. The tutorial states “The response is one integer in a free-entry blank”; Complete source practice states there are “no answer choices.” The JSON answer-field choices contain the stored correct mathematical value and do not establish a learner-visible multiple-choice bank.",
+      "Require only counting to two and reading integer notation. No prerequisite knowledge points are listed: material.prerequisites and :knowledge-point/key-prerequisites are empty. Complete source practice explicitly identifies these minimal prerequisites and states there are no diagrams; there are no image references or captured assets to resolve.",
+      "Do not add matrix arithmetic or multiple-entry calculations. The Lesson explicitly says “No arithmetic is needed” and reserves “matrix addition, multiplication, determinants, transposes, diagonal sums, and arithmetic using multiple entries” for later skills. An increased difficulty label does not authorize those operations."
+    ],
+    "permitted_variations": [
+      "Vary the requested position among all four entries. Eligible complete original cases fixture-q11, fixture-q12, fixture-q21, and fixture-q22 directly support both rows, both columns, diagonal positions, and off-diagonal positions; the canonical a_12 target is not a fixed-position constraint.",
+      "Vary the integer entries while retaining the two-by-two layout and direct lookup operation. The Lesson explicitly includes positive values, negative values, and zero and says they “do not change the method.” The sole original matrix provides concrete instances of all three. No numeric bounds or distinctness requirement are specified; any authored limits should serve readability and comparable workload, not be presented as original source restrictions.",
+      "Changes to the value at the requested position must change the key and worked-solution result accordingly; changes to other positions must leave that result unchanged. Varying only nonrequested entries or cosmetic matrix labels does not by itself vary the learner decision. Prompt, key, and row/column explanation must describe the same instance.",
+      "All four original cases and the canonical example are labeled easy. The source supplies no empirical moderate/hard calibration and no additional method for higher bands. The same row-then-column reasoning and one-integer response may remain across all three bands; any numerical progression is authored rather than observed, and must not supply the target decisions or introduce new operations.",
+      "The target operation and endpoint are explicit, with no material uncertainty about them. Evidence is narrow in its original numerical instances: all four cases use the same matrix. Broader integer variation is supported by the lesson scope, whereas claims about tested integer ranges, harder source examples, or learner performance are not supported."
+    ],
+    "source_refs": [
+      "source.json, material.kp: db ID 900001; knowledge-point ID 394508fb-b6fd-5725-ae47-ffc44fc1cb9c; title “Read an entry of a two-by-two integer matrix.” material.source_eligibility.excluded_questions is empty.",
+      "source.json, material.lessons[0]: activity db ID 920000, activity ID ca271332-c834-5d7f-a3a3-ead1c5744289; step ID 53e37610-6a11-50fe-999d-5e32b132c9f6; tutorial ID dff2b933-538b-5a0c-acf6-09aa02994987. Lesson defines first-index row, second-index column, one-based counting, no arithmetic, two-by-two integer scope, and one-integer free-entry response.",
+      "Same tutorial, Worked example: “For” the displayed A = ((2, -3), (0, 7)), “find” a_12; the explanation selects first row then second column, ending at -3. This matches material.kp.:knowledge-point/canonical-example, db ID 910000, question ID 2b582b31-d2e6-5aae-9f25-1cb6fe27261c.",
+      "Same tutorial, Complete source practice, fixture-q11; also material.synthetic_source_cases[source_id=fixture-q11] and the target topic question db ID 910011, question ID ab42ba66-b40f-5575-9eb7-7fe14335a2a0: asks a_11 for A = ((2, -3), (0, 7)); answer 2; solution selects row 1, column 1.",
+      "Same tutorial, Complete source practice, fixture-q12; also material.synthetic_source_cases[source_id=fixture-q12] and question db ID 910012, question ID f8304294-1ff6-528c-b1b5-83beebd43abc: asks a_12 for the same A; answer -3; solution selects row 1, column 2.",
+      "Same tutorial, Complete source practice, fixture-q21; also material.synthetic_source_cases[source_id=fixture-q21] and question db ID 910013, question ID e876f267-cb26-51c6-9c70-00067b72bfa3: asks a_21 for the same A; answer 0; solution selects row 2, column 1.",
+      "Same tutorial, Complete source practice, fixture-q22; also material.synthetic_source_cases[source_id=fixture-q22] and question db ID 910014, question ID 370238b2-8c72-5aaf-8702-cf0d5e85bd53: asks a_22 for the same A; answer 7; solution selects row 2, column 2.",
+      "Same tutorial, Complete source practice: “All questions have easy difficulty, one blank with a mathematical answer,” followed by “no answer choices, diagrams, or prerequisite operations beyond counting to two and reading integer notation.” material.synthetic_source_notice identifies fixture-q11/q12/q21/q22 as synthetic source IDs, never Math Academy imports, and declares the complete lesson and synthetic_source_cases authoritative for this offline task."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-comparison.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-comparison.json",
+        "source-analysis.json",
+        "independent-solving.json"
+      ],
+      "details": "Compared all anchors with eligible original fixture-q11/q12/q21/q22 and tutorial scope. Easy retains fixture-q12 mathematics with necessary representation normalization; moderate/hard are explicitly authored integer variants. No generator replay is claimed."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-solving.json"
+      ],
+      "details": "Independently parsed and solved every raw/delivered anchor: -3, -31, 307. Each keyed value and worked-solution conclusion agrees with its selected cell; no arithmetic is involved."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json"
+      ],
+      "details": "Target positions and signed integer values vary within one source-supported operation. Three design anchors are not a generator-distribution sample; absent diagonal/zero targets here are not restrictions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "source-comparison.json"
+      ],
+      "details": "All delivered fields terminate at the displayed selected integer. No added matrix operation, response conversion or supplied target decision. No conversion control applies to these direct paths."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading.json",
+        "native-build.json",
+        "independent-solving.json"
+      ],
+      "details": "Native grade_field accepted each exact integer and independently chosen integer-valued fraction and rejected both reversed-index and sign errors for all six raw/delivered records: 12 accepted, 12 rejected, zero unresolved. Isolated native inputs and binary match production/runner identities."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "screenshot-comparisons.json"
+      ],
+      "details": "Every raw and delivered anchor inspected unanswered/completed at 1280x1000 and 390x844. All 24 actual-UI frames pass, with readable cells/signs/subscripts/blanks and correctly separated solutions. Raw/delivered corresponding frames are byte-identical."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "artifact-review.json",
+        "delivery-easy/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json"
+      ],
+      "details": "Exactly one local complete anchor per requested band, matching supplied input batches, with fresh local identities and source provenance. All survive offline preparation. This phase checks exemplar artifacts; runtime/refill/publication is outside its scope."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "cue-inspection.json",
+        "counterfactuals.json",
+        "delivery-easy/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json"
+      ],
+      "details": "No direct answer-bearing prompt cue observed. Relevant/irrelevant cell counterfactuals checked mathematically for every anchor. Visible upper-right and minimum-value cue probes fail on this finite set; no unseen-generation shortcut claim is made."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "learner-obligations.json",
+        "solution-paths.json",
+        "grading.json",
+        "render/rendering.json"
+      ],
+      "details": "Exact sole survivor and sole answer field of every band are self-represented and independently checked. One material operation/support/response family preserves all five frozen source obligations. Increasing integer digit length changes only modest transcription demand; empirical three-band calibration is absent."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "dac7f4e9636e8e7fbbf6abce86545f2fd47c20a5585496566186951c10cfefc9",
+      "evidence_paths": [
+        "delivery-easy/delivery.json",
+        "grading.json",
+        "render/rendering.json",
+        "learner-obligations.json",
+        "solution-paths.json",
+        "source-comparison.json",
+        "visual-inspection.json"
+      ],
+      "details": "Exact easy raw anchor plus its sole delivery survivor independently solved, natively graded with canonical/equivalent/wrong controls, and visually inspected in both states at both widths. No raw fallback used. Original easy fixture-q12 retained mathematically, including its negative single-digit result. It still requires recalling the index convention and locating row 1, column 2 without help."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "eb87f5c7eeb2dce913d4248441fb9512df46c045594621a04c5e3adb80e64ccb",
+      "evidence_paths": [
+        "delivery-moderate/delivery.json",
+        "grading.json",
+        "render/rendering.json",
+        "learner-obligations.json",
+        "solution-paths.json",
+        "source-comparison.json",
+        "visual-inspection.json"
+      ],
+      "details": "Exact moderate raw anchor plus its sole delivery survivor independently solved, natively graded with canonical/equivalent/wrong controls, and visually inspected in both states at both widths. No raw fallback used. Compared with easy, two-digit signed integers add a modest transcription demand. Selecting row 2, column 1 still requires precisely the same recall and two location decisions. The moderate label is authored and uncalibrated, with no extra arithmetic."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "02e7064514bff39d926c409fcc1c3e35fffb7de157e6bcc25ade35dca16d736d",
+      "evidence_paths": [
+        "delivery-hard/delivery.json",
+        "grading.json",
+        "render/rendering.json",
+        "learner-obligations.json",
+        "solution-paths.json",
+        "source-comparison.json",
+        "visual-inspection.json"
+      ],
+      "details": "Exact hard raw anchor plus its sole delivery survivor independently solved, natively graded with canonical/equivalent/wrong controls, and visually inspected in both states at both widths. No raw fallback used. Compared with moderate, three-digit integers add only a modest reading/transcription demand. Selecting row 1, column 2 still uses identical reasoning and one blank. The hard label is authored and uncalibrated; no added matrix operation or conversion is justified or present."
+    }
+  }
+}

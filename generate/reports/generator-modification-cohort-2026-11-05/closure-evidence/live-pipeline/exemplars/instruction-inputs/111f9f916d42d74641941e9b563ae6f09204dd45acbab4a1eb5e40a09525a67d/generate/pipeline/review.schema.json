@@ -1,0 +1,250 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "revise",
+        "unsupported"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_analysis": {
+      "type": "object",
+      "properties": {
+        "skill": {
+          "type": "string"
+        },
+        "reasoning_steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required learner choices, recall, inference and calculation before feedback, independently reconstructed from target evidence."
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "permitted_variations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "skill",
+        "reasoning_steps",
+        "invariants",
+        "permitted_variations",
+        "source_refs",
+        "evidence_paths"
+      ],
+      "additionalProperties": false,
+      "description": "Final substantive account linked to the runner-checkpointed initial source-analysis.json hash; conceptual changes require linked amendments, preserved obligation and valid counterexample. Matching current files alone cannot establish the initial account."
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "source_replay": {
+          "$ref": "#/$defs/check"
+        },
+        "math": {
+          "$ref": "#/$defs/check"
+        },
+        "variety": {
+          "$ref": "#/$defs/check"
+        },
+        "scope": {
+          "$ref": "#/$defs/check"
+        },
+        "grading": {
+          "$ref": "#/$defs/check"
+        },
+        "rendering": {
+          "$ref": "#/$defs/check"
+        },
+        "packaging": {
+          "$ref": "#/$defs/check"
+        },
+        "decision_variation": {
+          "$ref": "#/$defs/check"
+        },
+        "progression": {
+          "$ref": "#/$defs/check",
+          "description": "Cite learner-obligations.json with exact delivered record and field coverage, independently judged material families, actual required work and applicable representative controls."
+        }
+      },
+      "required": [
+        "source_replay",
+        "math",
+        "variety",
+        "scope",
+        "grading",
+        "rendering",
+        "packaging",
+        "decision_variation",
+        "progression"
+      ],
+      "additionalProperties": false
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "restriction",
+              "drift",
+              "math",
+              "grading",
+              "rendering",
+              "source_fidelity",
+              "packaging",
+              "evidence",
+              "decision_shortcut",
+              "inventory"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reproduction": {
+            "type": "string"
+          },
+          "requested_change": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "description",
+          "source_refs",
+          "reproduction",
+          "requested_change"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "band_verification": {
+      "type": "object",
+      "properties": {
+        "easy": {
+          "$ref": "#/$defs/band_verification"
+        },
+        "moderate": {
+          "$ref": "#/$defs/band_verification"
+        },
+        "hard": {
+          "$ref": "#/$defs/band_verification"
+        }
+      },
+      "required": [
+        "easy",
+        "moderate",
+        "hard"
+      ],
+      "additionalProperties": false,
+      "description": "Each final band cites matching delivery evidence and recognized grader/render reports for actual delivered representatives. Raw fallback is allowed only for no survivors with justification. Every exemplar is individually represented before construction."
+    }
+  },
+  "required": [
+    "verdict",
+    "summary",
+    "source_analysis",
+    "checks",
+    "findings",
+    "band_verification"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "check": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Root-relative evidence. Progression cites learner-obligations.json; scope cites final-field-bound solution-paths.json; grading/rendering cite recognized source/input-bound reports with paired representative states and accepted/wrong controls. Final packaging cites runner-bound refill-review-plan.json. These mechanical checks do not establish pedagogical truth."
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "evidence_paths",
+        "details"
+      ],
+      "additionalProperties": false
+    },
+    "band_verification": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "batch_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "batch_sha256",
+        "evidence_paths",
+        "details"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

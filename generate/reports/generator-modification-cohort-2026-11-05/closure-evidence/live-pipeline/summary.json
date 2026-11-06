@@ -1,0 +1,52 @@
+{
+  "status": "accepted_offline_validation",
+  "stop_after": "validate",
+  "stage": "prepare",
+  "synthetic_source": "generate/pipeline/fixtures/source.md",
+  "kp": 900001,
+  "seed": 60419,
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "internal_sandbox": "workspace-write",
+  "database_publication": "OfflinePublisher write/query/publication methods raise; no database mutation or publication performed.",
+  "final_counts": {
+    "easy": 3,
+    "moderate": 5,
+    "hard": 5
+  },
+  "native": {
+    "passed": true,
+    "accepted_checks": 46,
+    "rejected_checks": 42,
+    "documented_unresolved_checks": 0,
+    "database_writes": 0
+  },
+  "render": {
+    "passed": true,
+    "presentations": 40
+  },
+  "author_call_epoch": 1793927219.1576087,
+  "accepted_exemplar_return_epoch": 1793927219.0055182,
+  "reviewer_thread": "01a1ae55-e8af-7ae2-bc73-07b5abec96bc",
+  "original_evidence_root": "/tmp/generator-live-pipeline",
+  "limits": [
+    "One synthetic task and one seed are a workflow smoke, not population-level pedagogical effectiveness evidence.",
+    "Moderate and hard numerical workload calibration is authored and uncalibrated.",
+    "Archive includes representative screenshots and report/input bytes, not all images, native binaries, agent event logs, hidden reasoning or authentication data.",
+    "Original tool reports retain their original absolute paths; the full working evidence remains at original_evidence_root."
+  ],
+  "commands": [
+    ".venv/bin/python generate/evals/run_offline_pipeline.py --directory /tmp/generator-live-pipeline",
+    "PYTHONPATH=tests .venv/bin/python -m unittest test_generator_refill.RefillValidationTests.test_applicable_retained_check_is_bound_and_runs_on_actual_survivors test_generator_refill.RefillValidationTests.test_only_nonretired_complete_native_usable_catalog_proves_exhaustion",
+    ".venv/bin/python scripts/generator_review.py --result /tmp/generator-live-pipeline/verification/exemplars/result.json --evidence-root /tmp/generator-live-pipeline/verification/exemplars",
+    ".venv/bin/python scripts/generator_review.py --result /tmp/generator-live-pipeline/review-1-policy-6-7dc50691cdc37926/result.json --evidence-root /tmp/generator-live-pipeline/review-1-policy-6-7dc50691cdc37926"
+  ],
+  "follow_up_tests": {
+    "existing_tests_rerun": 2,
+    "new_unique_tests": 0,
+    "passed": 2,
+    "elapsed_seconds": 9.549,
+    "log": "checks/refill-scope-regression.log"
+  },
+  "phase_calls_note": "Session-call events include cache reuse and budget refusals; actual model launches and thread IDs are in sessions.json. Early real_agent_launch labels were corrected to pipeline_session_call."
+}

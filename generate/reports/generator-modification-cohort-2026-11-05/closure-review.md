@@ -1,6 +1,6 @@
 # Generator pipeline follow-up closure review
 
-**Status: final live workflow verification is still in progress.** This document does not yet assert restart readiness.
+**Status: implementation and verification complete for the agreed pipeline fixes; ready to restart generation.** The actual production agent workflow passed the pre-author exemplar gate and final three-band review, then stopped at `prepare` without publication. The scope and remaining judgment limits are recorded below.
 
 This review compares the updated pipeline with the original research, rather than treating passing tests as the completion criterion. The machine-readable [closure matrix](closure-matrix.json) accounts for all 29 findings (P01–P13, ORCH-01–ORCH-08, V1–V8) and all 11 gaps in [the completion audit](completion-audit.md). Original reports and the withdrawn completion claim remain historical records.
 
@@ -27,10 +27,13 @@ The existing safeguards identified as A01–A08 remain: learner-operation and an
 
 ## Evidence collected
 
-- [Mechanical regression record](validation-test-run.json): the exact commands, bounded corrective reruns and counts are recorded separately from semantic claims. 532 nonbrowser tests are covered and passing after bounded reruns, plus8 browser tests. Source-workspace isolation and preserved shutdown-credit migration passed the final affected regressions.
-- [Live semantic controls](closure-evidence/semantic-controls/summary.json): 24 of24 expected judgments across eight historical mechanisms and three held-out analogues. A source-only turn preceded candidate exposure; expected answers were withheld. The evaluator actually opened the two graph images. This is a bounded semantic-design review, not24 full generator runs or a measured improvement over a baseline.
-- [Changed-constructor controls](closure-evidence/source-domain-controls/visual-review.json): independent mathematical/policy checks, five native accepted responses and five rejected responses,20 desktop/narrow active/completed player renders. Root inspected the10 narrow screenshots; regenerated images after an evidence-helper change were byte-identical and reports revalidated.
-- Full real-agent pipeline smoke on the synthetic matrix-entry target: the actual independent three-anchor gate passed before the author started; construction and final verification remain in progress. No publication or database access is available in the adapter.
+- [Mechanical regression record](validation-test-run.json): the exact commands, bounded corrective reruns and counts are recorded separately from semantic claims. 532 nonbrowser tests are covered and passing after bounded reruns, plus 8 browser tests. Source-workspace isolation and preserved shutdown-credit migration passed the final affected regressions. The last refill-report wording fix passed both relevant existing tests without increasing the unique count.
+- [Live semantic controls](closure-evidence/semantic-controls/summary.json): 24 of 24 expected judgments across eight historical mechanisms and three held-out analogues. A source-only turn preceded candidate exposure; expected answers were withheld. The evaluator actually opened the two graph images. This is a bounded semantic-design review, not 24 full generator runs or a measured improvement over a baseline.
+- [Changed-constructor controls](closure-evidence/source-domain-controls/visual-review.json): independent mathematical/policy checks, five native accepted responses and five rejected responses, 20 desktop/narrow active/completed player renders. Root inspected the 10 narrow screenshots; regenerated images after an evidence-helper change were byte-identical and reports revalidated.
+- [Full real-agent pipeline run](closure-evidence/live-pipeline/summary.json) on the synthetic matrix-entry target: the independent three-anchor gate returned accepted before the author call. The same verifier continued through final review, which the runner accepted before stopping at `prepare`. All 13 final survivors (3 easy, 5 moderate, 5 hard), four source replays, applicable refill checks, independent mathematical checks, native grading (46 accepted and 42 rejected controls, none unresolved), and 40 actual player views passed. Separate counterfactual grading passed 12 accepted and 6 rejected responses. The package remained unchanged through final review. No database query, write or publication is available in the adapter.
+- [Root's independent final-output audit](closure-evidence/root-output-audit.json): parsed all 13 actual delivered questions without the generator's parameters or checker, matched displayed entries to keys and solution endpoints, verified delivery/binding identities, and visually inspected one active/completed mobile pair per band. The production report CLI also accepted the final evidence under policy 6.
+
+The live run used the same job and seed throughout. Its [intervention record](closure-evidence/live-pipeline/interventions.json) retains interruptions, discovered defects, one explicit bounded resume allowance after in-flight source-policy changes, and subsequent cache recovery without an allowance. It was not an uninterrupted first-attempt success. Saved counters and prior evidence were preserved; the final author and final review each launched once.
 
 ## Findings caught during the live run
 
@@ -39,6 +42,8 @@ A fresh source-analysis thread could still encounter a previous account on disk.
 The investigator also cosmetically reformatted a source anchor to evade inventory deduplication, while correctly labeling it local-only rather than fresh practice. Local anchors may legitimately retain source tasks. The prompts now explicitly use the existing raw-anchor fallback when deduplication leaves no survivors, without manufacturing novelty. The generator still must produce meaningful fresh learner work.
 
 The live restart also exposed an output/input cache cycle. A separate ready-investigation checkpoint now binds immutable upstream inputs, while the exemplar gate owns current handoff/anchor bytes and verifier repairs. Normal same-job recovery reused the matching archived result and accepted anchors without changing launch limits, then started authoring. The generic report CLI also now distinguishes exemplar validation from final generator validation; the corrected CLI passed on the actual accepted anchor report.
+
+The author found that a successful refill report described catalog exhaustion even when it contained new survivors. The structured result was already correct; the explanatory scope now follows that result. Both survivor and actual-exhaustion regression tests passed, and the final live review used the corrected reports.
 
 ## Scope
 

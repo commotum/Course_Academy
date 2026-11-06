@@ -1,0 +1,142 @@
+{
+  "learner_operation": "Independently recall indexing convention, select the requested row and column, and enter one displayed integer.",
+  "fixed_features": [
+    {
+      "feature": "2x2 integer matrix; one valid named entry; one mathematical blank.",
+      "justification": "Explicit target scope and endpoint, not incidental source parameters."
+    },
+    {
+      "feature": "Unguided prompt and row-then-column worked solution.",
+      "justification": "Preserves required recall and selection before feedback; tutorial support does not migrate into independent prompts."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Requested matrix position",
+      "eligible_variation": "a_11, a_12, a_21, a_22 supported by fixture-q11/q12/q21/q22.",
+      "observed": "Anchors request a_12, a_21, a_12. Only off-diagonal positions happen to be illustrated; no diagonal prohibition follows."
+    },
+    {
+      "role": "Selected integer",
+      "eligible_variation": "Any integer, including positive, negative or zero; no magnitude quota in source.",
+      "observed": "-3, -31, 307; signs and digit lengths vary, but no source-supported requirement to place zero or all positions among exactly three design anchors."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "easy",
+      "result": "Original easy fixture-q12 retained mathematically, including its negative single-digit result. It still requires recalling the index convention and locating row 1, column 2 without help.",
+      "sample_refs": [
+        "easy-anchor.json",
+        "delivery-easy/accepted.json",
+        "source-comparison.json"
+      ]
+    },
+    {
+      "case": "moderate",
+      "result": "Compared with easy, two-digit signed integers add a modest transcription demand. Selecting row 2, column 1 still requires precisely the same recall and two location decisions. The moderate label is authored and uncalibrated, with no extra arithmetic.",
+      "sample_refs": [
+        "moderate-anchor.json",
+        "delivery-moderate/accepted.json",
+        "source-comparison.json"
+      ]
+    },
+    {
+      "case": "hard",
+      "result": "Compared with moderate, three-digit integers add only a modest reading/transcription demand. Selecting row 1, column 2 still uses identical reasoning and one blank. The hard label is authored and uncalibrated; no added matrix operation or conversion is justified or present.",
+      "sample_refs": [
+        "hard-anchor.json",
+        "delivery-hard/accepted.json",
+        "source-comparison.json"
+      ]
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Replace the selected value by its successor independently in each anchor.",
+      "expected": "Each lookup response changes to the replacement integer.",
+      "observed": "All three changes produce the expected new value.",
+      "justification": "Direct application of the taught entry-reading rule; these are mathematical witnesses and not runtime generator claims.",
+      "status": "passed",
+      "sample_refs": [
+        "counterfactuals.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Increment a different cell, leaving the requested cell unchanged, independently in each anchor.",
+      "expected": "Each lookup response remains the original selected integer.",
+      "observed": "All three changes preserve the original result.",
+      "justification": "Direct application of the taught entry-reading rule; these are mathematical witnesses and not runtime generator claims.",
+      "status": "passed",
+      "sample_refs": [
+        "counterfactuals.json"
+      ]
+    }
+  ],
+  "shortcut_applicability": {
+    "status": "applicable",
+    "reason": "Inspect visible cell styling and simple positional/value cues on this finite anchor set. Multiple-choice bank/rank probes are inapplicable to a free-entry endpoint.",
+    "sample_refs": [
+      "cue-inspection.json",
+      "render/rendering.json"
+    ]
+  },
+  "shortcut_probes": [
+    {
+      "cue": "Always read the upper-right cell without interpreting the requested indices.",
+      "subgroup": "All three design anchors, both raw and delivered identities.",
+      "scope": "overall",
+      "strategy": "Read top-right value only; omit a_ij interpretation.",
+      "conclusion": "Succeeds on 2/3: fails on moderate a_21. This is diagnostic only; it establishes no recurring generator defect or shortcut-free population.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "claim": "diagnostic",
+      "sample_refs": [
+        "cue-inspection.json",
+        "independent-solving.json"
+      ]
+    },
+    {
+      "cue": "Choose the numerically smallest matrix value without locating the target.",
+      "subgroup": "Signed matrices: all three anchors.",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Inspect the four integers and output their minimum, ignoring the indices.",
+      "conclusion": "Succeeds on 2/3: fails on hard. Uniform cell styling and the absence of row/column markers show no direct prompt annotation that supplies the answer. Counts are diagnostic, not proof about an unseen generator.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "claim": "diagnostic",
+      "sample_refs": [
+        "cue-inspection.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "requested difficulty",
+      "KP identity",
+      "image normalization",
+      "question validation",
+      "stable content identities",
+      "captured-inventory and within-batch deduplication"
+    ],
+    "result": "All three raw anchors yield one survivor each. Mathematical values, target indices, support and response demands are preserved by normalization. This is offline preparation only.",
+    "sample_refs": [
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json"
+    ]
+  },
+  "limitations": [
+    "One fixed anchor per band cannot establish generator distribution, all-cell coverage or resistance to every shortcut.",
+    "No generator, rejection/resampling, learner history, weighted selection, refill or publication was admitted or tested.",
+    "Moderate/hard progression is an authored modest integer-reading demand; all original cases are easy.",
+    "Probe baseline 0.25 describes uniformly guessing one of four distinct displayed entries for these anchors; it is not a population estimate."
+  ]
+}

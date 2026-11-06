@@ -1,0 +1,176 @@
+{
+  "learner_operation": "Recall first-index row/second-index column, locate one requested entry from a complete 2x2 integer matrix, enter that integer.",
+  "fixed_features": [
+    {
+      "feature": "Two-by-two integer matrix, one valid a_ij and one blank.",
+      "justification": "Explicit target lesson scope and response endpoint, not accidental original parameter values."
+    },
+    {
+      "feature": "No row/column reminder or marked cell before feedback.",
+      "justification": "Independent practice retains index recall and spatial choice; the method is explained only in solutions."
+    },
+    {
+      "feature": "Single-, two-, and three-digit nonzero ranges plus zero by band.",
+      "justification": "Authored readability progression with the same method, not empirical calibration or source-imposed numeric boundaries. Zero and repeated values remain legitimate simplifications."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Requested row and column",
+      "eligible_variation": "All four positions are supported by fixture-q11/q12/q21/q22.",
+      "observed": "Sampler uses independent radix-4 position digit for every integer-matrix code; final questions and 600 ordinary cases vary positions without label/value-derived assignment."
+    },
+    {
+      "role": "Selected integer",
+      "eligible_variation": "Positive, negative and zero supported, with no distinctness/sign quotas.",
+      "observed": "The selected integer varies with the independently sampled matrix. Zero and repeated-value cases pass explicit controls; each band bank contains zero and both signs."
+    },
+    {
+      "role": "Unselected integer entries",
+      "eligible_variation": "May vary while leaving the response unchanged.",
+      "observed": "Actual controlled nonselected-cell edits preserve the answer. Unselected variation alone is not counted as new assessed work."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "easy ordinary path and final delivery",
+      "result": "All 3 delivered records preserve independent index recall and row/column lookup with one blank. Single-digit signed entries and zero simplify reading, not the required decisions. The negative diagonal and two positive off-diagonal cases were individually inspected. The CLI samples without replacement; all final records and 200 fresh records in this band survive delivery.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "probe-delivery-easy/delivery.json",
+        "sampler-coverage.json",
+        "learner-obligations.json"
+      ]
+    },
+    {
+      "case": "moderate ordinary path and final delivery",
+      "result": "All 5 delivered records require exactly the same lookup and blank as easy. Two-digit signed integers modestly increase reading/transcription demand; there is no extra calculation. This authored moderate label has no empirical calibration. Three selected representatives cover positive/negative results and diagonal/off-diagonal targets; other negative off-diagonal records have the same work and layout. The CLI samples without replacement; all final records and 200 fresh records in this band survive delivery.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "probe-delivery-moderate/delivery.json",
+        "sampler-coverage.json",
+        "learner-obligations.json"
+      ]
+    },
+    {
+      "case": "hard ordinary path and final delivery",
+      "result": "All 5 delivered records preserve the same index recall, location and one-integer endpoint. Three-digit values add modest transcription demand only; no arithmetic, new matrix operation or response conversion is added. Labels are authored and uncalibrated. All current results happen to be negative. Fresh hard samples include 108 positive targets out of 200; none of that draw has a zero target. Zero support is established by code and explicit/native edge controls, without a sign quota. The CLI samples without replacement; all final records and 200 fresh records in this band survive delivery.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "probe-delivery-hard/delivery.json",
+        "sampler-coverage.json",
+        "learner-obligations.json"
+      ]
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Increment the selected cell while fixing the target and other entries.",
+      "expected": "Prompt, key and solution must change to the replacement integer.",
+      "observed": "All three band-specific package calls agree with independent parsing and native acceptance/wrong controls.",
+      "status": "passed",
+      "justification": "Direct dependency of entry lookup on selected cell only. These invoke the actual generate API, alongside separately tested ordinary sampling and delivery.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "counterfactual-grading.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Increment an unselected cell while fixing the target and requested value.",
+      "expected": "Matrix given changes; requested integer, key and solution endpoint remain unchanged.",
+      "observed": "All three band-specific package calls agree with independent parsing and native acceptance/wrong controls.",
+      "status": "passed",
+      "justification": "Direct dependency of entry lookup on selected cell only. These invoke the actual generate API, alongside separately tested ordinary sampling and delivery.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "counterfactual-grading.json"
+      ]
+    }
+  ],
+  "shortcut_applicability": {
+    "status": "applicable",
+    "reason": "Positional/value/sign cues can be tested from the displayed matrix. Choice-bank/rank probes do not apply to a free-entry blank.",
+    "sample_refs": [
+      "cue-probes.json",
+      "visual-inspection.json"
+    ]
+  },
+  "shortcut_probes": [
+    {
+      "cue": "Always use upper-right cell",
+      "subgroup": "All 600 ordinary fresh sampled matrices, after identical-content delivery.",
+      "scope": "overall",
+      "strategy": "Allowed information is the displayed matrix only. Read upper-right value and ignore a_ij.",
+      "correct": 153,
+      "total": 600,
+      "baseline": 0.2675,
+      "disposition": "not_predictive",
+      "claim": "diagnostic",
+      "conclusion": "153/600 correct on fresh ordinary cases; not a reliable substitute for the requested lookup. Baseline is uniform choice among four displayed cells, accounting for coincident values. No generalized guarantee or confirmed defect is claimed. Final-batch diagnostics are retained separately, including hard minimum 4/5 and unique-negative 1/1; these small observations do not establish a construction defect.",
+      "sample_refs": [
+        "cue-probes.json",
+        "probe-delivery-comparison.json"
+      ]
+    },
+    {
+      "cue": "Choose numerical minimum",
+      "subgroup": "All 600 ordinary fresh sampled matrices, after identical-content delivery.",
+      "scope": "overall",
+      "strategy": "Allowed information is the displayed matrix only. Return its numerical minimum, bypassing index interpretation.",
+      "correct": 151,
+      "total": 600,
+      "baseline": 0.2675,
+      "disposition": "not_predictive",
+      "claim": "diagnostic",
+      "conclusion": "151/600 correct on fresh ordinary cases; not a reliable substitute for the requested lookup. Baseline is uniform choice among four displayed cells, accounting for coincident values. No generalized guarantee or confirmed defect is claimed. Final-batch diagnostics are retained separately, including hard minimum 4/5 and unique-negative 1/1; these small observations do not establish a construction defect.",
+      "sample_refs": [
+        "cue-probes.json",
+        "probe-delivery-comparison.json"
+      ]
+    },
+    {
+      "cue": "Choose the only negative cell",
+      "subgroup": "Only fresh matrices with exactly one negative displayed cell, selected without looking at target/key.",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Allowed information is cell values/signs only. Count negatives to select subgroup and output its sole negative value, bypassing requested indices; target/key used only to score after prediction.",
+      "correct": 37,
+      "total": 153,
+      "baseline": 0.2630718954248366,
+      "disposition": "not_predictive",
+      "claim": "diagnostic",
+      "conclusion": "37/153 correct on fresh ordinary cases; not a reliable substitute for the requested lookup. Baseline is uniform choice among four displayed cells, accounting for coincident values. No generalized guarantee or confirmed defect is claimed. Final-batch diagnostics are retained separately, including hard minimum 4/5 and unique-negative 1/1; these small observations do not establish a construction defect.",
+      "sample_refs": [
+        "cue-probes.json",
+        "probe-delivery-comparison.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "uniform no-replacement complete-instance sampler; no rejection/resampling branch",
+      "requested difficulty",
+      "KP identity and response validation",
+      "stable identities",
+      "captured inventory and within-batch deduplication",
+      "isolated survivor refill checks",
+      "read-only inspection of difficulty-first learner selection implementation"
+    ],
+    "result": "All 13 final and 600 fresh ordinary samples survive delivery. No sign/position/value-specific guard is used. Selection code groups fresh candidates by difficulty and hashes to choose within a band, without inspecting matrix values or target positions. Live learner history/weights and publication are outside this offline test.",
+    "sample_refs": [
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "probe-delivery-comparison.json",
+      "selection-and-packaging.json",
+      "refill-review-evidence.json"
+    ]
+  },
+  "limitations": [
+    "Moderate/hard are authored, uncalibrated reading demands; identical reasoning across bands is intentional.",
+    "Diagnostic samples cannot exclude every shortcut. Source-supported repeated values or constant matrices can legitimately reduce discrimination of location work; they are not excluded.",
+    "Finite caps count distinct visible matrix-and-target instances, not a claimed number of mastered subskills. No complete finite catalog or exhaustion is asserted.",
+    "No database, learner snapshot, publication, registration, service restart or live availability test was authorized. Source and learner-state integrity are preserved by offline operation."
+  ]
+}

@@ -1,4 +1,4 @@
-**Status correction: the implementation is partial. The earlier completion claim is withdrawn.**
+**Historical audit: the implementation was partial and the earlier completion claim was withdrawn.** All 11 gaps below now have implementation and verification dispositions in the [completed closure review](closure-review.md) and [closure matrix](closure-matrix.json). This audit preserves the original omissions and the reason the first completion claim was wrong.
 
 The completion criterion was wrong: implemented edits and passing boundary tests were treated as sufficient evidence that the identified instructional failure mechanisms had been addressed. The exemplar omission also starts in the proposal: section 4 allowed local drafts to reach the author before independent review. That fixes early publication, but leaves the acknowledged risk of building a generator around a flawed interpretation. The manager/integration review did not catch this distinction. Responsibility for that claim rests with the primary agent.
 
