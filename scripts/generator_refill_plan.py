@@ -141,10 +141,22 @@ def validate_reviewed_refill(root, manifest, retained_findings, evidence_root, *
         report = validate_survivors(delivered, inventory, directory / 'checks', root=root,
             manifest=manifest, band=band, python=python, repo_root=repo_root,
             environment=environment, expected_plan=binding)
+        fallback = None
+        if not delivered and records and report['status'] == 'no-new-records':
+            # Pre-approval review may inspect every exact raw case when the
+            # captured inventory deduplicates the sample. This does not claim
+            # delivery or catalog exhaustion, and never changes live refill.
+            report = validate_survivors(records, inventory, directory / 'raw-checks', root=root,
+                manifest=manifest, band=band, python=python, repo_root=repo_root,
+                environment=environment, expected_plan=binding)
+            fallback = {'reason': 'All sample records deduplicate; validate the exact raw sample for review only.',
+                        'raw_count': len(records), 'delivered_count': 0,
+                        'report': str(directory / 'raw-checks' / 'result.json')}
         if report['status'] not in ('passed', 'finite-limit'):
-            raise ValueError('Refill regression verification needs surviving records or a proven usable finite catalog in ' + band)
+            raise ValueError('Refill regression verification needs surviving records, a reviewed nonempty raw fallback, or a proven usable finite catalog in ' + band)
         result['bands'][band] = {'batch_sha256': delivery['batch_sha256'],
             'delivered_sha256': delivery['accepted_sha256'], 'plan_sha256': binding['sha256'],
             'delivery': str(directory / 'delivery' / 'delivery.json'),
-            'report': str(directory / 'checks' / 'result.json')}
+            'report': fallback['report'] if fallback else str(directory / 'checks' / 'result.json'),
+            **({'no_survivor_fallback': fallback} if fallback else {})}
     return result
