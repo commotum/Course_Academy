@@ -19,7 +19,7 @@ def digest(value):
 
 def build_inputs(root=ROOT):
     root = Path(root)
-    paths = [root / SOURCE, root / 'Cargo.toml', root / 'Cargo.lock']
+    paths = [root / SOURCE, root / 'Cargo.toml', root / 'Cargo.lock', root / 'scripts/generator_native_build.py']
     paths.extend(sorted((root / 'engine/rust').rglob('*.rs')))
     return {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
 

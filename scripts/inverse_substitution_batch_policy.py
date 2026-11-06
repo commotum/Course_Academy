@@ -9,7 +9,7 @@ import sympy as s
 from fractions import Fraction
 
 KPS={17592186064218,17592186064219,17592186064220,17592186064250}
-VERSION='inverse-substitution-quality-5'
+VERSION='inverse-substitution-quality-6'
 
 def pi_coefficient(text):
     compact=re.sub(r'\s+','',text)
@@ -26,7 +26,7 @@ def validate_delivery_batch(records,kp_id):
     seen=set()
     for row in records:
         q=row['question'];m=row['generation'];p=m['parameters'];band=q[':question/difficulty'].rsplit('/',1)[-1]
-        if m.get('batch_contract')not in {VERSION,'inverse-substitution-quality-4'}:raise ValueError('Reviewed inverse quality contract required')
+        if m.get('batch_contract')not in {VERSION,'inverse-substitution-quality-4','inverse-substitution-quality-5'}:raise ValueError('Reviewed inverse quality contract required')
         validate_prerequisite_recall(row)
         if band not in('easy','moderate','hard'):raise ValueError('Unsupported band')
         families={17592186064218:{'sine'},17592186064219:{'tangent'},17592186064250:{'secant'},17592186064220:{'sine','tangent'}}
@@ -39,9 +39,9 @@ def validate_delivery_batch(records,kp_id):
         ref=f[':answer-field/correct'];cid=str(ref.get(':answer/id'))if isinstance(ref,dict)else str(ref[1]);key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==cid)
         blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',q[':question/worked-solution'],re.S)
         if not blocks or blocks[-1].strip().rstrip('.')!=key:raise ValueError('Solution does not reach the displayed key')
-        if any(int(n)>25 for n in re.findall(r'\d+',q[':question/problem'])):raise ValueError('Rendered arithmetic budget exceeded')
+        if any(int(n)>64 for n in re.findall(r'\d+',q[':question/problem'])):raise ValueError('Rendered arithmetic budget exceeded')
         A,B,N=(s.Rational(p[k])for k in('A','B','numerator'))
-        if N.q!=1 or not 1<=N<=(12 if kp==17592186064250 and band=='easy'else 8 if band=='easy'else 4):raise ValueError('No fractional or oversized numerator composition')
+        if N.q>4 or not 0<N<=(12 if kp==17592186064250 and band=='easy'else 8 if band=='easy'else 4):raise ValueError('No unwieldy fractional or oversized numerator composition')
         if kp==17592186064250:
             factor=s.Rational(m['model']['factor'])
             if band=='easy'and(factor.q!=1 or not 1<=factor<=3)or band=='moderate'and factor.q==1:raise ValueError('Secant differential progression mismatch')
@@ -50,7 +50,11 @@ def validate_delivery_batch(records,kp_id):
             ratio=B/A;scale=s.sqrt(ratio);coefficient=N/(s.sqrt(A)if m['family']=='sine'else A)
             if not(scale.is_Integer and 2<=scale<=5 and coefficient.is_Integer and 1<=coefficient<=4):raise ValueError('Easy must reduce to a direct standard form with small integer amplitude')
         elif band=='moderate':
-            if B!=1 or A not in(4,9,16,25):raise ValueError('Moderate requires one familiar square normalization')
+            ordinary=B==1 and A in(4,9,16,25)
+            canonical_family=(kp!=17592186064220 and
+                ((m['family']=='sine'and A==1 and B in(4,9,16,25))or
+                 (m['family']=='tangent'and A==2 and B in(8,18,32,50))))
+            if not(ordinary or canonical_family):raise ValueError('Moderate requires bounded source-supported linear normalization')
         elif kp==17592186064220:
             if B!=1 or A not in((2,8)if m['family']=='sine'else(3,12)):raise ValueError('Definite hard requires a familiar small radical normalization')
         else:

@@ -43,12 +43,17 @@ Test relocation outside the repository, such as a disposable `/tmp` copy, with t
 A complete finite domain may additionally use `finite_catalogs` mapping each bounded
 band to a declared runtime JSON list of generated records. The runner can report
 `finite-limit` only when that complete supported catalog is in inventory, not from
-an empty random sample. A reviewed package may declare an inexpensive
-`refill-validation.json` checker for actual delivery survivors; its interface is in
-[the pipeline guide](../README.md#refill-checks-and-finite-domains). Retain meaningful
-semantic/equivalence/cue regressions there so fresh seeds exercise approved behavior
-without another LLM review. Do not impose population coverage quotas on each small
-refill fragment.
+an empty random sample. New approvals require package-bound `refill-review-plan.json`:
+applicable inexpensive survivor checks or explicit source/evidence-backed
+nonapplicability. Map every retained generator finding to an immutable check or
+justified exemption. Applicable `refill-validation.json` checks run in a declared-file-only
+temporary copy on actual delivery survivors before approval and during later
+refills, with normalized usable inventory content available for population checks.
+Use [the exact plan/checker interface](../README.md#refill-checks-and-finite-domains).
+Retain semantic/equivalence/cue regressions so fresh seeds exercise approved
+behavior without another LLM review. Do not impose population coverage quotas on
+each small refill fragment or invent generic wrong responses. Existing approved
+packages remain compatible with explicitly reported native fallback.
 
 ## Verification and delivery
 

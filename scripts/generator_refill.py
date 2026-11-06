@@ -134,7 +134,9 @@ def _run_checker(root, manifest, contract, records, inventory, directory, python
                      'sys.argv=sys.argv[1:]; runpy.run_path(str(p),run_name="__main__")')
         environment = {'PATH': os.defpath, 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8',
                        'HOME': str(temporary / 'home'), 'TMPDIR': str(temporary / 'tmp')}
-        completed = subprocess.run([str(Path(python).resolve()), '-I', '-B', '-c', bootstrap,
+        # Keep a virtualenv executable's symlink path: resolving it to the base
+        # interpreter would discard the already-checked package dependencies.
+        completed = subprocess.run([str(Path(python).absolute()), '-I', '-B', '-c', bootstrap,
             str(package / contract['script']), *args, '--records', str(io / 'records.json'),
             '--inventory', str(io / 'inventory.json'), '--output', str(io / 'report.json')],
             cwd=package, env=environment, capture_output=True, text=True, timeout=180)

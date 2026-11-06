@@ -231,6 +231,24 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.jobs.accept(self.ranked(kp, basis=11))
         self.assertEqual(json.loads(path.read_text())['state'], 'pending')
 
+    def test_native_source_and_pool_signals_each_reopen_finite_conclusion(self):
+        for index,field in enumerate(('source_sha256','question_pool_sha256')):
+            with self.subTest(field=field):
+                kp=self.kp(script='generators/aa/old/generator.py')
+                kp.update(source_sha256='a'*64,question_pool_sha256='b'*64)
+                basis=20+index*10
+                self.jobs.accept(self.ranked(kp,basis=basis))
+                path=self.path_for(1,'refill','easy')
+                self.jobs.finish(path,{'state':'rejected','outcome':{'outcome':'finite-limit'}})
+                before=json.loads(path.read_text())
+                self.jobs.accept(self.ranked(kp,basis=basis+1))
+                self.assertEqual(json.loads(path.read_text())['cycle'],before['cycle'])
+                kp[field]='c'*64
+                self.jobs.accept(self.ranked(kp,basis=basis+2))
+                reopened=json.loads(path.read_text())
+                self.assertEqual(reopened['state'],'pending')
+                self.assertEqual(reopened['cycle'],before['cycle']+1)
+
     def relevant(self, kp, tier, **context):
         metadata = {'priority_policy': PRIORITY_POLICY, 'relevance_tier': tier,
                     'baseline_relevance_tier': tier, 'topic_layer': 10,

@@ -1258,6 +1258,61 @@ fn ranked_fixture(db: &DatabaseValue, learner: u64) -> Result<Json> {
 }
 
 #[test]
+fn finder_projects_content_changes_without_learner_availability_churn() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let topic = identity(&db, "topic/title", "Queue")?;
+    let kp = identity(&db, "knowledge-point/title", "KP Queue")?;
+    let source = EntityRef::Ident(Keyword::new("db.source", "system"));
+    let db = db.with_edn(&format!(r#"[
+      {{:db/id "pool" :question/id #uuid "00000000-0000-4000-9090-000000000001"
+        :question/problem "Choose yes." :question/difficulty :question.difficulty/easy :question/answer-fields ["field"]}}
+      {{:db/id "field" :answer-field/id #uuid "00000000-0000-4000-9090-000000000002"
+        :answer-field/key "choice" :answer-field/type :answer-field.type/radio :answer-field/choices ["yes" "no"] :answer-field/correct "yes"}}
+      {{:db/id "yes" :db/ident :fixture/signal-answer :answer/id #uuid "00000000-0000-4000-9090-000000000003" :answer/type :answer.type/text :answer/value "yes"}}
+      {{:db/id "no" :answer/id #uuid "00000000-0000-4000-9090-000000000004" :answer/type :answer.type/text :answer/value "no"}}
+      {{:db/id "canonical" :db/ident :fixture/signal-canonical :question/id #uuid "00000000-0000-4000-9090-000000000005" :question/problem "Source example." :question/worked-solution "Original teaching."}}
+      {{:db/id {kp} :knowledge-point/questions ["pool"] :knowledge-point/canonical-example "canonical"}}
+      {{:db/id "unassigned-lesson" :db/ident :fixture/signal-lesson :activity/type :activity.type/lesson :activity/title "Original lesson" :activity/scope {topic} :activity/steps ["source-step"]}}
+      {{:db/id "source-step" :step/content {kp}}}
+    ]"#), 0, source.clone())?.db_after;
+    let projected = |db: &DatabaseValue| -> Result<Json> {
+        let result = ranked_fixture(db, learner)?;
+        Ok(result.as_array().unwrap().iter().flat_map(|t|t["knowledge_points"].as_array().unwrap())
+            .find(|row|row["db/id"] == kp).unwrap().clone())
+    };
+    let before = projected(&db)?;
+    assert_eq!(before["source_sha256"].as_str().unwrap().len(), 64);
+    let question = *db.values(kp, db.schema().resolve_ident(&Keyword::new("knowledge-point", "questions")).unwrap())?
+        .iter().find_map(|v|if let Value::Ref(q)=v {Some(q)}else{None}).unwrap();
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {learner} :learner/activity "seen-task"]
+      {{:db/id "seen-task" :learner-task/activity "seen-review" :learner-task/status :learner-task.status/started :learner-task/items ["seen-item"]}}
+      {{:db/id "seen-review" :activity/type :activity.type/review :activity/scope {topic}}}
+      {{:db/id "seen-item" :task-item/content {question}}}
+    ]"#), 0, source.clone())?.db_after;
+    let seen = projected(&db)?;
+    assert_eq!(before["source_sha256"], seen["source_sha256"]);
+    assert_eq!(before["question_pool_sha256"], seen["question_pool_sha256"]);
+    assert_ne!(before["inventory"]["available_total"], seen["inventory"]["available_total"]);
+    let answer = db.entid(&Keyword::new("fixture", "signal-answer")).unwrap();
+    let db = db.with_edn(&format!(r#"[[:db/add {answer} :answer/value "certainly"]]"#),0,source.clone())?.db_after;
+    let changed = projected(&db)?;
+    assert_eq!(seen["source_sha256"], changed["source_sha256"]);
+    assert_ne!(seen["question_pool_sha256"], changed["question_pool_sha256"]);
+    let db = db.with_edn(&format!("[[:db/add {question} :question/retired true]]"),0,source.clone())?.db_after;
+    assert_ne!(changed["question_pool_sha256"], projected(&db)?["question_pool_sha256"]);
+    let canonical = db.entid(&Keyword::new("fixture", "signal-canonical")).unwrap();
+    let db = db.with_edn(&format!(r#"[[:db/add {canonical} :question/worked-solution "Changed teaching."]]"#),0,source.clone())?.db_after;
+    let changed_source = projected(&db)?;
+    assert_ne!(before["source_sha256"], changed_source["source_sha256"]);
+    let lesson = db.entid(&Keyword::new("fixture", "signal-lesson")).unwrap();
+    let db = db.with_edn(&format!(r#"[[:db/add {lesson} :activity/title "Revised unassigned lesson"]]"#),0,source)?.db_after;
+    assert_ne!(changed_source["source_sha256"], projected(&db)?["source_sha256"]);
+    Ok(())
+}
+
+#[test]
 fn imported_mastery_does_not_hide_selected_fresh_lesson_but_local_completion_does() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;

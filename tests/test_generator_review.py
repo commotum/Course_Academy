@@ -10,7 +10,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_review import CHECKS, validate_review, _inventory_evidence, main
-from generator_review_fixtures import write_decision_evidence, write_band_evidence, complete_review_fixture
+from generator_review_fixtures import (write_decision_evidence, write_band_evidence, complete_review_fixture,
+                                       write_tool_evidence, fixture_record)
 
 
 def load(path, name):
@@ -127,6 +128,122 @@ class ReviewEvidenceTests(unittest.TestCase):
         path.write_text(json.dumps(report))
         validate_review(self.review, self.directory)
 
+    def test_initial_and_final_account_cannot_be_replaced_together(self):
+        self.review['source_analysis']['reasoning_steps'] = ['Copy a supplied answer']
+        (self.directory / 'source-analysis.json').write_text(json.dumps(self.review['source_analysis']))
+        with self.assertRaisesRegex(ValueError, 'runner-preserved initial account'):
+            validate_review(self.review, self.directory)
+
+    def test_progression_needs_actual_record_linked_comparisons(self):
+        self.review['checks']['progression'].update(details='Passed.', evidence_paths=['measurements.json'])
+        with self.assertRaisesRegex(ValueError, 'record-linked learner-obligations'):
+            validate_review(self.review, self.directory)
+        self.review['checks']['progression']['evidence_paths'].append('learner-obligations.json')
+        path = self.directory / 'learner-obligations.json'
+        account = json.loads(path.read_text()); account['bands']['hard']['records'] = []
+        path.write_text(json.dumps(account))
+        with self.assertRaisesRegex(ValueError, 'omit actual delivered'):
+            validate_review(self.review, self.directory)
+
+    def test_second_material_family_cannot_borrow_first_familys_tools(self):
+        records = {band: [fixture_record(band)] for band in ('easy', 'moderate', 'hard')}
+        second = copy.deepcopy(records['hard'][0]); second['question'][':question/problem'] = 'Distinct support and response family'
+        records['hard'].append(second)
+        self.review['band_verification'] = write_band_evidence(self.directory, records_by_band=records)
+        complete_review_fixture(self.directory, self.review)
+        subset = write_tool_evidence(self.directory, records['hard'][:1], 'subset-')
+        self.review['band_verification']['hard']['evidence_paths'] = ['hard-delivery.json', subset['grading'], subset['rendering']]
+        with self.assertRaisesRegex(ValueError, 'paired active/completed'):
+            validate_review(self.review, self.directory)
+
+    def test_positive_only_native_grading_cannot_approve_fields(self):
+        from scripts.generator_evidence import sha256_file
+        for path in self.directory.glob('*grading.json'):
+            report = json.loads(path.read_text()); source = self.directory / report['input_file']
+            data = json.loads(source.read_text())
+            for row in data:
+                row['checks'] = [check for check in row['checks'] if check['expected'] == 'accepted']
+            for row in report['records']:
+                row['checks'] = [check for check in row['checks'] if check['outcome'] == 'accepted']
+            report['rejected_checks'] = 0
+            source.write_text(json.dumps(data)); report['input_sha256'] = sha256_file(source)
+            path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'accepted and wrong-response'):
+            validate_review(self.review, self.directory)
+
+    def test_solution_conversion_cannot_be_hidden_in_empty_array(self):
+        path = self.directory / 'solution-paths.json'; report = json.loads(path.read_text())
+        report['cases'][0]['final_expression'] = '2+2'
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'different solution/key forms'):
+            validate_review(self.review, self.directory)
+        report['cases'][0]['keyed_answer'] = '9'
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'keyed answer differs'):
+            validate_review(self.review, self.directory)
+
+    def test_equivalent_control_and_narrow_layout_follow_applicability(self):
+        path = self.directory / 'learner-obligations.json'; report = json.loads(path.read_text())
+        report['representatives'][0]['fields'][0]['equivalence']['status'] = 'tested'
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'equivalent response needs a native'):
+            validate_review(self.review, self.directory)
+        report['representatives'][0]['fields'][0]['equivalence']['status'] = 'not_applicable'
+        report['representatives'][0]['narrow_layout']['status'] = 'required'
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'paired narrow rendering'):
+            validate_review(self.review, self.directory)
+
+    def test_shortcut_probe_can_be_justifiably_inapplicable(self):
+        path = self.directory / 'pedagogical-variation.json'; report = json.loads(path.read_text())
+        report['shortcut_applicability'] = {'status': 'not_applicable',
+            'reason': 'The explicitly taught identity is the complete finite operation.', 'sample_refs': ['decision-samples.json']}
+        report['shortcut_probes'] = []
+        path.write_text(json.dumps(report))
+        validate_review(self.review, self.directory)
+
+    def test_generator_acceptance_requires_bound_reviewed_refill_plan(self):
+        self.review['checks']['packaging']['evidence_paths'] = ['measurements.json']
+        with self.assertRaisesRegex(ValueError, 'packaging must assess'):
+            validate_review(self.review, self.directory)
+
+    def test_raw_record_cannot_certify_changed_delivery_survivor(self):
+        from scripts.generator_evidence import sha256_file, record_sha256
+        path = self.directory / 'hard-delivery.json'; report = json.loads(path.read_text())
+        accepted = self.directory / report['accepted_file']; records = json.loads(accepted.read_text())
+        records[0]['question'][':question/problem'] = 'A different delivered representation'
+        accepted.write_text(json.dumps(records))
+        report.update(accepted_sha256=sha256_file(accepted), accepted_record_sha256=[record_sha256(row) for row in records])
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'hard requires grading evidence on actual final records'):
+            validate_review(self.review, self.directory)
+
+    def test_empty_delivery_requires_explicit_raw_fallback(self):
+        from scripts.generator_evidence import sha256_file
+        path = self.directory / 'hard-delivery.json'; report = json.loads(path.read_text())
+        accepted = self.directory / report['accepted_file']; accepted.write_text('[]')
+        report.update(accepted_sha256=sha256_file(accepted), accepted_record_sha256=[], accepted_count=0)
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'no-survivor fallback reason'):
+            validate_review(self.review, self.directory)
+        coverage = self.directory / 'learner-obligations.json'; account = json.loads(coverage.read_text())
+        account['bands']['hard']['no_survivor_fallback'] = {
+            'reason': 'All these exact sampled questions are already in inventory.', 'evidence_paths': ['hard-delivery.json']}
+        coverage.write_text(json.dumps(account))
+        validate_review(self.review, self.directory)
+
+    def test_states_on_different_representatives_do_not_form_a_pair(self):
+        records = {band: [fixture_record(band)] for band in ('easy', 'moderate', 'hard')}
+        second = copy.deepcopy(records['hard'][0]); second['question'][':question/problem'] = 'Second layout'
+        records['hard'].append(second)
+        self.review['band_verification'] = write_band_evidence(self.directory, records_by_band=records)
+        complete_review_fixture(self.directory, self.review)
+        path = self.directory / 'hard-rendering.json'; report = json.loads(path.read_text())
+        report['cases'] = [report['cases'][0], report['cases'][3]]
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'paired active/completed'):
+            validate_review(self.review, self.directory)
+
     def test_structured_acceptance_needs_real_evidence_and_no_failures(self):
         validate_review(self.review, self.directory)
         for mutation in (
@@ -223,7 +340,9 @@ class ReviewEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'final-binding.json'):
             validate_review(self.review, self.directory)
         with self.assertRaisesRegex(ValueError, 'verification batches for all three bands'):
-            validate_review(self.review, self.directory, {'verification_batches': {'easy': {}}})
+            import hashlib
+            validate_review(self.review, self.directory, {'verification_batches': {'easy': {}},
+                'initial_source_analysis_sha256': hashlib.sha256((self.directory / 'source-analysis.json').read_bytes()).hexdigest()})
 
     def test_review_schema_requires_three_bands_and_progression(self):
         schema = json.loads((ROOT / 'generate/pipeline/review.schema.json').read_text())

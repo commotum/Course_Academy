@@ -449,7 +449,9 @@ class Pipeline(InstructionalPhases):
             raise ValueError('Generator requires a review under the current policy')
         path = Path(self.state['review'])
         review = read(path)
-        validate_review(review, path.parent, self.review_binding())
+        validate_review(review, path.parent, self.review_binding(), allow_legacy_completed=(
+            self.state['stage'] == 'verified' and (self.state.get('publication') or {}).get('passed') is True
+            and self.state.get('phase_policy_version', 0) < PHASE_POLICY_VERSION))
         if review['verdict'] != 'accepted':
             raise ValueError('Generator publication requires an accepted review')
         return review
@@ -715,6 +717,8 @@ class Pipeline(InstructionalPhases):
             self.persist(review_after_publication=False, publication=None, registration=None, publication_batch_hash=None, publication_package_hash=None)
         self.persist(package_hash=candidate, stage='validate', approval_recorded=False)
         self.ensure_inventory()
+        self.seed_verifier_account(evidence)
+        self.prepare_refill_review(evidence)
         binding = self.review_binding()
         save(evidence / 'final-binding.json', binding)
         return {'binding': binding, 'batch_file': str(self.directory / 'samples.json'),
@@ -788,6 +792,11 @@ class Pipeline(InstructionalPhases):
     def review_candidate(self, evidence):
         """Keep verification, repairs, and report corrections with one agent."""
         evidence.mkdir(parents=True, exist_ok=True)
+        self.seed_verifier_account(evidence)
+        try:
+            self.prepare_refill_review(evidence)
+        except (OSError, ValueError) as error:
+            self.persist(refill_contract_error=str(error))
         binding_path = evidence / 'review-binding.json'
         binding = self.review_binding()
         self.restore_misplaced_final_binding(evidence)
@@ -814,6 +823,9 @@ class Pipeline(InstructionalPhases):
         while count < limit:
             directory = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
             context = self.context(evidence)
+            context['refill_contract_error'] = self.state.get('refill_contract_error')
+            if self.state.get('review_thread'):
+                context['resume_session_id'] = self.state['review_thread']
             if session_thread(evidence):
                 context['resume_session_id'] = session_thread(evidence)
             if error:
@@ -825,6 +837,7 @@ class Pipeline(InstructionalPhases):
                 return None
             self.persist(active_review_directory=str(evidence))
             result = self.session_call('review', context, directory)
+            self.persist(review_thread=session_thread(directory) or self.state.get('review_thread'))
             save(directory / 'result.json', result)
             self.reload_repaired_runner()
             # The verifier's finalization helper may have resampled and saved
@@ -899,6 +912,7 @@ class Pipeline(InstructionalPhases):
         return True
 
     def sample(self, *, tolerate_failures=False):
+        self.ensure_active_native_grader()
         source, manifest = self.manifest()
         difficulty = self.state['request']['difficulty']
         if difficulty == 'unclassified':
@@ -1025,6 +1039,11 @@ class Pipeline(InstructionalPhases):
         dispositions = self.state.get('finding_dispositions')
         if dispositions and hashlib.sha256(Path(dispositions['path']).read_bytes()).hexdigest() != dispositions['sha256']:
             raise ValueError('Reviewed finding dispositions changed')
+        if (not self.is_refill and self.state.get('phase_policy_version', 0) >= PHASE_POLICY_VERSION
+                and self.state.get('exemplar_gate') and not allow_draft_package_change
+                and not (self.state['stage'] == 'verified' and (self.state.get('publication') or {}).get('passed') is True)
+                and not self.exemplar_gate_current(revalidate_tools=False)):
+            raise ValueError('Pre-author exemplar acceptance changed; independently recheck the anchors')
         completed_publication = (self.state['stage'] == 'verified'
                                  and (self.state.get('publication') or {}).get('passed') is True)
         if (not self.is_refill and not completed_publication and not allow_engine_change
@@ -1053,6 +1072,8 @@ class Pipeline(InstructionalPhases):
 
     def refresh_active_engine(self):
         """Retest changed execution semantics in the existing bounded verifier."""
+        if not self.is_refill and self.state['stage'] in {'validate', 'prepare'}:
+            self.ensure_active_native_grader()
         if (self.is_refill or not self.state.get('engine_hash')
                 or self.state['engine_hash'] == self.engine_identity()
                 or self.state['stage'] not in {'validate', 'prepare'}):
@@ -1093,7 +1114,25 @@ class Pipeline(InstructionalPhases):
         root, manifest = self.manifest()
         return validate_survivors(records, fingerprints, directory, root=root, manifest=manifest,
             band=self.state['effective_difficulty'], python=python_executable(self.root, self.environment),
-            repo_root=self.root, environment=self.environment)
+            repo_root=self.root, environment=self.environment, expected_plan=self.state.get('refill_plan'))
+
+    def prepare_refill_review(self, evidence):
+        """New approvals retain and execute applicable survivor regressions."""
+        from generator_refill_plan import validate_reviewed_refill
+        root, manifest = self.manifest()
+        history = self.directory / 'repair-history.json'
+        retained = read(history) if history.exists() else {'findings': []}
+        required = generator_repair_findings(retained, (self.state.get('finding_dispositions') or {}).get('ids', []))
+        plan = root / 'refill-review-plan.json'
+        if plan.is_file():
+            shutil.copy2(plan, Path(evidence) / plan.name)
+        result = validate_reviewed_refill(root, manifest, required, evidence,
+            batches={band: {**batch, 'assets_directory': batch.get('assets_directory', self.state.get('assets_directory'))}
+                     for band, batch in self.state.get('verification_batches', {}).items()},
+            source=read(self.directory / 'source/source.json'), inventory=read(self.directory / 'source/inventory.json'),
+            math_root=self.math_root, repo_root=self.root, python=python_executable(self.root, self.environment), environment=self.environment)
+        save(Path(evidence) / 'refill-review-evidence.json', result)
+        self.persist(refill_plan=result['plan'])
 
     def engine_identity(self):
         paths = list((self.root / 'engine/rust').rglob('*.rs'))
@@ -1323,9 +1362,7 @@ class Pipeline(InstructionalPhases):
                      review_after_publication=False, approval_recorded=False,
                      report_repair_directory=None, review_report_error=None,
                      active_review_directory=None,
-                     error=None, progress_failures={},
-                     author_attempt_limit=self.state['attempt'] + self.max_attempts,
-                     review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3)
+                     error=None, progress_failures={})
 
     def upgrade_verification(self):
         """Resume saved single-band work in its verifier, never grant new bands."""
@@ -1414,7 +1451,7 @@ class Pipeline(InstructionalPhases):
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(original, destination)
                 artifacts[key] = str(destination)
-        self.persist(stage='sample', investigation_complete=True, **artifacts,
+        self.persist(stage='investigate', investigation_complete=False, **artifacts,
                      reused_pipeline=str(directory), prior_verification=prior.get('review'))
         return True
 
@@ -1452,6 +1489,11 @@ class Pipeline(InstructionalPhases):
                                  source_eligibility_refreshed=True)
                     continue
             self.upgrade_verification()
+            if (not self.is_refill and stage in {'sample', 'validate', 'prepare'}
+                    and self.state.get('phase_policy_version', 0) >= PHASE_POLICY_VERSION
+                    and not self.exemplar_gate_current(revalidate_tools=False)):
+                self.persist(stage='investigate', investigation_complete=False)
+                continue
             if self.refresh_active_engine():
                 continue
             error = self.state.get('error')
@@ -1517,12 +1559,16 @@ class Pipeline(InstructionalPhases):
                         raise RefillNeedsReview('package_invalid', 'Fast refill requires an immutable registered package')
                     package = self.load_registered_package(reference)
                     approval = self.refill_approval()
-                    self.persist(approval_hash=digest(approval))
+                    saved_approval = read(self.approval_path())
+                    self.persist(approval_hash=digest(approval), refill_plan=saved_approval.get('verification_binding', {}).get('refill_plan'))
                     self.sample()
                     self.persist(stage='prepare', registration=package.reference)
                 except (ValueError, FileNotFoundError, subprocess.SubprocessError) as error:
                     self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
             elif stage == 'generate':
+                if not self.exemplar_gate_current():
+                    self.persist(stage='investigate', investigation_complete=False)
+                    continue
                 if self.recover_report_handoff():
                     continue
                 attempt = self.state['attempt'] if self.state.get('author_running') else self.state['attempt'] + 1
@@ -1547,6 +1593,14 @@ class Pipeline(InstructionalPhases):
                     continue
                 if result.get('status') != 'ready' or not isinstance(result.get('manifest'), str):
                     self.repair({'error': 'Author did not return a ready package', 'result': result})
+                    continue
+                try:
+                    self.required_author_handoff()
+                except (OSError, ValueError) as error:
+                    self.repair({'code': 'author_account_missing', 'error': str(error)})
+                    continue
+                if not self.exemplar_gate_current():
+                    self.persist(stage='investigate', investigation_complete=False)
                     continue
                 self.persist(stage='sample', manifest=result['manifest'])
             elif stage == 'sample':

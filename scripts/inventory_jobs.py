@@ -142,8 +142,9 @@ def ranked_requests(inventory: dict) -> list[dict]:
                   'difficulty_evidence': 'inventory',
                   **{field: kp[field] for field in PRIORITY_FIELDS if field in kp}}
         # Availability changes as the learner practices; it does not enlarge a
-        # proven finite domain. Content/source signals, when present in the
-        # projection, do invalidate that conclusion.
+        # proven finite domain. The native finder supplies content-only source
+        # and pool identities, including teaching, answer and retirement edits;
+        # its captured basis and learner availability never enter this key.
         capacity_context = {key: kp['inventory'][key] for key in
                             ('supported_difficulties', 'content_sha256', 'pool_sha256',
                              'finite_catalog_sha256', 'source_sha256', 'question_ids', 'retired_question_ids')

@@ -13,7 +13,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from generator_publish import content_fingerprint
 from generator_refill import native_cases, validate_survivors, check_catalog_membership
-from generator_refill_plan import validate_refill_plan, PLAN, FORMAT
+from generator_refill_plan import validate_refill_plan, validate_reviewed_refill, PLAN, FORMAT
 from test_generator_pipeline import write_package
 from test_generator_publish import record
 
@@ -25,6 +25,12 @@ class RefillValidationTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.package = self.root / 'package'
         self.manifest = write_package(self.package)
+        # Start with an actual legacy package; individual tests add the new
+        # reviewed plan explicitly instead of inheriting the build fixture's plan.
+        if PLAN in self.manifest['files']:
+            self.manifest['files'].remove(PLAN)
+            (self.package/PLAN).unlink()
+            (self.package/'package.json').write_text(json.dumps(self.manifest))
         self.env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'}
 
     def tearDown(self): self.temp.cleanup()
@@ -117,6 +123,36 @@ class RefillValidationTests(unittest.TestCase):
             validate_survivors([record(2)],{'fingerprints':[],'questions':[]},self.root/'missing-plan',
                 root=self.package,manifest=self.manifest,band='easy',python=sys.executable,
                 repo_root=ROOT,environment=self.env,expected_plan=binding)
+
+    def test_new_approval_executes_retained_checks_after_real_three_band_deduplication(self):
+        from generator_source_policy import POLICY_VERSION
+        batches,old_rows,expected={},{},{}
+        for band in ('easy','moderate','hard'):
+            old,new=record(2),record(8)
+            for row in (old,new):row['question'][':question/difficulty']=':question.difficulty/'+band
+            old_rows[band]=old
+            expected[':question.difficulty/'+band]=content_fingerprint(new['question'])
+            path=self.root/(band+'.json');path.write_text(json.dumps([old,new]))
+            batches[band]={'batch_file':str(path),'assets_directory':str(self.root)}
+        self.checker([record(8)])
+        checker=self.package/'check_refill.py'
+        before=checker.read_text().split('json.dump(')[0]
+        checker.write_text(before+'\nassert len(r)==1 and r[0]["question"][":question/problem"]=="Compute 8+1."\nassert len(i["questions"])==3\nf='+repr(expected)+'[r[0]["question"][":question/difficulty"]]\njson.dump({"status":"passed","checked_fingerprints":[f],"check_results":[{"id":"sum","status":"passed","checked_fingerprints":[f]}]},open(a.output,"w"))\n')
+        evidence=self.plan(required=True,findings=['old-sum-defect'])
+        source={'database':'fixture','lineage':'fixture','kp_id':123,'material':{
+            'kp':{':knowledge-point/id':'00000000-0000-4000-8000-000000000123'},
+            'source_eligibility':{'policy_version':POLICY_VERSION,'excluded_questions':[]}}}
+        inventory={key:source[key] for key in ('database','lineage','kp_id')}
+        inventory.update(basis=1,questions=[row['question'] for row in old_rows.values()],
+                         fingerprints=[content_fingerprint(row['question']) for row in old_rows.values()])
+        result=validate_reviewed_refill(self.package,self.manifest,[{'id':'old-sum-defect'}],evidence,
+            batches=batches,source=source,inventory=inventory,math_root=self.root/'math',
+            repo_root=ROOT,python=sys.executable,environment=self.env)
+        self.assertEqual(set(result['bands']),{'easy','moderate','hard'})
+        for band in result['bands'].values():
+            delivery=json.loads(Path(band['delivery']).read_text())
+            self.assertEqual((delivery['input_count'],delivery['accepted_count']),(2,1))
+            self.assertEqual(json.loads(Path(band['report']).read_text())['package_check_scope'],'survivors')
 
     def catalog(self, records):
         (self.package / 'catalog.json').write_text(json.dumps(records))

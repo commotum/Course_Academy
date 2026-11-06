@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -75,6 +76,33 @@ class ToolEvidenceTests(unittest.TestCase):
                                     capture_output=True, text=True, timeout=20)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn(message, result.stderr)
+
+    def test_grading_requires_compiled_source_and_dependency_provenance(self):
+        path, report = self.report('grading')
+        validate_tool_report(path, self.root)
+        report['compiled_inputs_sha256'] = 'f' * 64
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'native build provenance'):
+            validate_tool_report(path, self.root)
+        report['compiled_inputs_sha256'] = report['native_build']['inputs_sha256']
+        report['native_build']['dependencies'] = {}
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'native build provenance'):
+            validate_tool_report(path, self.root)
+
+    def test_native_executable_rejects_unrelated_build_sidecar(self):
+        original = ROOT / 'generate/runs/current/check-engine'
+        if not original.with_suffix('.build.json').is_file():
+            self.skipTest('Build the native grader before its integration controls')
+        binary = self.root / 'check-engine'; shutil.copy2(original, binary)
+        metadata = json.loads(original.with_suffix('.build.json').read_text())
+        metadata['inputs_sha256'] = '0' * 64
+        binary.with_suffix('.build.json').write_text(json.dumps(metadata))
+        source = self.root / 'input.json'; source.write_text('[]')
+        result = subprocess.run([str(binary), str(source), str(self.root / 'report.json')],
+                                capture_output=True, text=True, timeout=20)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('provenance does not identify this compiled binary', result.stderr)
 
 
 if __name__ == '__main__':

@@ -57,13 +57,13 @@ def validate_delivery_batch(records,kp_id):
   field=q[':question/answer-fields'][0];kind=str(field[':answer-field/type']).rsplit('/',1)[-1]
   if kind=='radio':
    expected=sorted(p+1 for c,p in terms);banks=m['bank_terms']
-   if len(banks)!=5 or any(sorted(F(p)for c,p in row)!=expected for row in banks):raise ValueError('All integration options must carry the same power pattern')
+   if len(banks)<2 or any(sorted(F(p)for c,p in row)!=expected for row in banks):raise ValueError('All integration options must carry the same power pattern')
    expected_signs=[1 if c/(p+1)>0 else -1 for c,p in terms]
    if any([1 if F(c)>0 else -1 for c,p in row]!=expected_signs for row in banks):raise ValueError('All integration options must share the correct sign pattern')
    for j,(c,p)in enumerate(terms):
     if p==0 and any(F(row[j][0])!=c for row in banks):raise ValueError('Copied constants must not identify a unique answer')
    correct=field[':answer-field/correct'];aid=str(correct.get(':answer/id'))if isinstance(correct,dict)else str(correct[1]);values=field[':answer-field/choices']
-   if len(values)!=5 or aid not in {str(a[':answer/id'])for a in values}:raise ValueError('Invalid integration answer bank')
+   if len(values)!=len(banks) or aid not in {str(a[':answer/id'])for a in values}:raise ValueError('Invalid integration answer bank')
    if '{{'in q[':question/problem']:raise ValueError('Radio integration prompts must not contain blank markers')
   groups.setdefault(difficulty,[]).append(r)
  for difficulty,rows in groups.items():
@@ -101,13 +101,13 @@ def validate_kp1_v3(records,kp_id):
   field=q[':question/answer-fields'][0];kind=str(field[':answer-field/type']).rsplit('/',1)[-1]
   if kind=='radio':
    expected=sorted(p+1 for c,p in terms);banks=m['bank_terms']
-   if len(banks)!=5 or any(sorted(F(p)for c,p in row)!=expected for row in banks):raise ValueError('All integration options must carry the same power pattern')
+   if len(banks)<2 or any(sorted(F(p)for c,p in row)!=expected for row in banks):raise ValueError('All integration options must carry the same power pattern')
    expected_signs=[1 if c/(p+1)>0 else -1 for c,p in terms]
    if any([1 if F(c)>0 else -1 for c,p in row]!=expected_signs for row in banks):raise ValueError('All integration options must share the correct sign pattern')
    for j,(c,p)in enumerate(terms):
     if p==0 and any(F(row[j][0])!=c for row in banks):raise ValueError('Copied constants must not identify a unique answer')
    correct=field[':answer-field/correct'];aid=str(correct.get(':answer/id'))if isinstance(correct,dict)else str(correct[1]);values=field[':answer-field/choices']
-   if len(values)!=5 or aid not in {str(a[':answer/id'])for a in values}:raise ValueError('Invalid integration answer bank')
+   if len(values)!=len(banks) or aid not in {str(a[':answer/id'])for a in values}:raise ValueError('Invalid integration answer bank')
    if '{{'in q[':question/problem']:raise ValueError('Radio integration prompts must not contain blank markers')
   groups.setdefault(difficulty,[]).append(r)
  for difficulty,rows in groups.items():

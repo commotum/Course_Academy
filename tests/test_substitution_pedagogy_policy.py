@@ -26,8 +26,8 @@ class SubstitutionPedagogyPolicyTests(unittest.TestCase):
   r=model.generate(kp,'hard',7,template='log_base',evidence=ev)
   validate_delivery_batch([r],kp)
   self.assertEqual(r['generation']['family'],'log_base')
- def test_fractional_numerator_composition_is_rejected(self):
-  kp=17592186064218;r=rows(kp)[16];r['generation']['parameters']['numerator']='3/2'
+ def test_unwieldy_fractional_numerator_composition_is_rejected(self):
+  kp=17592186064218;r=rows(kp)[16];r['generation']['parameters']['numerator']='17/19'
   with self.assertRaisesRegex(ValueError,'fractional'):validate_delivery_batch([r],kp)
  def test_blanket_primitive_hints_are_rejected_and_final_key_is_required(self):
   kp=17592186184349;r=rows(kp)[8];r['question'][':question/problem']+='\n\nYou may use $\\int e^u\\,du=e^u+C$. '

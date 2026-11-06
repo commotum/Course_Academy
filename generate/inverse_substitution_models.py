@@ -4,7 +4,7 @@ import random
 import sympy as s
 
 X,U=s.symbols('x u',real=True)
-VERSION='inverse-substitution-quality-5'
+VERSION='inverse-substitution-quality-6'
 KPS={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 
 def tex(v):
@@ -37,6 +37,14 @@ def instance(kp,band,fn,rng,profile=0):
         pref=n*a if band=='hard'else n
     else:
         if band!='easy':A=a*a;B=s.Integer(1)
+        # Canonical e-470 has a fractional prefactor; e-471 has a common
+        # denominator factor with B/A a perfect square. Both retain familiar
+        # linear substitution and must survive ordinary (not replay-only) draws.
+        if band=='moderate'and not definite and rng.choice((False,True)):
+            if fn=='sine':
+                A=s.Integer(1);B=a*a;n=rng.choice((s.Rational(3,2),s.Rational(9,4)))
+            else:
+                A=s.Integer(2);B=2*a*a
         if band=='hard':
             if definite:A=s.Integer(rng.choice((2,8)if fn=='sine'else(3,12)))
             else:
@@ -60,7 +68,7 @@ def instance(kp,band,fn,rng,profile=0):
         if definite:
             p,q=map(s.sympify,endpoint_pair(fn,band,profile));lo,hi=(s.simplify(v/du)for v in(p,q))
             facts=[tex((s.asin if fn=='sine'else s.atan)(v,evaluate=False))+'='+tex(primitive(fn,v))for v in(p,q)]
-        challenge='direct_standard_form'if band=='easy'else'constant_normalization'if band=='moderate'else'familiar_radical_normalization'if definite else'combined_coprime_normalization'
+        challenge='direct_standard_form'if band=='easy'else'bounded_linear_normalization'if band=='moderate'else'familiar_radical_normalization'if definite else'combined_coprime_normalization'
     notes.append('The differential is $\\mathrm{d}x='+tex(1/du)+r'\,\mathrm{d}u$. The outside factor is $'+tex(pref)+r'\cdot '+tex(1/du)+'='+tex(factor)+'$.')
     factor=s.simplify(factor)
     params={'A':str(A),'B':str(B),'numerator':str(n),'scale':str(du)}
@@ -83,7 +91,7 @@ def answer_bank(m,fn,fingerprint,render):
         token=lambda v:str(s.simplify(v))
         good=lambda v:bool(v>0)
     else:
-        correct=r*primitive(fn,z);A=s.Integer(m['params']['A']);n=s.Integer(m['params']['numerator'])
+        correct=r*primitive(fn,z);A=s.Rational(m['params']['A']);n=s.Rational(m['params']['numerator'])
         pref=s.simplify(r*m['du']);a=m['du']
         factors=[(pref,'omit_dx_factor'),(pref*a,'multiply_by_inner_derivative'),(-r,'wrong_sign'),(r/2,'extra_factor_two'),(2*r,'lose_factor_two'),(n,'omit_denominator_normalization')]
         candidates=[((s.simplify(c),z),label,'factor')for c,label in factors]

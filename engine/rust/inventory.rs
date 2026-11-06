@@ -2,7 +2,68 @@
 use crate::{Result, assessment_sampling, learning, scheduling, schema::EntitySnapshot};
 use chrono::{DateTime, Utc};
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
+
+/// Content-change signals for finite-pool conclusions, independent of learner
+/// availability and database basis. The caller captures the bounded target,
+/// owning/prerequisite topics, their canonical examples and owning lessons.
+/// These are invalidation signals, not the publisher's approval source digest.
+pub fn content_signals(s: &EntitySnapshot, kp: u64) -> Result<Value> {
+    fn closure(s: &EntitySnapshot, roots: BTreeSet<u64>, source: bool, target: u64) -> Result<Value> {
+        let mut pending = roots;
+        let mut rows = BTreeMap::new();
+        while let Some(id) = pending.pop_first() {
+            if rows.contains_key(&id) { continue; }
+            let original = s.entity(id)?;
+            let mut row = original.clone();
+            row.retain(|name, _| ["knowledge-point/", "topic/", "activity/", "step/", "question/",
+                "answer-field/", "answer/", "multistep/", "multistep-step/", "assigned-problem/",
+                "tutorial/", "text/", "image/", "video/"].iter().any(|prefix| name.starts_with(prefix)));
+            row.remove("knowledge-point/question-generator");
+            if source && row.contains_key("knowledge-point/id") {
+                let imports: Vec<_> = if id == target { s.refs(id, "knowledge-point/questions")?.into_iter()
+                    .filter(|q| s.entity(*q).is_ok_and(|q| q.contains_key("question/math-academy-id"))).collect() }
+                    else { Vec::new() };
+                row.insert("knowledge-point/questions".into(), json!(imports));
+                pending.extend(imports);
+            }
+            for attr in ["knowledge-point/canonical-example", "topic/knowledge-points", "activity/steps",
+                "step/content", "multistep/steps", "multistep-step/question", "assigned-problem/content",
+                "question/answer-fields", "answer-field/choices", "answer-field/correct"] {
+                if let Some(value) = original.get(attr) {
+                    if let Value::Array(values) = value {
+                        for value in values { pending.insert(s.eid(value)?); }
+                    } else if !value.is_null() { pending.insert(s.eid(value)?); }
+                }
+            }
+            // EDB cardinality-many order is not instructional sequence; linked
+            // step/next remains in each record and preserves actual order.
+            for value in row.values_mut() {
+                if let Value::Array(values) = value { values.sort_by_key(Value::to_string); }
+            }
+            rows.insert(id, row);
+        }
+        Ok(json!(rows))
+    }
+    let pool: BTreeSet<_> = s.refs(kp, "knowledge-point/questions")?.into_iter().collect();
+    let owners: BTreeSet<_> = s.owners(kp, "topic/knowledge-points")?.into_iter().collect();
+    let mut roots = owners.clone();
+    roots.insert(kp);
+    roots.extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
+    for topic in owners {
+        for activity in s.owners(topic, "activity/scope")? {
+            if s.entity(activity)?.get("activity/type").map(|value| s.ident(value)).transpose()?.as_deref() == Some("activity.type/lesson") {
+                roots.insert(activity);
+            }
+        }
+    }
+    let digest = |value: Value| -> Result<String> {
+        Ok(format!("{:x}", Sha256::digest(serde_json::to_vec(&value).map_err(|e|e.to_string())?)))
+    };
+    Ok(json!({"source_sha256":digest(closure(s, roots, true, kp)?)?,
+              "question_pool_sha256":digest(closure(s, pool, false, kp)?)?}))
+}
 
 pub fn triggers(
     s: &EntitySnapshot,
@@ -357,6 +418,43 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn finite_content_signals_follow_teaching_and_pool_not_learner_churn() -> Result<()> {
+        let mut records: BTreeMap<_, _> = [
+            (1, json!({"topic/id":"topic", "topic/knowledge-points":[2]})),
+            (2, json!({"knowledge-point/id":"kp", "knowledge-point/title":"Compute a sum",
+                       "knowledge-point/questions":[3], "knowledge-point/canonical-example":4})),
+            (3, json!({"question/id":"generated", "question/problem":"Compute 2+1.",
+                       "question/answer-fields":[5]})),
+            (4, json!({"question/id":"canonical", "question/problem":"Compute 1+1."})),
+            (5, json!({"answer-field/id":"field", "answer-field/choices":[6], "answer-field/correct":6})),
+            (6, json!({"answer/id":"answer", "answer/value":"3"})),
+            (7, json!({"activity/id":"lesson", "activity/type":8, "activity/scope":1, "activity/steps":[9]})),
+            (8, json!({"db/ident":"activity.type/lesson"})),
+            (9, json!({"step/id":"step", "step/content":10})),
+            (10, json!({"tutorial/id":"tutorial", "tutorial/content":"Add the operands."})),
+            (11, json!({"learner/id":"learner", "learner/activity":[]})),
+        ].into_iter().map(|(id,row)|(id,row.as_object().unwrap().clone())).collect();
+        let signal = |records: &BTreeMap<u64, crate::schema::Record>, basis| -> Result<Value> {
+            content_signals(&EntitySnapshot::new(records.clone(), basis)?, 2)
+        };
+        let initial = signal(&records, 1)?;
+        records.get_mut(&11).unwrap().insert("learner/activity".into(), json!([7]));
+        assert_eq!(initial, signal(&records, 50)?);
+        records.get_mut(&6).unwrap().insert("answer/value".into(), json!("4"));
+        let changed_answer = signal(&records, 51)?;
+        assert_eq!(initial["source_sha256"], changed_answer["source_sha256"]);
+        assert_ne!(initial["question_pool_sha256"], changed_answer["question_pool_sha256"]);
+        records.get_mut(&3).unwrap().insert("question/retired".into(), json!(true));
+        assert_ne!(changed_answer["question_pool_sha256"], signal(&records, 52)?["question_pool_sha256"]);
+        records.get_mut(&4).unwrap().insert("question/problem".into(), json!("Compute 1+2."));
+        assert_ne!(initial["source_sha256"], signal(&records, 53)?["source_sha256"]);
+        let before_tutorial = signal(&records, 53)?;
+        records.get_mut(&10).unwrap().insert("tutorial/content".into(), json!("Recall addition without a supplied sum."));
+        assert_ne!(before_tutorial["source_sha256"], signal(&records, 54)?["source_sha256"]);
+        Ok(())
+    }
 
     #[test]
     fn scoped_lesson_demand_includes_empty_banks_without_expanding_or_blocking_other_work() -> Result<()> {

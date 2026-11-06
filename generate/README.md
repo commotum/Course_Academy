@@ -242,9 +242,19 @@ separate files. Logs, reviews and generated output stay outside the manifest.
 
 ## Refill checks and finite domains
 
-Approved packages refill without another LLM review. The runner checks actual
-surviving response controls with the native grader. A reviewed package may declare
-`refill-validation.json` in its runtime files:
+Approved packages refill without another LLM review. Every new approval declares
+`refill-review-plan.json` in the immutable package. It records `format:
+"course-academy-refill-plan-v1"`, `status` (`checks` or `not_applicable`), a concrete
+`reason`, `source_refs`, review-root-relative `evidence_paths`, `checks`, and
+`finding_exemptions`. Each check has `id`, `purpose` and `finding_ids`. Every retained
+generator finding must map to a check or an exemption with `id`, `reason`,
+`source_refs` and `evidence_paths`. The verifier judges applicability; an empty
+history does not itself justify omitting useful response/task checks. The runner
+binds that decision to the approved package. A `not_applicable` plan has no checks
+or checker descriptor; it must explain why the native controls suffice for this
+package's applicable refill risks.
+
+A `checks` plan declares `refill-validation.json` and its checker in runtime files:
 
 ```json
 {
@@ -257,11 +267,23 @@ surviving response controls with the native grader. A reviewed package may decla
 
 The checker receives `--records`, `--inventory`, and `--output`, and returns a report
 with `status: "passed"` and `checked_fingerprints` equal to the exact sorted
-`content_fingerprint(question)` set of surviving records. Optional `native_checks`
+`content_fingerprint(question)` set of surviving records. It also returns
+`check_results`, one `{id, status: "passed", checked_fingerprints}` for every
+approved check; each check considers every survivor, applying its reviewed
+condition where relevant. Optional `native_checks`
 rows contain `fingerprint` and native-harness `checks`. Keep this checker and its
-inputs declared/package-bound. Use it for independently justified valid-equivalent,
+inputs declared/package-bound. `--inventory` supplies all deduplication fingerprints,
+normalized nonretired complete `questions`, `usable_fingerprints`, and
+`questions_sha256`, so population-level checks can inspect actual content. The
+checker runs in a temporary copy containing only declared package files, outside
+the repository/workspace, with a scrubbed environment and isolated Python import
+path. No workspace sidecars, repository imports or ambient Python paths are
+supplied. This tests dependency completeness; it is not a security sandbox against
+hostile code. Applicable checks run on final delivery survivors before new
+approval and on future refills. Use them for independently justified valid-equivalent,
 near-miss, task-contract and demonstrated cue regressions, not copied metadata
-assertions. Without contextual checks, the native fallback tests every offered
+assertions. Completed legacy approvals remain usable without a new plan and are
+explicitly reported as legacy fallback. Without contextual checks, native grading tests every offered
 selection choice and canonical acceptance for blank fields, recording the missing
 blank-response controls as limitations. It does not invent wrong blank answers or
 prove semantic equivalence or pedagogical variety. Population coverage is assessed against relevant delivered
@@ -274,6 +296,10 @@ domain; only the complete catalog already present in inventory proves exhaustion
 and produces `finite-limit`. A duplicate-heavy sample or `no_changes` alone does
 not prove that no valid unseen questions remain. Per-batch caps still apply to all
 verification/refill requests without dropping any of the three required bands.
+The finder projects content-only source and pool hashes from captured teaching,
+canonical examples, question/answer content and retirement state. Those changes
+or a different package reopen a finite conclusion; learner availability counts
+and unrelated database writes do not.
 
 ## Configuration
 

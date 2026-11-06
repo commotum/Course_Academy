@@ -79,7 +79,10 @@ def load_refill_plan(root, manifest, *, expected=None):
         if not isinstance(contract, dict) or contract.get('format') != 'course-academy-refill-check-v1':
             raise ValueError('Refill plan requires a valid declared checker')
         declared_file(root, manifest, contract.get('script'))
-        for name in contract.get('files', []):
+        files = contract.get('files', [])
+        if not isinstance(files, list):
+            raise ValueError('Refill checker files must be a list')
+        for name in files:
             declared_file(root, manifest, name)
     elif checks or descriptor in manifest['files']:
         raise ValueError('Nonapplicable refill plan cannot conceal declared checks')

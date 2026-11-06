@@ -15,7 +15,7 @@ from generator_packages import publish_package, resolve_registered_script
 from generator_pipeline import CodexSession, Pipeline, SessionRetryExhausted, main
 from generator_publish import SourceChanged, digest as source_digest
 from generator_review import CHECKS, REVIEW_POLICY_VERSION
-from generator_review_fixtures import write_decision_evidence, write_band_evidence, write_tool_evidence
+from generator_review_fixtures import write_decision_evidence, write_band_evidence, write_tool_evidence, complete_review_fixture
 
 
 GENERATOR = textwrap.dedent('''\
@@ -67,6 +67,11 @@ def write_package(directory, *, image=False, difficulty=None, declare_helper=Tru
     (directory / "config.json").write_text(json.dumps({"image": image, "difficulty": difficulty}))
     (directory / "scratch-only.txt").write_text("This file is not a runtime dependency.\n")
     files = ["generator.py", "config.json"] + (["helper.py"] if declare_helper else [])
+    plan = {'format': 'course-academy-refill-plan-v1', 'status': 'not_applicable',
+        'reason': 'The fixture has no retained survivor-specific semantic regressions; actual canonical controls exercise its declared response.',
+        'source_refs': ['fixture-source-1'], 'evidence_paths': ['source-analysis.json'], 'checks': [], 'finding_exemptions': []}
+    (directory / 'refill-review-plan.json').write_text(json.dumps(plan))
+    files.append('refill-review-plan.json')
     manifest = {"entrypoint": "generator.py", "files": files,
                 "dependencies": {"python": platform.python_version(), "packages": {}}}
     if default_difficulty is not None:
@@ -105,12 +110,42 @@ class FakeSession:
         self.reject, self.interrupt_author = reject, interrupt_author
         self.image, self.difficulty, self.declare_helper = image, difficulty, declare_helper
         self.default_difficulty = default_difficulty
+        self.phase_calls = []
+
+    @staticmethod
+    def source_account():
+        return {"skill": "Square a positive integer", "reasoning_steps": ["Multiply n by itself without a supplied result"],
+                "invariants": ["One independently completed squaring operation"], "permitted_variations": ["Positive integer n"],
+                "source_refs": ["fixture-source-1"]}
+
+    def phase_call(self, role, context, directory):
+        self.phase_calls.append((role, context['phase'], str(directory)))
+        directory = Path(directory); directory.mkdir(parents=True, exist_ok=True)
+        (directory / 'events.jsonl').write_text(json.dumps({'type': 'thread.started', 'thread_id': 'fixture-' + role}) + '\n')
+        if context['phase'] == 'source_account':
+            (directory / 'source-analysis.json').write_text(json.dumps(self.source_account()))
+            return {'status': 'ready', 'account_file': 'source-analysis.json'}
+        return FakeSession.__call__(self, role, context, directory)
 
     def __call__(self, role, context, directory):
+        if context.get('phase') == 'source_account':
+            return self.phase_call(role, context, directory)
         if role == 'investigate':
-            return {'status': 'ready', 'exemplars_file': None, 'summary': 'Complete fixture source.',
+            from test_generator_publish import record
+            examples = []
+            for n, band in enumerate(('easy', 'moderate', 'hard'), 2):
+                row = record(n)
+                row['question'][':question/problem'] = 'Calculate ' + str(n) + ' squared.'
+                row['question'][':question/worked-solution'] = str(n) + ' times itself is ' + str(n*n) + '.'
+                row['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'] = str(n*n)
+                row['question'][':question/difficulty'] = ':question.difficulty/' + band
+                examples.append(row)
+            (Path(context['workspace']) / 'exemplars.json').write_text(json.dumps(examples))
+            return {'status': 'ready', 'exemplars_file': 'exemplars.json', 'summary': 'Complete fixture source.',
                     'evidence_paths': [], 'limitations': []}
-        self.calls.append((role, str(directory)))
+        exemplar_phase = context.get('phase') == 'exemplars'
+        if not exemplar_phase:
+            self.calls.append((role, str(directory)))
         directory = Path(context['evidence_root'] if role == 'review' else directory)
         directory.mkdir(parents=True, exist_ok=True)
         if role == "author":
@@ -120,6 +155,9 @@ class FakeSession:
             write_package(Path(context["workspace"]), image=self.image, difficulty=self.difficulty,
                           declare_helper=self.declare_helper, default_difficulty=self.default_difficulty)
             workspace = Path(context['workspace'])
+            from generator_phase_gate import account_markdown
+            (workspace / 'instructional-account.json').write_text(json.dumps(self.source_account()))
+            (workspace / 'instructional-account.md').write_text(account_markdown(self.source_account()))
             if self.reject:
                 config = workspace / 'config.json'
                 value = json.loads(config.read_text())
@@ -132,10 +170,10 @@ class FakeSession:
                     {'id': row['id'], 'script': 'repair_check.py'}
                     for row in json.loads(history.read_text())['findings']]}))
             return {"status": "ready", "manifest": "package.json"}
-        analysis = {"skill": "Square a positive integer", "reasoning_steps": ["Multiply n by itself"],
-                    "invariants": ["One squaring operation"], "permitted_variations": ["Positive integer n"],
-                    "source_refs": ["fixture-source-1"], "evidence_paths": ["source-analysis.json"]}
-        (directory / "source-analysis.json").write_text(json.dumps(analysis))
+        original = directory / 'source-analysis.json'
+        if not original.exists():
+            original.write_text(json.dumps(self.source_account()))
+        analysis = {**json.loads(original.read_text()), 'evidence_paths': ['source-analysis.json']}
         (directory / "checks.json").write_text(json.dumps({"fixture": True, "checks": list(CHECKS)}))
         checks = {name: {"status": "passed", "details": "Structured boundary fixture.",
                          "evidence_paths": ["checks.json"]} for name in CHECKS}
@@ -149,20 +187,37 @@ class FakeSession:
                 checks[name]['evidence_paths'] = [tools[name]]
         checks["scope"]["evidence_paths"] = ['solution-paths.json']
         findings = []
-        if self.reject:
+        if self.reject and not exemplar_phase:
             kind = "restriction" if len([r for r, _ in self.calls if r == "review"]) % 2 else "drift"
             check = "variety" if kind == "restriction" else "scope"
             checks[check]["status"] = "failed"
             findings = [{"kind": kind, "description": "Fixture counterexample requires repair.",
                          "source_refs": ["fixture-source-1"], "reproduction": "seed=17; compare source operation",
                          "requested_change": "Restore the source-supported sampling domain."}]
-        if not self.reject:
-            (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
-        return {"verdict": "revise" if self.reject else "accepted", "summary": "Structured review fixture.",
+        result = {"verdict": "revise" if self.reject and not exemplar_phase else "accepted", "summary": "Structured review fixture.",
                 "source_analysis": analysis, "checks": checks, "findings": findings,
                 "band_verification": write_band_evidence(directory, context["review_binding"], records_by_band,
                     captured_inputs={name: json.loads(Path(context[name + '_file']).read_text())
                                      for name in ('source', 'inventory')})}
+        complete_review_fixture(directory, result, context['review_binding'])
+        if not self.reject or exemplar_phase:
+            (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
+        return result
+
+
+class PhaseSession:
+    """Keep old stage-specific mocks scoped to generator work, with explicit phase mocks."""
+    def __init__(self, session):
+        self.session = session
+        self.phases = session if isinstance(session, FakeSession) else FakeSession()
+
+    def __call__(self, role, context, directory):
+        if context.get('phase') in {'source_account', 'exemplars'}:
+            return self.phases.phase_call(role, context, directory)
+        return self.session(role, context, directory)
+
+    def __getattr__(self, name):
+        return getattr(self.session, name)
 
 
 class FakePublisher:
@@ -253,7 +308,7 @@ class GeneratorPipelineTests(unittest.TestCase):
 
     def pipeline(self, session, *, publisher=None, attempts=2, request=None):
         return Pipeline(self.job, request or self.request, publisher or self.publisher,
-                        root=self.root, environment=self.environment, session=session, max_attempts=attempts,
+                        root=self.root, environment=self.environment, session=PhaseSession(session), max_attempts=attempts,
                         investigation_preparer=fixture_investigation)
 
     def approve_for_refill(self, **options):

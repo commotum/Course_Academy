@@ -34,6 +34,13 @@ all of generator_publish.py or rewrite its deduplication loop for every job.
 
 ## Actual learner grading
 
+Run `python3 <repo_root>/scripts/generator_native_build.py` before native checks;
+the runner also ensures this for active work. It builds offline with Cargo.lock,
+records compiler and linked dependency identities, and embeds the current source
+digest. The compiled helper refuses a mismatched build sidecar. Copy the sidecar
+with the executable if relocating it; old reports cannot certify current sources.
+This does not invalidate historical completed pedagogical approvals.
+
 `<repo_root>/generate/runs/current/check-engine INPUT.json REPORT.json` runs the
 application's native `learning::grade_field` without a database. Input is an array:
 
@@ -41,7 +48,9 @@ application's native `learning::grade_field` without a database. Input is an arr
 # record is one complete generated record; choose responses for that case.
 cases = [{"label": "independent case", "record": record, "checks": [
     {"field_index": 0, "submitted": "1/2", "expected": "accepted",
-     "purpose": "independently checked equivalent notation"}
+     "control": "equivalent", "purpose": "independently checked equivalent notation"},
+    {"field_index": 0, "submitted": "-1/2", "expected": "rejected",
+     "control": "wrong", "purpose": "independent calculation gives a positive result"}
 ]}]
 ```
 
@@ -106,11 +115,73 @@ recognized grader and render reports for raw or delivered records. Representativ
 checks are allowed; the verifier still accounts for all material families and
 limitations. Report status and file existence alone do not establish those claims.
 
-Keep the initial `source-analysis.json` unchanged. Conceptual amendments belong in
+Keep the runner-checkpointed initial `source-analysis.json` unchanged. Its initial
+digest is supplied by the runner before later evidence is exposed, not calculated
+by the reviewer at final acceptance. Conceptual amendments belong in
 `source-analysis-amendments.json`, using the reviewer prompt’s schema and linking
 the initial hash to the final substantive account. `solution-paths.json` needs a
 conversion negative control only for cases with a necessary conversion; unrelated
 CAS/trig examples are not required for direct answers.
+
+## Actual learner-work coverage
+
+The source-only checkpoint and pre-construction exemplar review use the same
+persistent verifier as final review. For exemplars, inspect every exact anchor;
+`source_replay` and `packaging` concern the example/source and artifact, not a
+nonexistent generator. For final generators, representative review is allowed.
+Code verifies identities and declared coverage; it cannot judge the educational
+truth of the comparisons or whether a family definition conceals a distinction.
+
+Save `learner-obligations.json` and cite it in progression evidence:
+
+* `families`: objects with `id`, `operation`, `support`, `response`, `reason`,
+  `source_refs`. Derive these from displayed work, not author slot names.
+* `bands`: exactly easy/moderate/hard, each with a substantive `progression`
+  comparison and `records`: one entry per actual delivery survivor containing
+  `record_sha256`, `family`, `representative_sha256`, and `reason` explaining
+  why that same-band representative covers this record's work/support/response.
+  If delivery yields no survivors, cover the actual raw sample and add
+  `no_survivor_fallback: {reason, evidence_paths}`. A dropped raw record cannot
+  substitute for a delivered record when survivors exist.
+* `representatives`: each inspected record's `record_sha256`, `family`, `given`,
+  `required_work` string list, applicable zero-based `source_reasoning_steps`,
+  `preservation`, `difficulty_justification`, and `narrow_layout` with
+  `status: required|not_applicable` and a concrete `reason`.
+* Each representative has `fields`, one per actual answer field, containing
+  `field_index`, `endpoint`, and `equivalence` with `status: tested|not_applicable`
+  plus a source/response-contract reason. Test a valid equivalent when relevant;
+  a discrete selection or explicit form restriction can justify non-applicability.
+
+Compute record fingerprints with `scripts.generator_evidence.record_sha256`, using
+the exact records from delivery `accepted_file`; do not copy a raw identity after
+normalization changed the record. Every representative needs active and completed
+rendering at the same viewport, and at a width at most 480 when narrow inspection
+is applicable. Each representative field needs real native accepted and rejected
+responses, with a nonempty independent `purpose`. Label a wrong control
+`control: wrong`; an applicable accepted equivalent uses `control: equivalent`.
+The wrong response must actually be wrong under that field's tolerance, form and
+solution-family contract. No arbitrary constant offset is universally wrong.
+
+Save `solution-paths.json` with exactly one case per representative field:
+`record_sha256`, `field_index`, `template`, actual `field_key`,
+`final_expression` as observed in the worked solution, actual `keyed_answer`,
+`domain`, `conclusion`, nonempty `sample_refs`, `status`, and `conversions`.
+Each conversion contains `rule`, `scope_source`, `shown_step`, `status`.
+Every case includes `conversion_review: {status, reason, evidence_paths}` with
+status `none`, `verified` or `formatting_only`. Unequal endpoint/key strings need
+verified conversion steps or a specific formatting-only justification; this is
+not permission to relabel an untaught identity as typography.
+
+A converted path includes `conversion_control` with `candidate`, `reason`,
+`method`, `expected: rejected`, `observed: rejected`, `status: passed`, and
+`sample_refs`. Retain the concrete independent comparison that rejected the
+equivalent but unshown/unsupported candidate, along with the valid shown path.
+This is an instructional-path judgment, not a native value-equivalence test.
+
+Final generator packaging evidence cites the runner-copied `refill-review-plan.json`
+and judges its applicability and retained failure controls. A declared file or
+checker returning all fingerprints is not itself evidence that the right behavior
+is protected. Exemplar review has no runtime refill-plan requirement.
 
 After finalizing and inspecting the actual candidate, validate the report:
 

@@ -61,6 +61,8 @@ class InstructionalPhases:
             thread = self.state.get(role + '_thread') or session_thread(directory)
             if thread:
                 context['resume_session_id'] = thread
+            if role == 'review' and not self.admit_review_session(current):
+                return None
             result = self.session_call(role, context, current)
             save(current / 'result.json', result)
             try:
@@ -139,7 +141,7 @@ class InstructionalPhases:
             'investigation_sha256': sha(self.required_investigation_handoff()),
             'exemplars_sha256': sha(path), 'assets': asset_hashes(records, path.parent, self.math_root)}
 
-    def exemplar_gate_current(self):
+    def exemplar_gate_current(self, *, revalidate_tools=True):
         from generator_review import validate_exemplar_review
         gate = self.state.get('exemplar_gate')
         if not gate:
@@ -149,14 +151,17 @@ class InstructionalPhases:
                 return False
             if sha(gate['report']) != gate['report_sha256']:
                 return False
-            validate_exemplar_review(read(gate['report']), Path(gate['report']).parent, gate['binding'])
+            if revalidate_tools:
+                validate_exemplar_review(read(gate['report']), Path(gate['report']).parent, gate['binding'])
             return True
         except (OSError, ValueError, KeyError):
             return False
 
     def prepare_exemplar_binding(self, evidence):
         from generator_pipeline import digest, asset_hashes, VERIFICATION_BANDS
+        from generator_publish import enum
         from generator_review import REVIEW_POLICY_VERSION
+        self.ensure_active_native_grader()
         path, records = self.exemplar_records()
         evidence.mkdir(parents=True, exist_ok=True)
         self.ensure_inventory()
@@ -164,7 +169,7 @@ class InstructionalPhases:
         # is supplied to this phase.
         batches = {}
         for band in VERIFICATION_BANDS:
-            selected = [row for row in records if row['question'][':question/difficulty'] == ':question.difficulty/' + band]
+            selected = [row for row in records if enum(row['question'][':question/difficulty']) == ':question.difficulty/' + band]
             batch = evidence / (band + '-anchor.json')
             save(batch, selected)
             batches[band] = {'batch_file': str(batch), 'batch_hash': digest(selected),
@@ -197,6 +202,8 @@ class InstructionalPhases:
         while count < self.max_attempts * 3:
             evidence = root if count == 0 else root / ('correction-' + str(count))
             binding, batches = self.prepare_exemplar_binding(evidence)
+            if not self.admit_review_session(evidence):
+                return False
             context = {'phase': 'exemplars', 'repo_root': str(self.root),
                 'workspace': str(self.directory / 'workspace'), 'evidence_root': str(evidence),
                 'knowledge_point': self.state['request']['kp'],
@@ -229,6 +236,13 @@ class InstructionalPhases:
                 self.persist(exemplar_review_rounds=count, exemplar_review_error=str(error))
         self.block('exemplars_unverified', self.state.get('exemplar_review_error'), 'investigate')
         return False
+
+    def ensure_active_native_grader(self):
+        # Unit-test roots without engine sources supply synthetic tool reports.
+        # Real workers require a rebuilt binary bound to all linked Rust inputs.
+        if (self.root / 'generate/runs/current/check-engine.rs').is_file():
+            from generator_native_build import ensure_native_grader
+            return ensure_native_grader(self.root, self.environment)
 
     def seed_verifier_account(self, evidence):
         """Final review must retain the original independently checkpointed account."""

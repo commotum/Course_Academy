@@ -197,6 +197,32 @@ pub(super) fn annotate(
         .collect::<Result<_>>()?;
     let mut pending = BTreeSet::from([learner]);
     pending.extend(selected_kps.iter().copied());
+    // Content invalidation needs teaching evidence even when no learner task
+    // currently points at its lesson. Seek only owning/prerequisite topics,
+    // their canonical examples and owning lessons; never sibling question pools.
+    let owning_topics: BTreeSet<u64> = topics.as_array().unwrap().iter()
+        .map(|topic| eid(&topic["db/id"])).collect::<Result<_>>()?;
+    let mut source_topics = owning_topics.clone();
+    for &kp in &selected_kps {
+        source_topics.extend(refs(&records, kp, "knowledge-point/key-prerequisites"));
+    }
+    let source_kps: BTreeSet<_> = source_topics.iter()
+        .flat_map(|topic| refs(&records, *topic, "topic/knowledge-points")).collect();
+    pending.extend(source_topics.iter().copied());
+    pending.extend(source_kps.iter().copied());
+    if let Some(scope) = db.schema().resolve_ident(&Keyword::new("activity", "scope")) {
+        let kind = db.schema().resolve_ident(&Keyword::new("activity", "type"));
+        let lesson = db.entid(&Keyword::new("activity.type", "lesson"));
+        for &topic in &owning_topics {
+            for datom in db.collect_datoms_with_prefix(&IndexPrefix::Vaet {
+                value: Value::Ref(topic), attribute: Some(scope), entity: None,
+            })? {
+                if let (Some(kind), Some(lesson)) = (kind, lesson) {
+                    if db.values(datom.entity, kind)?.contains(&Value::Ref(lesson)) { pending.insert(datom.entity); }
+                }
+            }
+        }
+    }
     let mut visited = BTreeSet::new();
     let mut selected_since = BTreeMap::<(u64, String), i64>::new();
     let mut terminal_at = BTreeMap::<u64, i64>::new();
@@ -243,6 +269,7 @@ pub(super) fn annotate(
             "task-item/content",
             "assigned-problem/content",
             "multistep/steps",
+            "multistep-step/question",
             "question/answer-fields",
             "answer-field/choices",
             "answer-field/correct",
@@ -251,6 +278,8 @@ pub(super) fn annotate(
         }
         if selected_kps.contains(&e) {
             pending.extend(refs(&records, e, "knowledge-point/questions"));
+        }
+        if records.get(&e).is_some_and(|row| row.contains_key("knowledge-point/id")) {
             pending.extend(refs(&records, e, "knowledge-point/canonical-example"));
         }
     }
@@ -643,7 +672,11 @@ pub(super) fn annotate(
             .collect::<Result<_>>()?;
         t["topic_inventory"] = inventory(&kps)?;
         for kp in t["knowledge_points"].as_array_mut().unwrap() {
-            kp["inventory"] = inventory(&[eid(&kp["db/id"])?])?;
+            let id = eid(&kp["db/id"])?;
+            kp["inventory"] = inventory(&[id])?;
+            let signals = course_academy_engine::inventory::content_signals(&s, id)?;
+            kp["source_sha256"] = signals["source_sha256"].clone();
+            kp["question_pool_sha256"] = signals["question_pool_sha256"].clone();
         }
     }
     Ok(())
