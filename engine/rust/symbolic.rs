@@ -854,6 +854,34 @@ impl Algebra {
                 }
             }
         }
+        // Principal square roots of positive algebraic CONSTANTS multiply
+        // without a sign ambiguity. Collapse a pair only when multiplying
+        // its radicands proves an exact positive rational, e.g.
+        // sqrt(2-sqrt(2))*sqrt(2+sqrt(2)) = sqrt(2). Do not combine
+        // variable radicands or infer equality from interval approximations.
+        let constant_roots: Vec<_> = m.iter().filter_map(|(a, e)| match a {
+            Atom::Root(2, p) if *e == 1 && p.constant().is_none()
+                && p.positive_algebraic_constant() => Some((a.clone(), p.clone())),
+            _ => None,
+        }).collect();
+        for i in 0..constant_roots.len() {
+            for j in i + 1..constant_roots.len() {
+                let product = self.pmul(&constant_roots[i].1, &constant_roots[j].1)?;
+                let Some(q) = product.constant().filter(|q| q.is_positive()) else { continue; };
+                // sqrt(n/d) = sqrt(n*d)/d for positive integers n,d.
+                // root_integer preserves the existing bounded factoring rules.
+                let root = self.root_integer(q.numer() * q.denom(), 2)?;
+                let Some(den) = root.den.constant() else { continue; };
+                let factor = root.num.scale(&(Q::one() / (den * Q::from_integer(q.denom().clone()))));
+                let mut rest = m.clone();
+                rest.remove(&constant_roots[i].0);
+                rest.remove(&constant_roots[j].0);
+                self.depth += 1;
+                let result = self.pmul(&Poly(BTreeMap::from([(rest, c)])), &factor);
+                self.depth -= 1;
+                return result;
+            }
+        }
         for (a, e) in &m {
             let degree = match a {
                 Atom::I => 2,
@@ -3595,6 +3623,26 @@ mod tests {
         // This rule must not remove variable domains or principal signs.
         assert_eq!(compare("sqrt(x^2)", "x", Context::default()), Ok(false));
         assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+    }
+    #[test]
+    fn positive_constant_conjugate_roots_multiply_exactly() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("sqrt(2-sqrt(2))*sqrt(2+sqrt(2))", "sqrt(2)"),
+            ("sqrt(3-sqrt(5))*sqrt(3+sqrt(5))", "2"),
+            ("sqrt(2-sqrt(3))*sqrt(2+sqrt(3))", "1"),
+            ("sqrt(1/2-sqrt(2)/4)*sqrt(1/2+sqrt(2)/4)", "sqrt(2)/4"),
+            ("(-2sqrt(2)*sqrt(2-sqrt(2))*sqrt(2+sqrt(2))+4+pi^2)/8", "pi^2/8"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a}");
+            assert_eq!(compare(a, &format!("-({b})"), Context::default()), Ok(false), "{a}");
+            assert_eq!(compare(a, &format!("({b})+1/100"), Context::default()), Ok(false), "{a}");
+        }
+        assert_eq!(compare("sqrt(3-sqrt(5))*sqrt(4+sqrt(5))", "2", Context::default()), Ok(false));
+        // Constant-only sign proofs must not erase variable domains/branches.
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+        assert_ne!(compare("sqrt(x)*sqrt(-x)", "x", Context::default()), Ok(true));
+        assert_eq!(compare("sqrt(x^2)", "x", Context::default()), Ok(false));
     }
     #[test]
     fn source_imaginary_unit_font_variants() {
