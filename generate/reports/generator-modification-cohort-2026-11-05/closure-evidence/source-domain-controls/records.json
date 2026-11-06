@@ -1,0 +1,481 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186184350,
+      "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+      "title": "Integrating Products Containing Other Exponential Functions"
+    },
+    "question": {
+      ":question/id": "9a1162f3-0221-5c68-b7ff-567cf0b0951f",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 2^{2 - x^{4}} x^{3}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=2 - x^{4}$. Then $\\mathrm{d}u=(- 4 x^{3})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 2^{2 - x^{4}} x^{3}\\,\\mathrm{d}x\\\\&=- \\frac{3}{4}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n- \\frac{3}{4}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{4}\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{4}\\left(\\frac{2^{2 - x^{4}}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7e1021dc-3966-5b49-b8d0-5f76d2160dda",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d16bd0a6-96cd-558e-8ead-8539f97e2e6a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{4}\\left(\\frac{2^{2 - x^{4}}}{\\ln{\\left(2 \\right)}}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d16bd0a6-96cd-558e-8ead-8539f97e2e6a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-5",
+      "seed": 0,
+      "template": "quartic",
+      "family": "quartic",
+      "challenge": "recognize_power_inner_and_differential",
+      "parameters": {
+        "power": 4,
+        "slope": "-1",
+        "shift": "2",
+        "amplitude": "3",
+        "base": "2"
+      },
+      "mathematical_fingerprint": "2a88d2db78ace739b3099b3989520b05a672b86269519ba58421695dcd003d6b",
+      "model": {
+        "integrand": "3*2**(2 - x**4)*x**3",
+        "substitution": "2 - x**4",
+        "derivative": "-4*x**3",
+        "factor": "-3/4",
+        "transformed": "2**u",
+        "primitive": "-3/(2**(x**4)*log(2))",
+        "lower": null,
+        "upper": null,
+        "result": "-3/(2**(x**4)*log(2))"
+      },
+      "batch_contract": "substitution-recognition-5",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-31420",
+        "q-73800",
+        "q-211989",
+        "q-31419",
+        "q-31426",
+        "q-73665",
+        "q-73801",
+        "q-73802",
+        "q-211992",
+        "q-73799",
+        "e-14403"
+      ],
+      "band_origin": "Authored bounded instances preserve independent substitution, differential adjustment and full evaluation; bands can share source-supported families and are not empirically calibrated.",
+      "prior_band_evidence": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184351,
+      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
+      "title": "More Complex Cases"
+    },
+    "question": {
+      ":question/id": "b88842a5-e8f2-5ace-9e6b-516b0f21842f",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 \\cdot 3^{x}}{3^{x} + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=3^{x} + 1$. Then $\\mathrm{d}u=(3^{x} \\ln{\\left(3 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 \\cdot 3^{x}}{3^{x} + 1}\\,\\mathrm{d}x\\\\&=\\frac{2}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\n$$\n\\frac{2}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{2}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 1\\right|\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "756a8d0c-3c50-5aaf-9f67-b921bae40054",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "99a9423f-27f5-5068-9a43-7fd17bfe45ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 1\\right|\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "99a9423f-27f5-5068-9a43-7fd17bfe45ea"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-5",
+      "seed": 7,
+      "template": "log_base",
+      "family": "log_base",
+      "challenge": "logarithmic_derivative",
+      "parameters": {
+        "base": "3",
+        "slope": "1",
+        "offset": "1",
+        "amplitude": "2",
+        "outer": "log"
+      },
+      "mathematical_fingerprint": "06cef7f6c4b37606fe1d5328dcb0bd9236a32508cf3429e5b4f93c8f8668c688",
+      "model": {
+        "integrand": "2*3**x/(3**x + 1)",
+        "substitution": "3**x + 1",
+        "derivative": "3**x*log(3)",
+        "factor": "2/log(3)",
+        "transformed": "1/u",
+        "primitive": "2*log(3**x + 1)/log(3)",
+        "lower": null,
+        "upper": null,
+        "result": "2*log(3**x + 1)/log(3)"
+      },
+      "batch_contract": "substitution-recognition-5",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-113852",
+        "q-113876",
+        "q-73670",
+        "q-113873",
+        "q-31478",
+        "q-31480",
+        "q-49577",
+        "q-73669",
+        "q-49574",
+        "q-113875",
+        "q-73666",
+        "q-113872",
+        "e-14404"
+      ],
+      "band_origin": "Authored bounded instances preserve independent substitution, differential adjustment and full evaluation; bands can share source-supported families and are not empirically calibrated.",
+      "prior_band_evidence": "Authored relative band: Recognize one logarithmic derivative, including a composite denominator. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "ef467bfd-ff9c-5783-9c2d-dc3ec362cad7",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} x e^{1 - x^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=1 - x^{2}$. Then $\\mathrm{d}u=(- 2 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=\\sqrt{\\ln{\\left(2 \\right)}}&\\Longrightarrow u=1 - \\ln{\\left(2 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} x e^{1 - x^{2}}\\,\\mathrm{d}x\\\\&=- \\frac{1}{2}\\left(\\int_{1}^{1 - \\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{2\\ln 2}=4$.\n\nUse the integration rule:\n\n$$\n\\int e^{u}\\,\\mathrm{d}u=e^{u}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n- \\frac{1}{2}\\left(\\left[e^{u}\\right]_{1}^{1 - \\ln{\\left(2 \\right)}}\\right)=- \\frac{1}{2}\\left(\\left(\\frac{e}{2}\\right)-\\left(e\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{e}{4}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4204cd66-3ea9-57aa-bc1c-b3979f9308ff",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f19b3842-2f8d-59a5-a0c7-b750ede38d05",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{e}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f19b3842-2f8d-59a5-a0c7-b750ede38d05"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-5",
+      "seed": 2,
+      "template": "square_e",
+      "family": "square_e",
+      "challenge": "exponential_bounds",
+      "parameters": {
+        "power": 2,
+        "slope": "-1",
+        "shift": "1",
+        "amplitude": "1",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "ddf6810526a29b73ea14f02c1d3f62accfd3ee686587aa683b0dfca3c82eeaeb",
+      "model": {
+        "integrand": "x*exp(1 - x**2)",
+        "substitution": "1 - x**2",
+        "derivative": "-2*x",
+        "factor": "-1/2",
+        "transformed": "exp(u)",
+        "primitive": "-exp(1 - x**2)/2",
+        "lower": "0",
+        "upper": "sqrt(log(2))",
+        "result": "E/4"
+      },
+      "batch_contract": "substitution-recognition-5",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored bounded instances preserve independent substitution, differential adjustment and full evaluation; bands can share source-supported families and are not empirically calibrated.",
+      "prior_band_evidence": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "bce49269-e538-5a77-a3c6-de6a70912e29",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{9}{4 \\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $\\frac{9}{4}\\cdot \\frac{1}{3}=\\frac{3}{4}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{9}{4 \\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x\\\\&=\\frac{3}{4}\\left(\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{3}{4}\\left(\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right)=\\frac{3}{4}\\left(\\arcsin{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\arcsin{\\left(3 x \\right)}}{4}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bff72fb2-9c01-5d91-b002-c83853e1aad6",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b2cd84b8-5cc2-5b5d-be1d-75a65acc5222",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\arcsin{\\left(3 x \\right)}}{4}+C"
+            },
+            {
+              ":answer/id": "b9a9a537-1a75-5540-b509-c55e47b0dd5b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\arcsin{\\left(3 x \\right)}}{4}+C"
+            },
+            {
+              ":answer/id": "432130c1-240a-5bb6-a34d-1b9bfda32f7e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arcsin{\\left(6 x \\right)}}{8}+C"
+            },
+            {
+              ":answer/id": "fd6d98fa-81d8-5b75-aacf-f0e271848218",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arcsin{\\left(3 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "d87a6a2a-f839-5106-be76-e463ba359d81",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arcsin{\\left(3 x \\right)}}{4}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d87a6a2a-f839-5106-be76-e463ba359d81"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-6",
+      "seed": 7,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "bounded_linear_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "9/4",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "8f28878bb82e8b7a0e087e7497f2837f80ec429edd3b19a999b85324522a49ec",
+      "model": {
+        "integrand": "9/(4*sqrt(1 - 9*x**2))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "3/4",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "3*asin(3*x)/4",
+        "lower": null,
+        "upper": null,
+        "result": "3*asin(3*x)/4"
+      },
+      "batch_contract": "inverse-substitution-quality-6",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-2505",
+        "q-49547",
+        "q-114022",
+        "q-114023",
+        "q-114024",
+        "q-114025",
+        "q-114027",
+        "q-114030",
+        "q-114032",
+        "q-2503",
+        "q-2506",
+        "q-4334",
+        "q-49535",
+        "q-73712",
+        "q-49545",
+        "e-470"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "prior_band_evidence": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "wrong_sign",
+        "omit_denominator_normalization",
+        "double_inner_scale_extra_half",
+        "lose_factor_two",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064219,
+      "id": "227abe29-6e31-5afd-b0ca-3b8ed7d8c287",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Tangent"
+    },
+    "question": {
+      ":question/id": "e3334668-3861-590e-970d-bb7a8a881fbd",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{50 x^{2} + 2}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nNormalize the denominator:\n\n$$\n50 x^{2} + 2=2\\left(1+(5 x)^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $\\frac{3}{2}\\cdot \\frac{1}{5}=\\frac{3}{10}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{50 x^{2} + 2}\\,\\mathrm{d}x\\\\&=\\frac{3}{10}\\left(\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{3}{10}\\left(\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right)=\\frac{3}{10}\\left(\\arctan{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\arctan{\\left(5 x \\right)}}{10}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c0f4f27b-2b3a-555f-8376-53198a8462b4",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6204a204-77ab-5fc6-bad9-9e9366c29658",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arctan{\\left(x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "c3ed488c-c3a1-5510-9a15-a58e33b9dbab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{15 \\arctan{\\left(5 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "3d20a5a6-6840-51ce-b58d-8a64e86d10c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arctan{\\left(10 x \\right)}}{10}+C"
+            },
+            {
+              ":answer/id": "26f7cedd-b054-5229-98d3-51f9a9c72f4f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\arctan{\\left(5 x \\right)}}{10}+C"
+            },
+            {
+              ":answer/id": "bbb8b28c-dff4-558d-a2ea-56a8b25510b5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\arctan{\\left(5 x \\right)}}{10}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "26f7cedd-b054-5229-98d3-51f9a9c72f4f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-6",
+      "seed": 101,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "bounded_linear_normalization",
+      "parameters": {
+        "A": "2",
+        "B": "50",
+        "numerator": "3",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "53270d478ce7ffcd59629ca45b8bd0010aa5d21e483e19e75e5757db6d380a0d",
+      "model": {
+        "integrand": "3/(50*x**2 + 2)",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "3/10",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "3*atan(5*x)/10",
+        "lower": null,
+        "upper": null,
+        "result": "3*atan(5*x)/10"
+      },
+      "batch_contract": "inverse-substitution-quality-6",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-49540",
+        "q-49548",
+        "q-114033",
+        "q-114035",
+        "q-114036",
+        "q-114040",
+        "q-114045",
+        "q-114046",
+        "q-2504",
+        "q-2507",
+        "q-49505",
+        "q-49550",
+        "q-49551",
+        "q-73714",
+        "q-73713",
+        "q-114039",
+        "e-471"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "prior_band_evidence": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "omit_inner_scale_extra_double",
+        "multiply_by_inner_derivative",
+        "double_inner_scale",
+        "correct",
+        "wrong_sign"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  }
+]

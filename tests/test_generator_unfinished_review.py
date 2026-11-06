@@ -19,6 +19,8 @@ class GeneratorUnfinishedReviewTests(unittest.TestCase):
         pipeline.ensure_inventory()
         evidence = pipeline.review_directory()
         evidence.mkdir()
+        pipeline.seed_verifier_account(evidence)
+        pipeline.prepare_refill_review(evidence)
         (evidence / 'review-binding.json').write_text(json.dumps(pipeline.review_binding()))
         (evidence / 'final-binding.json').write_text(json.dumps(pipeline.review_binding()))
         (evidence / 'events.jsonl').write_text(json.dumps({'type': 'thread.started', 'thread_id': 'unfinished-verifier'}) + '\n')

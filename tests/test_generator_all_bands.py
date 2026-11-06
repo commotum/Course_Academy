@@ -215,7 +215,11 @@ class GeneratorAllBandsTests(unittest.TestCase):
     def legacy_checkpoint(self, *, published, broken_other_bands):
         """Reproduce a real pre-upgrade easy-only checkpoint, including its thread."""
         pipeline = self.pipeline(RecordingSession(difficulty='easy' if broken_other_bands else None))
-        with patch('generator_pipeline.VERIFICATION_BANDS', ('easy',)):
+        original_sample = pipeline.sample
+        def single_band(*args, **kwargs):
+            with patch('generator_pipeline.VERIFICATION_BANDS', ('easy',)):
+                return original_sample(*args, **kwargs)
+        with patch.object(pipeline, 'sample', side_effect=single_band):
             pipeline.run('generate')
         evidence = self.job / 'review-legacy-policy-5'
         evidence.mkdir()

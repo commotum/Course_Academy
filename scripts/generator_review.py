@@ -102,7 +102,7 @@ def _decision_evidence(check, root):
         if pair.get("status") not in {"passed", "not_applicable"}:
             raise ValueError("decision_variation has a failed or untested counterfactual")
     applicability = report.get('shortcut_applicability', {})
-    if applicability.get('status') not in {'applicable', 'not_applicable'}:
+    if not isinstance(applicability, dict) or applicability.get('status') not in {'applicable', 'not_applicable'}:
         raise ValueError('decision_variation requires shortcut applicability')
     _text(applicability.get('reason'), 'shortcut applicability reason')
     _evidence(applicability.get('sample_refs'), root, 'shortcut applicability evidence', required=True)
@@ -129,7 +129,7 @@ def _decision_evidence(check, root):
             raise ValueError('shortcut probe requires diagnostic or confirmed claim')
         if probe['claim'] == 'confirmed':
             confirmation = probe.get('confirmation', {})
-            if confirmation.get('method') not in {'fresh_cases', 'invariant', 'finite_pool'}:
+            if not isinstance(confirmation, dict) or confirmation.get('method') not in {'fresh_cases', 'invariant', 'finite_pool'}:
                 raise ValueError('confirmed shortcut needs fresh cases, invariant or finite-pool evidence')
             for key in ('allowed_information', 'bypassed_work', 'subgroup_selection', 'mechanism'):
                 _text(confirmation.get(key), 'shortcut confirmation.' + key)
@@ -145,6 +145,8 @@ def _decision_evidence(check, root):
                     raise ValueError('fresh shortcut confirmation cannot relabel the same evidence bytes')
     if applicability['status'] == 'applicable' and not conditional:
         exception = report.get('conditional_probe_not_applicable', {})
+        if not isinstance(exception, dict):
+            raise ValueError('conditional shortcut applicability must be an explicit judgment')
         _text(exception.get('reason'), 'conditional shortcut applicability reason')
         _evidence(exception.get('sample_refs'), root, 'conditional shortcut applicability evidence', required=True)
     delivery = report.get("delivery")
@@ -259,9 +261,12 @@ def _source_analysis_evidence(analysis, root, binding):
 
 
 def _field_shape(record):
-    fields = record.get('question', {}).get(':question/answer-fields')
+    question = record.get('question')
+    fields = question.get(':question/answer-fields') if isinstance(question, dict) else None
     if not isinstance(fields, list) or not fields:
         raise ValueError('learner obligation coverage requires actual answer fields')
+    if any(not isinstance(field, dict) for field in fields):
+        raise ValueError('learner obligation answer fields must be objects')
     return [field.get(':answer-field/type') for field in fields]
 
 
@@ -272,11 +277,15 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
         raise ValueError('progression requires record-linked learner-obligations.json')
     _evidence([name], root, 'learner obligations', required=True)
     account = json.loads((root / name).read_text())
+    if not isinstance(account, dict):
+        raise ValueError('learner obligations must be an object')
     families = account.get('families')
     if not isinstance(families, list) or not families:
         raise ValueError('learner obligations must declare material families')
     by_family = {}
     for family in families:
+        if not isinstance(family, dict):
+            raise ValueError('material family must be an object')
         for key in ('id', 'operation', 'support', 'response', 'reason'):
             _text(family.get(key), 'material family.' + key)
         _strings(family.get('source_refs'), 'material family source_refs', required=True)
@@ -284,11 +293,13 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
             raise ValueError('duplicate material family')
         by_family[family['id']] = family
     bands = account.get('bands', {})
-    if set(bands) != set(DIFFICULTIES):
+    if not isinstance(bands, dict) or set(bands) != set(DIFFICULTIES):
         raise ValueError('learner obligations must cover all three bands')
     representatives = account.get('representatives')
-    if not isinstance(representatives, list) or not representatives:
+    if not isinstance(representatives, list) or not representatives or any(not isinstance(row, dict) for row in representatives):
         raise ValueError('learner obligations need inspected representatives')
+    if any(not isinstance(row.get('record_sha256'), str) or not re.fullmatch(r'[0-9a-f]{64}', row['record_sha256']) for row in representatives):
+        raise ValueError('representative needs an actual record fingerprint')
     by_rep = {row.get('record_sha256'): row for row in representatives}
     if len(by_rep) != len(representatives):
         raise ValueError('duplicate learner obligation representative')
@@ -297,16 +308,21 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
     for band, (records, fallback) in records_by_band.items():
         actual.update({record_sha256(record): record for record in records})
         row = bands[band]
+        if not isinstance(row, dict):
+            raise ValueError('band learner obligations must be an object')
         _text(row.get('progression'), band + ' actual learner-work progression comparison')
         if fallback:
             justification = row.get('no_survivor_fallback', {})
+            if not isinstance(justification, dict):
+                raise ValueError('no-survivor fallback must be an explicit judgment')
             _text(justification.get('reason'), band + ' no-survivor fallback reason')
             _evidence(justification.get('evidence_paths'), root, 'no-survivor fallback evidence', required=True)
         elif row.get('no_survivor_fallback'):
             raise ValueError('raw fallback is only permitted when delivery has no survivors')
         mappings = row.get('records')
         identities = {record_sha256(record) for record in records}
-        if (not isinstance(mappings, list) or len(mappings) != len(identities)
+        if (not isinstance(mappings, list) or any(not isinstance(mapping, dict) or any(not isinstance(mapping.get(k), str)
+                for k in ('record_sha256', 'representative_sha256', 'family')) for mapping in mappings) or len(mappings) != len(identities)
                 or {mapping.get('record_sha256') for mapping in mappings} != identities):
             raise ValueError(band + ' learner obligations omit actual delivered records')
         family_representatives = {}
@@ -346,6 +362,8 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
             raise ValueError('source-step exemptions must be explicit judgments')
         exempted = set()
         for exemption in exemptions:
+            if not isinstance(exemption, dict):
+                raise ValueError('source-step exemption must be an object')
             index = exemption.get('index')
             if type(index) is not int or index in exempted or index in steps:
                 raise ValueError('invalid or duplicate source-step exemption')
@@ -355,7 +373,7 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
             raise ValueError('representative must account for every source reasoning obligation')
         fields = record['question'][':question/answer-fields']
         judgments = representative.get('fields')
-        if (not isinstance(judgments, list) or len(judgments) != len(fields)
+        if (not isinstance(judgments, list) or any(not isinstance(row, dict) for row in judgments) or len(judgments) != len(fields)
                 or {row.get('field_index') for row in judgments} != set(range(len(fields)))):
             raise ValueError('representative must assess every actual answer field')
         render_cases = [case for report in reports.values() if FORMATS[report['format']] == 'rendering'
@@ -366,7 +384,7 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
         if not paired:
             raise ValueError('each representative requires paired active/completed rendering')
         narrow = representative.get('narrow_layout', {})
-        if narrow.get('status') not in {'required', 'not_applicable'}:
+        if not isinstance(narrow, dict) or narrow.get('status') not in {'required', 'not_applicable'}:
             raise ValueError('representative must assess narrow-layout applicability')
         _text(narrow.get('reason'), 'narrow-layout applicability reason')
         if narrow['status'] == 'required' and not any(width <= 480 for width, _ in paired):
@@ -389,7 +407,7 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
             if not any(check.get('control') == 'wrong' and check['expected'] == 'rejected' for check in requested):
                 raise ValueError('wrong-response coverage needs an identified independent control')
             equivalence = judgment.get('equivalence', {})
-            if equivalence.get('status') not in {'tested', 'not_applicable'}:
+            if not isinstance(equivalence, dict) or equivalence.get('status') not in {'tested', 'not_applicable'}:
                 raise ValueError('field requires equivalent-response applicability judgment')
             _text(equivalence.get('reason'), 'equivalence applicability reason')
             if equivalence['status'] == 'tested' and not any(check.get('control') == 'equivalent' and check['expected'] == 'accepted' for check in requested):
@@ -406,7 +424,7 @@ def _learner_obligations(result, root, records_by_band, reports, *, exemplars=Fa
             if case['field_key'] != field[':answer-field/key']:
                 raise ValueError('solution path field key differs from actual final field')
             review = case.get('conversion_review', {})
-            if review.get('status') not in {'none', 'verified', 'formatting_only'}:
+            if not isinstance(review, dict) or review.get('status') not in {'none', 'verified', 'formatting_only'}:
                 raise ValueError('solution path needs explicit conversion verification')
             _text(review.get('reason'), 'conversion verification reason')
             _evidence(review.get('evidence_paths'), root, 'conversion verification evidence', required=True)

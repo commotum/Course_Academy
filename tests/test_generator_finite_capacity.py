@@ -216,7 +216,12 @@ class GeneratorFiniteCapacityTests(unittest.TestCase):
         session = FakeSession()
         refill = self.pipeline(count=5, refill=True, name='catalog-refill', publisher=publisher,
                                session=session, registration=approved['registration'])
-        result = refill.run()
+        # The isolated fixture links the real executable but is not an engine
+        # source tree. Build its linked target from the actual repository.
+        from scripts.generator_native_build import ensure_native_grader
+        with patch('scripts.generator_native_build.ensure_native_grader',
+                   side_effect=lambda repo, env: ensure_native_grader(ROOT, env)):
+            result = refill.run()
         self.assertEqual(result['stage'], 'finite-limit')
         self.assertEqual(result['error']['code'], 'finite_catalog_exhausted')
         self.assertEqual(session.calls, [])

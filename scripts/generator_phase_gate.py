@@ -33,7 +33,7 @@ class InstructionalPhases:
 
     def source_account_phase(self, role):
         """Checkpoint an independently produced account before downstream exposure."""
-        from generator_pipeline import session_thread, digest
+        from generator_pipeline import session_thread, digest, python_executable
         from generator_publish import instructional_material, digest as source_digest
         from generator_review import validate_source_account_checkpoint
         from generator_session_binding import policy_identity
@@ -51,9 +51,19 @@ class InstructionalPhases:
         material = instructional_material(captured['material'])
         target_only = {key: captured[key] for key in ('database', 'lineage', 'basis', 'kp_id')}
         target_only.update(material=material, source_sha256=source_digest(material))
-        source_path = directory / 'source-inputs' / digest(target_only) / 'source.json'
+        source_path = directory / 'source-inputs' / digest({'target': target_only, 'assets': source['assets']}) / 'source.json'
         if not source_path.exists():
             save(source_path, target_only)
+        asset_snapshots = {}
+        for name, identity in source['assets'].items():
+            original = Path(name)
+            captured_root = self.directory / 'source'
+            relative = original.relative_to(captured_root) if original.is_relative_to(captured_root) else Path('assets') / identity / original.name
+            copied = source_path.parent / relative
+            copied.parent.mkdir(parents=True, exist_ok=True)
+            if not copied.exists():
+                shutil.copy2(original, copied)
+            asset_snapshots[name] = str(copied)
         rounds = self.state.get('source_account_rounds', {})
         count = rounds.get(role, 0)
         limit = self.state.get('source_account_limits', {}).get(role, self.max_attempts)
@@ -65,9 +75,12 @@ class InstructionalPhases:
                 'repo_root': str(self.root), 'knowledge_point': self.state['request']['kp'],
                 'source_file': str(source_path),
                 'source_root': str(source_path.parent), 'math_root': str(self.math_root),
+                'source_asset_snapshots': asset_snapshots,
                 'workspace': str(current), 'evidence_root': str(current),
                 'account_file': str(current / 'source-analysis.json'),
-                'python': self.environment.get('COURSE_ACADEMY_GENERATOR_PYTHON'),
+                'python': python_executable(self.root, self.environment),
+                'shared_repair_command': [python_executable(self.root, self.environment),
+                    str(self.root / 'scripts/generator_shared_repair.py')],
                 'feedback': self.state.get(key + '_error')}
             # This context intentionally has no donor, authored workspace,
             # exemplar, generator, repair history or previous interpretation.
@@ -220,7 +233,7 @@ class InstructionalPhases:
         return binding, batches
 
     def review_exemplars(self):
-        from generator_pipeline import session_thread
+        from generator_pipeline import session_thread, python_executable
         from generator_review import validate_exemplar_review
         if self.exemplar_gate_current():
             return True
@@ -240,12 +253,17 @@ class InstructionalPhases:
                 'source_file': str(self.directory / 'source/source.json'),
                 'inventory_file': str(self.directory / 'source/inventory.json'),
                 'source_root': str(self.directory / 'source'), 'math_root': str(self.math_root),
+                'publisher_file': str(self.root / 'scripts/generator_publish.py'),
+                'question_selection_file': str(self.root / 'engine/rust/question_selection.rs'),
+                'engine_repair_allowed': True,
                 'investigation_account_file': str(self.required_investigation_handoff()),
                 'target_account_file': self.state['target_account']['path'],
                 'initial_source_analysis_file': self.state['verifier_account']['path'],
                 'exemplars_file': self.state['exemplars_file'], 'review_binding': binding,
                 'verification_batches': batches, 'verification_bands': list(batches),
-                'python': self.environment.get('COURSE_ACADEMY_GENERATOR_PYTHON'),
+                'python': python_executable(self.root, self.environment),
+                'shared_repair_command': [python_executable(self.root, self.environment),
+                    str(self.root / 'scripts/generator_shared_repair.py')],
                 'exemplar_feedback': self.state.get('exemplar_review_error'),
                 'resume_session_id': self.state.get('review_thread')}
             result = self.session_call('review', context, evidence)

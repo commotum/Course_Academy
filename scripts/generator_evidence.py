@@ -161,7 +161,7 @@ def validate_tool_report(path, evidence_root, *, engine_sha256=None):
         except ImportError:
             from generator_native_build import build_inputs, digest
         build = report.get('native_build', {})
-        if (build.get('format') != 'course-academy-native-build-v1'
+        if (not isinstance(build, dict) or build.get('format') != 'course-academy-native-build-v1'
                 or build.get('inputs') != build_inputs(ROOT)
                 or build.get('inputs_sha256') != digest(build.get('inputs'))
                 or report.get('compiled_inputs_sha256') != build.get('inputs_sha256')
@@ -222,7 +222,10 @@ def validate_tool_report(path, evidence_root, *, engine_sha256=None):
             viewport = row.get('viewport', {})
             if any(type(viewport.get(k)) is not int or viewport[k] <= 0 for k in ('width', 'height')):
                 raise ValueError('rendering viewport is missing')
-            for captured in [row, *row.get('dropdowns', [])]:
+            dropdowns = row.get('dropdowns', [])
+            if not isinstance(dropdowns, list) or any(not isinstance(item, dict) for item in dropdowns):
+                raise ValueError('rendering dropdown captures must be objects')
+            for captured in [row, *dropdowns]:
                 screenshot = _local(captured.get('screenshot', ''), path.parent, 'rendering screenshot')
                 if captured.get('screenshot_sha256') != sha256_file(screenshot):
                     raise ValueError('rendering screenshot bytes differ from captured evidence')

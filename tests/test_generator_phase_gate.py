@@ -196,5 +196,25 @@ class PhaseGateTests(unittest.TestCase):
             self.assertNotEqual(identity, original[role])
         self.assertEqual(len(accounts), 4)
 
+    def test_source_only_capture_preserves_relative_diagrams_and_image_revisions(self):
+        snapshots = []
+        class Diagrams(FakeSession):
+            def phase_call(inner, role, context, directory):
+                if context['phase'] == 'source_account':
+                    captured = Path(context['source_file']).parent / 'diagram.svg'
+                    snapshots.append(captured)
+                    self.assertTrue(captured.is_file())
+                return super().phase_call(role, context, directory)
+        pipeline = self.prepare(Diagrams())
+        original = self.job / 'source/diagram.svg'; original.write_text('<svg>original diagram</svg>')
+        self.publisher.material['question'] = 'Interpret ![diagram](diagram.svg) and square the value.'
+        self.publisher.extract_source(123, self.job / 'source')
+        pipeline.source_account_phase('investigate')
+        original.write_text('<svg>revised diagram</svg>')
+        pipeline.source_account_phase('investigate')
+        self.assertNotEqual(snapshots[0], snapshots[1])
+        self.assertEqual(snapshots[0].read_text(), '<svg>original diagram</svg>')
+        self.assertEqual(snapshots[1].read_text(), '<svg>revised diagram</svg>')
+
 
 if __name__ == '__main__': unittest.main()

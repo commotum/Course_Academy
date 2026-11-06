@@ -134,6 +134,14 @@ class ReviewEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'runner-preserved initial account'):
             validate_review(self.review, self.directory)
 
+    def test_malformed_coverage_returns_actionable_validation_errors(self):
+        path = self.directory / 'learner-obligations.json'; original = json.loads(path.read_text())
+        for replacement in ([], {**original, 'families': ['not an object']},
+                            {**original, 'bands': []}, {**original, 'representatives': ['not an object']}):
+            path.write_text(json.dumps(replacement))
+            with self.assertRaises(ValueError):
+                validate_review(self.review, self.directory)
+
     def test_progression_needs_actual_record_linked_comparisons(self):
         self.review['checks']['progression'].update(details='Passed.', evidence_paths=['measurements.json'])
         with self.assertRaisesRegex(ValueError, 'record-linked learner-obligations'):

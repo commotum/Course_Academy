@@ -3,7 +3,7 @@ Establish the learner task from target source evidence only. You are the existin
 Context:
 {{context}}
 
-Read generate/principles.md and the supplied target source_file, including the target lesson, eligible original examples, diagrams and prerequisite context. Do not inspect donor references, local examples, author accounts, generator implementation, prior reviews or repair feedback. The runner has not admitted those artifacts to this phase. Do not query or mutate the database.
+Read generate/principles.md and the supplied target source_file, including the target lesson, eligible original examples, diagrams and prerequisite context. Resolve source-local relative diagrams beside source_file; use source_asset_snapshots for captured copies of canonical or absolute image references. Do not inspect donor references, local examples, author accounts, generator implementation, prior reviews or repair feedback. The runner has not admitted those artifacts to this phase. Do not query or mutate the database.
 
 Write evidence_root/source-analysis.json with exactly these substantive fields: skill (nonempty string), reasoning_steps, invariants, permitted_variations, source_refs (nonempty arrays of substantive strings). Describe the learner's required decisions and recall before feedback, supplied information and response endpoint; distinguish guided practice from independent choice. Cite exact target source IDs/passages. Record genuine uncertainty in the account rather than borrowing a different task. The same reasoning may remain across all three difficulty levels.
 

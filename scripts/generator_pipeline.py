@@ -808,6 +808,24 @@ class Pipeline(InstructionalPhases):
         self.restore_misplaced_final_binding(evidence)
         recorded = read(binding_path) if binding_path.exists() else None
         finalized = read(evidence / 'final-binding.json') if (evidence / 'final-binding.json').exists() else None
+        if (recorded is not None and recorded.get('refill_plan') is None and binding.get('refill_plan')
+                and {key: value for key, value in recorded.items() if key != 'refill_plan'} ==
+                    {key: value for key, value in binding.items() if key != 'refill_plan'}):
+            # Adding the new contract to the same retained package needs the
+            # existing verifier's acceptance, not a lost session or old pass.
+            save(evidence / ('binding-before-refill-contract-' + str(time.time_ns()) + '.json'), recorded)
+            save(binding_path, binding)
+            (evidence / 'final-binding.json').unlink(missing_ok=True)
+            rounds = self.state.get('review_report_rounds', {})
+            count = rounds.get(str(evidence), 0)
+            def correction(count):
+                return evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
+            while (correction(count) / 'result.json').exists():
+                count += 1
+            rounds[str(evidence)] = count
+            self.persist(review_report_rounds=rounds, report_repair_directory=str(evidence),
+                review_report_error='Review the retained refill applicability and executable obligations, finalize and accept in this same verifier session.')
+            recorded, finalized = binding, None
         if recorded is not None and recorded != binding and finalized != binding:
             if self.state.get('report_repair_directory'):
                 self.persist(stage='validate', report_repair_directory=None,

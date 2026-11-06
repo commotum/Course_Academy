@@ -1,0 +1,17 @@
+[
+  {
+    "type": "custom_tool_call",
+    "name": "exec",
+    "input": "const r = await tools.exec_command({cmd:\"cat /home/jake/Developer/Course_Academy/generate/principles.md\",\"max_output_tokens\":16000}); text(r.output);\nconst s = await tools.exec_command({cmd:\"cat /tmp/generator-semantic-eval/sources.json\",\"max_output_tokens\":20000}); text(s.output);\n"
+  },
+  {
+    "type": "custom_tool_call",
+    "name": "exec",
+    "input": "const results = await Promise.allSettled([\n  tools.exec_command({cmd:\"cat /home/jake/Developer/Course_Academy/generate/pipeline/reviewer.md\",\"max_output_tokens\":16000}),\n  tools.exec_command({cmd:\"cat /home/jake/Developer/Course_Academy/generate/principles.md\",\"max_output_tokens\":16000}),\n  tools.exec_command({cmd:\"cat /tmp/generator-semantic-eval/candidates.json\",\"max_output_tokens\":26000})\n]); for(let i=0;i<results.length;i++) text({file:i,...results[i]});\n"
+  },
+  {
+    "type": "custom_tool_call",
+    "name": "exec",
+    "input": "const r = await tools.view_image({path:\"/tmp/generator-semantic-eval/graph-design-b.png\"}); image(r.image_url);\nconst s = await tools.view_image({path:\"/tmp/generator-semantic-eval/graph-design-a.png\"}); image(s.image_url);\n"
+  }
+]

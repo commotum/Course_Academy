@@ -72,7 +72,7 @@ class GeneratorReportFlowTests(unittest.TestCase):
         session = UncorrectedReport()
         result = self.pipeline(session).run()
         self.assertEqual(result["stage"], "blocked")
-        self.assertEqual(result["error"]["code"], "verification_unfinished")
+        self.assertEqual(result["error"]["code"], "review_sessions_exhausted")
         self.assertEqual(result["error"]["resume_stage"], "validate")
         # The same durable six-session cap includes source-account and exemplar
         # verification, leaving four final-report correction sessions.
@@ -107,6 +107,9 @@ class GeneratorReportFlowTests(unittest.TestCase):
         pipeline = self.pipeline(fixtures.FakeSession())
         pipeline.run(stop_after="generate")
         original_evidence = pipeline.review_directory()
+        original_evidence.mkdir(exist_ok=True)
+        pipeline.seed_verifier_account(original_evidence)
+        pipeline.prepare_refill_review(original_evidence)
         original_binding = dict(pipeline.review_binding())
         pipeline.persist(report_repair_directory=str(original_evidence),
                          review_report_rounds={str(original_evidence): 1},
@@ -201,6 +204,16 @@ class GeneratorReportFlowTests(unittest.TestCase):
 
     def test_verifier_repairs_batch_rule_and_checks_prospective_then_final_batch(self):
         pipeline = None
+        # This regression now also retains the demonstrated sampler defect in
+        # the approved refill contract, using real survivor delivery/grading.
+        actual_root = Path(__file__).resolve().parents[1]
+        self.publisher.material['kp'] = {':knowledge-point/id': '12345678-1234-5678-1234-567812345678'}
+        native = self.root / 'generate/runs/current/check-engine'
+        native.parent.mkdir(parents=True)
+        native.symlink_to(actual_root / 'generate/runs/current/check-engine')
+        from scripts.generator_native_build import ensure_native_grader
+        self.enterContext(patch('scripts.generator_native_build.ensure_native_grader',
+            side_effect=lambda repo, env: ensure_native_grader(actual_root, env)))
         class BatchRepair(ReportSession):
             def __init__(self):
                 super().__init__()
@@ -251,6 +264,48 @@ class GeneratorReportFlowTests(unittest.TestCase):
                     generator = workspace / 'generator.py'
                     generator.write_text(generator.read_text().replace('[2] * args.count',
                         'random.Random(args.seed).sample(range(2, 99), args.count)'))
+                    checker = workspace / 'check_refill.py'
+                    checker.write_text(textwrap.dedent('''\
+                        import argparse, hashlib, json, os, subprocess, sys, tempfile
+                        from pathlib import Path
+                        p=argparse.ArgumentParser()
+                        for name in ('records','inventory','output'): p.add_argument('--'+name)
+                        args=p.parse_args(); records=json.loads(Path(args.records).read_text())
+                        band=records[0]['question'][':question/difficulty'].split('/')[-1]
+                        with tempfile.TemporaryDirectory() as output:
+                            raw=json.loads(subprocess.check_output([sys.executable,'-E','-s','-B','generator.py',
+                                '--difficulty',band,'--count','5','--seed','607','--format','json'],
+                                env={**os.environ,'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':output},text=True))
+                        assert len({r['question'][':question/problem'] for r in raw})==5, 'Sampler repeats a fixed question'
+                        fingerprints=[]; native=[]
+                        for row in records:
+                            q=row['question']; n=int(q[':question/problem'].split()[1]); f=q[':question/answer-fields'][0]
+                            correct=f[':answer-field/correct']; correct=correct[-1] if isinstance(correct,list) else correct
+                            answer=next(a for a in f[':answer-field/choices'] if a[':answer/id']==correct)
+                            assert int(answer[':answer/value'])==n*n
+                            content={':question/problem':q[':question/problem'],':question/answer-fields':[{
+                                ':answer-field/key':f[':answer-field/key'],':answer-field/type':f[':answer-field/type'],
+                                ':answer-field/correct':{':answer/type':answer[':answer/type'],':answer/value':answer[':answer/value']}}]}
+                            identity=hashlib.sha256(json.dumps(content,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+                            fingerprints.append(identity)
+                            native.append({'fingerprint':identity,'checks':[{'field_index':0,'submitted':str(n*n+1),
+                                'expected':'rejected','purpose':'One more than the independently computed square is wrong'}]})
+                        fingerprints.sort()
+                        Path(args.output).write_text(json.dumps({'status':'passed','checked_fingerprints':fingerprints,
+                            'check_results':[{'id':'distinct-sampler','status':'passed','checked_fingerprints':fingerprints}],
+                            'native_checks':native}))
+                    '''))
+                    (workspace / 'refill-validation.json').write_text(json.dumps({
+                        'format':'course-academy-refill-check-v1','script':checker.name,'args':[],'files':[]}))
+                    plan_path = workspace / 'refill-review-plan.json'
+                    plan = json.loads(plan_path.read_text())
+                    plan.update(status='checks',reason='Retain distinct sampling plus independently checked survivor arithmetic.',
+                        checks=[{'id':'distinct-sampler','purpose':'Detect the fixed-question sampler on a fresh seed and check actual survivor answers.',
+                                 'finding_ids':[row['id'] for row in findings]}], finding_exemptions=[])
+                    plan_path.write_text(json.dumps(plan))
+                    manifest_path = workspace / 'package.json'; manifest = json.loads(manifest_path.read_text())
+                    manifest['files'] += [checker.name, 'refill-validation.json']
+                    manifest_path.write_text(json.dumps(manifest))
                     pipeline.finalize_review(evidence)
                     context = pipeline.context(evidence)
                     rows = json.loads(Path(context['batch_file']).read_text())

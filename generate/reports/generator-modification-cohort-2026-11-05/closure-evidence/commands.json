@@ -1,0 +1,75 @@
+{
+  "scoped_policy_tests": {
+    "environment": {
+      "PYTHONPATH": "scripts:tests"
+    },
+    "argv": [
+      ".venv/bin/python",
+      "-m",
+      "unittest",
+      "test_scoped_generator_constraints",
+      "test_substitution_pedagogy_policy",
+      "test_trig_substitution_models",
+      "test_inverse_substitution_quality",
+      "test_integration_batch_policy",
+      "test_linear_trig_generator",
+      "test_trig_chain_rule_generator"
+    ],
+    "result": {
+      "tests": 45,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "semantic_controls": {
+    "argv": [
+      ".venv/bin/python",
+      "generate/evals/run_semantic_controls.py",
+      "/tmp/generator-semantic-eval"
+    ],
+    "result": {
+      "cases": 11,
+      "candidates": 24,
+      "mismatches": 0
+    },
+    "scope": "Two live turns, checkpointed source-only interpretation then shuffled candidate review. Expected verdicts were withheld. No baseline or population-wide success rate is claimed."
+  },
+  "changed_constructor_native": {
+    "argv": [
+      "generate/runs/current/check-engine",
+      "/tmp/generator-scope-live/grading-input.json",
+      "/tmp/generator-scope-live/grading.json"
+    ],
+    "saved_input": "source-domain-controls/grading-input.json",
+    "result": {
+      "accepted": 5,
+      "rejected": 5,
+      "unresolved": 0
+    }
+  },
+  "changed_constructor_player": {
+    "argv": [
+      ".venv/bin/python",
+      "generate/pipeline/render_preview.py",
+      "--input",
+      "/tmp/generator-scope-live/records.json",
+      "--output",
+      "/tmp/generator-scope-live/render",
+      "--asset-root",
+      "/tmp/generator-scope-live",
+      "--math-root",
+      "reference/edb-math",
+      "--state",
+      "both",
+      "--viewport",
+      "1280x1000",
+      "--viewport",
+      "420x900"
+    ],
+    "result": {
+      "records": 5,
+      "screenshots": 20,
+      "passed": true
+    }
+  }
+}
