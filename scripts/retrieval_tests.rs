@@ -2972,6 +2972,86 @@ fn study_projection_assessment_admission_deadline_survives_late_writer() -> Resu
 }
 
 #[test]
+fn study_projection_manual_review_preserves_questions_across_basis_changes() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let initial = f.snapshot()?;
+    let policy = course_academy_engine::question_selection::active_policy(&initial)?;
+    f.tx(vec![json!({"db/id":policy,"policy/question-selection-weights":[{
+        "question-weights/activity-type":kw("activity.type/review"),
+        "question-weights/initial-easy":50.0,"question-weights/initial-moderate":40.0,"question-weights/initial-hard":10.0,
+        "question-weights/remedial-easy":45.0,"question-weights/remedial-moderate":40.0,"question-weights/remedial-hard":15.0,
+        "db/ensure":kw("question-weights/validate")
+    }]})], f.now + 100)?;
+    let base = f.snapshot()?;
+    let db = f.db.database_value();
+    let topic = base.entities.with_attribute("topic/title").into_iter()
+        .find(|topic| text(&base, *topic, "topic/title") == "Topic 0").unwrap();
+    // Local projections can advance independently of durable EDB transactions.
+    let mut local = base.clone();
+    local.basis_t += 1;
+    let (started, projection) = study_interaction::project_value(&local, &db, f.learner, None,
+        &json!({"operation":{"action":"review-topic","topicId":topic,"requestId":"local-manual-review"},
+            "overlay":null,"receivedAt":f.now+1000}))?;
+    let local_task = started["view"]["taskId"].as_u64().unwrap();
+    let local_activity = started["view"]["activityId"].as_u64().unwrap();
+    let local_entities = &started["overlay"]["entities"];
+    let activity_uuid = &local_entities[local_activity.to_string()]["activity/id"];
+    let admitted_route = started["operation"]["_queuedStudy"]["locals"].as_object().unwrap().values()
+        .find(|key| key["attribute"] == "activity/id" && key["value"] == *activity_uuid).unwrap()["route"].clone();
+    let step = &started["view"]["step"];
+    // Accept an answer before the start reaches the database, like a slow writer.
+    let (answered, _) = study_interaction::project_value(&local, &db, f.learner, Some(projection),
+        &json!({"operation":{"action":"answer","taskId":local_task,"itemId":step["itemId"],
+            "responses":[{"fieldId":step["fields"][0]["id"],"value":"2"}],"requestId":"local-manual-answer"},
+            "overlay":started["overlay"],"receivedAt":f.now+2000}))?;
+    assert_eq!(answered["view"]["step"]["status"], "correct");
+    let logical = DateTime::from_timestamp_millis(f.now+1000).unwrap();
+    let op = study_interaction::bind(&base, &started["operation"])?;
+    let (forms, result) = mutate(&base, f.learner, "review-topic", &op, logical)?;
+    let redrawn: Vec<_> = forms.iter().filter_map(|form| form.get("step/content").cloned()).collect();
+    assert_ne!(json!(redrawn), admitted_route, "regression must exercise an actual changed draw");
+    let durable_at = DateTime::from_timestamp_millis(f.now+30_000).unwrap();
+    // A retired or newly reserved question is a real conflict, not permission to
+    // silently substitute a new route. Keep the existing rejection behavior.
+    let admitted_question = admitted_route[0].as_u64().unwrap();
+    let mut retired = base.clone();
+    retired.entities.get_mut(&admitted_question).unwrap().insert("question/retired".into(), json!(true));
+    assert!(study_interaction::prepare(&retired, &db, f.learner, &op,
+        &mut forms.clone(), &mut result.clone(), durable_at).is_err());
+    let mut reserved = base.clone();
+    let example = base.entities.with_attribute("task-item/id")[0];
+    reserved.entities.get_mut(&example).unwrap().insert("task-item/content".into(), json!(admitted_question));
+    assert!(study_interaction::prepare(&reserved, &db, f.learner, &op,
+        &mut forms.clone(), &mut result.clone(), durable_at).is_err());
+    study_interaction::prepare(&base, &db, f.learner, &op,
+        &mut forms.clone(), &mut result.clone(), durable_at)?;
+    // Unrelated durable transactions must not change the accepted route either.
+    let other_topic = base.entities.with_attribute("topic/title").into_iter()
+        .find(|topic| text(&base, *topic, "topic/title") == "Topic 4").unwrap();
+    f.tx(vec![add(json!(other_topic), "topic/title", json!("Unrelated title edit"))], f.now+3000)?;
+    f.tx(vec![add(json!(other_topic), "topic/title", json!("Another unrelated title edit"))], f.now+4000)?;
+    for (n, operation) in [&started["operation"], &answered["operation"]].into_iter().enumerate() {
+        let s = f.snapshot()?;
+        let op = study_interaction::bind(&s, operation)?;
+        let work_at = DateTime::from_timestamp_millis(op["_queuedStudy"]["at"].as_i64().unwrap()).unwrap();
+        let (mut forms, mut result) = mutate(&s, f.learner, op["action"].as_str().unwrap(), &op, work_at)?;
+        study_interaction::prepare(&s, &f.db.database_value(), f.learner, &op, &mut forms, &mut result, durable_at)?;
+        f.tx(forms, f.now+30_000+n as i64*1000)?;
+    }
+    let saved = f.snapshot()?;
+    let activity = saved.entities.with_attribute("activity/id").into_iter()
+        .find(|activity| saved.entities[activity].get("activity/id") == Some(activity_uuid)).unwrap();
+    let route: Vec<_> = learning::lesson_steps(&saved, activity)?.iter().map(|step| step.content).collect();
+    assert_eq!(json!(route), admitted_route);
+    let task = task_for(&saved, f.learner, activity)?.unwrap();
+    let view = task_json(&saved, f.learner, task)?;
+    assert_eq!(view["step"]["status"], "correct");
+    assert_eq!(view["step"]["contentId"], step["contentId"]);
+    assert_eq!(view["xp"], answered["view"]["xp"]);
+    Ok(())
+}
+
+#[test]
 fn study_projection_queue_prepares_new_tasks_and_replays_stable_uuid_plans() -> Result<()> {
     let mut f=Fixture::new(false)?;
     let s=f.snapshot()?;

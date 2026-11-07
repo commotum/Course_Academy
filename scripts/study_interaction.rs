@@ -958,6 +958,51 @@ mod projection_error_tests {
     }
 }
 
+/// A manual review has already promised its complete route to the learner.
+/// Replanning may use a newer (or non-provisional) basis and draw other questions;
+/// restore the admitted contents as well as UUIDs, after checking current supply.
+fn restore_review_route(s: &EntitySnapshot, l: u64, body: &Json, forms: &mut [Json]) -> Result<()> {
+    if body["action"] != "review-topic" {
+        return Ok(());
+    }
+    let queued = &body["_queuedStudy"];
+    let Some(activity_id) = queued["generated"].get("review-activity|activity/id") else {
+        return Ok(()); // Resuming an existing review does not create a route.
+    };
+    let locals = queued["locals"].as_object().ok_or("Queued study identities required")?;
+    let route = locals.values()
+        .find(|key| key["attribute"] == "activity/id" && key["value"] == *activity_id)
+        .and_then(|key| key["route"].as_array())
+        .ok_or("Accepted review route required")?;
+    let topic = required(body, "topicId")?;
+    let unavailable = learning::unavailable_questions(s, l)?;
+    let mut questions = BTreeSet::new();
+    if route.len() != 5 {
+        return Err("Accepted review must contain five questions".into());
+    }
+    for content in route {
+        let question = content.as_u64().ok_or("Accepted review question required")?;
+        if !questions.insert(question) || !s.is_ordinary_question(question)?
+            || s.topic_for_question(question)? != topic || unavailable.contains(&question) {
+            return Err("Accepted study question is no longer eligible; accepted work retained".into());
+        }
+        learning::validate_practice_question(s, question)?;
+    }
+    // UUIDs have already been restored. Match each step/item to its admitted
+    // content; the ordinary identity and outcome checks below still verify the
+    // complete route, first presentation, task ownership and returned view.
+    for form in forms {
+        for (attribute, content) in [("step/id", "step/content"), ("task-item/id", "task-item/content")] {
+            if let Some(value) = form.get(attribute) {
+                let key = locals.values().find(|key| key["attribute"] == attribute && key["value"] == *value)
+                    .ok_or("Accepted review content identity required")?;
+                form[content] = key["content"].clone();
+            }
+        }
+    }
+    Ok(())
+}
+
 /// Recompute read-dependent credit at the current durable basis; retain the
 /// admitted grade/route and identities. Only a confirmed CAS/basis rejection
 /// permits the outbox to choose a new database attempt key.
@@ -974,6 +1019,7 @@ pub(super) fn prepare(
         return Ok(());
     };
     reuse_ids(forms, &queued["generated"]);
+    restore_review_route(s, l, body, forms)?;
     if body["action"] == "continue" {
         // Old acknowledgements selected with a provisional numeric task ID.
         // Keep the exact question already shown rather than redraw at replay.
