@@ -95,7 +95,7 @@ for out in sorted(HERE.glob('175*')):
   if mid=='q-332773':
    f=fs[0];temp='answer-quiz3-q332773';aid=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy/quiz3-quality/q-332773/answer'))
    answer={':db/id':temp,':answer/id':aid,':answer/type':{':db/ident':':answer.type/math'},':answer/value':r'-4e^{-3x}+2'}
-   extra += [{kw('db/id'):temp,kw('answer/id'):aid,kw('answer/type'):kw('answer.type/math'),kw('answer/value'):r'-4e^{-3x}+2'},[kw('db/add'),f[':db/id'],kw('answer-field/choices'),temp]]
+   extra += [{kw('db/id'):temp,kw('answer/id'):uuid.UUID(aid),kw('answer/type'):kw('answer.type/math'),kw('answer/value'):r'-4e^{-3x}+2'},[kw('db/add'),f[':db/id'],kw('answer-field/choices'),temp]]
    fix(f,'answer-field/correct',temp,'Independently solved initial value problem; one new answer for existing blank')
    f[':answer-field/choices']=[answer];f[':answer-field/correct']=answer
   if mid in ['q-343294','q-343299']:
@@ -189,6 +189,11 @@ for q in allafter:
     if a[':db/id']==correct.get(':db/id'):select(f,dup[':answer/value'],'Use equivalent properly typed source menu item')
     extra.append([kw('db/retract'),f[':db/id'],kw('answer-field/choices'),a[':db/id']]);detached.append({'question':q[':db/id'],'field':f[':db/id'],'answer':a[':db/id'],'kept':dup[':db/id'],'reason':'Duplicate source menu value or type-corrupted duplicate; detached entity and history retained.'})
    else:seen.append(a)
+# The source menu itself has two equivalent complementary families under swapped arbitrary constants.
+q=next(q for q in allafter if q[':question/math-academy-id']=='q-339878')
+f=next(f for f in q[':question/answer-fields']if f[':answer-field/key']=='field-3')
+a=next(a for a in f[':answer-field/choices']if a[':db/id']==17592186313893)
+f[':answer-field/choices'].remove(a);extra.append([kw('db/retract'),f[':db/id'],kw('answer-field/choices'),a[':db/id']]);detached.append({'question':q[':db/id'],'field':f[':db/id'],'answer':a[':db/id'],'reason':'Both swapped-constant families describe identical complementary solutions. Retain one active canonical option and preserve detached ID/history.'});corrections.append('q-339878')
 # Re-save after bank cleanup.
 for out in sorted(HERE.glob('175*')):
  ids={q[':db/id']for q in json.loads((out/'questions.json').read_text())};(out/'questions-after.json').write_text(json.dumps([q for q in allafter if q[':db/id']in ids],indent=2))

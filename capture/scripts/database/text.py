@@ -63,10 +63,10 @@ def markdown(source: str) -> str:
         if isinstance(node, Comment):
             return ''
         if isinstance(node, NavigableString):
-            # Extracted complex tables are mixed with already-authored Markdown
-            # at document level. Its paragraphs and list lines are not HTML
-            # whitespace; only text inside actual HTML elements is collapsed.
-            if complex_table and node.parent is soup:
+            # Source tables and protected answer layouts can be mixed with
+            # authored Markdown. Keep its paragraphs and list lines; collapse
+            # only whitespace inside actual HTML elements.
+            if (complex_table or layouts) and node.parent is soup:
                 return str(node)
             return re.sub(r'[\t\r\n ]+', ' ', str(node))
         body = ''.join(render(c) for c in node.children)

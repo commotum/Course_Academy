@@ -28,20 +28,22 @@ def expr(s):
   return v[i+1:j-1],j
  while (m:=re.search(r'\\(?:dfrac|frac|tfrac)\s*',s)):
   aa,j=group(s,m.end());bb,k=group(s,j);s=s[:m.start()]+'(('+aa+')/('+bb+'))'+s[k:]
+ s=re.sub(r'\\sqrt\[(\d+)\]\{([^{}]+)\}',r'((\2)**(1/\1))',s)
  s=s.replace(r'\sqrt', 'sqrt').replace(r'\pi','pi')
  s=re.sub(r'\\(sin|cos|tan|cot|csc|sec|ln|log|exp|arctan)\b',r'\1 ',s)
  s=s.replace('{','(').replace('}',')').replace('^','**')
  s=re.sub(r'(?<![A-Za-z])([yu])(?![A-Za-z])',lambda m:'Y'if m[1]=='y'else'U',s)
+ s=re.sub(r'\((sin|cos|tan|cot|csc|sec|ln)\s*\)\*\*\(([^()]+)\)\s*\(([^()]+)\)',r'\1(\3)**(\2)',s)
  # powered functions have conventional scope, e.g. sin^2 x
  s=re.sub(r'\((sin|cos|tan|cot|csc|sec|ln)\s*\)\*\*\(([^()]+)\)\s*\(?([xt])\)?',r'\1(\3)**(\2)',s)
  s=re.sub(r'(sin|cos|tan|cot|csc|sec|ln)\s+\(([xt])\)\*\*\(([^()]+)\)',r'\1((\2)**(\3))',s)
  s=re.sub(r'(sin|cos|tan|cot|csc|sec|ln)\s+([0-9]*\s*[xt](?:\*\*\([^()]+\)|\*\*[-]?\d+)?|\d+)',r'\1(\2)',s)
- s=re.sub(r'(?<=[A-Za-z0-9)])(?=(?:sin|cos|tan|cot|csc|sec|ln|log)\b)', '*', s)
+ s=re.sub(r'(?<!arc)(?<=[A-Za-z0-9)])(?=(?:arctan|sqrt|sin|cos|tan|cot|csc|sec|ln|log)\b)', '*', s)
  return parse_expr(s,local_dict={**loc,'V1':S.Symbol('V1')},transformations=standard_transformations+(implicit_multiplication_application,))
 def mathparts(p):return [s[2:-2].strip()if s.startswith('$$')else s[1:-1].strip()for s in re.findall(r'\$\$.*?\$\$|\$(?!\$).*?\$',p,re.S)]
 def equation(p):
  for s in mathparts(p):
-  if not ('='in s and ('″'in s or '′'in s or "y'"in s or r'\frac{\text{d}y}'in s)):continue
+  if not ('='in s and ('″'in s or '′'in s or "y'"in s or ('frac'in s and 'y'in s))):continue
   s=s.split(r'\qquad')[0].split(r'\,')[0].split(',')[0].strip().rstrip('.')
   a,b=s.split('=',1)
   return expr(a)-expr(b)

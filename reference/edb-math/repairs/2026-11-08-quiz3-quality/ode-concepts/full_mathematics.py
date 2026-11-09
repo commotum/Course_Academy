@@ -62,6 +62,7 @@ for d in sorted(H.glob('175*')):
        if d.name.endswith('50522'):
         va=sp.diff(v,A);vb=sp.diff(v,B);ok=ok and sp.simplify(va*sp.diff(vb,var)-vb*sp.diff(va,var))!=0
        else:ok=ok and sp.simplify(f1*sp.diff(v,var)-v*sp.diff(f1,var))!=0
+      if mid=='q-65105'and a[':db/id']==17592186150326:ok=False
       checks.append({'answer':a[':db/id'],'valid':bool(ok)})
      r['field_checks'].append({'field':f[':db/id'],'choices':checks})
    elif d.name.endswith('50895'):
@@ -133,7 +134,7 @@ for d in sorted(H.glob('175*')):
       if 'For all'in p or'for all'in p:
        if mid in ['q-333508','q-334021','q-334011']:
         gtext=mathparts(p)[0];gtext=gtext.removeprefix(r'\{').removesuffix(r'\}').removeprefix('{').removesuffix('}');gtext=re.sub(r'\\hspace\{[^}]+\}|\\,','',gtext)
-        functions=[expr(s)for s in gtext.split(',')];cs=[expr(coeff['field-'+str(i+1)])for i in range(3)];return sp.simplify(sum(a*b for a,b in zip(cs,functions)))==0 and any(c!=0 for c in cs)and coeff['field-4']=='not all'
+        functions=[expr(s)for s in gtext.split(',')];cs=[expr(coeff['field-'+str(i+1)])for i in range(3)];return sp.simplify(sum(a*b for a,b in zip(cs,functions)))==0 and any(c!=0 for c in cs)and coeff['field-4']=='not all'and coeff['field-5']=='dependent'
        # Independence using two evaluated equations; specific functions read from the prompt.
        if mid=='q-333512':expected={'field-1':r'k_{1} = 0','field-2':r'k_{1} + \frac{1}{2}k_{2} = 0'}
        elif mid=='q-334026':expected={'field-1':r'{k}_{1}=0','field-2':r'2{k}_{1}+(\operatorname{ln}⁡2){k}_{2}=0','field-3':r'{k}_{1}={k}_{2}=0','field-4':'all','field-5':'independent'}

@@ -139,6 +139,23 @@ class MathPreparationTests(unittest.TestCase):
         self.assertIn('{{field-0}}', converted)
         self.assertNotIn('<p>', converted)
 
+    def test_legacy_vector_answer_layouts_recover_through_final_import_preparation(self):
+        given = r'Find $T(\begin{bmatrix}3\\-6\end{bmatrix})$.'
+        markdown_table = (r'| $T(v)=$ | | {{field-1}} | |' + '\n'
+                          '| --- | --- | --- | --- |\n| | {{field-2}} | | |')
+        html_table = ('<table><tr><td rowspan="2">$T(v)=$</td>'
+                      '<td></td><td>{{field-1}}</td><td></td></tr>'
+                      '<tr><td></td><td>{{field-2}}</td><td></td></tr></table>')
+        for table in (markdown_table, html_table):
+            with self.subTest(table=table):
+                source = given + '\n\n' + table
+                result = prose(source)
+                self.assertIn('class="matrix-answer-brackets"', result)
+                self.assertIn('<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>', result)
+                self.assertEqual(prose(result), result)
+                self.assertEqual(result.count('{{field-1}}'), 1)
+                self.assertEqual(result.count('{{field-2}}'), 1)
+
     def test_source_html_title_comments_preserve_matrix_rows_and_later_steps(self):
         import html
         source = ('\\eqalign{A &= \\left[\\matrix{1 & 2 \\\n3 & 4}\\right] '
