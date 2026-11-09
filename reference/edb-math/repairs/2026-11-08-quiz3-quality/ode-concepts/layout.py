@@ -1,0 +1,25 @@
+import json,sys,functools,threading,http.server
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+H=Path(__file__).resolve().parent;ROOT=Path('/home/jake/Developer/Course_Academy')
+fixture=(ROOT/'reference/mathacademy/repairs/2026-10-14-study-backlog/renderer-fixture.html').read_text();fixture=fixture.replace('<!doctype html>','<!doctype html><html data-theme="light"><link rel="stylesheet" href="/ui/navigation.css">')
+fixture+='''<script type="module">import {mountInlineFields,blankInput,loadMathInputs,richSelect,checkboxControl,choiceIndicator}from'/ui/question-fields.js';await loadMathInputs();const ra=a=>render(a.type==='math'?'$'+a.value+'$':a.value,'prose',[]);window.auditMount=(p,fs)=>{const list=document.createElement('div');mountInlineFields(p,list,fs,f=>{let b=document.createElement('fieldset');if(f.type==='blank')b.append(blankInput({...f,answerType:f.choices[0]?.type||'math'},f.key,f.id,true));else if(f.type==='select'){let sel=document.createElement('select');sel.disabled=true;sel.setAttribute('aria-label',f.key);let empty=document.createElement('option');empty.value='';sel.append(empty);for(let a of f.choices){let o=document.createElement('option');o.value=a.id;o.textContent=a.value;sel.append(o);}b.append(richSelect(sel,f.choices,ra));}else if(f.type==='checkbox')b.append(checkboxControl(f,k=>render(k,'prose',[]),true));else if(f.type==='radio')for(let a of f.choices){let row=document.createElement('label');row.className='choice';let input=document.createElement('input');input.type='radio';input.disabled=true;row.append(choiceIndicator(input),ra(a));b.append(row);}return b;});p.after(list);};window.auditReady=true;</script>'''
+class Quiet(http.server.SimpleHTTPRequestHandler):
+ def log_message(self,*a):pass
+server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();origin=f'http://127.0.0.1:{server.server_port}';cards=json.loads((H/'cards-after.json').read_text());(H/'visual').mkdir(exist_ok=True);reports=[]
+with sync_playwright()as p:
+ b=p.chromium.launch(headless=True);page=b.new_page(viewport={'width':1100,'height':1000})
+ def route(r):
+  if r.request.url==origin+'/fixture':r.fulfill(body=fixture,content_type='text/html')
+  elif r.request.url.startswith(origin+'/'):r.continue_()
+  else:r.abort()
+ page.route('**/*',route);page.goto(origin+'/fixture');page.wait_for_function('window.ready&&window.auditReady')
+ show='''async item=>{MathJax.typesetClear([content]);content.replaceChildren();const card=document.createElement('article');card.className='lesson-content content-card';let h=document.createElement('h2');h.textContent=item.mid;card.append(h);let p=render(item.prompt,'prose',item.fields);card.append(p);auditMount(p,item.fields);for(const f of item.fields.filter(f=>f.type==='select')){let box=document.createElement('div');box.style.margin='12px 0';let label=document.createElement('div');label.append(render(f.key,'prose',[]));box.append(label);if(f.type!=='checkbox')for(const a of f.choices){let opt=document.createElement('div');opt.append(render(a.type==='math'?'$'+a.value+'$':a.value,'prose',[]));box.append(opt);}card.append(box);}if(item.solution){let title=document.createElement('h3');title.textContent='Worked solution';card.append(title);card.append(render(item.solution,'prose',[]));}content.append(card);await MathJax.typesetPromise([content]);await document.fonts.ready;return{errors:[...content.querySelectorAll('[data-mjx-error]')].map(n=>n.getAttribute('data-mjx-error')),rawMarkers:content.textContent.includes('{{field-'),slots:content.querySelectorAll('[data-field-key]').length,expectedSlots:[...item.prompt.matchAll(/\\{\\{[^{}]+\\}\\}/g)].length,images:[...content.querySelectorAll('img')].map(i=>({src:i.src,loaded:i.complete&&i.naturalWidth>0})),tables:content.querySelectorAll('table').length,overflow:[...content.querySelectorAll('mjx-container,table')].filter(n=>n.scrollWidth>n.clientWidth+2).map(n=>({tag:n.tagName,width:n.clientWidth,scroll:n.scrollWidth})),cardWidth:card.clientWidth,cardScroll:card.scrollWidth};}'''
+ for width in [1100,390]:
+  page.set_viewport_size({'width':width,'height':1000})
+  for item in cards:
+   result=page.evaluate(show,item);reports.append({'entity':item['entity'],'width':width,**result})
+   if width==1100:page.locator('.content-card').screenshot(path=str(H/'visual'/f"{item['entity']}.png"))
+  print('width',width,'cards',len(cards),flush=True)
+ b.close()
+server.shutdown();server.server_close();(H/'layout-after.json').write_text(json.dumps(reports,indent=2));print(json.dumps({'cards':len(reports),'math_errors':sum(bool(r['errors'])for r in reports),'raw_markers':sum(r['rawMarkers']for r in reports),'slot_mismatch':sum(r['slots']!=r['expectedSlots']for r in reports),'broken_images':sum(not i['loaded']for r in reports for i in r['images']),'overflow_cards':sum(bool(r['overflow'])for r in reports)},indent=2))
