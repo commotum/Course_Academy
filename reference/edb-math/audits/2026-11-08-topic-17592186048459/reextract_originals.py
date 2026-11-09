@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 manifest = json.loads((HERE / 'source-manifest.json').read_text())
-extractor = (ROOT / 'scripts/question_capture/dom.js').read_text()
+extractor = (ROOT / 'capture/scripts/browser/extract.js').read_text()
 results = []
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True)
