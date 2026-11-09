@@ -1,0 +1,195 @@
+{
+  "scope": {
+    "topic": 17592186048459,
+    "title": "Introduction to Linear Transformations",
+    "basis": 13536,
+    "ordered_lesson_steps": 6,
+    "tutorials": 2,
+    "canonical_examples": 4,
+    "practice_questions": 50,
+    "answer_fields": 103,
+    "distinct_answer_values": 225,
+    "all_visible_text_fields_checked": 441,
+    "feedback_fields": 0
+  },
+  "verification": {
+    "strict_actual_player_renderer": true,
+    "syntax_failures": 0,
+    "desktop_mobile_prompt_checks": 108,
+    "all_54_questions_have_saved_originals": true,
+    "independent_math_answer_checks": 50,
+    "correct_complete_question_keys": 47,
+    "missing_question_keys": 3,
+    "wrong_existing_keys": 0,
+    "step_route_complete_and_acyclic": true,
+    "database_writes": 0
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "issue": "Answer vectors imported as ordinary data tables",
+      "affected_question_count": 16,
+      "entities": [
+        17592186292876,
+        17592186292877,
+        17592186299637,
+        17592186299638,
+        17592186299639,
+        17592186299640,
+        17592186299641,
+        17592186299642,
+        17592186299643,
+        17592186299644,
+        17592186299645,
+        17592186299646,
+        17592186299647,
+        17592186299648,
+        17592186299649,
+        17592186643141
+      ],
+      "representation_counts": {
+        "markdown_pipe_tables": 15,
+        "raw_HTML_table_with_bracket_CSS_removed": 1
+      },
+      "root_cause": "The older table serializer treated matrix input layout tables as data tables. Markdown lost rowspans and CSS bracket borders and made the first row a header. The HTML variant retained the rowspan but lost border styles, leaving a grid instead of vector brackets.",
+      "source_proof": "seed-source-table.html",
+      "stored_proof": "visual/17592186299639-stored.png",
+      "reextraction_proof": "visual/17592186299639-reextracted-preview.png",
+      "current_capture_reproduction": "The active capture extractor reconstructs bracketed matrix layouts from the saved source DOM for all sixteen questions without extraction errors.",
+      "why_later_cleanup_missed_it": "The 2026-10-30 repair normalized TeX while retaining the pipe-table structure. normalize_matrix_answer_tables can repair the seed but has no production callers; generic normalize_prose does not invoke it."
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "issue": "One inline 3D vector answer is split into separate paragraphs",
+      "entities": [
+        17592186235515
+      ],
+      "source_id": "q-168037",
+      "root_cause": "HTML layout whitespace/block boundaries were serialized into Markdown paragraph breaks, separating angle brackets, commas and the three controls.",
+      "proof": "visual/17592186235515-stored.png",
+      "repair": "Preserve the original single inline vector answer while retaining field-1, field-2 and field-3 bindings."
+    },
+    {
+      "id": "F3",
+      "severity": "high",
+      "issue": "Three stored practice stubs lack correct-answer links and worked solutions",
+      "entities": [
+        17592186087995,
+        17592186088152,
+        17592186088150
+      ],
+      "expected_answers": {
+        "17592186087995": "III only",
+        "17592186088152": "[-16,6] column vector",
+        "17592186088150": "[-48,36,60] column vector"
+      },
+      "source_availability": {
+        "17592186087995": "Later original solution and verified correct response are saved under capture/linear/14274580.",
+        "17592186088152": "Original prompt and choices saved; no worked-solution capture located.",
+        "17592186088150": "Original prompt and choices saved; no worked-solution capture located."
+      },
+      "root_cause": "The initial lesson seed retained unanswered question stubs. The existing-record import path explicitly defers missing worked solutions, and only fills answer components when the retained and recaptured prompts format identically. q-12010 fails that comparison; its verified recapture transaction updated difficulty only.",
+      "reproduction": "incomplete-recapture-reproduction.json",
+      "implementation": "capture/scripts/database/prepare.py:860"
+    },
+    {
+      "id": "F4",
+      "severity": "low",
+      "issue": "Source bold operator/vector/zero notation is inconsistently lost",
+      "affected_question_or_example_count": 54,
+      "entities": [
+        17592186087562,
+        17592186087995,
+        17592186088417,
+        17592186253648,
+        17592186284660,
+        17592186284661,
+        17592186348353,
+        17592186351471,
+        17592186351472,
+        17592186395991,
+        17592186396176,
+        17592186087563,
+        17592186088151,
+        17592186088152,
+        17592186284655,
+        17592186292876,
+        17592186299637,
+        17592186299638,
+        17592186299639,
+        17592186299640,
+        17592186323954,
+        17592186393431,
+        17592186087564,
+        17592186088147,
+        17592186088149,
+        17592186235515,
+        17592186292877,
+        17592186299641,
+        17592186299642,
+        17592186299643,
+        17592186299644,
+        17592186344978,
+        17592186344979,
+        17592186344980,
+        17592186344981,
+        17592186393438,
+        17592186603024,
+        17592186604599,
+        17592186087565,
+        17592186088148,
+        17592186088150,
+        17592186284659,
+        17592186299645,
+        17592186299646,
+        17592186299647,
+        17592186299648,
+        17592186299649,
+        17592186344982,
+        17592186344983,
+        17592186344984,
+        17592186398989,
+        17592186398996,
+        17592186596703,
+        17592186643141
+      ],
+      "root_cause": "Earlier MathML conversion omitted mathvariant=bold metadata. Raw source DOM and screenshots retain it; active re-extraction preserves it.",
+      "details": "font-fidelity.json",
+      "meaning": "Source-fidelity and readability issue; does not change the verified numerical answers."
+    },
+    {
+      "id": "F5",
+      "severity": "medium",
+      "issue": "An arithmetic inconsistency is inherited from the Math Academy original",
+      "entities": [
+        17592186344982
+      ],
+      "source_id": "q-74776",
+      "stored_expression": "12*[1,2,-2]^T = [12,24,-12]^T",
+      "correction": "The intermediate input must be [1,2,-1]^T. The question and final answer are already correct.",
+      "root_cause": "Original source typo, reproduced in raw source MathML and history-q-74776.png; not introduced by import.",
+      "source": "reference/mathacademy/question-capture/13948957/history-q-74776.png"
+    }
+  ],
+  "reviewed_passes": {
+    "tutorials": "Both tutorials retain their definitions, mappings, worked arithmetic and linearity derivations. Compared against original section screenshots and raw lesson HTML.",
+    "canonical_examples": "All four canonical prompts and complete solutions match the original mathematical content. Some bold font styling is lost in derivation lines.",
+    "complete_question_answer_keys": "All 47 populated keys agree with independently derived answers, and each keyed answer belongs to its choice bank.",
+    "steps": "The six-step route contains both original tutorials followed by the four intended KPs, with no missing or cyclic links.",
+    "other_3D_inline_answers": "q-168044 and q-168030 render their three answer components inline correctly."
+  },
+  "source_comparison_caveats": [
+    "The normalized 865.json source is itself lossy for mixed SVG/MathML titles. Formula-sequence mismatches in tutorial-source-comparison.json and canonical rows of source-comparison.json are diagnostic differences, not findings of missing current content. Raw HTML and original screenshots resolve those cases.",
+    "Checkbox migrations legitimately move three statement formulas from the question prompt to answer-field labels; those labels were included in the 441-field check."
+  ],
+  "repair_priority": [
+    "Restore sixteen matrix answer layouts.",
+    "Restore the one fragmented inline vector answer.",
+    "Complete the three ungradable stubs using original evidence where available and clearly authored derivations otherwise.",
+    "Correct the inherited q-74776 intermediate line with mathematical-correction provenance.",
+    "Restore source bold notation without overwriting already repaired source math.",
+    "Connect matrix-layout recovery to the production normalization path and add layout/field-binding checks beyond TeX syntax."
+  ]
+}

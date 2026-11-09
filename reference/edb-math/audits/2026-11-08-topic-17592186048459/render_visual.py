@@ -2,12 +2,15 @@
 import functools
 import http.server
 import json
+import sys
 import threading
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
+sys.path.insert(0, str(ROOT / 'scripts'))
+from question_capture.math_format import normalize_prose
 fields = json.loads((HERE / 'fields.json').read_text())
 questions = json.loads((HERE / 'questions.json').read_text())
 fresh = {r['entity']: r for r in json.loads((HERE / 'current-extractor-results.json').read_text())}
@@ -71,7 +74,7 @@ try:
         page.set_viewport_size({'width':1100,'height':900})
         for entity in [17592186299639,17592186643141]:
             field=next(f for f in fields if f['entity']==entity and f['attribute']==':question/problem')
-            value=fresh[entity]['prompt_sources']['problem']
+            value=normalize_prose(fresh[entity]['prompt_sources']['problem'])
             page.evaluate(show,{**field,'value':value,'label':'Source-backed re-extraction preview'})
             page.locator('.content-card').screenshot(path=str(visual/(str(entity)+'-reextracted-preview.png')))
         for field in fields:
