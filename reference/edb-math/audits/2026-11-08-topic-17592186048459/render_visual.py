@@ -11,8 +11,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from question_capture.math_format import normalize_prose
-fields = json.loads((HERE / 'fields.json').read_text())
-questions = json.loads((HERE / 'questions.json').read_text())
+DATA = HERE / 'repair' if '--repair' in sys.argv else HERE
+fields = json.loads((DATA / 'fields.json').read_text())
+questions = json.loads((DATA / ('questions-after.json' if DATA != HERE else 'questions.json')).read_text())
 fresh = {r['entity']: r for r in json.loads((HERE / 'current-extractor-results.json').read_text())}
 fixture = (ROOT / 'reference/mathacademy/repairs/2026-10-14-study-backlog/renderer-fixture.html').read_text()
 fixture = fixture.replace('<!doctype html>', '<!doctype html><html data-theme="light"><link rel="stylesheet" href="/ui/navigation.css">')
@@ -33,7 +34,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 server = http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 origin = f'http://127.0.0.1:{server.server_port}'
-visual = HERE / 'visual'
+visual = DATA / 'visual'
 visual.mkdir(exist_ok=True)
 reports = []
 try:
@@ -84,7 +85,7 @@ try:
         browser.close()
 finally:
     server.shutdown();server.server_close()
-(HERE/'layout-report.json').write_text(json.dumps(reports,indent=2)+'\n')
+(DATA/'layout-report.json').write_text(json.dumps(reports,indent=2)+'\n')
 print(json.dumps({'prompt_checks':len(reports),'math_errors':sum(bool(r['errors'])for r in reports),
                   'raw_markers':sum(r['rawMarkers']for r in reports),
                   'data_table_questions':sorted({r['entity']for r in reports if any(not t['canonical']for t in r['tables'])}),

@@ -1,0 +1,60 @@
+=== 17592186125812 Introduction ===
+If we know one solution to a second-order homogeneous linear differential equation, we can use the **reduction of order method** to find a second solution to the equation. 
+
+It works like this: if we know that some function $y_1(t)$ is a solution, then we let $y_2(t) = u(t) y_1(t)$ for some unknown function $u(t),$ and we write down a differential equation in terms of $u.$ Solving this equation, and then computing $y_2,$ gives us our second solution.
+
+For example, suppose we're given that $y_1(t) = \sin{4t}$ is a solution to the equation
+
+$$
+y'' + 16y = 0.
+$$
+
+Let's use the reduction of order method to find a second solution $y_2(t).$
+
+According to the reduction of order method, we let $y_{2} = u(t)\sin{4t}$ for some unknown function $u(t).$ Then, we write the differential equation in terms of $u.$ To do that, we first differentiate with respect to $t\mathbin{:}$
+
+$$
+\begin{aligned}{y}_{2} & =u\operatorname{sin}4t \\ {y}_{2}^{'} & ={u}^{'}\operatorname{sin}4t+4u\operatorname{cos}4t \\ {y}_{2}^{''} & ={u}^{''}\operatorname{sin}4t+8{u}^{'}\operatorname{cos}4t-16u\operatorname{sin}4t\end{aligned}
+$$
+
+Substituting the above into the differential equation gives
+
+$$
+\begin{aligned}{y}^{''}+16y & =0 \\ ({u}^{''}\operatorname{sin}4t+8{u}^{'}\operatorname{cos}4t-16u\operatorname{sin}4t)+16u\operatorname{sin}4t & =0 \\ {u}^{''}\operatorname{sin}4t+8{u}^{'}\operatorname{cos}4t & =0 \\ {u}^{''} & =-8{u}^{'}\operatorname{cot}4t.\end{aligned}
+$$
+
+Let $w = u'.$ Then our equation becomes a first-order equation,
+
+$$
+w' = -8w\cot{4t}.
+$$
+
+This is a separable equation that has the solution
+
+$$
+w = c_1 \csc^2{4t}.
+$$
+
+Now, since $w = u',$ we have
+
+$$
+u' = c_1 \csc^2{4t} \quad\Longrightarrow\quad u = -\dfrac{c_1}{4}\cot{4t} + c_2.
+$$
+
+Therefore, our expression for $y_2(t) = u \sin{4t}$ becomes
+
+$$
+y_2(t) = \sin{4t}\left( -\dfrac{c_1}{4}\cot{4t} + c_2 \right).
+$$
+
+We can choose any values for $c_1$ and $c_2$ to yield a second solution. For example, if we set $c_1 = -4$ and $c_2 = 0,$ then we get
+
+$$
+y_2(t) = \sin{4t}\left( \cot{4t} \right) = \cos{4t}.
+$$
+
+When selecting our constants $c_1$ and $c_2,$ we should try to get a solution that is "different" from the first. We will define precisely what we mean by "different" soon, but loosely speaking we should aim for a $y_2(x)$ that satisfies the following conditions:
+
+- None of the terms is a constant multiple of the first solution (here, we accomplished this by choosing $c_2=0$).
+
+- The remaining terms are as simple as possible (here, we accomplished this by choosing $c_1=-4$).

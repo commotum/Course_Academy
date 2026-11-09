@@ -1,0 +1,2845 @@
+[
+  {
+    "entity": 17592186153363,
+    "attribute": ":tutorial/content",
+    "value": "A second-order ordinary differential equation in the variable $y(x)$ is **linear** if it can be written in the form\n\n$$\na(x)y'' + b(x)y' + c(x) y = f(x)\n$$\n\nwhere \n\n- $a(x),$ $b(x),$ $c(x),$ and $f(x)$ are functions of $x$ only, and\n\n- $a(x)\\neq 0$ on the interval under consideration.\n\nFor example, the equation \n\n$$\ne^x y'' + 3xy' + \\cos (x)y = 0\n$$\n\nis a second-order linear ODE with \n\n$$\na(x)=e^x, \\qquad b(x)=3x, \\qquad c(x)=\\cos(x), \\qquad f(x)=0.\n$$\n\nOn the other hand, the equation \n\n$$\n{\\color{red}y^2} y'' + x{\\color{red}y}y' + 2y = 0\n$$\n\nis **nonlinear**. The coefficient of $y''$ is $y^2$ and the coefficient of $y'$ is $xy$. Since these coefficients depend on $y$, they are not functions of $x$ only, violating the definition of a linear equation."
+  },
+  {
+    "entity": 17592186153331,
+    "attribute": ":tutorial/content",
+    "value": "Every linear ODE can be written in the form\n\n$$\nL(y) = f(x),\n$$\n\nwhere $L$ is a **linear differential operator**. This operator notation helps us to study the properties of linear ODEs in a more general way.\n\nIn this topic, we'll primarily concern ourselves with **second-order linear ODEs**. For these equations, the operator $L$ has the general form:\n\n$$\nL = a(x)\\dfrac{\\textrm d^2}{\\textrm d x^2} + b(x)\\dfrac{\\textrm d}{\\textrm d x} + c(x).\n$$\n\nFor example, consider the second-order linear ODE:\n\n$$\nx^2 y'' - 2x y' + 2y = \\ln x.\n$$\n\nWe can write this as $L(y) = f(x)$, where the linear operator $L$ and the function $f(x)$ are:\n\n$$\nL = x^2\\dfrac{\\textrm d^2}{\\textrm d x^2} - 2x\\dfrac{\\textrm d}{\\textrm d x} + 2 \\quad \\text{and} \\quad f(x) = \\ln x.\n$$\n\nApplying this operator to a function $y$ gives back the left-hand side of the ODE:\n\n$$\nL(y) = \\left(x^2\\dfrac{\\textrm d^2}{\\textrm d x^2} - 2x\\dfrac{\\textrm d}{\\textrm d x} + 2\\right)y = x^2y''-2xy'+2y.\n$$"
+  },
+  {
+    "entity": 17592186153374,
+    "attribute": ":tutorial/content",
+    "value": "A second-order linear ODE\n$$\na(x)y'' + b(x)y' + c(x) y = f(x)\n$$\nis called **homogeneous** if $f(x)= 0$ for all $x.$ \n\nA second-order linear ODE is **inhomogeneous** if it is not homogeneous. Note that the words homogeneous and inhomogeneous are associated *only* with linear equations.\n\nLet's look at some examples.\n\n- Consider the second-order linear ODE\n$$\n{x}^{2} {y}^{\\prime \\prime } + ( x + 1 ) {y}^{\\prime } + ( \\sin   x ) y = 0.\n$$\nComparing this equation with the general form, we see that \n$$\na(x) = x^2, \\qquad b(x) = x+1, \\qquad c(x) = \\sin{x}, \\qquad  f(x) = 0.\n$$\nSince the right-hand side $f(x)= 0$ for all $x,$ this equation is *homogeneous*.\n\n- Next, consider the following second-order linear ODE.\n$$\ny'' + x^2y' = \\sin x\n$$\nTo compare this with the general form, we can write it as\n$$\n(1)y'' + (x^2)y' + (0)y = \\sin x.\n$$\nWe can now see that\n$$\na(x) = 1, \\qquad b(x) = x^2, \\qquad c(x) = 0, \\qquad  f(x) = \\sin x.\n$$\nSince the right-hand side $f(x) = \\sin x,$ which is not identical to zero, this equation is *inhomogeneous*."
+  },
+  {
+    "entity": 17592186153376,
+    "attribute": ":tutorial/content",
+    "value": "Suppose we have a second-order **inhomogeneous** ODE given in the form\n\n$$\na(x)y'' + b(x)y' + c(x) y = f(x).\n$$\n\nThe **associated** (or **corresponding**) **homogeneous equation** is constructed by replacing the term $f(x)$ with zero:\n\n$$\na(x)y'' + b(x)y' + c(x) y = 0\n$$\n\nFor example, consider the following inhomogeneous ODE:\n\n$$\n\\underbrace{x^2 y'' + (x+1)y' + \\sin(x)y = \\color{blue}3e^x}_{\\text{Inhomogeneous Equation}}\n$$\n\nTo get the associated homogeneous equation, we replace the right-hand side with $0.$\n\n$$\n\\underbrace{x^2 y'' + (x+1)y' + \\sin(x)y = \\color{blue}0}_{\\text{Associated Homogeneous Equation}}\n$$"
+  },
+  {
+    "entity": 17592186153375,
+    "attribute": ":tutorial/content",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem.**\n\nFor example, the following system is an initial value problem because it has two conditions that are both specified at the same location $x=2\\mathbin{:}$\n\n$$\ny'' + xy' + e^x y = 1, \\qquad y(2) = 3, \\quad y'(2) = 5\n$$\n\nOn the other hand, if the two conditions are specified at *different* locations in the domain of $y,$ then this is a **boundary value problem.**\n\nFor example, the following system is a boundary value problem because it has two conditions that are specified at *different* locations, $x=2$ and $x=7\\mathbin{:}$\n\n$$\ny'' + xy' + e^x y = 1, \\qquad y'(2) = 3, \\quad y(7) = 5\n$$\n\nIn either case, precisely two conditions must be specified. The following systems are neither initial value problems nor boundary value problems:\n\n- The following system does not have any conditions:\n\n$$\ny'' + xy' + e^x y = 1\n$$\n\n- The following system only has one condition:\n\n$$\ny'' + xy' + e^x y = 1, \\qquad y'(2) = 3\n$$\n\nIn this topic, we'll concern ourselves only with initial value problems. We'll discuss boundary value problems in separate lessons."
+  },
+  {
+    "entity": 17592186152627,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\n1. $y^{\u2033} + 2y^{\u2032} + 5y = 0$\n2. $3y^{\u2033} + y^{2}y^{\u2032} + 4 = 0$\n3. $y^{\u2033} - xy = x$",
+    "fields": [
+      {
+        "id": "17592186150269",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186150270,
+    "attribute": ":answer/value",
+    "value": "I and II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150271,
+    "attribute": ":answer/value",
+    "value": "III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150272,
+    "attribute": ":answer/value",
+    "value": "I and III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150273,
+    "attribute": ":answer/value",
+    "value": "I only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150274,
+    "attribute": ":answer/value",
+    "value": "I, II and III",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186152631,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\n1. $xy^{\u2033} + 2y^{\u2032} + (\\cos x)y = 0$\n2. $3y^{\u2033} + x^{2}y^{\u2032} + xy = 4$\n3. $y^{\u2033} - yy^{\u2032} = x$",
+    "fields": [
+      {
+        "id": "17592186150293",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186150294,
+    "attribute": ":answer/value",
+    "value": "II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150295,
+    "attribute": ":answer/value",
+    "value": "I only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150296,
+    "attribute": ":answer/value",
+    "value": "II and III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150297,
+    "attribute": ":answer/value",
+    "value": "I and II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186150298,
+    "attribute": ":answer/value",
+    "value": "I and III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186265953,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464871",
+        "key": "$2{y}^{\u2033}+(\\operatorname{sin}\u2061x){y}^{\u2032}-y=1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464872",
+        "key": "${y}^{\u2033}+y{y}^{\u2032}+{e}^{x}y=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464873",
+        "key": "$x{y}^{\u2033}+{x}^{2}y={e}^{x}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265953,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n2{y}^{\u2033}+(\\operatorname{sin}\u2061x){y}^{\u2032}-y=1\n$$\n\nis a second-order linear ODE with $a(x)=2,b(x)=\\operatorname{sin}\u2061x,c(x)=-1,$ and $f(x)=1.$\n\n- The equation\n\n$$\n{y}^{\u2033}+y{y}^{\u2032}+{e}^{x}y=0\n$$\n\nis **NOT** linear because it contains the nonlinear term $y{y}^{\u2032}.$\n\n- The equation\n\n$$\nx{y}^{\u2033}+{x}^{2}y={e}^{x}\n$$\n\nis a second-order linear ODE with $a(x)=x,b(x)=0,c(x)={x}^{2},$ and $f(x)={e}^{x}.$\n\nTherefore, the correct answer is $2{y}^{\u2033}+(\\operatorname{sin}\u2061x){y}^{\u2032}-y=1$; $x{y}^{\u2033}+{x}^{2}y={e}^{x}$ only."
+  },
+  {
+    "entity": 17592186464871,
+    "attribute": ":answer-field/key",
+    "value": "$2{y}^{\u2033}+(\\operatorname{sin}\u2061x){y}^{\u2032}-y=1$"
+  },
+  {
+    "entity": 17592186463874,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463875,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464872,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+y{y}^{\u2032}+{e}^{x}y=0$"
+  },
+  {
+    "entity": 17592186463876,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463877,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464873,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}+{x}^{2}y={e}^{x}$"
+  },
+  {
+    "entity": 17592186463878,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463879,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186265954,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464874",
+        "key": "$(\\operatorname{ln}\u2061x){y}^{\u2033}-x{y}^{\u2032}+y=2$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464875",
+        "key": "${y}^{3}{y}^{\u2033}+x{y}^{\u2032}-xy=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464876",
+        "key": "$\\frac{1}{x}{y}^{\u2033}+xy{y}^{\u2032}+{x}^{2}y={e}^{x}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265954,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n(\\operatorname{ln}\u2061x){y}^{\u2033}-x{y}^{\u2032}+y=2\n$$\n\nis a second-order linear ODE with $a(x)=\\operatorname{ln}\u2061x,b(x)=-x,c(x)=1,$ and $f(x)=2.$\n\n- The equation\n\n$$\n{y}^{3}{y}^{\u2033}+x{y}^{\u2032}-xy=0\n$$\n\nis **NOT** linear because it contains the nonlinear term ${y}^{3}{y}^{\u2033}.$\n\n- The equation\n\n$$\n\\frac{1}{x}{y}^{\u2033}+xy{y}^{\u2032}+{x}^{2}y={e}^{x}\n$$\n\nis **NOT** linear because it contains the nonlinear term $xy{y}^{\u2032}.$\n\nTherefore, the correct answer is $(\\operatorname{ln}\u2061x){y}^{\u2033}-x{y}^{\u2032}+y=2$ only."
+  },
+  {
+    "entity": 17592186464874,
+    "attribute": ":answer-field/key",
+    "value": "$(\\operatorname{ln}\u2061x){y}^{\u2033}-x{y}^{\u2032}+y=2$"
+  },
+  {
+    "entity": 17592186463880,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463881,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464875,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{3}{y}^{\u2033}+x{y}^{\u2032}-xy=0$"
+  },
+  {
+    "entity": 17592186463882,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463883,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464876,
+    "attribute": ":answer-field/key",
+    "value": "$\\frac{1}{x}{y}^{\u2033}+xy{y}^{\u2032}+{x}^{2}y={e}^{x}$"
+  },
+  {
+    "entity": 17592186463884,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463885,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186265955,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464877",
+        "key": "${e}^{2y}{y}^{\u2033}-{x}^{2}{y}^{\u2032}+3=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464878",
+        "key": "${e}^{x}{y}^{\u2033}+4{y}^{\u2032}-x\\operatorname{sin}\u2061x=2$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464879",
+        "key": "${y}^{\u2033}-2x{y}^{\u2032}+5y=x$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265955,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n{e}^{2y}{y}^{\u2033}-{x}^{2}{y}^{\u2032}+3=0\n$$\n\nis **NOT** linear because it contains the nonlinear term ${e}^{2y}{y}^{\u2033}.$\n\n- The equation\n\n$$\n{e}^{x}{y}^{\u2033}+4{y}^{\u2032}-x\\operatorname{sin}\u2061x=2\n$$\n\nis a second-order linear ODE with $a(x)={e}^{x},b(x)=4,c(x)=0,$ and $f(x)=2+x\\operatorname{sin}\u2061x.$\n\n- The equation\n\n$$\n{y}^{\u2033}-2x{y}^{\u2032}+5y=x\n$$\n\nis a second-order linear ODE with $a(x)=1,b(x)=-2x,c(x)=5,$ and $f(x)=x.$\n\nTherefore, the correct answer is ${e}^{x}{y}^{\u2033}+4{y}^{\u2032}-x\\operatorname{sin}\u2061x=2$; ${y}^{\u2033}-2x{y}^{\u2032}+5y=x$ only."
+  },
+  {
+    "entity": 17592186464877,
+    "attribute": ":answer-field/key",
+    "value": "${e}^{2y}{y}^{\u2033}-{x}^{2}{y}^{\u2032}+3=0$"
+  },
+  {
+    "entity": 17592186463886,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463887,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464878,
+    "attribute": ":answer-field/key",
+    "value": "${e}^{x}{y}^{\u2033}+4{y}^{\u2032}-x\\operatorname{sin}\u2061x=2$"
+  },
+  {
+    "entity": 17592186463888,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463889,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464879,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-2x{y}^{\u2032}+5y=x$"
+  },
+  {
+    "entity": 17592186463890,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463891,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186265956,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464880",
+        "key": "$2{x}^{2}{y}^{\u2033}-\\operatorname{ln}\u2061x\\,{y}^{\u2032}+{y}^{2}=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464881",
+        "key": "$2{y}^{\u2033}+{x}^{3}{y}^{\u2032}+2xy=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464882",
+        "key": "${y}^{\u2033}+x{y}^{\u2032}=x{e}^{x}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265956,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n2{x}^{2}{y}^{\u2033}-\\operatorname{ln}\u2061x\\,{y}^{\u2032}+{y}^{2}=0\n$$\n\nis **NOT** linear because it contains the nonlinear term ${y}^{2}.$\n\n- The equation\n\n$$\n2{y}^{\u2033}+{x}^{3}{y}^{\u2032}+2xy=0\n$$\n\nis a second-order linear ODE with $a(x)=2,b(x)={x}^{3},c(x)=2x,$ and $f(x)=0.$\n\n- The equation\n\n$$\n{y}^{\u2033}+x{y}^{\u2032}=x{e}^{x}\n$$\n\nis a second-order linear ODE with $a(x)=1,b(x)=x,c(x)=0,$ and $f(x)=x{e}^{x}.$\n\nTherefore, the correct answer is $2{y}^{\u2033}+{x}^{3}{y}^{\u2032}+2xy=0$; ${y}^{\u2033}+x{y}^{\u2032}=x{e}^{x}$ only."
+  },
+  {
+    "entity": 17592186464880,
+    "attribute": ":answer-field/key",
+    "value": "$2{x}^{2}{y}^{\u2033}-\\operatorname{ln}\u2061x\\,{y}^{\u2032}+{y}^{2}=0$"
+  },
+  {
+    "entity": 17592186463892,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463893,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464881,
+    "attribute": ":answer-field/key",
+    "value": "$2{y}^{\u2033}+{x}^{3}{y}^{\u2032}+2xy=0$"
+  },
+  {
+    "entity": 17592186463894,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463895,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464882,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+x{y}^{\u2032}=x{e}^{x}$"
+  },
+  {
+    "entity": 17592186463896,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463897,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311916,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467049",
+        "key": "$x{y}^{\u2033}+y={x}^{2}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467050",
+        "key": "$y{y}^{\u2033}+{y}^{\u2032}=x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467051",
+        "key": "$5{y}^{\u2033}-{x}^{2}{y}^{\u2032}+7{y}^{2}=x$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311916,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation \n\n$$\nx{y}^{\u2033}+y={x}^{2}\n$$\n\nis a second-order linear ODE with $a(x)=x,b(x)=0,c(x)=1,$ and $f(x)={x}^{2}.$\n\n- The equation \n\n$$\ny{y}^{\u2033}+{y}^{\u2032}=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $y{y}^{\u2033}.$\n\n- The equation \n\n$$\n5{y}^{\u2033}-{x}^{2}{y}^{\u2032}+7{y}^{2}=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $7{y}^{2}.$\n\nTherefore, the correct answer is $x{y}^{\u2033}+y={x}^{2}$ only."
+  },
+  {
+    "entity": 17592186467049,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}+y={x}^{2}$"
+  },
+  {
+    "entity": 17592186466411,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466412,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467050,
+    "attribute": ":answer-field/key",
+    "value": "$y{y}^{\u2033}+{y}^{\u2032}=x$"
+  },
+  {
+    "entity": 17592186466413,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466414,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467051,
+    "attribute": ":answer-field/key",
+    "value": "$5{y}^{\u2033}-{x}^{2}{y}^{\u2032}+7{y}^{2}=x$"
+  },
+  {
+    "entity": 17592186466415,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466416,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186335774,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186468576",
+        "key": "${e}^{x}{y}^{\u2033}+y={x}^{2}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186468577",
+        "key": "$y{y}^{\u2033}+{y}^{\u2032}=x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186468578",
+        "key": "$3{y}^{\u2033}-{x}^{2}{y}^{\u2032}+4{y}^{2}=x$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186335774,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n{e}^{x}{y}^{\u2033}+y={x}^{2}\n$$\n\nis a second-order linear ODE with $a(x)={e}^{x},b(x)=0,c(x)=1,$ and $f(x)={x}^{2}.$\n\n- The equation\n\n$$\ny{y}^{\u2033}+{y}^{\u2032}=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $y{y}^{\u2033}.$\n\n- The equation\n\n$$\n3{y}^{\u2033}-{x}^{2}{y}^{\u2032}+4{y}^{2}=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $4{y}^{2}.$\n\nTherefore, the correct answer is ${e}^{x}{y}^{\u2033}+y={x}^{2}$ only."
+  },
+  {
+    "entity": 17592186468576,
+    "attribute": ":answer-field/key",
+    "value": "${e}^{x}{y}^{\u2033}+y={x}^{2}$"
+  },
+  {
+    "entity": 17592186467710,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467711,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186468577,
+    "attribute": ":answer-field/key",
+    "value": "$y{y}^{\u2033}+{y}^{\u2032}=x$"
+  },
+  {
+    "entity": 17592186467712,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467713,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186468578,
+    "attribute": ":answer-field/key",
+    "value": "$3{y}^{\u2033}-{x}^{2}{y}^{\u2032}+4{y}^{2}=x$"
+  },
+  {
+    "entity": 17592186467714,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467715,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186357561,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186470425",
+        "key": "${y}^{\u2033}-x{y}^{\u2032}+y=\\operatorname{cos}\u2061x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186470426",
+        "key": "${y}^{\u2033}+y{y}^{\u2032}=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186470427",
+        "key": "$\\frac{1}{y}{y}^{\u2033}+y=x$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186357561,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n{y}^{\u2033}-x{y}^{\u2032}+y=\\operatorname{cos}\u2061x\n$$\n\nis a second-order linear ODE with $a(x)=1,b(x)=-x,c(x)=1,$ and $f(x)=\\operatorname{cos}\u2061x.$\n\n- The equation\n\n$$\n{y}^{\u2033}+y{y}^{\u2032}=0\n$$\n\nis **NOT** linear because it contains the nonlinear term $y{y}^{\u2032}.$\n\n- The equation\n\n$$\n\\frac{1}{y}{y}^{\u2033}+y=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $\\frac{1}{y}{y}^{\u2033}.$\n\nTherefore, the correct answer is ${y}^{\u2033}-x{y}^{\u2032}+y=\\operatorname{cos}\u2061x$ only."
+  },
+  {
+    "entity": 17592186470425,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-x{y}^{\u2032}+y=\\operatorname{cos}\u2061x$"
+  },
+  {
+    "entity": 17592186469626,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469627,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186470426,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+y{y}^{\u2032}=0$"
+  },
+  {
+    "entity": 17592186469628,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469629,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186470427,
+    "attribute": ":answer-field/key",
+    "value": "$\\frac{1}{y}{y}^{\u2033}+y=x$"
+  },
+  {
+    "entity": 17592186469630,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469631,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186357562,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186470428",
+        "key": "$2{y}^{2}{y}^{\u2033}-{e}^{x}{y}^{\u2032}=x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186470429",
+        "key": "$\\frac{1}{x}{y}^{\u2033}+{y}^{\u2032}-(\\operatorname{sin}\u2061x)y=\\operatorname{cos}\u2061x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186470430",
+        "key": "${y}^{\u2033}+17y=2x\\operatorname{sin}\u2061x$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186357562,
+    "attribute": ":question/worked-solution",
+    "value": "\u0410 second-order linear differential equation has the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation\n\n$$\n2{y}^{2}{y}^{\u2033}-{e}^{x}{y}^{\u2032}=x\n$$\n\nis **NOT** linear because it contains the nonlinear term $2{y}^{2}{y}^{\u2033}.$\n\n- The equation\n\n$$\n\\frac{1}{x}{y}^{\u2033}+{y}^{\u2032}-(\\operatorname{sin}\u2061x)y=\\operatorname{cos}\u2061x\n$$\n\nis a second-order linear ODE with $a(x)=\\frac{1}{x},b(x)=1,c(x)=-\\operatorname{sin}\u2061x,$ and $f(x)=\\operatorname{cos}\u2061x.$\n\n- The equation\n\n$$\n{y}^{\u2033}+17y=2x\\operatorname{sin}\u2061x\n$$\n\nis a second-order linear ODE with $a(x)=1,b(x)=0,c(x)=17,$ and $f(x)=2x\\operatorname{sin}\u2061x.$\n\nTherefore, the correct answer is $$\n\\displaystyle \\frac{1}{x}{y}^{\u2033}+{y}^{\u2032}-(\\operatorname{sin}\u2061x)y=\\operatorname{cos}\u2061x;\n$$ ${y}^{\u2033}+17y=2x\\operatorname{sin}\u2061x$ only."
+  },
+  {
+    "entity": 17592186470428,
+    "attribute": ":answer-field/key",
+    "value": "$2{y}^{2}{y}^{\u2033}-{e}^{x}{y}^{\u2032}=x$"
+  },
+  {
+    "entity": 17592186469632,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469633,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186470429,
+    "attribute": ":answer-field/key",
+    "value": "$\\frac{1}{x}{y}^{\u2033}+{y}^{\u2032}-(\\operatorname{sin}\u2061x)y=\\operatorname{cos}\u2061x$"
+  },
+  {
+    "entity": 17592186469634,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469635,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186470430,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+17y=2x\\operatorname{sin}\u2061x$"
+  },
+  {
+    "entity": 17592186469636,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186469637,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186151961,
+    "attribute": ":question/problem",
+    "value": "Which of the following second-order differential equations are linear?\n\n- $y'' + (y-1)y'+x = 2$\n\n- $y''+y'=x \\cos x$\n\n- $yy'' - y'+ 9 = 0$",
+    "fields": []
+  },
+  {
+    "entity": 17592186151961,
+    "attribute": ":question/worked-solution",
+    "value": "A second-order linear differential equation has the form\n\n$$\na(x)y'' + b(x)y' + c(x) y = f(x).\n$$\n\nLet's look at each equation in turn.\n\n- The equation \n\n$$\ny'' + (y-1)y'+x = 2\n$$\n\nis **NOT** linear because it contains the nonlinear term $(y-1)y'.$\n\n- The equation \n\n$$\ny''+y'=x \\cos x\n$$\n\nis a second-order linear ODE with $a(x) = 1, b(x) = 1, c(x) = 0,$ and $f(x) = x\\cos{x}.$\n\n- The equation \n\n$$\nyy'' - y'+ 9 = 0\n$$\n\nis **NOT** linear because it contains the nonlinear term $yy''.$\n\nTherefore, the correct answer is \"II only.\""
+  },
+  {
+    "entity": 17592186152571,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.\n$\\,$ The equation $\\,\\operatorname{sin}\u2061(x){y}^{\u2033}-x{y}^{\u2032}+y=0$ is {{field-1}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+2{y}^{\u2032}+y=2$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+xy-2x=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186149883",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186149886",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186368216",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186368219",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186368222",
+        "key": "field-3",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152571,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n\\operatorname{sin}\u2061(x){y}^{\u2033}-x{y}^{\u2032}+y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- The equation\n\n$$\n{y}^{\u2033}+2{y}^{\u2032}+y=2\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=2,$ which is different from zero.\n\n- Writing the equation\n\n$$\n{y}^{\u2033}+xy-2x=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}+xy=2x.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=2x,$ which is different from zero."
+  },
+  {
+    "entity": 17592186149884,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186149885,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186149887,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186149888,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368217,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368218,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368220,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368221,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368223,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186368224,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186152572,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,{x}^{2}{y}^{\u2033}+3x{y}^{\u2032}-y=0$ is {{field-1}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}-{y}^{\u2032}+y={e}^{x}$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+{x}^{2}y+x=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186311186",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186311372",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311543",
+        "key": "field-3",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152572,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n{x}^{2}{y}^{\u2033}+3x{y}^{\u2032}-y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- The equation\n\n$$\n{y}^{\u2033}-{y}^{\u2032}+y={e}^{x}\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)={e}^{x},$ which is different from zero.\n\n- Writing the equation\n\n$$\n{y}^{\u2033}+{x}^{2}y+x=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}+{x}^{2}y=-x.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=-x,$ which is different from zero."
+  },
+  {
+    "entity": 17592186310010,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310186,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310420,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309443,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309666,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310329,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309437,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309839,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310346,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311903,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.\n\n$\\,$ The equation $\\,{y}^{\u2033}+5{y}^{\u2032}+6y=7$ is {{field-1}}. \n\n$\\,$ The equation $\\,\\operatorname{ln}\u2061(x){y}^{\u2033}+(1-x){y}^{\u2032}-4y=0$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+xy+{x}^{3}=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186311442",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311479",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311483",
+        "key": "field-1",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311903,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n{y}^{\u2033}+5{y}^{\u2032}+6y=7\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=7,$ which is different from zero.\n\n- The equation\n\n$$\n\\operatorname{ln}\u2061(x){y}^{\u2033}+(1-x){y}^{\u2032}-4y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- Writing the equation\n\n$$\n{y}^{\u2033}+xy+{x}^{3}=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}+xy=-{x}^{3}.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=-{x}^{3},$ which is different from zero."
+  },
+  {
+    "entity": 17592186309449,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309819,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310306,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309182,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310090,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310760,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309660,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310039,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310554,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311905,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,\\operatorname{cos}\u2061(x){y}^{\u2033}+2{y}^{\u2032}+xy=0$ is {{field-1}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+{y}^{\u2032}-2y=4x$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+{x}^{2}y=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186311430",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311489",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186311516",
+        "key": "field-2",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311905,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n\\operatorname{cos}\u2061(x){y}^{\u2033}+2{y}^{\u2032}+xy=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- The equation\n\n$$\n{y}^{\u2033}+{y}^{\u2032}-2y=4x\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=4x,$ which is different from zero.\n\n- The equation\n\n$$\n{y}^{\u2033}+{x}^{2}y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$"
+  },
+  {
+    "entity": 17592186309634,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310118,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310736,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186308908,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309337,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309479,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186308752,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309132,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309330,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311909,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,{y}^{\u2033}-2{y}^{\u2032}+y=\\operatorname{ln}\u2061(x)$ is {{field-1}}. \n\n$\\,$ The equation $\\,(1+{x}^{2}){y}^{\u2033}+x{y}^{\u2032}+y=0$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+xy-{e}^{x}=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186311324",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311453",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311507",
+        "key": "field-1",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311909,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n{y}^{\u2033}-2{y}^{\u2032}+y=\\operatorname{ln}\u2061(x)\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=\\operatorname{ln}\u2061(x),$ which is different from zero.\n\n- The equation\n\n$$\n(1+{x}^{2}){y}^{\u2033}+x{y}^{\u2032}+y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- Writing the equation\n\n$$\n{y}^{\u2033}+xy-{e}^{x}=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}+xy={e}^{x}.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)={e}^{x},$ which is different from zero."
+  },
+  {
+    "entity": 17592186309748,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309936,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310102,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309710,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309791,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309822,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186308815,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309767,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310555,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311914,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,\\frac{1}{x}{y}^{\u2033}+(x-2){y}^{\u2032}+y=0$ is {{field-1}}. \n\n$\\,$ The equation $\\,({x}^{2}+1){y}^{\u2033}-4x{y}^{\u2032}+3y=0$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+\\operatorname{ln}\u2061(x)\\,y+9=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186311007",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311373",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311469",
+        "key": "field-1",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311914,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n\\frac{1}{x}{y}^{\u2033}+(x-2){y}^{\u2032}+y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- The equation\n\n$$\n({x}^{2}+1){y}^{\u2033}-4x{y}^{\u2032}+3y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- Writing the equation\n\n$$\n{y}^{\u2033}+\\operatorname{ln}\u2061(x)\\,y+9=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}+\\operatorname{ln}\u2061(x)\\,y=-9.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=-9,$ which is different from zero."
+  },
+  {
+    "entity": 17592186308860,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186308862,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309730,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309775,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310450,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310660,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309054,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310111,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310403,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397097,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,\\sqrt{x}\\,{y}^{\u2033}-2x{y}^{\u2032}+y=0$ is {{field-1}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}+3{y}^{\u2032}=x$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}-xy+4x=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186397098",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186397101",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186397104",
+        "key": "field-3",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186397097,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n\\sqrt{x}\\,{y}^{\u2033}-2x{y}^{\u2032}+y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- The equation\n\n$$\n{y}^{\u2033}+3{y}^{\u2032}=x\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=x,$ which is different from zero.\n\n- Writing the equation\n\n$$\n{y}^{\u2033}-xy+4x=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}-xy=-4x.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=-4x,$ which is different from zero."
+  },
+  {
+    "entity": 17592186397099,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397100,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397102,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397103,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397105,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397106,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397107,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.$\\,$ The equation $\\,{y}^{\u2033}+2y=x$ is {{field-1}}. \n\n$\\,$ The equation $\\,\\operatorname{tan}\u2061(x){y}^{\u2033}+{y}^{\u2032}-6y=0$ is {{field-2}}. \n\n$\\,$ The equation $\\,{y}^{\u2033}-(x+2)y+5x=0$ is {{field-3}}.",
+    "fields": [
+      {
+        "id": "17592186397108",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186397111",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186397114",
+        "key": "field-2",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186397107,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe equation is homogeneous if $f(x)=0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n{y}^{\u2033}+2y=x\n$$\n\nis $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=x,$ which is different from zero.\n\n- The equation\n\n$$\n\\operatorname{tan}\u2061(x){y}^{\u2033}+{y}^{\u2032}-6y=0\n$$\n\nis $\\text{homogeneous}$ since, for the right-hand side, we have $f(x)=0$ for all $x.$\n\n- Writing the equation\n\n$$\n{y}^{\u2033}-(x+2)y+5x=0\n$$\n\nin the form $a{y}^{\u2033}+b{y}^{\u2032}+cy=f,$ we have\n\n$$\n{y}^{\u2033}-(x+2)y=-5x.\n$$\n\nThis equation is $\\text{inhomogeneous}$ since, for the right-hand side, we have $f(x)=-5x,$ which is different from zero."
+  },
+  {
+    "entity": 17592186397109,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397110,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397112,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397113,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397115,
+    "attribute": ":answer/value",
+    "value": "homogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186397116,
+    "attribute": ":answer/value",
+    "value": "inhomogeneous",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186151960,
+    "attribute": ":question/problem",
+    "value": "Determine which of the following second-order ODEs are homogeneous, and which are inhomogeneous.\n\n- $\\, (2-\\sin(x)) y'' + x y' + y = 0$\n\n- $\\,y'' + 6y' + 9y = 3e^x$\n\n- $\\,y'' + x^3 y - 8 = 0$",
+    "fields": []
+  },
+  {
+    "entity": 17592186151960,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order linear ODE given in the form\n\n$$\na(x)y'' + b(x)y' + c(x) y = f(x).\n$$\n\nThe equation is homogeneous if $f(x) = 0$ for all $x.$ If it is not homogeneous, then it is inhomogeneous.\n\nWith that in mind, let's examine each option.\n\n- The equation\n\n$$\n(2-\\sin(x)) y'' + x y' + y = 0\n$$\n\nis homogeneous since, for the right-hand side, we have $f(x) = 0$ for all $x.$\n\n- The equation\n\n$$\ny'' + 6y' + 9y = 3e^x\n$$\n\nis inhomogeneous since, for the right-hand side, we have $f(x) = 3e^x,$ which is different from zero.\n\n- Writing the equation\n\n$$\ny'' + x^3 y - 8 = 0\n$$\n\nin the form $ay'' + by' + cy = f,$ we have\n\n$$\ny'' + x^3 y = 8.\n$$\n\nThis equation is inhomogeneous since, for the right-hand side, we have $f(x) = 8,$ which is different from zero."
+  },
+  {
+    "entity": 17592186152629,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${x}^{2}{y}^{\u2033}+x{y}^{\u2032}+y={x}^{3},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186335582",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152629,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{x}^{2}{y}^{\u2033}+x{y}^{\u2032}+y=0.\n$$"
+  },
+  {
+    "entity": 17592186333496,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{{y}^{\u2032}}{x}+\\frac{y}{{x}^{2}}=x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333541,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+y={x}^{3}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334720,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}+x{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334744,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}+x{y}^{\u2032}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186335056,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+1=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186152633,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${x}^{2}{y}^{\u2033}-{y}^{\u2032}+3y={e}^{x},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186335298",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152633,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{x}^{2}{y}^{\u2033}-{y}^{\u2032}+3y=0.\n$$"
+  },
+  {
+    "entity": 17592186333154,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}-{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333386,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-{y}^{\u2032}+3y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334624,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-\\frac{{y}^{\u2032}}{{x}^{2}}+\\frac{3y}{{x}^{2}}=\\frac{{e}^{x}}{{x}^{2}}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334670,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}-{y}^{\u2032}+3y=1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334970,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}-{y}^{\u2032}+3y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186266027,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${y}^{\u2033}-3{y}^{\u2032}+xy=2{e}^{2x},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186265429",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266027,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{y}^{\u2033}-3{y}^{\u2032}+xy=0.\n$$"
+  },
+  {
+    "entity": 17592186263093,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-3{y}^{\u2032}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263513,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-3{y}^{\u2032}+xy=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263954,
+    "attribute": ":answer/value",
+    "value": "\\frac{1}{x}{y}^{\u2033}-\\frac{3}{x}y+y=\\frac{2{e}^{2x}}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264420,
+    "attribute": ":answer/value",
+    "value": "{e}^{-2x}{y}^{\u2033}-3{e}^{-2x}+y=2",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264425,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-3{y}^{\u2032}-2{e}^{2x}y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186266028,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${x}^{2}{y}^{\u2033}-5x{y}^{\u2032}+8y=2x,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186265679",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266028,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{x}^{2}{y}^{\u2033}-5x{y}^{\u2032}+8y=0.\n$$"
+  },
+  {
+    "entity": 17592186263326,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-5{y}^{\u2032}+8y=x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263422,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-\\frac{5}{x}{y}^{\u2032}+\\frac{8}{x}y=\\frac{2}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263686,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}-5x{y}^{\u2032}+6y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264018,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}-5{y}^{\u2032}+\\frac{8}{x}y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264975,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}{y}^{\u2033}-5x{y}^{\u2032}+8y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186266029,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $(x-2){y}^{\u2033}+{y}^{\u2032}+3y=x,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186265372",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266029,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n(x-2){y}^{\u2033}+{y}^{\u2032}+3y=0.\n$$"
+  },
+  {
+    "entity": 17592186263752,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+{y}^{\u2032}+3y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263767,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+3y=\\frac{x}{x-2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263900,
+    "attribute": ":answer/value",
+    "value": "(x-2){y}^{\u2033}+{y}^{\u2032}+3y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264793,
+    "attribute": ":answer/value",
+    "value": "-2{y}^{\u2033}+{y}^{\u2032}=x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265198,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+{y}^{\u2032}+3y=x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186266030,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${y}^{\u2033}-6{y}^{\u2032}+5y=9{e}^{2x},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186265669",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266030,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{y}^{\u2033}-6{y}^{\u2032}+5y=0.\n$$"
+  },
+  {
+    "entity": 17592186263277,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-{y}^{\u2032}+y={e}^{2x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263690,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-6{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264488,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-6{y}^{\u2032}+5y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264692,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-{y}^{\u2032}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265048,
+    "attribute": ":answer/value",
+    "value": "{e}^{-2x}{y}^{\u2033}-6{y}^{\u2032}+5y=9",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186266031,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $x{y}^{\u2033}+(x+1){y}^{\u2032}-y=x{e}^{x},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186265442",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266031,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\nx{y}^{\u2033}+(x+1){y}^{\u2032}-y=0.\n$$"
+  },
+  {
+    "entity": 17592186263354,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}-y={e}^{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264515,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+(x+1){y}^{\u2032}-y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264522,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{x+1}{x}{y}^{\u2032}-y={e}^{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264657,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+(x+1){y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264883,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+x{y}^{\u2032}-y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186335775,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $2{y}^{\u2033}+3{y}^{\u2032}+16y=x+1,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186335476",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186335775,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n2{y}^{\u2033}+3{y}^{\u2032}+16y=0.\n$$"
+  },
+  {
+    "entity": 17592186333405,
+    "attribute": ":answer/value",
+    "value": "2{y}^{\u2033}+3{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333511,
+    "attribute": ":answer/value",
+    "value": "2{y}^{\u2033}+3{y}^{\u2032}+16y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333674,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334226,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{3}{2}{y}^{\u2032}+8y=\\frac{x+1}{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334857,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{3}{2}{y}^{\u2032}+8y=\\frac{1}{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186335776,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${y}^{\u2033}-4{y}^{\u2032}+{x}^{3}y=8,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186335358",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186335776,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{y}^{\u2033}-4{y}^{\u2032}+{x}^{3}y=0.\n$$"
+  },
+  {
+    "entity": 17592186333400,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-4{y}^{\u2032}+{x}^{3}y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333540,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-\\frac{1}{2}{y}^{\u2032}+\\frac{{x}^{3}y}{8}=1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334138,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-\\frac{1}{2}{y}^{\u2032}+\\frac{{x}^{3}y}{8}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334182,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-4{y}^{\u2032}+8y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334338,
+    "attribute": ":answer/value",
+    "value": "\\frac{1}{{x}^{3}}{y}^{\u2033}-\\frac{4}{{x}^{3}}{y}^{\u2032}+y=\\frac{8}{{x}^{3}}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186357563,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $x{y}^{\u2033}+2{x}^{2}{y}^{\u2032}=1,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186357178",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186357563,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\nx{y}^{\u2033}+2{x}^{2}{y}^{\u2032}=0.\n$$"
+  },
+  {
+    "entity": 17592186354882,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+2{x}^{2}{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186354934,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+x{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355342,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+2x{y}^{\u2032}=\\frac{1}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355468,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+{x}^{2}{y}^{\u2032}=1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186356035,
+    "attribute": ":answer/value",
+    "value": "x{y}^{\u2033}+{x}^{2}{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186357564,
+    "attribute": ":question/problem",
+    "value": "For the differential equation ${y}^{\u2033}-y=16,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186357208",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186357564,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n{y}^{\u2033}-y=0.\n$$"
+  },
+  {
+    "entity": 17592186355606,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+y=1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355849,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-y=1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186356082,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}=16",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186356511,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186356591,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}-y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186357566,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $(x-1)^{2}{y}^{\u2033}+6(x-1){y}^{\u2032}=2{x}^{3},$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186356989",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186357566,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n(x-1)^{2}{y}^{\u2033}+6(x-1){y}^{\u2032}=0.\n$$"
+  },
+  {
+    "entity": 17592186355106,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{6}{x-1}{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355227,
+    "attribute": ":answer/value",
+    "value": "(x-1)^{2}{y}^{\u2033}+6(x-1){y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355817,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{6}{x-1}{y}^{\u2032}=\\frac{2{x}^{3}}{(x-1)^{2}}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186355864,
+    "attribute": ":answer/value",
+    "value": "(x-1)^{2}{y}^{\u2033}+(x-1){y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186356664,
+    "attribute": ":answer/value",
+    "value": "(x-1)^{2}{y}^{\u2033}+(x-1){y}^{\u2032}=2{x}^{3}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186368859,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $3{y}^{\u2033}+8{y}^{\u2032}+2y=x\\operatorname{cos}\u20612x,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186368860",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186368859,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n3{y}^{\u2033}+8{y}^{\u2032}+2y=0.\n$$"
+  },
+  {
+    "entity": 17592186368861,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+\\frac{8}{3}{y}^{\u2032}+\\frac{2}{3}y=\\frac{1}{3}x\\operatorname{cos}\u20612x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186368862,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+y=\\operatorname{cos}\u20612x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186368863,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186368864,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+{y}^{\u2032}+y=x\\operatorname{cos}\u20612x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186368865,
+    "attribute": ":answer/value",
+    "value": "3{y}^{\u2033}+8{y}^{\u2032}+2y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186440930,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $2{y}^{\u2033}+5x{y}^{\u2032}+xy={x}^{2}-x,$ what is the associated homogeneous equation?",
+    "fields": [
+      {
+        "id": "17592186440927",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186440930,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x){y}^{\u2033}+b(x){y}^{\u2032}+c(x)y=0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n2{y}^{\u2033}+5x{y}^{\u2032}+xy=0.\n$$"
+  },
+  {
+    "entity": 17592186440907,
+    "attribute": ":answer/value",
+    "value": "2{y}^{\u2033}+5x{y}^{\u2032}=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186440908,
+    "attribute": ":answer/value",
+    "value": "\\frac{2}{x}{y}^{\u2033}+5{y}^{\u2032}+y=x-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186440911,
+    "attribute": ":answer/value",
+    "value": "2{y}^{\u2033}+5x{y}^{\u2032}+xy=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186440918,
+    "attribute": ":answer/value",
+    "value": "{y}^{\u2033}+x{y}^{\u2032}+\\frac{1}{x-1}y=0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186440924,
+    "attribute": ":answer/value",
+    "value": "2{y}^{\u2033}+5x{y}^{\u2032}+xy={x}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186151963,
+    "attribute": ":question/problem",
+    "value": "For the differential equation $2xy'' +y' - y = \\cos x,$ what is the associated homogeneous equation?",
+    "fields": []
+  },
+  {
+    "entity": 17592186151963,
+    "attribute": ":question/worked-solution",
+    "value": "Suppose we have a second-order inhomogeneous ODE given in the form\n\n$$\na(x)y'' + b(x)y' + c(x) y = f(x).\n$$\n\nThe associated homogeneous equation is constructed by replacing $f(x)$ with zero:\n\n$$\na(x)y'' + b(x)y' + c(x) y = 0\n$$\n\nTherefore, in our case, the associated homogeneous equation is\n\n$$\n2xy'' +y' - y = 0.\n$$"
+  },
+  {
+    "entity": 17592186152632,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186460929",
+        "key": "$x{y}^{\u2033}-2{y}^{\u2032}+y$ $={x}^{2}+\\operatorname{sin}\u2061x,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186460930",
+        "key": "${x}^{2}{y}^{\u2033}-x{y}^{\u2032}+y=10$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186460931",
+        "key": "${x}^{2}{y}^{\u2033}-4x{y}^{\u2032}+16y$ $=0,$ $\\,y(0)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=0$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152632,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$).\n\n- The second system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The third system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=0$ and $x=2$). This is a **boundary value problem.**"
+  },
+  {
+    "entity": 17592186460929,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}-2{y}^{\u2032}+y$ $={x}^{2}+\\operatorname{sin}\u2061x,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=1$"
+  },
+  {
+    "entity": 17592186460125,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186460126,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186460930,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-x{y}^{\u2032}+y=10$"
+  },
+  {
+    "entity": 17592186460127,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186460128,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186460931,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-4x{y}^{\u2032}+16y$ $=0,$ $\\,y(0)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=0$"
+  },
+  {
+    "entity": 17592186460129,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186460130,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186152872,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186477709",
+        "key": "$(x-1)^{2}{y}^{\u2033}+(x-1){y}^{\u2032}+y=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186477710",
+        "key": "$8{y}^{\u2033}+{y}^{\u2032}+y$ $=0,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=10$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186477711",
+        "key": "${x}^{2}{y}^{\u2033}+x{y}^{\u2032}$ $={x}^{2}+1,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=5$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186152872,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The second system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=1$ and $x=2$). This is a **boundary value problem.**\n\n- The third system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$)."
+  },
+  {
+    "entity": 17592186477709,
+    "attribute": ":answer-field/key",
+    "value": "$(x-1)^{2}{y}^{\u2033}+(x-1){y}^{\u2032}+y=0$"
+  },
+  {
+    "entity": 17592186477479,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186477480,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186477710,
+    "attribute": ":answer-field/key",
+    "value": "$8{y}^{\u2033}+{y}^{\u2032}+y$ $=0,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=10$"
+  },
+  {
+    "entity": 17592186477481,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186477482,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186477711,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}+x{y}^{\u2032}$ $={x}^{2}+1,$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=5$"
+  },
+  {
+    "entity": 17592186477483,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186477484,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186266033,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464892",
+        "key": "${y}^{\u2033}-{x}^{2}{y}^{\u2032}+y$ $=x\\operatorname{cos}\u2061x,$ $\\,{y}^{\u2032}(1)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=2$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464893",
+        "key": "${y}^{\u2033}+{y}^{\u2032}+y$ $=1,$ $\\,y(\\pi )$ $=1,$ $\\,{y}^{\u2032}(\\pi )$ $=2$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464894",
+        "key": "${y}^{\u2033}+{y}^{\u2032}-y=x{e}^{x}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186266033,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=1$ and $x=2$). This is a **boundary value problem.**\n\n- The second system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=\\pi $).\n\n- The third system is not an initial value problem. It contains an equation only. No conditions are specified."
+  },
+  {
+    "entity": 17592186464892,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-{x}^{2}{y}^{\u2032}+y$ $=x\\operatorname{cos}\u2061x,$ $\\,{y}^{\u2032}(1)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=2$"
+  },
+  {
+    "entity": 17592186463916,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463917,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464893,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+{y}^{\u2032}+y$ $=1,$ $\\,y(\\pi )$ $=1,$ $\\,{y}^{\u2032}(\\pi )$ $=2$"
+  },
+  {
+    "entity": 17592186463918,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463919,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464894,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+{y}^{\u2032}-y=x{e}^{x}$"
+  },
+  {
+    "entity": 17592186463920,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463921,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186314699,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467055",
+        "key": "${y}^{\u2033}-3{y}^{\u2032}+y$ $={e}^{x},$ $\\,y(0)$ $=1,$ $\\,y(2)$ $=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467056",
+        "key": "${y}^{\u2033}+4y$ $=\\operatorname{sin}\u2061x,$ $\\,y(1)$ $=2,$ $\\,{y}^{\u2032}(1)$ $=-1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467057",
+        "key": "${y}^{\u2033}-y={x}^{2}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186314699,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=0$ and $x=2$). This is a **boundary value problem.**\n\n- The second system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$).\n\n- The third system is not an initial value problem. It contains an equation only. No conditions are specified."
+  },
+  {
+    "entity": 17592186467055,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-3{y}^{\u2032}+y$ $={e}^{x},$ $\\,y(0)$ $=1,$ $\\,y(2)$ $=0$"
+  },
+  {
+    "entity": 17592186466423,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466424,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467056,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+4y$ $=\\operatorname{sin}\u2061x,$ $\\,y(1)$ $=2,$ $\\,{y}^{\u2032}(1)$ $=-1$"
+  },
+  {
+    "entity": 17592186466425,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466426,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467057,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-y={x}^{2}$"
+  },
+  {
+    "entity": 17592186466427,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466428,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186314700,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467058",
+        "key": "${y}^{\u2033}-4{y}^{\u2032}+y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=2,$ $\\,y(5)$ $=2$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467059",
+        "key": "${y}^{\u2033}+y={x}^{3}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467060",
+        "key": "${y}^{\u2033}+2{y}^{\u2032}$ $={e}^{x},$ $\\,y(-3)$ $=0,$ $\\,{y}^{\u2032}(-3)$ $=1$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186314700,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=0$ and $x=5$). This is a **boundary value problem.**\n\n- The second system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The third system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=-3$)."
+  },
+  {
+    "entity": 17592186467058,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}-4{y}^{\u2032}+y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=2,$ $\\,y(5)$ $=2$"
+  },
+  {
+    "entity": 17592186466429,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466430,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467059,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+y={x}^{3}$"
+  },
+  {
+    "entity": 17592186466431,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466432,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467060,
+    "attribute": ":answer-field/key",
+    "value": "${y}^{\u2033}+2{y}^{\u2032}$ $={e}^{x},$ $\\,y(-3)$ $=0,$ $\\,{y}^{\u2032}(-3)$ $=1$"
+  },
+  {
+    "entity": 17592186466433,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466434,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186314763,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467067",
+        "key": "$x{y}^{\u2033}+2{y}^{\u2032}-y=4x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467068",
+        "key": "${x}^{2}{y}^{\u2033}+{y}^{\u2032}-5y$ $=\\operatorname{sin}\u2061x,$ $\\,y(2)$ $=-1,$ $\\,{y}^{\u2032}(2)$ $=3$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467069",
+        "key": "${x}^{2}{y}^{\u2033}-6x{y}^{\u2032}+9y$ $={x}^{2},$ $\\,y(1)$ $=1,$ $\\,{y}^{\u2032}(5)$ $=-2$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186314763,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The second system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=2$).\n\n- The third system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=1$ and $x=5$). This is a **boundary value problem.**"
+  },
+  {
+    "entity": 17592186467067,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}+2{y}^{\u2032}-y=4x$"
+  },
+  {
+    "entity": 17592186466447,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466448,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467068,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}+{y}^{\u2032}-5y$ $=\\operatorname{sin}\u2061x,$ $\\,y(2)$ $=-1,$ $\\,{y}^{\u2032}(2)$ $=3$"
+  },
+  {
+    "entity": 17592186466449,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466450,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467069,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-6x{y}^{\u2032}+9y$ $={x}^{2},$ $\\,y(1)$ $=1,$ $\\,{y}^{\u2032}(5)$ $=-2$"
+  },
+  {
+    "entity": 17592186466451,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466452,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186314764,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467070",
+        "key": "$x{y}^{\u2033}-4{y}^{\u2032}+4y$ $=\\operatorname{sin}\u2061x+2x,$ $\\,y(-1)$ $=2,$ $\\,{y}^{\u2032}(2)$ $=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467071",
+        "key": "${x}^{2}{y}^{\u2033}-{y}^{\u2032}+y=8$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467072",
+        "key": "$x{y}^{\u2033}+{y}^{\u2032}-3y$ $={e}^{x},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=4$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186314764,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is not an initial value problem.  It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=-1$ and $x=2$). This is a **boundary value problem.**\n\n- The second system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The third system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$)."
+  },
+  {
+    "entity": 17592186467070,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}-4{y}^{\u2032}+4y$ $=\\operatorname{sin}\u2061x+2x,$ $\\,y(-1)$ $=2,$ $\\,{y}^{\u2032}(2)$ $=0$"
+  },
+  {
+    "entity": 17592186466453,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466454,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467071,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-{y}^{\u2032}+y=8$"
+  },
+  {
+    "entity": 17592186466455,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466456,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467072,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}+{y}^{\u2032}-3y$ $={e}^{x},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=4$"
+  },
+  {
+    "entity": 17592186466457,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466458,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186400555,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186473730",
+        "key": "$5{y}^{\u2033}+x{y}^{\u2032}+y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=0,$ $\\,{y}^{\u2032}(0)$ $=1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473731",
+        "key": "${x}^{2}{y}^{\u2033}-{e}^{x}{y}^{\u2032}$ $=0,$ $\\,y(0)$ $=1,$ $\\,{y}^{\u2032}(1)$ $=0$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473732",
+        "key": "$\\frac{1}{x}{y}^{\u2033}+{x}^{2}{y}^{\u2032}$ $={e}^{x},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=2$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186400555,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=0$).\n\n- The second system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=0$ and $x=1$). This is a **boundary value problem.**\n\n- The third system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$)."
+  },
+  {
+    "entity": 17592186473730,
+    "attribute": ":answer-field/key",
+    "value": "$5{y}^{\u2033}+x{y}^{\u2032}+y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=0,$ $\\,{y}^{\u2032}(0)$ $=1$"
+  },
+  {
+    "entity": 17592186472670,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472671,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473731,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-{e}^{x}{y}^{\u2032}$ $=0,$ $\\,y(0)$ $=1,$ $\\,{y}^{\u2032}(1)$ $=0$"
+  },
+  {
+    "entity": 17592186472672,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472673,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473732,
+    "attribute": ":answer-field/key",
+    "value": "$\\frac{1}{x}{y}^{\u2033}+{x}^{2}{y}^{\u2032}$ $={e}^{x},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(1)$ $=2$"
+  },
+  {
+    "entity": 17592186472674,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472675,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186402242,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186473930",
+        "key": "${x}^{2}{y}^{\u2033}-2{y}^{\u2032}+y$ $=\\operatorname{ln}\u2061x,$ $\\,y(4)$ $=1,$ $\\,{y}^{\u2032}(4)$ $=-1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473931",
+        "key": "$x{y}^{\u2033}+{y}^{\u2032}-2y=9$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473932",
+        "key": "${x}^{2}{y}^{\u2033}-8x{y}^{\u2032}+16y$ $=\\operatorname{cos}\u2061x,$ $\\,y(2)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=3$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186402242,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=4$).\n\n- The second system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The third system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=2$)."
+  },
+  {
+    "entity": 17592186473930,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-2{y}^{\u2032}+y$ $=\\operatorname{ln}\u2061x,$ $\\,y(4)$ $=1,$ $\\,{y}^{\u2032}(4)$ $=-1$"
+  },
+  {
+    "entity": 17592186473070,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473071,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473931,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}+{y}^{\u2032}-2y=9$"
+  },
+  {
+    "entity": 17592186473072,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473073,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473932,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-8x{y}^{\u2032}+16y$ $=\\operatorname{cos}\u2061x,$ $\\,y(2)$ $=0,$ $\\,{y}^{\u2032}(2)$ $=3$"
+  },
+  {
+    "entity": 17592186473074,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473075,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186402249,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186473933",
+        "key": "$x{y}^{\u2033}-{y}^{\u2032}+2y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=1,$ $\\,{y}^{\u2032}(0)$ $=-1$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473934",
+        "key": "${x}^{2}{y}^{\u2033}+{y}^{\u2032}-y=5x$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473935",
+        "key": "${x}^{2}{y}^{\u2033}-3x{y}^{\u2032}+4y$ $={x}^{2},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(4)$ $=2$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186402249,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem**.\n\nLet's go through each equation in turn.\n\n- The first system is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=0$).\n\n- The second system is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- The third system is not an initial value problem. It consists of a differential equation together with two conditions at different points in the domain of $y(x)$ (i.e., at $x=1$ and $x=4$). This is a **boundary value problem.**"
+  },
+  {
+    "entity": 17592186473933,
+    "attribute": ":answer-field/key",
+    "value": "$x{y}^{\u2033}-{y}^{\u2032}+2y$ $=\\operatorname{cos}\u2061x,$ $\\,y(0)$ $=1,$ $\\,{y}^{\u2032}(0)$ $=-1$"
+  },
+  {
+    "entity": 17592186473076,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473077,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473934,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}+{y}^{\u2032}-y=5x$"
+  },
+  {
+    "entity": 17592186473078,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473079,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473935,
+    "attribute": ":answer-field/key",
+    "value": "${x}^{2}{y}^{\u2033}-3x{y}^{\u2032}+4y$ $={x}^{2},$ $\\,y(1)$ $=0,$ $\\,{y}^{\u2032}(4)$ $=2$"
+  },
+  {
+    "entity": 17592186473080,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473081,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186151962,
+    "attribute": ":question/problem",
+    "value": "Which of the following systems is an initial value problem?\n\n- $x^2y'' + xy' = x+2$\n\n- $9y'' + 4y = e^x, \\quad y(0) = 1,  \\quad  y'(4)= 1$\n\n- $y''+xy'+x^2y= \\sin x, \\quad y(1) = 0,  \\quad  y'(1)= 5$",
+    "fields": []
+  },
+  {
+    "entity": 17592186151962,
+    "attribute": ":question/worked-solution",
+    "value": "If a second-order differential equation for the function $y(x)$ is given with two conditions specified at the *same* location in the domain of $y,$ then this is an **initial value problem.**\n\nWith this in mind, let's go through each equation in turn.\n\n- System I is not an initial value problem. It contains an equation only. No conditions are specified.\n\n- System II is not an initial value problem because it consists of a differential equation together with two conditions in *different* locations, $x=0$ and $x=4.$ So this is a **boundary value problem**, not an initial value problem.\n\n- System III is an initial value problem. The differential equation is together with two conditions at the same location in the domain of $y(x)$ (i.e., at $x=1$).\n\nTherefore, the correct answer is \"III only\"."
+  }
+]

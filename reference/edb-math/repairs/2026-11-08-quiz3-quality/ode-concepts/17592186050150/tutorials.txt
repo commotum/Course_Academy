@@ -1,0 +1,100 @@
+=== 17592186153330 Introduction ===
+Suppose $\{ f_1(x), f_2(x), \ldots, f_n(x) \}$ is a set of functions defined on an interval $I\subseteq R.$
+
+- The set is called **linearly dependent** on $I$ if there exist real numbers $k_1, k_2, \ldots, k_n,$ *not all zero*, such that
+
+$$
+k_1 f_1(x) + k_2 f_2(x) + \cdots + k_n f_n(x) = 0
+$$
+
+for all $x \in I.$  
+
+Intuitively, at least one of the functions can be written as a linear combination of the others.
+
+- The set is called **linearly independent** on $I$ if the *only* way the linear combination
+
+$$
+k_1 f_1(x) + k_2 f_2(x) + \cdots + k_n f_n(x)
+$$
+
+can equal $0$ for all $x \in I$ is by taking
+
+$$
+k_1 = k_2 = \cdots = k_n = 0.
+$$
+
+Notice that these definitions closely parallel the notions of linear dependence and independence for vectors in a vector space.
+
+For example, let's consider the set of functions 
+
+$$
+\{ \sin x, \, \cos x, \, 2\sin x \}
+$$
+
+defined on $x \in \mathbb{R}.$
+
+Notice that for all $x \in \mathbb{R},$ we have that
+
+$$
+2 \cdot \sin x +
+0 \cdot \cos x +
+(-1) \cdot 2\sin x = 0.
+$$
+
+Therefore, since not all the scalar coefficients in the linear combination are zero, the given set of functions is linearly dependent.
+
+Let's see another example.
+
+=== 17592186153328 The Wronskian ===
+Suppose $y_1(x)$ and $y_2(x)$ are differentiable functions defined on some interval $I.$ Then, the **Wronskian** is defined as 
+$$
+W(y_1,y_2) = 	
+		{\left| \begin{array}{cc}{y}_{1} & {y}_{2} \\ {y}_{1}^{\prime } & {y}_{2}^{\prime }\end{array} \right|}	
+= y_1y_2'- y_2 y_1',
+$$
+and it has the following important properties:
+
+If $W \neq 0$ for at least one $x \in I,$ then $y_1$ and $y_2$ are linearly independent.
+
+If $W = 0$ and it’s known that $y_1$ and $y_2$ are solutions to the same second-order linear differential equation, then $y_1$ and $y_2$ are linearly dependent.
+
+**Watch out!** We cannot deduce any information from $W = 0$ in cases where $y_1$ and $y_2$ are not known to be solutions to the same second-order linear differential equation.
+
+=== 17592186153329 Sets of Fundamental Solutions ===
+A **fundamental set of solutions** to a homogeneous, linear differential equation of degree $n$ is a set of precisely $n$ linearly independent solutions.
+
+For example, consider the second-order homogeneous differential equation 
+
+$$
+y''(x) - 4y(x) = 0.
+$$
+
+Using direct substitution, it's straightforward to show that $y_1(x) = e^{2x}$ and $y_2(x) = e^{-2x}$ are the solutions to the equation. 
+
+Let's keep track of our solutions by putting them into a set $S,$ as follows:
+
+$$
+S = \left\{e^{2x}, e^{-2x}\right\}
+$$
+
+ 
+
+Computing the Wronskian of our solutions, we get
+
+$$
+\begin{aligned}W({y}_{1},{y}_{2}) & =\begin{vmatrix}{y}_{1} & {y}_{2} \\ {y}_{1}^{′} & {y}_{2}^{′}\end{vmatrix} \\  & ={y}_{1}{y}_{2}^{′}-{y}_{1}^{′}{y}_{2} \\  & =({e}^{2x}){({e}^{-2x})}^{′}-{({e}^{2x})}^{′}({e}^{-2x}) \\  & =({e}^{2x})(-2{e}^{-2x})-(2{e}^{2x})({e}^{-2x}) \\  & =-2-2 \\  & =-4\end{aligned}
+$$
+
+Since the Wronskian is not zero, the solutions $y_1$ and $y_2$ are linearly independent. 
+
+Because the original equation is of degree two, and since the set $S$ contains *precisely* two linearly independent functions, we say that the set $S$ is a fundamental set of solutions to the differential equation.
+
+**Important:** The fundamental set of solutions is not unique. For example, the set $S',$ given by
+
+$$
+S' = \left\{4e^{2x}, e^{-2x}\right\}
+$$
+
+is also a fundamental set of solutions. 
+
+As a general rule, we tend to pick the simplest set of linearly independent functions when constructing our fundamental set of solutions.

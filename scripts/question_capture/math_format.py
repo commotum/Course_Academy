@@ -686,8 +686,13 @@ def system_answer(rows):
 def normalize_matrix_answer_tables(value):
     """Recover blank-only answer grids in an explicitly known matrix question."""
     text = str(value)
+    saved = []; prefix = 'CAMATRIXCODETOKEN'
+    while prefix in text: prefix += 'X'
+    def protect(match):
+        saved.append(match[0]); return prefix + str(len(saved)-1) + 'END'
+    text = re.sub(r'```[\s\S]*?```|`[^`\n]*`', protect, text)
     if not re.search(r'\\begin\{(?:bmatrix|pmatrix|matrix)\}', text):
-        return text
+        return str(value)
     def replace(match):
         rows, labels = [], []
         for line in match[0].splitlines():
@@ -713,7 +718,32 @@ def normalize_matrix_answer_tables(value):
         if len(keys) != len(set(keys)):
             return match[0]
         return matrix_answer(labels[0], rows)
-    return re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', replace, text)
+    text = re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', replace, text)
+    def source_html(match):
+        body = match[1]
+        if re.search(r'<table\b', body, re.I): return match[0]
+        rows = [re.findall(r'<t[dh]\b([^>]*)>(.*?)</t[dh]>', row, re.S|re.I)
+                for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', body, re.S|re.I)]
+        if len(rows) < 2 or not rows[0]: return match[0]
+        span = re.search(r'\browspan\s*=\s*["\']?(\d+)', rows[0][0][0], re.I)
+        if not span or int(span[1]) != len(rows): return match[0]
+        label = re.fullmatch(r'\$([^$]+?)=\s*(?:\\,\s*)*\$', html.unescape(rows[0][0][1]).strip())
+        if not label: return match[0]
+        matrix_rows = []
+        for index, row in enumerate(rows):
+            entries = [html.unescape(cell).strip() for _,cell in (row[1:] if index == 0 else row)]
+            # The two empty edge columns drew the brackets in the original
+            # HTML. Require them explicitly before interpreting a data table.
+            if len(entries) < 3 or entries[0] or entries[-1]: return match[0]
+            fields = entries[1:-1]
+            if any(not re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', field) for field in fields): return match[0]
+            matrix_rows.append(fields)
+        if len({len(row) for row in matrix_rows}) != 1: return match[0]
+        keys = [field for row in matrix_rows for field in row]
+        if len(set(keys)) != len(keys): return match[0]
+        return matrix_answer(label[1].strip(), matrix_rows)
+    text = re.sub(r'<table\b[^>]*>(.*?)</table>', source_html, text, flags=re.S|re.I)
+    return re.sub(prefix+r'(\d+)END', lambda match:saved[int(match[1])], text)
 
 
 def system_tex(equations, *, annotations=None):
@@ -1455,7 +1485,7 @@ def normalize_prose(value):
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
-    return normalize_fraction_answer_tables(text)
+    return normalize_matrix_answer_tables(normalize_fraction_answer_tables(text))
 
 
 def validate_tex(value):

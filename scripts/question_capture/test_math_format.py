@@ -162,6 +162,40 @@ class MathContentTests(unittest.TestCase):
         table = given + '\n| Input | Output |\n| --- | --- |\n| $x$ | {{a}} |'
         self.assertEqual(normalize_matrix_answer_tables(table), table)
 
+    def test_reported_offset_vector_table_is_recovered_by_production_prose_path(self):
+        source = (r'Find $T(\begin{bmatrix}3\\-6\end{bmatrix})$.'+'\n\n'
+                  +r'| $T(\begin{bmatrix}3\\-6\end{bmatrix})=\,\,$ | | {{field-1}} | |'+'\n'
+                  +'| --- | --- | --- | --- |\n| | {{field-2}} | | |')
+        result = normalize_prose(source)
+        self.assertIn('class="matrix-answer-brackets"', result)
+        self.assertIn('<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>', result)
+        self.assertNotIn('| ---', result)
+        self.assertEqual(normalize_prose(result), result)
+
+    def test_lost_html_bracket_borders_recover_from_rowspan_and_field_positions(self):
+        given = r'$T(v)=\begin{bmatrix}-2\\4\\1\end{bmatrix}$'+'\n\n'
+        table = ('<table rules="all"><tr><td rowspan="3">$T(7v+13w)=$</td>'
+                 '<td></td><td>{{a}}</td><td></td></tr>'
+                 '<tr><td></td><td>{{b}}</td><td></td></tr>'
+                 '<tr><td></td><td>{{c}}</td><td></td></tr></table>')
+        result = normalize_prose(given+table)
+        self.assertIn('<tr><td>{{a}}</td></tr>\n<tr><td>{{b}}</td></tr>\n<tr><td>{{c}}</td></tr>', result)
+        self.assertNotIn('rules="all"', result)
+        self.assertEqual(normalize_prose(result), result)
+        # This shape cannot be inferred without the explicit matrix context.
+        self.assertEqual(normalize_prose(table), table)
+
+    def test_matrix_recovery_preserves_data_tables_code_and_ambiguous_controls(self):
+        given = r'$A=\begin{bmatrix}1\\2\end{bmatrix}$'+'\n\n'
+        table = '| $A=$ | {{a}} |\n| --- | --- |\n| | {{b}} |'
+        code = '```markdown\n'+given+table+'\n```'
+        from math_format import normalize_matrix_answer_tables
+        self.assertEqual(normalize_matrix_answer_tables(code), code)
+        repeated = table.replace('{{b}}','{{a}}')
+        self.assertEqual(normalize_prose(given+repeated), given+repeated)
+        data = '| Input | Output |\n| --- | --- |\n| $x$ | {{a}} |'
+        self.assertEqual(normalize_prose(given+data), given+data)
+
     def test_quoted_display_math_keeps_markers_outside_tex_and_closes_in_quote(self):
         source = '> Rule\n>\n> $$\n> A\\cdot I_n=A\n> $$'
         self.assertEqual(normalize_prose(source), source)

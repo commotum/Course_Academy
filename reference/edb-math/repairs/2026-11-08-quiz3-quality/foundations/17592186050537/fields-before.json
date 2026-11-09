@@ -1,0 +1,2290 @@
+[
+  {
+    "entity": 17592186230210,
+    "attribute": ":tutorial/content",
+    "value": "Suppose that $D$ is an $n$th-order differential operator, and the functions $y, y_1,$ and $y_2$ are $n$-times differentiable in some domain of interest. \n\nWe say that a differential operator $D$ is **linear** if the following conditions hold:\n\n- $D(a y(x)) = a D(y(x)),$ where $a$ is a constant.\n\n- $D(y_1(x) + y_2(x)) = D(y_1(x)) + D(y_2(x)).$\n\nWe can combine these two conditions into a single condition as follows:\n\n$$\nD(ay_1(x) + by_2(x)) = aD(y_1(x)) + bD(y_2(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIt's worth taking a moment to compare these conditions to those we used when defining a *linear transformation*\n\n$$\n\\mathbf T: \\mathbf v \\rightarrow \\mathbf w.\n$$\n\n \n\nFor $\\mathbf T$ to be linear, it must satisfy the following conditions:\n\n- $\\mathbf{T}(a\\mathbf{v})=a\\mathbf{T}(\\mathbf{v})$ for any vector $\\mathbf{v}$ and any scalar $a.$\n\n- $\\mathbf{T}(\\mathbf{v}_1+\\mathbf{v}_2)=\\mathbf{T}(\\mathbf{v}_1)+\\mathbf{T}(\\mathbf{v}_2)$ for any vectors $\\mathbf{v}_1$ and $\\mathbf{v}_2.$\n\nThe conditions are essentially the same in both cases! Only instead of a transformation $\\mathbf T,$ we have a differential operator $D.$ And instead of vectors as our inputs and outputs, we have functions.\n\nNext, we'll apply this definition to a specific differential operator to see if it is linear."
+  },
+  {
+    "entity": 17592186230211,
+    "attribute": ":tutorial/content",
+    "value": "A differential operator $D$ is **linear** if the following linearity condition is satisfied.\n\n$$\nD(ay_1(x) + by_2(x)) = aD(y_1(x)) + bD(y_2(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nLet's consider some examples:\n\n- First, let's consider the following differential operator:\n\n$$\nD_1(y) = x\\dfrac{\\textrm d y}{\\textrm d x} +x^2y\n$$\n\nThis operator is indeed linear. To see this, we need to check that the linearity condition above holds. So we start by applying our operator to the function $y = a y_1(x) + b y_2(x){:}$\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2})=x\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})+{x}^{2}(a{y}_{1}+b{y}_{2})\\end{aligned}\n$$\n\nSince derivatives distribute over sums, and $a$ and $b$ are constants, we have\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2}) & =x\\frac{\\text{d}}{\\text{d}x}(a{y}_{1})+x\\frac{\\text{d}}{\\text{d}x}(b{y}_{2})+{x}^{2}(a{y}_{1}+b{y}_{2}) \\\\  & =ax\\frac{\\text{d}}{\\text{d}x}({y}_{1})+bx\\frac{\\text{d}}{\\text{d}x}({y}_{2})+a{x}^{2}{y}_{1}+b{x}^{2}{y}_{2} \\\\  & =a\\underbrace{\\left(x\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{x}^{2}{y}_{1}\\right)}_{{D}_{1}({y}_{1})}+b\\underbrace{\\left(x\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{x}^{2}{y}_{2}\\right)}_{{D}_{1}({y}_{2})}\\end{aligned}\n$$\n\nThus, since $D_1(ay_1 + by_2) = aD_1(y_1) + bD_1(y_2),$ the operator $D_1$ is linear.\n\n- Now, let's consider the following differential operator:\n\n$$\nD_2(y) = y\\dfrac{\\textrm d y}{\\textrm d x}\n$$\n\nThis operator is *not* linear. To see this, we need to check that the linearity condition above does not hold. So we start by applying our operator to the function $y = a y_1(x) + b y_2(x){:}$\n\n$$\n\\begin{aligned}{D}_{2}(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right) \\\\  & ={a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+ab{y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+ab{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\end{aligned}\n$$\n\nComparing this to $aD_2(y_1) + bD_2(y_2),$ we see that they are *not* the same:\n\n$$\n\\begin{aligned}a{D}_{2}({y}_{1})+b{D}_{2}({y}_{2}) & =a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\ne {D}_{2}(a{y}_{1}+b{y}_{2})\\end{aligned}\n$$\n\nTherefore, the operator $D_2$ is *not* linear."
+  },
+  {
+    "entity": 17592186230212,
+    "attribute": ":tutorial/content",
+    "value": "An **$n$th-order linear differential operator**, denoted $L$, has the general form:\n\n$$\nL(y) = f_{n}(x)\\dfrac{\\textrm d^{n}y}{\\textrm d x^{n}} + f_{n-1}(x)\\dfrac{\\textrm d^{n-1}y}{\\textrm d x^{n-1}} + \\cdots + f_{1}(x)\\dfrac{\\textrm dy}{\\textrm d x} + f_0(x)y.\n$$\n\nThe functions $f_i(x)$ are called the **coefficient functions**. They must depend only on the variable $x$ and be continuous on the domain of interest. The **order** of the operator is the order of the highest derivative whose coefficient is not zero.\n\nIf all the coefficient functions $f_i(x)$ are constants, we call the operator a **linear operator with constant coefficients**.\n\nLet's look at two examples:\n\n- The operator $L(y) = x^2 y'' - (\\sin x) y' + 2y$ is a 2nd-order *linear differential operator*. Its coefficient functions are $f_2(x) = x^2$, $f_1(x) = -\\sin x$, and $f_0(x) = 2$.\n\n- The operator $L(y) = 4y''' + 7y'' - y$ is a 3rd-order *linear operator with constant coefficients*. Its coefficient functions are $f_3(x) = 4$, $f_2(x) = 7$, $f_1(x) = 0$, and $f_0(x) = -1$."
+  },
+  {
+    "entity": 17592186229709,
+    "attribute": ":question/problem",
+    "value": "Consider the following differential operator:\n\n$$\n\\displaystyle D(y) = \\frac{d^{2}y}{dx^{2}} + y\\frac{dy}{dx}\n$$\n\nFill in the steps in the reasoning below.\n\nFor any linear differential operator $L$, we have the linearity condition\n$L(ay_{1} + by_{2}) = aL(y_{1}) + bL(y_{2})$ {{field-1}}\nfor functions $y_{1}(x), y_{2}(x)$, and where $a$ and $b$ are constants.",
+    "fields": [
+      {
+        "id": "17592186228429",
+        "key": "field-1",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186228430,
+    "attribute": ":answer/value",
+    "value": "L(ay_{1} + by_{2}) = L(y_{1}) + L(y_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228431,
+    "attribute": ":answer/value",
+    "value": "L(ay_{1} + by_{2}) = aL(y_{1}) + bL(y_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228432,
+    "attribute": ":answer/value",
+    "value": "L(ay_{1} \\cdot by_{2}) = abL(y_{1}) \\cdot L(y_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186229749,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\n1. $D_{1}(y) = xy\\frac{dy}{dx}$\n2. $$\n\\displaystyle D_{2}(y) = x^{3}\\frac{d^{2}y}{dx^{2}} - 2x^{2}\\frac{dy}{dx}\n$$\n3. $D_{3}(y) = x^{2}\\frac{d^{2}y}{dx^{2}} - y$",
+    "fields": [
+      {
+        "id": "17592186228704",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186228705,
+    "attribute": ":answer/value",
+    "value": "III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228706,
+    "attribute": ":answer/value",
+    "value": "II and III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228707,
+    "attribute": ":answer/value",
+    "value": "II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228708,
+    "attribute": ":answer/value",
+    "value": "I only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228709,
+    "attribute": ":answer/value",
+    "value": "I and III only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186265878,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186464847",
+        "key": "${D}_{1}(y)={x}^{3}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{x}^{2}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464848",
+        "key": "${D}_{2}(y)=y\\frac{\\text{d}y}{\\text{d}x}+2y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186464849",
+        "key": "${D}_{3}(y)=\\frac{\\text{d}y}{\\text{d}x}+xy$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265878,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nD(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})\n$$\n\nwhere $a$ and $b$ are constants. \n\nLet's check each case in turn.\n\n- The first operator is indeed linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2}) & ={x}^{3}\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+{x}^{2}(a{y}_{1}+b{y}_{2}) \\\\  & =a{x}^{3}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{x}^{3}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a{x}^{2}{y}_{1}+a{x}^{2}{y}_{2} \\\\  & =a\\left[{x}^{3}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{x}^{2}{y}_{1}\\right]+b\\left[{x}^{3}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{x}^{2}{y}_{2}\\right] \\\\  & =a{D}_{1}({y}_{1})+b{D}_{1}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The second operator is **not** linear.\nTo see why, we first evaluate the left-hand side of the linearity condition:\n\n$$\n\\begin{aligned}{D}_{2}(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})+2(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)+2a{y}_{1}+2b{y}_{2} \\\\  & ={a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+ab\\left({y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)+2a{y}_{1}+2b{y}_{2}\\end{aligned}\n$$\n\nThis is not the same as the right-hand side, because\n\n$$\n\\begin{aligned}a{D}_{2}({y}_{1})+b{D}_{2}({y}_{2}) & =a\\left[{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+2{y}_{1}\\right]+b\\left[{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+2{y}_{2}\\right] \\\\  & =a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+2a{y}_{1}+2b{y}_{2}.\\,\\times \\end{aligned}\n$$\n\n- The third operator is also linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{3}(a{y}_{1}+b{y}_{2}) & =\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})+x(a{y}_{1}+b{y}_{2}) \\\\  & =a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}+ax{y}_{1}+bx{y}_{2} \\\\  & =a\\left[\\frac{\\text{d}{y}_{1}}{\\text{d}x}+x{y}_{1}\\right]+b\\left[\\frac{\\text{d}{y}_{2}}{\\text{d}x}+x{y}_{2}\\right] \\\\  & =a{D}_{3}({y}_{1})+b{D}_{3}({y}_{2})\\,\u2713\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186464847,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)={x}^{3}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{x}^{2}y$"
+  },
+  {
+    "entity": 17592186463826,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463827,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464848,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=y\\frac{\\text{d}y}{\\text{d}x}+2y$"
+  },
+  {
+    "entity": 17592186463828,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463829,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186464849,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=\\frac{\\text{d}y}{\\text{d}x}+xy$"
+  },
+  {
+    "entity": 17592186463830,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186463831,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311877,
+    "attribute": ":question/problem",
+    "value": "Consider the following differential operator:\n\n$$\nD(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{\\left(\\frac{\\text{d}y}{\\text{d}x}\\right)}^{2}\n$$\n\nFill in the steps in the reasoning below.\n\nFor any linear differential operator $L,$ we have the linearity condition\n\n$$\n{{field-1}}\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & ={{field-2}}+{{field-3}} \\\\  & +2ab\\cdot {{field-4}}.\\end{aligned}\n$$\n\nWe also have\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, since {{field-5}} \nthe operator $D$ is {{field-6}}.",
+    "fields": [
+      {
+        "id": "17592186310874",
+        "key": "field-6",
+        "type": "select"
+      },
+      {
+        "id": "17592186310953",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186311347",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311402",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311513",
+        "key": "field-5",
+        "type": "select"
+      },
+      {
+        "id": "17592186311541",
+        "key": "field-4",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311877,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator $L,$ we have the linearity condition\n\n$$\nL(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & =\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+{\\left(\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})\\right)}^{2} \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{\\left(a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2} \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+2ab\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2} \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2} \\\\  & +2ab\\cdot \\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\cdot \\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right).\\end{aligned}\n$$\n\nThis is *not* the same as the right-hand side, because\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\left[\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}\\right]+b\\left[\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}\\right] \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}.\\end{aligned}\n$$\n\nTherefore, since $D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2}),$ the operator $D$ is $\\text{nonlinear}.$"
+  },
+  {
+    "entity": 17592186310120,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310251,
+    "attribute": ":answer/value",
+    "value": "linear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309521,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309589,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}\\cdot b{y}_{2})=abL({y}_{1})\\cdot L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309909,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310476,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=L({y}_{1})+L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309289,
+    "attribute": ":answer/value",
+    "value": "a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309675,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}-{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309901,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309429,
+    "attribute": ":answer/value",
+    "value": "a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310124,
+    "attribute": ":answer/value",
+    "value": "a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}-b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310270,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309428,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309459,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310454,
+    "attribute": ":answer/value",
+    "value": "\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}+\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310669,
+    "attribute": ":answer/value",
+    "value": "\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\cdot \\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186311880,
+    "attribute": ":question/problem",
+    "value": "Consider the following differential operator:\n\n$$\nD(y)={\\left(\\frac{\\text{d}y}{\\text{d}x}\\right)}^{2}+y\n$$\n\nFill in the steps in the reasoning below.\n\nFor any linear differential operator $L,$ we have the linearity condition\n\n$$\n{{field-1}}\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & ={{field-2}}+{{field-3}} \\\\  & +ab\\cdot {{field-4}}.\\end{aligned}\n$$\n\nWe also have\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}+a{y}_{1}+b{y}_{2}.\\end{aligned}\n$$\n\nNow, since {{field-5}} \nthe operator $D$ is {{field-6}}.",
+    "fields": [
+      {
+        "id": "17592186310851",
+        "key": "field-5",
+        "type": "select"
+      },
+      {
+        "id": "17592186310919",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186311094",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311245",
+        "key": "field-4",
+        "type": "select"
+      },
+      {
+        "id": "17592186311394",
+        "key": "field-6",
+        "type": "select"
+      },
+      {
+        "id": "17592186311440",
+        "key": "field-1",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311880,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator $L,$ we have the linearity condition\n\n$$\nL(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & ={\\left(\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})\\right)}^{2}+(a{y}_{1}+b{y}_{2}) \\\\  & ={\\left(a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}+a{y}_{1}+b{y}_{2} \\\\  & ={a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+2ab\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2} \\\\  & +a{y}_{1}+b{y}_{2} \\\\  & ={a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}+a{y}_{1}+b{y}_{2} \\\\  & +ab\\cdot \\left(2\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right).\\end{aligned}\n$$\n\nThis is *not* the same as the right-hand side, because\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\left[{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+{y}_{1}\\right]+b\\left[{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}+{y}_{2}\\right] \\\\  & =a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}+a{y}_{1}+b{y}_{2}.\\end{aligned}\n$$\n\nTherefore, since $D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2}),$ the operator $D$ is $\\text{nonlinear}.$"
+  },
+  {
+    "entity": 17592186309907,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310752,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309234,
+    "attribute": ":answer/value",
+    "value": "a{y}_{1}+b{y}_{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309612,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}{y}_{1}+{b}^{2}{y}_{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309032,
+    "attribute": ":answer/value",
+    "value": "a{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+b{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309034,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}{\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)}^{2}+{b}^{2}{\\left(\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309721,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186308832,
+    "attribute": ":answer/value",
+    "value": "\\left(2\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310645,
+    "attribute": ":answer/value",
+    "value": "\\left(\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309051,
+    "attribute": ":answer/value",
+    "value": "linear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309387,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186308857,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186308896,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}\\cdot b{y}_{2})=abL({y}_{1})\\cdot L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309186,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310218,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=L({y}_{1})+L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186311915,
+    "attribute": ":question/problem",
+    "value": "Consider the following differential operator:\n\n$$\nD(y)=y\\frac{\\text{d}y}{\\text{d}x}-2y\n$$\n\nFill in the steps in the reasoning below.\n\nFor any linear differential operator $L,$ we have the linearity condition\n\n$$\n{{field-1}}\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})-2(a{y}_{1}+b{y}_{2}) \\\\  & ={{field-2}}-2\\cdot {{field-3}} \\\\  & +ab\\cdot {{field-4}}.\\end{aligned}\n$$\n\nWe also have\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\left[{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}-2{y}_{1}\\right]+b\\left[{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2{y}_{2}\\right] \\\\  & =a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2(a{y}_{1}+b{y}_{2}).\\end{aligned}\n$$\n\nNow, since {{field-5}} \nthe operator $D$ is {{field-6}}.",
+    "fields": [
+      {
+        "id": "17592186310857",
+        "key": "field-3",
+        "type": "select"
+      },
+      {
+        "id": "17592186310899",
+        "key": "field-6",
+        "type": "select"
+      },
+      {
+        "id": "17592186311068",
+        "key": "field-4",
+        "type": "select"
+      },
+      {
+        "id": "17592186311224",
+        "key": "field-1",
+        "type": "select"
+      },
+      {
+        "id": "17592186311381",
+        "key": "field-2",
+        "type": "select"
+      },
+      {
+        "id": "17592186311493",
+        "key": "field-5",
+        "type": "select"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311915,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator $L,$ we have the linearity condition\n\n$$\nL(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})\n$$\n\nfor functions ${y}_{1}(x),{y}_{2}(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2})-2(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right)-2(a{y}_{1}+b{y}_{2}) \\\\  & ={a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+ab{y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+ab{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2a{y}_{1}-2b{y}_{2} \\\\  & ={a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2\\cdot (a{y}_{1}+b{y}_{2}) \\\\  & +ab\\cdot \\left({y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right) \\\\ .\\end{aligned}\n$$\n\nThis is *not* the same as the right-hand side, because\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\left[{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}-2{y}_{1}\\right]+b\\left[{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2{y}_{2}\\right] \\\\  & =a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}-2(a{y}_{1}+b{y}_{2}).\\end{aligned}\n$$\n\nTherefore, since $D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2}),$ the operator $D$ is $\\text{nonlinear}.$"
+  },
+  {
+    "entity": 17592186309126,
+    "attribute": ":answer/value",
+    "value": "({a}^{2}{y}_{1}+{b}^{2}{y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309220,
+    "attribute": ":answer/value",
+    "value": "(a{y}_{1}+b{y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186308870,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186310369,
+    "attribute": ":answer/value",
+    "value": "linear",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186309674,
+    "attribute": ":answer/value",
+    "value": "\\left({y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309699,
+    "attribute": ":answer/value",
+    "value": "\\left(a{y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309071,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309508,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=L({y}_{1})+L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310221,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}\\cdot b{y}_{2})=abL({y}_{1})\\cdot L({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310484,
+    "attribute": ":answer/value",
+    "value": "L(a{y}_{1}+b{y}_{2})=aL({y}_{1})+bL({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309165,
+    "attribute": ":answer/value",
+    "value": "a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309942,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310598,
+    "attribute": ":answer/value",
+    "value": "nonlinear",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310787,
+    "attribute": ":answer/value",
+    "value": "{a}^{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186309265,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186310745,
+    "attribute": ":answer/value",
+    "value": "D(a{y}_{1}+b{y}_{2})\\ne aD({y}_{1})+bD({y}_{2})",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186400457,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186473712",
+        "key": "${D}_{1}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473713",
+        "key": "${D}_{2}(y)=2\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-x\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473714",
+        "key": "${D}_{3}(y)={x}^{2}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+2x\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186400457,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nD(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})\n$$\n\nwhere $a$ and $b$ are constants. \n\nLet's check each case in turn.\n\n- The first operator is **not** linear. To see why, we first evaluate the left-hand side of the linearity condition:\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2}) & =\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+(a{y}_{1}+b{y}_{2})\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2}) \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{a}^{2}{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+{b}^{2}{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+ab\\left({y}_{1}\\frac{\\text{d}{y}_{2}}{\\text{d}x}+{y}_{2}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right)\\end{aligned}\n$$\n\nThis is not the same as the right-hand side, because\n\n$$\n\\begin{aligned}a{D}_{1}({y}_{1})+b{D}_{1}({y}_{2}) & =a\\left[\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right]+b\\left[\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right] \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a{y}_{1}\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b{y}_{2}\\frac{\\text{d}{y}_{2}}{\\text{d}x}.\\,\\times \\end{aligned}\n$$\n\n- The second operator is indeed linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{2}(a{y}_{1}+b{y}_{2}) & =2\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})-x\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2}) \\\\  & =2a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+2b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-ax\\frac{\\text{d}{y}_{1}}{\\text{d}x}-bx\\frac{\\text{d}{y}_{2}}{\\text{d}x} \\\\  & =a\\left[2\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}-x\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right]+b\\left[2\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-x\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right] \\\\  & =a{D}_{2}({y}_{1})+b{D}_{2}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The third operator is also linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{3}(a{y}_{1}+b{y}_{2}) & ={x}^{2}\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+2x\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2}) \\\\  & =a{x}^{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{x}^{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+2ax\\frac{\\text{d}{y}_{1}}{\\text{d}x}+2bx\\frac{\\text{d}{y}_{2}}{\\text{d}x} \\\\  & =a\\left[{x}^{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+2x\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right]+b\\left[{x}^{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+2x\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right] \\\\  & =a{D}_{3}({y}_{1})+b{D}_{3}({y}_{2})\\,\u2713\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186473712,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186472634,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472635,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473713,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=2\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-x\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186472636,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472637,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473714,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)={x}^{2}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+2x\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186472638,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472639,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186400464,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186473715",
+        "key": "${D}_{1}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2xy$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473716",
+        "key": "${D}_{2}(y)={x}^{3}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186473717",
+        "key": "${D}_{3}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+xy$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186400464,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nD(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})\n$$\n\nwhere $a$ and $b$ are constants. \n\nLet's check each case in turn.\n\n- The first operator is indeed linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2}) & =x\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})-2x(a{y}_{1}+b{y}_{2}) \\\\  & =ax\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+bx\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-2ax{y}_{1}-2bx{y}_{2} \\\\  & =a\\left[x\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}-2x{y}_{1}\\right]+b\\left[x\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-2x{y}_{2}\\right] \\\\  & =a{D}_{1}({y}_{1})+b{D}_{1}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The second operator is also linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{2}(a{y}_{1}+b{y}_{2}) & ={x}^{3}\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2}) \\\\  & =a{x}^{3}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{x}^{3}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}} \\\\  & =a\\left[{x}^{3}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}\\right]+b\\left[{x}^{3}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}\\right] \\\\  & =a{D}_{2}({y}_{1})+b{D}_{2}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The third operator is **not** linear.\nTo see why, we first evaluate the left-hand side of the linearity condition:\n\n$$\n\\begin{aligned}{D}_{3}(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+x(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}\\right)+ax{y}_{1}+bx{y}_{2} \\\\  & ={a}^{2}{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{b}^{2}{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+ab\\left({y}_{1}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{y}_{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}\\right)+ax{y}_{1}+bx{y}_{2}\\end{aligned}\n$$\n\nThis is not the same as the right-hand side, because\n\n$$\n\\begin{aligned}a{D}_{3}({y}_{1})+b{D}_{3}({y}_{2}) & =a\\left[{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+x{y}_{1}\\right]+b\\left[{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+x{y}_{2}\\right] \\\\  & =a{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+ax{y}_{1}+bx{y}_{2}.\\,\\times \\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186473715,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2xy$"
+  },
+  {
+    "entity": 17592186472640,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472641,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473716,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)={x}^{3}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$"
+  },
+  {
+    "entity": 17592186472642,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472643,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473717,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+xy$"
+  },
+  {
+    "entity": 17592186472644,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186472645,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186404044,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186474097",
+        "key": "${D}_{1}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186474098",
+        "key": "${D}_{2}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-xy$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186474099",
+        "key": "${D}_{3}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186404044,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nD(a{y}_{1}+b{y}_{2})=aD({y}_{1})+bD({y}_{2})\n$$\n\nwhere $a$ and $b$ are constants. \n\nLet's check each case in turn.\n\n- The first operator is indeed linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{1}(a{y}_{1}+b{y}_{2}) & =\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+(a{y}_{1}+b{y}_{2}) \\\\  & =a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a{y}_{1}+b{y}_{2} \\\\  & =a\\left[\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{y}_{1}\\right]+b\\left[\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{y}_{2}\\right] \\\\  & =a{D}_{1}({y}_{1})+b{D}_{1}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The second operator is also linear. To see this, we check the above linearity condition:\n\n$$\n\\begin{aligned}{D}_{2}(a{y}_{1}+b{y}_{2}) & =x\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})-x(a{y}_{1}+b{y}_{2}) \\\\  & =ax\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+bx\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-ax{y}_{1}-bx{y}_{2} \\\\  & =a\\left[x\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}-x{y}_{1}\\right]+b\\left[x\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}-x{y}_{2}\\right] \\\\  & =a{D}_{2}({y}_{1})+b{D}_{2}({y}_{2})\\,\u2713\\end{aligned}\n$$\n\n- The third operator is **not** linear.\nTo see why, we first evaluate the left-hand side of the linearity condition:\n\n$$\n\\begin{aligned}{D}_{3}(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}\\right) \\\\  & ={a}^{2}{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{b}^{2}{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+ab\\left({y}_{1}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{y}_{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}\\right)\\end{aligned}\n$$\n\nThis is not the same as the right-hand side, because\n\n$$\na{D}_{3}({y}_{1})+b{D}_{3}({y}_{2})=a{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}.\\,\\times \n$$"
+  },
+  {
+    "entity": 17592186474097,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y$"
+  },
+  {
+    "entity": 17592186473404,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473405,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474098,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-xy$"
+  },
+  {
+    "entity": 17592186473406,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473407,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474099,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$"
+  },
+  {
+    "entity": 17592186473408,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186473409,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228952,
+    "attribute": ":question/problem",
+    "value": "Show that the differential operator\n\n$$\nD(y) = y\\dfrac{\\textrm d^2 y}{\\textrm d x^2} + \\dfrac{\\textrm d y}{\\textrm d x}\n$$\n\nis nonlinear.",
+    "fields": []
+  },
+  {
+    "entity": 17592186228952,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator $L,$ we have the linearity condition\n\n$$\nL(ay_1 + by_2) = aL(y_1) + bL(y_2)\n$$\n\nfor functions $y_1(x), y_2(x),$ and where $a$ and $b$ are constants. \n\nFor the given differential operator, we have\n\n$$\n\\begin{aligned}D(a{y}_{1}+b{y}_{2}) & =(a{y}_{1}+b{y}_{2})\\frac{{\\text{d}}^{2}}{\\text{d}{x}^{2}}(a{y}_{1}+b{y}_{2})+\\frac{\\text{d}}{\\text{d}x}(a{y}_{1}+b{y}_{2}) \\\\  & =(a{y}_{1}+b{y}_{2})\\left(a\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}\\right)+a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x} \\\\  & =+{a}^{2}{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+ab{y}_{1}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+ab{y}_{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{b}^{2}{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}} \\\\  & +a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x} \\\\  & ={a}^{2}{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+{b}^{2}{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x} \\\\  & +ab\\left({y}_{1}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+{y}_{2}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}\\right).\\end{aligned}\n$$\n\nThis is *not* the same as the right-hand side, because\n\n$$\n\\begin{aligned}aD({y}_{1})+bD({y}_{2}) & =a\\left[{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+\\frac{\\text{d}{y}_{1}}{\\text{d}x}\\right]+b\\left[{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+\\frac{\\text{d}{y}_{2}}{\\text{d}x}\\right] \\\\  & =a{y}_{1}\\frac{{\\text{d}}^{2}{y}_{1}}{\\text{d}{x}^{2}}+b{y}_{2}\\frac{{\\text{d}}^{2}{y}_{2}}{\\text{d}{x}^{2}}+a\\frac{\\text{d}{y}_{1}}{\\text{d}x}+b\\frac{\\text{d}{y}_{2}}{\\text{d}x}.\\end{aligned}\n$$\n\nTherefore, since $D(ay_1+by_2)  \\neq aD(y_1) + bD(y_2),$ the operator $D$ is nonlinear."
+  },
+  {
+    "entity": 17592186229707,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186462908",
+        "key": "${D}_{1}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186462909",
+        "key": "${D}_{2}(y)={y}^{2}\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186462910",
+        "key": "${D}_{3}(y)=2\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-x\\frac{\\text{d}y}{\\text{d}x}+{y}^{2}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668287",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186229707,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{1}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}=x,{f}_{1}=-2,$ and ${f}_{0}=0.$\n\n- Operator ${D}_{2}$ is *not* linear. The coefficient of the first term is ${y}^{2},$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{3}$ is *not* linear. The last term contains the nonlinear term ${y}^{2},$ which fails linearity.\n\nTherefore, the correct answer is $$\n\\displaystyle {D}_{1}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2\\frac{\\text{d}y}{\\text{d}x}\n$$ only."
+  },
+  {
+    "entity": 17592186462908,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186462309,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186462310,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186462909,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)={y}^{2}\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186462311,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186462312,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186462910,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=2\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-x\\frac{\\text{d}y}{\\text{d}x}+{y}^{2}$"
+  },
+  {
+    "entity": 17592186462313,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186462314,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668287,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668020,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668021,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186229708,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\n1. $D_{1}(y) = \\frac{dy}{dx} + 2y$\n2. $$\n\\displaystyle D_{2}(y) = \\sin (x)\\frac{d^{2}y}{dx^{2}} + 3x^{2}\\frac{dy}{dx} + 2y\n$$\n3. $$\n\\displaystyle D_{3}(y) = \\frac{d^{3}y}{dx^{3}} + x\\cos (xy)\\frac{dy}{dx}\n$$",
+    "fields": [
+      {
+        "id": "17592186228423",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186228424,
+    "attribute": ":answer/value",
+    "value": "None",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228425,
+    "attribute": ":answer/value",
+    "value": "II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228426,
+    "attribute": ":answer/value",
+    "value": "I only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228427,
+    "attribute": ":answer/value",
+    "value": "I, II, and III",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228428,
+    "attribute": ":answer/value",
+    "value": "I and II only",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311881,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467034",
+        "key": "${D}_{1}(y)=(x-1)\\frac{\\text{d}y}{\\text{d}x}+2xy$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467035",
+        "key": "${D}_{2}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467036",
+        "key": "${D}_{3}(y)=4\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-{x}^{2}\\frac{\\text{d}y}{\\text{d}x}+xy$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668865",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311881,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is linear. It is a first-order linear differential operator of the form\n\n$$\n{D}_{1}(y)={f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{1}(x)=x-1$ and ${f}_{0}(x)=2x.$\n\n- Operator ${D}_{2}$ is *not* linear. The coefficient of the first term is $y,$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{3}$ is linear. It is a third-order linear differential operator of the form\n\n$$\n{D}_{3}(y)={f}_{3}(x)\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{3}(x)=4,{f}_{2}(x)=0,{f}_{1}(x)=-{x}^{2},$ and ${f}_{0}(x)=x.$\n\nTherefore, the correct answer is ${D}_{1}(y)=(x-1)\\frac{\\text{d}y}{\\text{d}x}+2xy$; $$\n\\displaystyle {D}_{3}(y)=4\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-{x}^{2}\\frac{\\text{d}y}{\\text{d}x}+xy\n$$ only."
+  },
+  {
+    "entity": 17592186467034,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=(x-1)\\frac{\\text{d}y}{\\text{d}x}+2xy$"
+  },
+  {
+    "entity": 17592186466381,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466382,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467035,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=y\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186466383,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466384,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467036,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=4\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-{x}^{2}\\frac{\\text{d}y}{\\text{d}x}+xy$"
+  },
+  {
+    "entity": 17592186466385,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466386,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668865,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668575,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668576,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311882,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467037",
+        "key": "${D}_{1}(y)$ $=\\frac{1}{1+{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+\\operatorname{cos}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\sqrt{x}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467038",
+        "key": "${D}_{2}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+\\operatorname{sin}\u2061(xy)\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467039",
+        "key": "${D}_{3}(y)={e}^{x}\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{ln}\u2061(x)\\,y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668866",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311882,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{1}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=\\frac{1}{1+{x}^{2}},{f}_{1}(x)=\\operatorname{cos}\u2061(x),$ and ${f}_{0}(x)=\\sqrt{x}.$\n\n- Operator ${D}_{2}$ is *not* linear. The coefficient of the last term is $\\operatorname{sin}\u2061(xy),$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{3}$ is linear. It is a first-order linear differential operator of the form\n\n$$\n{D}_{3}(y)={f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{1}(x)={e}^{x},$ and ${f}_{0}(x)=-\\operatorname{ln}\u2061(x).$\n\nTherefore, the correct answer is ${D}_{1}(y)$ $$\n\\displaystyle =\\frac{1}{1+{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}\n$$ $+\\operatorname{cos}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\sqrt{x}y$; $$\n\\displaystyle {D}_{3}(y)={e}^{x}\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{ln}\u2061(x)\\,y\n$$ only."
+  },
+  {
+    "entity": 17592186467037,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)$ $=\\frac{1}{1+{x}^{2}}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+\\operatorname{cos}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\sqrt{x}y$"
+  },
+  {
+    "entity": 17592186466387,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466388,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467038,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+\\operatorname{sin}\u2061(xy)\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186466389,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466390,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467039,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)={e}^{x}\\frac{\\text{d}y}{\\text{d}x}-\\operatorname{ln}\u2061(x)\\,y$"
+  },
+  {
+    "entity": 17592186466391,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466392,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668866,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668577,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668578,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311883,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467040",
+        "key": "${D}_{1}(y)=\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{tan}\u2061(y)\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467041",
+        "key": "${D}_{2}(y)$ $=\\operatorname{tan}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{e}^{x}\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{1}{x}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467042",
+        "key": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+x\\operatorname{cos}\u2061(y)\\,y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668867",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311883,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is *not* linear. The coefficient of the second term is $\\operatorname{tan}\u2061(y),$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{2}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{2}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=\\operatorname{tan}\u2061(x),{f}_{1}(x)={e}^{x},$ and ${f}_{0}(x)=\\frac{1}{x}.$\n\n- Operator ${D}_{3}$ is *not* linear. The coefficient of the second term is $x\\operatorname{cos}\u2061(y),$ which depends on $y$ and therefore fails linearity.\n\nTherefore, the correct answer is ${D}_{2}(y)$ $=\\operatorname{tan}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{e}^{x}\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{1}{x}y$ only."
+  },
+  {
+    "entity": 17592186467040,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{tan}\u2061(y)\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186466393,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466394,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467041,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)$ $=\\operatorname{tan}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{e}^{x}\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{1}{x}y$"
+  },
+  {
+    "entity": 17592186466395,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466396,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467042,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+x\\operatorname{cos}\u2061(y)\\,y$"
+  },
+  {
+    "entity": 17592186466397,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466398,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668867,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668579,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668580,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311884,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467043",
+        "key": "${D}_{1}(y)=xy\\frac{\\text{d}y}{\\text{d}x}+\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467044",
+        "key": "${D}_{2}(y)$ $=\\operatorname{cos}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{x}^{2}\\frac{\\text{d}y}{\\text{d}x}$ $+{e}^{x}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467045",
+        "key": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+\\operatorname{tan}\u2061(y)\\,y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668868",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311884,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is *not* linear. The coefficient of the first term is $xy,$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{2}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{2}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=\\operatorname{cos}\u2061(x),{f}_{1}(x)={x}^{2},$ and ${f}_{0}(x)={e}^{x}.$\n\n- Operator ${D}_{3}$ is *not* linear. The coefficient of the last term is $\\operatorname{tan}\u2061(y),$ which depends on $y$ and therefore fails linearity.\n\nTherefore, the correct answer is ${D}_{2}(y)$ $=\\operatorname{cos}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{x}^{2}\\frac{\\text{d}y}{\\text{d}x}$ $+{e}^{x}y$ only."
+  },
+  {
+    "entity": 17592186467043,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=xy\\frac{\\text{d}y}{\\text{d}x}+\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186466399,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466400,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467044,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)$ $=\\operatorname{cos}\u2061(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+{x}^{2}\\frac{\\text{d}y}{\\text{d}x}$ $+{e}^{x}y$"
+  },
+  {
+    "entity": 17592186466401,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466402,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467045,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+\\operatorname{tan}\u2061(y)\\,y$"
+  },
+  {
+    "entity": 17592186466403,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466404,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668868,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668581,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668582,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311885,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467046",
+        "key": "${D}_{1}(y)=\\frac{1}{x+1}\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u2061(x)\\,y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467047",
+        "key": "${D}_{2}(y)$ $=\\sqrt{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $-\\operatorname{ln}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $-2y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467048",
+        "key": "${D}_{3}(y)=2\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{e}^{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-\\frac{1}{1+{x}^{2}}\\,y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668869",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311885,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is linear. It is a first-order linear differential operator of the form\n\n$$\n{D}_{1}(y)={f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{1}(x)=\\frac{1}{x+1}$ and ${f}_{0}(x)=\\operatorname{sin}\u2061(x).$\n\n- Operator ${D}_{2}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{2}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=\\sqrt{x},{f}_{1}(x)=-\\operatorname{ln}\u2061(x),$ and ${f}_{0}(x)=-2.$\n\n- Operator ${D}_{3}$ is linear. It is a third-order linear differential operator of the form\n\n$$\n{D}_{3}(y)={f}_{3}(x)\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{3}(x)=2,{f}_{2}(x)={e}^{x},{f}_{1}(x)=0,$ and ${f}_{0}(x)=-\\frac{1}{1+{x}^{2}}.$\n\nTherefore, the correct answer is $$\n\\displaystyle {D}_{1}(y)=\\frac{1}{x+1}\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u2061(x)\\,y;\n$$ ${D}_{2}(y)$ $=\\sqrt{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $-\\operatorname{ln}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $-2y$; $$\n\\displaystyle {D}_{3}(y)=2\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{e}^{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-\\frac{1}{1+{x}^{2}}\\,y.\n$$"
+  },
+  {
+    "entity": 17592186467046,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=\\frac{1}{x+1}\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u2061(x)\\,y$"
+  },
+  {
+    "entity": 17592186466405,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466406,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467047,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)$ $=\\sqrt{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $-\\operatorname{ln}\u2061(x)\\frac{\\text{d}y}{\\text{d}x}$ $-2y$"
+  },
+  {
+    "entity": 17592186466407,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466408,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467048,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=2\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{e}^{x}\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-\\frac{1}{1+{x}^{2}}\\,y$"
+  },
+  {
+    "entity": 17592186466409,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466410,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668869,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668583,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668584,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186311917,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186467052",
+        "key": "${D}_{1}(y)=\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u2061(y)\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467053",
+        "key": "${D}_{2}(y)=x\\operatorname{tan}\u2061(y)\\,\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186467054",
+        "key": "${D}_{3}(y)$ $=(1+{x}^{2})\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+\\operatorname{ln}\u2061(1+x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{3}{{x}^{2}}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186668870",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186311917,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is *not* linear. The coefficient of the second term is $\\operatorname{sin}\u2061(y),$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{2}$ is *not* linear. The coefficient of the first term is $x\\operatorname{tan}\u2061(y),$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{3}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{3}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=1+{x}^{2},{f}_{1}(x)=\\operatorname{ln}\u2061(1+x),$ and ${f}_{0}(x)=\\frac{3}{{x}^{2}}.$\n\nTherefore, the correct answer is ${D}_{3}(y)$ $=(1+{x}^{2})\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+\\operatorname{ln}\u2061(1+x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{3}{{x}^{2}}y$ only."
+  },
+  {
+    "entity": 17592186467052,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u2061(y)\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186466417,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466418,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467053,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=x\\operatorname{tan}\u2061(y)\\,\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+y$"
+  },
+  {
+    "entity": 17592186466419,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466420,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186467054,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)$ $=(1+{x}^{2})\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}$ $+\\operatorname{ln}\u2061(1+x)\\frac{\\text{d}y}{\\text{d}x}$ $+\\frac{3}{{x}^{2}}y$"
+  },
+  {
+    "entity": 17592186466421,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186466422,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668870,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186668585,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186668586,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186433343,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186475313",
+        "key": "${D}_{1}(y)={y}^{2}\\frac{\\text{d}y}{\\text{d}x}+xy$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186475314",
+        "key": "${D}_{2}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2x\\frac{\\text{d}y}{\\text{d}x}+3y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186475315",
+        "key": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+y\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186669382",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186433343,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is *not* linear. The coefficient of the first term is ${y}^{2},$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{2}$ is linear. It is a second-order linear differential operator of the form\n\n$$\n{D}_{2}(y)={f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{2}(x)=x,{f}_{1}(x)=-2x,$ and ${f}_{0}(x)=3.$\n\n- Operator ${D}_{3}$ is *not* linear. The coefficient of the second term is $y,$ which depends on $y$ and therefore fails linearity.\n\nTherefore, the correct answer is $$\n\\displaystyle {D}_{2}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2x\\frac{\\text{d}y}{\\text{d}x}+3y\n$$ only."
+  },
+  {
+    "entity": 17592186475313,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)={y}^{2}\\frac{\\text{d}y}{\\text{d}x}+xy$"
+  },
+  {
+    "entity": 17592186474774,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474775,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186475314,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=x\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}-2x\\frac{\\text{d}y}{\\text{d}x}+3y$"
+  },
+  {
+    "entity": 17592186474776,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474777,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186475315,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)=\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+y\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186474778,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474779,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186669382,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186669165,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186669166,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186433344,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\nSelect all that apply.",
+    "fields": [
+      {
+        "id": "17592186475316",
+        "key": "${D}_{1}(y)=3\\frac{\\text{d}y}{\\text{d}x}+{x}^{2}y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186475317",
+        "key": "${D}_{2}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y\\frac{\\text{d}y}{\\text{d}x}$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186475318",
+        "key": "${D}_{3}(y)={x}^{2}\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-\\frac{\\text{d}y}{\\text{d}x}+2y$",
+        "type": "checkbox"
+      },
+      {
+        "id": "17592186669383",
+        "key": "None of the above",
+        "type": "checkbox"
+      }
+    ]
+  },
+  {
+    "entity": 17592186433344,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y)={f}_{n}(x)\\frac{{\\text{d}}^{n}y}{\\text{d}{x}^{n}}+{f}_{n-1}(x)\\frac{{\\text{d}}^{n-1}y}{\\text{d}{x}^{n-1}}+\u22ef+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwhere each ${f}_{i}$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator ${D}_{1}$ is linear. It is a first-order linear differential operator of the form\n\n$$\n{D}_{1}(y)={f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{1}(x)=3$ and ${f}_{0}(x)={x}^{2}.$\n\n- Operator ${D}_{2}$ is *not* linear. The coefficient of the second term is $y,$ which depends on $y$ and therefore fails linearity.\n\n- Operator ${D}_{3}$ is linear. It is a third-order linear differential operator of the form\n\n$$\n{D}_{3}(y)={f}_{3}(x)\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}+{f}_{2}(x)\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+{f}_{1}(x)\\frac{\\text{d}y}{\\text{d}x}+{f}_{0}(x)y\n$$\n\nwith ${f}_{3}(x)={x}^{2},{f}_{2}(x)=0,{f}_{1}(x)=-1,$ and ${f}_{0}(x)=2.$\n\nTherefore, the correct answer is ${D}_{1}(y)=3\\frac{\\text{d}y}{\\text{d}x}+{x}^{2}y$; $$\n\\displaystyle {D}_{3}(y)={x}^{2}\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-\\frac{\\text{d}y}{\\text{d}x}+2y\n$$ only."
+  },
+  {
+    "entity": 17592186475316,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{1}(y)=3\\frac{\\text{d}y}{\\text{d}x}+{x}^{2}y$"
+  },
+  {
+    "entity": 17592186474780,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474781,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186475317,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{2}(y)=\\frac{{\\text{d}}^{2}y}{\\text{d}{x}^{2}}+y\\frac{\\text{d}y}{\\text{d}x}$"
+  },
+  {
+    "entity": 17592186474782,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474783,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186475318,
+    "attribute": ":answer-field/key",
+    "value": "${D}_{3}(y)={x}^{2}\\frac{{\\text{d}}^{3}y}{\\text{d}{x}^{3}}-\\frac{\\text{d}y}{\\text{d}x}+2y$"
+  },
+  {
+    "entity": 17592186474784,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186474785,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186669383,
+    "attribute": ":answer-field/key",
+    "value": "None of the above"
+  },
+  {
+    "entity": 17592186669167,
+    "attribute": ":answer/value",
+    "value": "false",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186669168,
+    "attribute": ":answer/value",
+    "value": "true",
+    "bare_math": false
+  },
+  {
+    "entity": 17592186228933,
+    "attribute": ":question/problem",
+    "value": "Which of the following are linear differential operators?\n\n- $D_1(y)=\\dfrac{\\textrm dy}{\\textrm d x}+x\\cos(y)\\,y$\n\n- $$\n\\displaystyle D_2(y)=\\dfrac{1}{1+x^2}\\dfrac{\\textrm d^{2}y}{\\textrm d x^{2}}-\\sin(x)\\dfrac{\\textrm dy}{\\textrm d x}+3y\n$$\n\n- $$\n\\displaystyle D_3(y)=\\dfrac{\\textrm d^{3}y}{\\textrm d x^{3}}+e^{x}\\dfrac{\\textrm d^{2}y}{\\textrm d x^{2}}-\\ln(x)\\,y\n$$",
+    "fields": []
+  },
+  {
+    "entity": 17592186228933,
+    "attribute": ":question/worked-solution",
+    "value": "An $n$th-order differential operator $L$ is linear if it is of the following form:\n\n$$\nL(y) = f_{n}(x)\\dfrac{\\textrm d^{n}y}{\\textrm d x^{n}} + f_{n-1}(x)\\dfrac{\\textrm d^{n-1}y}{\\textrm d x^{n-1}} + \\cdots + f_{1}(x)\\dfrac{\\textrm dy}{\\textrm d x} + f_0(x)y\n$$\n\nwhere each $f_i$ is a function of $x$ only. \n\nWith that in mind, let's check each operator.\n\n- Operator $D_1$ is *not* linear. The coefficient of the second term is $x\\cos(y),$ which depends on $y$ and therefore fails linearity.\n\n- Operator $D_2$ is linear. It is a second-order linear differential operator of the form\n\n$$\nD_2(y) = f_{2}(x)\\dfrac{\\textrm d^{2}y}{\\textrm d x^{2}} + f_{1}(x)\\dfrac{\\textrm dy}{\\textrm d x} + f_0(x)y\n$$\n\nwith $f_2(x) = \\dfrac{1}{1+x^2}, f_1(x) = -\\sin(x),$ and $f_0(x) = 3.$\n\n- Operator $D_3$ is linear. It is a third-order linear differential operator of the form\n\n$$\nD_3(y) = f_{3}(x)\\dfrac{\\textrm d^{3}y}{\\textrm d x^{3}} + f_{2}(x)\\dfrac{\\textrm d^{2}y}{\\textrm d x^{2}} + f_{1}(x)\\dfrac{\\textrm dy}{\\textrm d x} + f_0(x)y\n$$\n\nwith $f_3(x) = 1, f_2(x) = e^{x}, f_1(x) = 0,$ and $f_0(x) = -\\ln(x).$\n\nTherefore, the correct answer is \"II and III only.\""
+  },
+  {
+    "entity": 17592186229748,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})=4x$ and $L({y}_{2})={x}^{2}+1$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L({y}_{1}-2{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186335450",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186229748,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L({y}_{1}-2{y}_{2}) & =L({y}_{1})-2L({y}_{2}) \\\\  & =4x-2({x}^{2}+1) \\\\  & =-2{x}^{2}+4x-2 \\\\  & =-2({x}^{2}-2x+1) \\\\  & =-2(x-1)^{2}.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186332991,
+    "attribute": ":answer/value",
+    "value": "2(x+1)^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333049,
+    "attribute": ":answer/value",
+    "value": "-(x-2)^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333688,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}-4",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333796,
+    "attribute": ":answer/value",
+    "value": "-2{x}^{2}+4x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334308,
+    "attribute": ":answer/value",
+    "value": "-2(x-1)^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186229750,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L(y_{1}) = x + 4 - \\frac{2}{x}$ and $L(y_{2}) = 2 - \\frac{3}{x}$ for some functions $y_{1}(x)$ and $y_{2}(x)$. What is $L(y_{1} - 2y_{2})$?",
+    "fields": [
+      {
+        "id": "17592186228710",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186228711,
+    "attribute": ":answer/value",
+    "value": "-\\frac{8}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228712,
+    "attribute": ":answer/value",
+    "value": "\\frac{x^{2} - 2}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228713,
+    "attribute": ":answer/value",
+    "value": "\\frac{4}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228714,
+    "attribute": ":answer/value",
+    "value": "\\frac{x^{2} + 4}{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228715,
+    "attribute": ":answer/value",
+    "value": "((x + 2)^{2})/(x)",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265813,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})={x}^{2}-3x$ and $L({y}_{2})=x(x+1)$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L({y}_{1}+3{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186265318",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265813,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L({y}_{1}+3{y}_{2}) & =L({y}_{1})+3L({y}_{2}) \\\\  & ={x}^{2}-3x+3\\cdot x(x+1) \\\\  & ={x}^{2}-3x+3{x}^{2}+3x \\\\  & =({x}^{2}+3{x}^{2})+(3x-3x) \\\\  & =4{x}^{2}+0 \\\\  & =4{x}^{2}.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186263383,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263478,
+    "attribute": ":answer/value",
+    "value": "4{x}^{2}+6x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264459,
+    "attribute": ":answer/value",
+    "value": "4{x}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264842,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+3",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265814,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})={e}^{x}+1$ and $L({y}_{2})=2{e}^{x}-3$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(2{y}_{1}-{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186265426",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265814,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(2{y}_{1}-{y}_{2}) & =2L({y}_{1})-L({y}_{2}) \\\\  & =2({e}^{x}+1)-(2{e}^{x}-3) \\\\  & =2{e}^{x}+2-2{e}^{x}+3 \\\\  & =(2{e}^{x}-2{e}^{x})+(2+3) \\\\  & =0+5 \\\\  & =5.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186263629,
+    "attribute": ":answer/value",
+    "value": "4{e}^{x}+5",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263925,
+    "attribute": ":answer/value",
+    "value": "5",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264991,
+    "attribute": ":answer/value",
+    "value": "4{e}^{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265059,
+    "attribute": ":answer/value",
+    "value": "{e}^{x}+5",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265082,
+    "attribute": ":answer/value",
+    "value": "3{e}^{x}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265815,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})={\\cot }^{2}\u2061x$ and $L({y}_{2})=3{\\csc }^{2}\u2061x-4$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(4{y}_{1}-{y}_{2})?$\n\n*Hint: Use ${\\csc }^{2}\u2061\\theta =1+{\\cot }^{2}\u2061\\theta .$*",
+    "fields": [
+      {
+        "id": "17592186265343",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265815,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(4{y}_{1}-{y}_{2}) & =4L({y}_{1})-L({y}_{2}) \\\\  & =4\\cdot {\\cot }^{2}\u2061x-(3{\\csc }^{2}\u2061x-4) \\\\  & =4{\\cot }^{2}\u2061x+4-3{\\csc }^{2}\u2061x \\\\  & =4(1+{\\cot }^{2}\u2061x)-3{\\csc }^{2}\u2061x \\\\  & =4{\\csc }^{2}\u2061x-3{\\csc }^{2}\u2061x \\\\  & ={\\csc }^{2}\u2061x.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186263187,
+    "attribute": ":answer/value",
+    "value": "2{\\csc }^{2}\u2061x+4",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263445,
+    "attribute": ":answer/value",
+    "value": "3{\\csc }^{2}\u2061x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263640,
+    "attribute": ":answer/value",
+    "value": "{\\csc }^{2}\u2061x+{\\cot }^{2}\u2061x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263728,
+    "attribute": ":answer/value",
+    "value": "{\\csc }^{2}\u2061x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264805,
+    "attribute": ":answer/value",
+    "value": "0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265816,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})=2-{\\sin }^{2}\u2061x$ and $L({y}_{2})=3{\\cos }^{2}\u2061x$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(3{y}_{1}-{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186265649",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265816,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(3{y}_{1}-{y}_{2}) & =3L({y}_{1})-L({y}_{2}) \\\\  & =3\\cdot (2-{\\sin }^{2}\u2061x)-3{\\cos }^{2}\u2061x \\\\  & =6-3{\\sin }^{2}\u2061x-3{\\cos }^{2}\u2061x \\\\  & =6-3({\\sin }^{2}\u2061x+{\\cos }^{2}\u2061x) \\\\  & =6-3 \\\\  & =3.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186263737,
+    "attribute": ":answer/value",
+    "value": "6",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263823,
+    "attribute": ":answer/value",
+    "value": "3",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186264531,
+    "attribute": ":answer/value",
+    "value": "12",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265002,
+    "attribute": ":answer/value",
+    "value": "0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265088,
+    "attribute": ":answer/value",
+    "value": "9",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265817,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})=3x-5$ and $L({y}_{2})=(x-3)^{2}$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(2{y}_{1}+{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186265696",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186265817,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(2{y}_{1}+{y}_{2}) & =2L({y}_{1})+L({y}_{2}) \\\\  & =2\\cdot (3x-5)+(x-3)^{2} \\\\  & =6x-10+{x}^{2}-6x+9 \\\\  & ={x}^{2}+(6x-6x)+(-10+9) \\\\  & ={x}^{2}-1.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186263090,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+6x-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263426,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263496,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+12x-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186263956,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186265102,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}-9",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186335760,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})=2{\\cos }^{2}\u2061x$ and $L({y}_{2})={\\sin }^{2}\u2061x+4$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L({y}_{1}+2{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186335665",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186335760,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L({y}_{1}+2{y}_{2}) & =L({y}_{1})+2L({y}_{2}) \\\\  & =2{\\cos }^{2}\u2061x+2\\cdot ({\\sin }^{2}\u2061x+4) \\\\  & =2{\\cos }^{2}\u2061x+2{\\sin }^{2}\u2061x+8 \\\\  & =2({\\cos }^{2}\u2061x+{\\sin }^{2}\u2061x)+8 \\\\  & =2+8 \\\\  & =10.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186333177,
+    "attribute": ":answer/value",
+    "value": "6",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334228,
+    "attribute": ":answer/value",
+    "value": "4",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334404,
+    "attribute": ":answer/value",
+    "value": "2",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334461,
+    "attribute": ":answer/value",
+    "value": "10",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186334872,
+    "attribute": ":answer/value",
+    "value": "8",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186335779,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})={x}^{2}+4$ and $L({y}_{2})=3(x-2)^{2}$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(3{y}_{1}-{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186335271",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186335779,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(3{y}_{1}-{y}_{2}) & =3L({y}_{1})-L({y}_{2}) \\\\  & =3\\cdot ({x}^{2}+4)-3(x-2)^{2} \\\\  & =3{x}^{2}+12-3({x}^{2}-4x+4) \\\\  & =3{x}^{2}+12-3{x}^{2}+12x-12 \\\\  & =12x.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186333003,
+    "attribute": ":answer/value",
+    "value": "12x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333558,
+    "attribute": ":answer/value",
+    "value": "-12x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333606,
+    "attribute": ":answer/value",
+    "value": "0",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333635,
+    "attribute": ":answer/value",
+    "value": "-24",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186333803,
+    "attribute": ":answer/value",
+    "value": "6{x}^{2}",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186348246,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})={x}^{2}+3x+5$ and $L({y}_{2})=x+2$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L({y}_{1}-3{y}_{2})?$",
+    "fields": [
+      {
+        "id": "17592186347896",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186348246,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L({y}_{1}-3{y}_{2}) & =L({y}_{1})-3L({y}_{2}) \\\\  & ={x}^{2}+3x+5-3(x+2) \\\\  & ={x}^{2}+3x+5-3x-6 \\\\  & ={x}^{2}-1.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186345493,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+2x-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186345746,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+x+3",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186346639,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}-1",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186347276,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}+3",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186347316,
+    "attribute": ":answer/value",
+    "value": "{x}^{2}-x-4",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186433342,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L({y}_{1})=\\operatorname{cos}\u20612x$ and $L({y}_{2})=6{\\sin }^{2}\u2061x$ for some functions ${y}_{1}(x)$ and ${y}_{2}(x).$ What is $L(3{y}_{1}+{y}_{2})?$\n\n*Hint: Use $\\operatorname{cos}\u20612x={\\cos }^{2}\u2061x-{\\sin }^{2}\u2061x.$*",
+    "fields": [
+      {
+        "id": "17592186433340",
+        "key": "selection",
+        "type": "radio"
+      }
+    ]
+  },
+  {
+    "entity": 17592186433342,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator,\n\n$$\nL(a{y}_{1}(x)+b{y}_{2}(x))=aL({y}_{1}(x))+bL({y}_{2}(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(3{y}_{1}+{y}_{2}) & =3L({y}_{1})+L({y}_{2}) \\\\  & =3\\cdot \\operatorname{cos}\u20612x+6{\\sin }^{2}\u2061x \\\\  & =3({\\cos }^{2}\u2061x-{\\sin }^{2}\u2061x)+6{\\sin }^{2}\u2061x \\\\  & =3{\\cos }^{2}\u2061x-3{\\sin }^{2}\u2061x+6{\\sin }^{2}\u2061x \\\\  & =3({\\cos }^{2}\u2061x+{\\sin }^{2}\u2061x) \\\\  & =3.\\end{aligned}\n$$"
+  },
+  {
+    "entity": 17592186433325,
+    "attribute": ":answer/value",
+    "value": "9",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186433329,
+    "attribute": ":answer/value",
+    "value": "6",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186433330,
+    "attribute": ":answer/value",
+    "value": "3\\operatorname{cos}\u20612x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186433333,
+    "attribute": ":answer/value",
+    "value": "3{\\cos }^{2}\u2061x",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186433336,
+    "attribute": ":answer/value",
+    "value": "3",
+    "bare_math": true
+  },
+  {
+    "entity": 17592186228951,
+    "attribute": ":question/problem",
+    "value": "Suppose that $L$ is a linear differential operator such that $L(y_1) = \\tan^2{x}$ and $L(y_2) =2 \\sec^2{x}$ for some functions $y_1(x)$ and $y_2(x).$ What is $L(2y_1 -y_2)?$\n\n*Hint: Use $\\sec^2\\theta = 1+\\tan^2\\theta.$*",
+    "fields": []
+  },
+  {
+    "entity": 17592186228951,
+    "attribute": ":question/worked-solution",
+    "value": "For any linear differential operator $L,$ we have\n\n$$\nL(ay_1(x) + by_2(x)) = aL(y_1(x)) + bL(y_2(x))\n$$\n\nwhere $a$ and $b$ are constants. \n\nIn our case, we have\n\n$$\n\\begin{aligned}L(2{y}_{1}-{y}_{2}) & =2L({y}_{1})-L({y}_{2}) \\\\  & =2{\\tan }^{2}\u2061x-2{\\sec }^{2}\u2061x.\\end{aligned}\n$$\n\nUsing the trigonometric identity $1+\\tan^2 x = \\sec^2 x,$ we can simplify this even further, as follows:\n\n$$\n\\begin{aligned}L(2{y}_{1}-{y}_{2}) & =2{\\tan }^{2}\u2061x-2(1+{\\tan }^{2}\u2061x) \\\\  & =-2.\\end{aligned}\n$$\n\nTherefore, \n\n$$\nL(2y_1 -y_2)=-2.\n$$"
+  }
+]

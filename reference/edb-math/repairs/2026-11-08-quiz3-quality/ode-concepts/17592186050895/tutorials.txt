@@ -1,0 +1,102 @@
+=== 17592186218358 Introduction ===
+The Wronskian is a quick way to check whether two solutions of a homogeneous ODE are linearly independent.
+
+In this lesson, we learn an identity, which tells us how the Wronskian changes with $x$ for an equation of the form 
+
+$$
+y''+P(x)y'+Q(x)y=0.
+$$
+
+Suppose $y_1$ and $y_2$ are solutions of the second-order linear homogeneous ODE above on some interval $I.$ Let $W(x)$ be their Wronskian:
+$$
+W(x)=
+{\left| \begin{array}{cc}{y}_{1} ( x ) & {y}_{2} ( x ) \\ {y}_{1}^{\prime } ( x ) & {y}_{2}^{\prime } ( x )\end{array} \right|}
+=
+y_1(x)y_2'(x)-y_2(x)y_1'(x).
+$$
+
+Then, **Abel's identity** states that the Wronskian satisfies the first-order linear differential equation
+
+$$
+W'(x)=-P(x)W(x).
+$$
+
+Solving this equation via separation of variables gives the general form for $W(x){:}$
+
+$$
+W(x) = C e^{-\int P(x) \, \text{d}x}
+$$
+
+This allows us to determine the behavior of the Wronskian without knowing the solutions $y_1$ and $y_2.$
+
+For example, consider the second-order homogeneous differential equation 
+
+$$
+y''+3xy'+e^x y=0
+$$
+
+with solutions $y_1$ and $y_2,$ and the corresponding Wronskian $W(x).$ Let's determine the differential equation that $W(x)$ must satisfy.
+
+In our equation, the coefficient of $y'$ is 
+
+$$
+P(x)=3x.
+$$
+
+Substituting this into Abel's identity gives 
+
+$$
+\begin{aligned}{W}^{′}(x) & =-3xW(x).\end{aligned}
+$$
+
+**Watch out!** If the equation is not already in standard form, we should rewrite it before applying Abel’s identity.
+
+=== 17592186218359 The Proof of Abel's Identity ===
+*Abel's identity* says that if $y_1$ and $y_2$ are solutions of
+
+$$
+y''+p(x)y'+q(x)y=0,
+$$
+
+then their *Wronskian* $W(x)$ satisfies
+
+$$
+W'(x)=-p(x)W(x).
+$$
+
+To prove it, we start with the definition
+
+$$
+W(x)=y_1y_2'-y_2y_1'
+$$
+
+and differentiate both sides:
+
+$$
+\begin{aligned}{W}^{′}(x) & =\frac{\text{d}}{\text{d}x}({y}_{1}{y}_{2}^{′}-{y}_{2}{y}_{1}^{′}) \\  & =\cancel{{y}_{1}^{′}{y}_{2}^{′}}+{y}_{1}{y}_{2}^{″}-\cancel{{y}_{2}^{′}{y}_{1}^{′}}-{y}_{2}{y}_{1}^{″} \\  & ={y}_{1}{y}_{2}^{″}-{y}_{2}{y}_{1}^{″}\end{aligned}
+$$
+
+Since $y_1$ and $y_2$ are solutions of $y''+p(x)y'+q(x)y=0$, we have
+
+$$
+y_1''=-p(x)y_1'-q(x)y_1
+\qquad\text{and}\qquad
+y_2''=-p(x)y_2'-q(x)y_2.
+$$
+
+Now, we substitute these into the expression for $W'(x)$:
+
+$$
+\begin{aligned}{W}^{′}(x) & ={y}_{1}{y}_{2}^{″}-{y}_{2}{y}_{1}^{″} \\  & ={y}_{1}(-p(x){y}_{2}^{′}-q(x){y}_{2})-{y}_{2}(-p(x){y}_{1}^{′}-q(x){y}_{1}) \\  & =-p(x){y}_{1}{y}_{2}^{′}-\cancel{q(x){y}_{1}{y}_{2}}+p(x){y}_{2}{y}_{1}^{′}+\cancel{q(x){y}_{1}{y}_{2}} \\  & =-p(x)({y}_{1}{y}_{2}^{′}-{y}_{2}{y}_{1}^{′}) \\  & =-p(x)W(x)\end{aligned}
+$$
+
+Therefore, $W'(x)=-p(x)W(x)$, as required.
+
+=== 17592186218360 Applications of Abel's Identity ===
+Because the exponential factor in Abel's identity is *never zero*, we can deduce the following facts:
+
+- If $W(x_0)=0$ at some point $x_0 \in I,$ then $W(x) = 0$ for all $x \in I.$
+
+- If $W(x_0)\neq 0,$ then $W(x) \neq 0$ for all $x \in I.$
+
+Let's see how this works on concrete examples.
