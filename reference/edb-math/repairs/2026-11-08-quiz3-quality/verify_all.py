@@ -29,13 +29,43 @@ def main():
     db = connection()
     basis = db.basis()
     query = (ROOT / 'reference/edb-math/audits/2026-11-08-topic-17592186048459/topic-before-query.edn').read_text()
-    query = query.replace(':in $ ?t :where', ':in $ [?t ...] :where')
-    rows = db.query(query, [IDS], out, 'all-topics', basis)
-    topics = {row[0][':db/id']: row[0] for row in rows}
+    # Keep each observation below the database's value-byte budget.
+    topics = {}
+    for tid in IDS:
+        rows = db.query(query, [tid], out, f'topic-{tid}', basis)
+        topics[tid] = rows[0][0]
+        print(f'Read {topics[tid][":topic/title"]} at basis {basis}', flush=True)
     assert set(topics) == set(IDS), sorted(set(IDS) - set(topics))
     summaries, defects, all_questions = [], [], {}
+    lesson_query = (ROOT / 'reference/edb-math/audits/2026-11-08-topic-17592186048459/lessons-before-query.edn').read_text()
+    tutorial_ids, step_ids = set(), set()
     for tid in IDS:
         topic = topics[tid]
+        lessons = db.query(lesson_query, [tid], out, f'lessons-{tid}', basis)
+        if not lessons:
+            defects.append({'topic': tid, 'kind': 'missing_lesson_activity'})
+        topic_kps = {kp[':db/id'] for kp in topic[':topic/knowledge-points']}
+        lesson_kps = set()
+        for row in lessons:
+            activity = row[0]
+            steps = {s[':db/id']: s for s in activity.get(':activity/steps', [])}
+            step_ids.update(steps)
+            cursor = activity.get(':activity/first-step', {}).get(':db/id')
+            visited = set()
+            while cursor is not None and cursor in steps and cursor not in visited:
+                visited.add(cursor)
+                content = steps[cursor].get(':step/content', {})
+                if ':tutorial/content' in content:
+                    tutorial_ids.add(content[':db/id'])
+                if ':knowledge-point/id' in content:
+                    lesson_kps.add(content[':db/id'])
+                cursor = steps[cursor].get(':step/next', {}).get(':db/id')
+            if cursor is not None or visited != set(steps):
+                defects.append({'topic': tid, 'activity': activity[':db/id'], 'kind': 'invalid_lesson_route',
+                                'cursor': cursor, 'visited_steps': len(visited), 'owned_steps': len(steps)})
+        if lesson_kps != topic_kps:
+            defects.append({'topic': tid, 'kind': 'lesson_kp_coverage_mismatch',
+                            'topic_kps': sorted(topic_kps), 'lesson_kps': sorted(lesson_kps)})
         questions = {q[':db/id']: q for kp in topic[':topic/knowledge-points']
                      for q in [kp.get(':knowledge-point/canonical-example')] + kp.get(':knowledge-point/questions', []) if q}
         all_questions.update(questions)
@@ -66,10 +96,12 @@ def main():
         s['availability'] = available[s['entity']]
     report = {'basis': basis, 'read_only': True, 'topic_count': len(topics),
               'distinct_questions': len(all_questions), 'topics': summaries, 'defects': defects,
+              'distinct_tutorials': len(tutorial_ids), 'distinct_lesson_steps': len(step_ids),
               'content_bindings_passed': not defects,
               'all_topics_available': all(v.get('available') for v in available.values())}
     (out / 'verification.json').write_text(json.dumps(report, default=str, indent=2) + '\n')
-    print(json.dumps({k: v for k, v in report.items() if k != 'topics'}, indent=2))
+    print(json.dumps({k: v for k, v in report.items() if k not in ('topics', 'defects')}
+                     | {'defect_count': len(defects), 'first_defects': defects[:12]}, indent=2))
 
 
 if __name__ == '__main__':

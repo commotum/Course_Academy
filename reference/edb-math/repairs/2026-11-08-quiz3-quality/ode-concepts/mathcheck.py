@@ -34,6 +34,9 @@ def expr(s):
  s=re.sub(r'(?<![A-Za-z])([yu])(?![A-Za-z])',lambda m:'Y'if m[1]=='y'else'U',s)
  # powered functions have conventional scope, e.g. sin^2 x
  s=re.sub(r'\((sin|cos|tan|cot|csc|sec|ln)\s*\)\*\*\(([^()]+)\)\s*\(?([xt])\)?',r'\1(\3)**(\2)',s)
+ s=re.sub(r'(sin|cos|tan|cot|csc|sec|ln)\s+\(([xt])\)\*\*\(([^()]+)\)',r'\1((\2)**(\3))',s)
+ s=re.sub(r'(sin|cos|tan|cot|csc|sec|ln)\s+([0-9]*\s*[xt](?:\*\*\([^()]+\)|\*\*[-]?\d+)?|\d+)',r'\1(\2)',s)
+ s=re.sub(r'(?<=[A-Za-z0-9)])(?=(?:sin|cos|tan|cot|csc|sec|ln|log)\b)', '*', s)
  return parse_expr(s,local_dict={**loc,'V1':S.Symbol('V1')},transformations=standard_transformations+(implicit_multiplication_application,))
 def mathparts(p):return [s[2:-2].strip()if s.startswith('$$')else s[1:-1].strip()for s in re.findall(r'\$\$.*?\$\$|\$(?!\$).*?\$',p,re.S)]
 def equation(p):
