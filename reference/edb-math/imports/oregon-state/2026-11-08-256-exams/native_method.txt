@@ -1,0 +1,20 @@
+ def native_question(self,source,key,q,path,context=''):
+  prompt=self.render_text(q['content'],path,q['id']);fields=[];audit=[]
+  for f in q['fields']:
+   kind=f['type'];fk=f['key']
+   if kind=='checkbox':
+    selected=set(f['correct'])
+    for option in f['choices']:
+     oid=option['id'];bank=[];correct=None
+     for boolean in [False,True]:
+      value=str(boolean).lower();answer=self.entity(source,key+'/'+fk+'/option-'+oid+'/'+value,'answer',answer__type=':answer.type/text',answer__value=value,answer__feedback=self.render_text(option['feedback'],path,q['id']+'/'+oid+'/feedback'));bank.append(answer)
+      if boolean==(oid in selected):correct=answer
+     fid=self.entity(source,key+'/'+fk+'/option-'+oid,'answer-field',answer_field__key=option['value'],answer_field__type=':answer-field.type/checkbox',answer_field__choices=bank,answer_field__correct=correct);fields.append(fid);audit.append({'key':option['value'],'type':'checkbox','field_id':fid,'correct_answer_id':correct,'selected':oid in selected})
+   else:
+    assert kind in ['blank','free'];a=f['correct'];value=a['value'].strip()if a['type']=='math'else self.render_text(a['value'],path,q['id']+'/reference')
+    aid=self.entity(source,key+'/'+fk+'/canonical','answer',answer__type=':answer.type/'+a['type'],answer__value=value)
+    fid=self.entity(source,key+'/'+fk,'answer-field',answer_field__key=fk,answer_field__type=':answer-field.type/'+kind,answer_field__choices=[aid],answer_field__correct=aid);fields.append(fid);audit.append({'key':fk,'type':kind,'field_id':fid,'correct_answer_id':aid})
+    assert prompt.count('{{'+fk+'}}')==(1 if kind=='blank'else 0)
+  attrs={'question__problem':tidy(context+'\n\n'+prompt),'question__answer_fields':fields}
+  if q.get('feedback'):attrs['question__worked_solution']=self.render_text(q['feedback'],path,q['id']+'/feedback')
+  uid=self.entity(source,key,'question',**attrs);return uid,{'quiz_id':q['id'],'question_id':uid,'fields':audit}
