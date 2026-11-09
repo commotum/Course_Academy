@@ -24,10 +24,12 @@ The other 18 topics were reviewed by three **gpt-6.1-sol, high** agents. This wa
 
 The checks include original-source comparison, independent mathematical checks against the actual givens, full answer-bank review, strict actual-player rendering, desktop/mobile layouts, and read-only correct/incorrect grading through the application. Each transaction passed native application validation and exact-basis readback. Receipt checks confirm that learner, engine, and progress facts were not changed by the repair transactions.
 
+The completed run passed **6,096 strict rendering checks, 3,444 application grader checks, and 1,690 desktop/mobile layout checks**, with no remaining active content defects identified. Of the 41 missing solutions completed, three were recovered from source and 38 were explicitly authored. See the [combined verification summary](verification-summary.json).
+
 - [Independent final check across all 19 topics](final/verification.json)
 - [First lesson: findings, root causes, repairs, and verification](../../audits/2026-11-08-topic-17592186048459/README.md)
 - [Foundations: full report and source limits](foundations/REPORT.md), [commit verification](foundations/verification.json), [full-bank grader checks](foundations/grading-checks.json), [responsive layouts](foundations/layout-report.json)
-- [ODE concepts: commit verification](ode-concepts/verification.json), [full-bank grader checks](ode-concepts/grading-checks.json), [strict rendering](ode-concepts/strict-render-after.json)
+- [ODE concepts: full report](ode-concepts/report.json), [commit verification](ode-concepts/verification.json), [full-bank grader checks](ode-concepts/grading-checks.json), [strict rendering](ode-concepts/strict-render-after.json)
 - [Characteristic equations: audit summary](characteristic/audit-summary.json), [commit verification](characteristic/verification.json)
 - [Independent review of five mathematical parser exceptions](independent-math-cross-checks.json)
 
