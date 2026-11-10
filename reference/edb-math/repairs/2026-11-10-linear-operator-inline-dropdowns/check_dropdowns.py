@@ -73,13 +73,15 @@ try:
                 result = menu.evaluate('''n=>{const r=n.getBoundingClientRect();return {
                   left:r.left,right:r.right,width:r.width,viewport:document.documentElement.clientWidth,
                   horizontal_overflow:n.scrollWidth>n.clientWidth+1,
+                  nested_scrollbars:[...n.querySelectorAll('mjx-container')].filter(s=>
+                    ['auto','scroll'].includes(getComputedStyle(s).overflowX)&&s.scrollWidth>s.clientWidth).length,
                   math_errors:n.querySelectorAll('[data-mml-node="merror"]').length,
                   clipped_math:[...n.querySelectorAll('svg')].filter(s=>{
                     const a=s.getBoundingClientRect(),b=s.closest('button').getBoundingClientRect();
                     return a.right>b.right+1||a.left<b.left-1;
                   }).length};}''')
                 assert result['left'] >= 15 and result['right'] <= width - 15, result
-                assert not result['horizontal_overflow'] and not result['math_errors'] and not result['clipped_math'], result
+                assert not result['horizontal_overflow'] and not result['nested_scrollbars'] and not result['math_errors'] and not result['clipped_math'], result
                 # Clicking popup padding must not close it through focusout(null).
                 box = menu.bounding_box()
                 page.mouse.click(box['x'] + 2, box['y'] + 2)
@@ -98,6 +100,12 @@ try:
                 assert menu.is_visible()
                 reopened = menu.bounding_box()
                 assert reopened['x'] >= 15 and reopened['x'] + reopened['width'] <= width - 15, reopened
+                if width == 1100 and field['id'] == 17592186311440:
+                    for resized in [390, 1100]:
+                        page.set_viewport_size(dict(width=resized, height=1000))
+                        page.evaluate('async()=>{await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);}')
+                        box = menu.bounding_box()
+                        assert menu.is_visible() and box['x'] >= 15 and box['x'] + box['width'] <= resized - 15, box
                 page.keyboard.press('Escape')
                 assert not menu.is_visible()
                 checks.append(dict(question=field['question'], field=field['id'], selected=selected, **result))
