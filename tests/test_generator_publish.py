@@ -547,7 +547,7 @@ class PublicationTests(unittest.TestCase):
             self.prepare([rec])
 
 
-class NonemptyCheckboxPublicationTests(unittest.TestCase):
+class CheckboxPublicationTests(unittest.TestCase):
     def checkbox_question(self, values):
         q = record()['question']
         fields = []
@@ -563,11 +563,15 @@ class NonemptyCheckboxPublicationTests(unittest.TestCase):
         q[':question/answer-fields'] = fields
         return q
 
-    def test_empty_checkbox_subset_is_rejected_before_publication(self):
+    def test_empty_checkbox_subset_is_publishable_with_owned_false_answers(self):
         for size in (1, 3, 5):
             with self.subTest(size=size):
-                with self.assertRaisesRegex(ValueError, 'at least one correct selectable option'):
-                    validate_question(self.checkbox_question([False] * size))
+                q = self.checkbox_question([False] * size)
+                validate_question(q)
+                for field in q[':question/answer-fields']:
+                    aid = field[':answer-field/correct'][1]
+                    field[':answer-field/correct'] = next(a for a in field[':answer-field/choices'] if a[':answer/id'] == aid)
+                validate_question(q)
 
     def test_checkbox_display_label_requires_scalable_system_brace(self):
         q = self.checkbox_question([True])

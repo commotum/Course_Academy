@@ -212,7 +212,6 @@ def validate_question(q):
     if not isinstance(fields, list) or not fields:
         raise ValueError('Generated practice requires gradable answer fields')
     keys = set()
-    checkbox_correct_values = []
     for field in fields:
         key = field.get(':answer-field/key')
         if not isinstance(key, str) or not key or key in keys:
@@ -257,11 +256,6 @@ def validate_question(q):
             raise ValueError('Blank canonical answer must be math or text')
         if kind == ':answer-field.type/checkbox' and typed_values != {(':answer.type/text', 'true'), (':answer.type/text', 'false')}:
             raise ValueError('Checkbox bank requires exactly true and false text answers')
-        if kind == ':answer-field.type/checkbox':
-            checkbox_correct_values.append(next(a[':answer/value'] for a in choices
-                                                if str(a[':answer/id']) == answer_id(field[':answer-field/correct'])))
-    if checkbox_correct_values and 'true' not in checkbox_correct_values:
-        raise ValueError('Generated checkbox questions require at least one correct selectable option')
     validate_prompt_markers(q)
 
 

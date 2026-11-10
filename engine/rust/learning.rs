@@ -176,19 +176,6 @@ pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<(
     if s.entity(question)?.get("question/retired").and_then(Value::as_bool) == Some(true) {
         return Err("Retired questions are unavailable for fresh practice".into());
     }
-    let mut has_checkbox = false;
-    let mut has_correct_checkbox = false;
-    for field in s.refs(question, "question/answer-fields")? {
-        if ident(s, field, "answer-field/type")? == "answer-field.type/checkbox" {
-            has_checkbox = true;
-            let answer = s.reference(field, "answer-field/correct")?;
-            has_correct_checkbox |= s.entity(answer)?.get("answer/value").and_then(Value::as_str)
-                == Some("true");
-        }
-    }
-    if has_checkbox && !has_correct_checkbox {
-        return Err("Checkbox practice requires at least one correct selectable option".into());
-    }
     if s.is_multistep_question(question)? {
         return Err(
             "multistep questions belong to their full activity, not standalone practice".into(),
@@ -5229,8 +5216,8 @@ pub(crate) mod tests {
         assert!(!grade(&s, 100, &responses).unwrap());
         responses.remove(&403);
         assert!(grade(&s, 100, &responses).is_err());
-        // Empty subsets remain valid historical responses, but cannot be
-        // chosen for fresh lesson, review or assessment practice.
+        // Selecting none is a complete answer when every field explicitly
+        // submits its owned false answer; missing responses remain incomplete.
         for n in 0..4 {
             let field = 400 + n;
             let no = 500 + 2 * n;
@@ -5240,7 +5227,16 @@ pub(crate) mod tests {
         }
         assert!(validate_question(&s, 100).is_ok());
         assert!(grade(&s, 100, &responses).unwrap());
-        assert!(validate_practice_question(&s, 100).is_err());
+        assert!(validate_practice_question(&s, 100).is_ok());
+        for n in 0..4 {
+            let mut selected = responses.clone();
+            selected.insert(400 + n, (501 + 2 * n).to_string());
+            assert!(!grade(&s, 100, &selected).unwrap());
+        }
+        let mut incomplete = responses.clone();
+        incomplete.remove(&403);
+        assert!(grade(&s, 100, &incomplete).is_err());
+        assert!(grade(&s, 100, &BTreeMap::new()).is_err());
         s.entities
             .get_mut(&500)
             .unwrap()
