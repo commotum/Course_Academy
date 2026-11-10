@@ -177,6 +177,11 @@ does not claim that its sampled questions were published. Only needed inventory
 is published, and later refills use the recorded verified band set instead of
 the original review request's difficulty.
 
+A reviewed repair may publish only a replacement generator registration when
+the existing question inventory is sufficient. Its approval records a verified
+registration receipt, zero new questions, and no published difficulty; the three
+verification batches remain separate evidence for future refills.
+
 Existing completed approvals remain valid under their content policy; this phase
 change does not launch bulk re-review or republish questions. An unfinished build
 must establish the source checkpoints and anchor gate before further authoring.

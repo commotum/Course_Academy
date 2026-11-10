@@ -64,6 +64,27 @@ class GeneratorApprovalTests(unittest.TestCase):
         self.assertEqual(record['bands']['easy']['batch_sha256'], '1' * 64)
         approved_band(record, self.identity, 'hard', self.policy, self.engine)
 
+    def test_reviewed_registration_repair_needs_no_extra_practice_publication(self):
+        publication = {**self.publication, 'new_questions': 0,
+                       'generator_registration_verified': True,
+                       'package_sha256': self.identity['package_sha256']}
+        record = self.make(publication=publication, published_band=None)
+        self.assertEqual(record['publication']['kind'], 'registration')
+        self.assertIsNone(record['publication']['difficulty'])
+        for band in BANDS:
+            approved_band(record, self.identity, band, self.policy)
+        for name, value in [('new_questions', 1), ('new_questions', False),
+                            ('generator_registration_verified', False),
+                            ('package_sha256', 'f' * 64)]:
+            with self.subTest(name=name, value=value):
+                with self.assertRaises(ValueError):
+                    self.make(publication={**publication, name: value}, published_band=None)
+                broken = deepcopy(record)
+                broken['publication']['receipt'][name] = value
+                self.assert_rejected(broken, 'approval_invalid')
+        with self.assertRaises(ValueError):
+            self.make(publication=publication, published_band=None, publication_batch_hash='f' * 64)
+
     def test_missing_failed_or_stale_band_never_receives_approval(self):
         for problem in ('missing', 'failed', 'old_batch', 'no_evidence'):
             with self.subTest(problem=problem):

@@ -28,6 +28,14 @@ def _hash(value):
     return isinstance(value, str) and re.fullmatch(r'[0-9a-f]{64}', value) is not None
 
 
+def _registration_only(publication, identity):
+    return (isinstance(publication, dict) and publication.get('passed') is True
+            and publication.get('generator_registration_verified') is True
+            and type(publication.get('new_questions')) is int
+            and publication['new_questions'] == 0
+            and publication.get('package_sha256') == identity.get('package_sha256'))
+
+
 def _binding_valid(binding, identity, policy_version):
     if (not isinstance(binding, dict)
             or binding.get('policy_version') != policy_version
@@ -60,10 +68,15 @@ def make_approval(identity, review, binding, review_path, publication, published
     reports = review.get('band_verification')
     if not isinstance(reports, dict) or set(reports) != set(BANDS):
         raise ValueError('Generator approval requires verification of easy, moderate and hard')
-    if (published_band not in BANDS or not isinstance(publication, dict)
+    registration_only = published_band is None and _registration_only(publication, identity)
+    if ((published_band not in BANDS and not registration_only) or not isinstance(publication, dict)
             or publication.get('passed') is not True):
         raise ValueError('Generator approval requires the actual verified publication receipt')
-    if publication_batch_hash is None:
+    if registration_only:
+        if publication_batch_hash not in (None, _digest([])):
+            raise ValueError('Registration-only publication has no published questions')
+        publication_batch_hash = _digest([])
+    elif publication_batch_hash is None:
         publication_batch_hash = binding.get('batch_hash')
     if not _hash(publication_batch_hash):
         raise ValueError('Generator approval requires the actual published batch identity')
@@ -93,6 +106,7 @@ def make_approval(identity, review, binding, review_path, publication, published
         'verification_binding': deepcopy(binding),
         'bands': bands,
         'publication': {
+            **({'kind': 'registration'} if registration_only else {}),
             'difficulty': published_band,
             'batch_sha256': publication_batch_hash,
             'receipt': deepcopy(publication),
@@ -126,7 +140,13 @@ def approved_band(value, identity, band, policy_version, engine_hash=None):
     if not _binding_valid(binding, identity, policy_version) or set(bands) != set(BANDS):
         raise ApprovalError('approval_invalid', 'Registered generator approval has incomplete all-band input bindings')
     publication = value.get('publication')
-    if (not isinstance(publication, dict) or publication.get('difficulty') not in BANDS
+    registration_only = (isinstance(publication, dict)
+                         and publication.get('kind') == 'registration'
+                         and publication.get('difficulty') is None
+                         and publication.get('batch_sha256') == _digest([])
+                         and _registration_only(publication.get('receipt'), identity))
+    if (not isinstance(publication, dict)
+            or (publication.get('difficulty') not in BANDS and not registration_only)
             or not _hash(publication.get('batch_sha256'))
             or not isinstance(publication.get('receipt'), dict)
             or publication['receipt'].get('passed') is not True):
