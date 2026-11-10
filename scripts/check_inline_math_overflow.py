@@ -31,6 +31,9 @@ def regressions():
                 items.append(dict(entity=f'vector-{size}-{role}-{coords}', attribute='regression',
                                   value=r'\begin{bmatrix}' + coords + r'\end{bmatrix}',
                                   bare_math=True, role=role, font_size=size))
+            for formula in [r'\gamma,', 'a.', 'c_2.', r'\rangle.']:
+                items.append(dict(entity=f'punctuation-{size}-{role}-{formula}', attribute='regression',
+                                  value=formula, bare_math=True, role=role, font_size=size))
     items.append(dict(entity='genuinely-wide-inline-formula', attribute='regression', role='prose',
                       value='+'.join('x_{' + str(i) + '}' for i in range(1, 71)),
                       bare_math=True, must_scroll=True))
@@ -61,10 +64,10 @@ SHOW = r'''async items => {
     const scrolls=nodes.flatMap(n=>{
       const svg=n.querySelector(':scope > svg');if(!svg)return [];
       const style=getComputedStyle(n),r=svg.getBoundingClientRect();
-      const available=n.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+      const available=n.getBoundingClientRect().width-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
       const over=n.scrollWidth>n.clientWidth;
       return over?[{inline:n.getAttribute('display')!=='true',client:n.clientWidth,scroll:n.scrollWidth,
-        svg_width:r.width,available,spurious:r.width<=available+.51,
+        svg_width:r.width,available,spurious:r.width<=available+.02,
         text:n.textContent.slice(0,180)}]:[];
     });
     const errors=[...card.querySelectorAll('[data-mml-node="merror"]')].map(n=>n.textContent);
