@@ -25,10 +25,11 @@ window.showCheckboxQuestion=async item=>{
  content.append(card);await MathJax.typesetPromise([content]);
  const controls=[...form.querySelectorAll('input[type=checkbox]')];
  return {controls:controls.length,dropdowns:form.querySelectorAll('select,.answer-select-trigger').length,
-  equations:[...form.querySelectorAll('.checkbox-choice')].map(n=>n.textContent),
+  equations:[...form.querySelectorAll('label.choice')].map(n=>n.textContent),
   math_errors:content.querySelectorAll('[data-mml-node=merror],mjx-merror').length,
   outer_overflow:card.scrollWidth>card.clientWidth+1,
-  inner_overflow:[...form.querySelectorAll('mjx-container')].filter(n=>n.scrollWidth>n.clientWidth+1).length,
+  inner_overflow:[...form.querySelectorAll('mjx-container')].filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>({
+   text:n.textContent,width:n.clientWidth,scroll:n.scrollWidth,svg:n.querySelector('svg')?.getBoundingClientRect().width})),
   states:controls.map(n=>({checked:n.checked,disabled:n.disabled,encoded:n.closest('label').querySelector('.answer-choice-value').value}))};
 };</script>'''
 
@@ -57,7 +58,8 @@ try:
             page.set_viewport_size(dict(width=width,height=1200))
             for item in items:
                 result=page.evaluate('showCheckboxQuestion',item)
-                assert result['controls']==3 and not any(result[k] for k in ['dropdowns','math_errors','outer_overflow','inner_overflow']),result
+                assert result['controls']==3 and not any(result[k] for k in ['dropdowns','math_errors','outer_overflow']),(item['entity'],width,result)
+                assert all(n['svg']>n['width'] for n in result['inner_overflow']),(item['entity'],width,result)
                 assert all(not s['checked'] and not s['disabled'] for s in result['states'])
                 for i,f in enumerate(item['fields']):
                     box=page.locator('input[type=checkbox]').nth(i)
