@@ -1,5 +1,7 @@
 # Linear dependence statement questions
 
+The follow-up is now [completed](../2026-11-10-linear-dependence-generator-fix/README.md): the remaining all-false question is converted, empty selections are supported, and both generators are repaired and registered. The record below describes the earlier 12-question batch.
+
 Audited the complete **Linear Dependence and Independence** lesson (`17592186050426`): 73 practice questions and three canonical examples. Thirteen remaining radio questions ask for subsets of three independently testable statements.
 
 Converted **12** of those questions, including `17592186572667` (`q-157235`), to “Select all that apply” checkboxes. Four are imported questions and eight are generated questions. Each complete statement appears beside its checkbox; shared vector givens and row-operation instructions remain in the prompt. Explanations retain their mathematics and now refer to complete statements rather than removed Roman labels.
