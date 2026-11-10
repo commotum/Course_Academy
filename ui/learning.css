@@ -355,5 +355,7 @@ main:has(> .study-layout) { padding-top: 24px; }
 .review-save-status[hidden] { display: none; }
 .review-save-status[data-status="error"] { color: var(--ink); }
 
-/* Long inline formulas stay within prose and retain horizontal access on narrow screens. */
-.prose mjx-container:not([display="true"]) { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding-block: .15em; vertical-align: middle; }
+/* Long inline formulas retain horizontal access. MathJax's SVG bracket ink
+   can extend past its measured width; reserve that edge so fitting vectors
+   do not acquire a one-pixel horizontal scroll range. */
+.prose mjx-container:not([display="true"]) { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding-block: .15em; padding-inline-end: .1em; vertical-align: middle; }
