@@ -64,10 +64,11 @@ SHOW = r'''async items => {
     const scrolls=nodes.flatMap(n=>{
       const svg=n.querySelector(':scope > svg');if(!svg)return [];
       const style=getComputedStyle(n),r=svg.getBoundingClientRect();
-      const available=n.getBoundingClientRect().width-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+      const containerWidth=n.getBoundingClientRect().width;
+      const available=containerWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
       const over=n.scrollWidth>n.clientWidth;
       return over?[{inline:n.getAttribute('display')!=='true',client:n.clientWidth,scroll:n.scrollWidth,
-        svg_width:r.width,available,spurious:r.width<=available+.02,
+        svg_width:r.width,available,container_width:containerWidth,spurious:r.width<=containerWidth+.02,
         text:n.textContent.slice(0,180)}]:[];
     });
     const errors=[...card.querySelectorAll('[data-mml-node="merror"]')].map(n=>n.textContent);
