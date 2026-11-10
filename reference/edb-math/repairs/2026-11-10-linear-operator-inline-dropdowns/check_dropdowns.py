@@ -83,11 +83,19 @@ try:
                 assert not menu.is_visible()
                 assert page.locator('select').input_value() == field['choices'][0]['id']
                 assert page.evaluate('changeCount') == 1
+                page.wait_for_timeout(35)
+                selected = trigger.evaluate('''n=>{const r=n.getBoundingClientRect();return {
+                  overflow:n.scrollWidth>n.clientWidth+1,
+                  clipped:[...n.querySelectorAll('svg')].some(s=>s.getBoundingClientRect().right>r.right+1)
+                };}''')
+                assert not selected['overflow'] and not selected['clipped'], selected
                 trigger.click()
                 assert menu.is_visible()
+                reopened = menu.bounding_box()
+                assert reopened['x'] >= 15 and reopened['x'] + reopened['width'] <= width - 15, reopened
                 page.keyboard.press('Escape')
                 assert not menu.is_visible()
-                checks.append(dict(question=field['question'], field=field['id'], **result))
+                checks.append(dict(question=field['question'], field=field['id'], selected=selected, **result))
                 if field['question'] == 17592186311880 and field['id'] == 17592186311440:
                     trigger.click()
                     menu.screenshot(path=str(H / 'visual' / f'dropdown-{width}.png'))

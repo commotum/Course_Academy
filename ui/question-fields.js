@@ -227,6 +227,7 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
     if (menu.hidden || !wrapper.isConnected) return;
     const inset = 16, gap = 5;
     const available = Math.max(0, document.documentElement.clientWidth - 2 * inset);
+    menu.style.maxWidth = `${available}px`;
     menu.style.minWidth = `${Math.min(trigger.getBoundingClientRect().width, available)}px`;
     menu.style.left = '0px'; menu.style.top = `calc(100% + ${gap}px)`;
     const box = menu.getBoundingClientRect(), anchor = wrapper.getBoundingClientRect();
