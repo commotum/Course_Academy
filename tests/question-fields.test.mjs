@@ -36,12 +36,16 @@ function fixture() {
     dispatchEvent(event) { const result = super.dispatchEvent(event); if (event.bubbles && this.parent) this.parent.dispatchEvent(event); return result; }
     click() { if (!this.disabled) this.dispatchEvent(new Event('click', { bubbles: true })); }
     focus() { document.activeElement = this; }
+    getBoundingClientRect() { return { left: 0, top: 100, bottom: 130, width: 100, height: 30 }; }
   }
   const document = new EventTarget(); document.body = new Element('body'); document.hidden = false;
   document.createElement = tag => new Element(tag);
   document.createTextNode = text => { const node = new Element('#text'); node.textContent = text; return node; };
   document.getElementById = () => null;
-  const context = vm.createContext({ document, Event, crypto, URL, marked, attachStepMenu: (node, id) => { node.dataset.stepDbId = id; }, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
+  document.documentElement = { clientWidth: 1024 };
+  const window = new EventTarget(); window.innerHeight = 768;
+  class ResizeObserver { observe() {} disconnect() {} }
+  const context = vm.createContext({ document, window, ResizeObserver, Event, crypto, URL, marked, attachStepMenu: (node, id) => { node.dataset.stepDbId = id; }, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
   const h = vm.runInContext(`(() => {
     ${shared}
     ${assignments}
@@ -117,6 +121,8 @@ test('rich selects keep choice IDs, show authored content, support keyboard navi
   const options = rich.querySelectorAll('.answer-select-option');
   let changed = 0; select.addEventListener('change', () => { changed++; });
   trigger.click(); assert.equal(menu.hidden, false); assert.equal(f.document.activeElement, options[0]);
+  const menuPointerBlur = new Event('focusout'); Object.defineProperty(menuPointerBlur, 'relatedTarget', { value: null });
+  rich.dispatchEvent(menuPointerBlur); assert.equal(menu.hidden, false);
   const down = new Event('keydown', { bubbles: true, cancelable: true }); Object.defineProperty(down, 'key', { value: 'ArrowDown' });
   options[0].dispatchEvent(down); assert.equal(f.document.activeElement, options[1]);
   options[0].click(); assert.equal(select.value, '31'); assert.equal(changed, 1);

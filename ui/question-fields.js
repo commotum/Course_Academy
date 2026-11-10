@@ -223,6 +223,20 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
   select.className = 'answer-select-native sr-only'; select.tabIndex = -1; select.setAttribute('aria-hidden', 'true');
   select.value = choices.some(choice => String(idOf(choice)) === String(select.value)) ? select.value : '';
   const buttons = [];
+  const positionMenu = () => {
+    if (menu.hidden || !wrapper.isConnected) return;
+    const inset = 16, gap = 5;
+    const available = Math.max(0, document.documentElement.clientWidth - 2 * inset);
+    menu.style.minWidth = `${Math.min(trigger.getBoundingClientRect().width, available)}px`;
+    menu.style.left = '0px'; menu.style.top = `calc(100% + ${gap}px)`;
+    const box = menu.getBoundingClientRect(), anchor = wrapper.getBoundingClientRect();
+    const left = Math.max(inset, Math.min(box.left, document.documentElement.clientWidth - inset - box.width));
+    menu.style.left = `${left - anchor.left}px`;
+    if (box.bottom > window.innerHeight - inset && box.height + gap <= anchor.top - inset) {
+      menu.style.top = `${-box.height - gap}px`;
+    }
+  };
+  const resizeMenu = new ResizeObserver(positionMenu);
   const update = () => {
     const chosen = choices.find(choice => String(idOf(choice)) === select.value);
     value.replaceChildren(chosen ? renderAnswer(chosen) : document.createTextNode('Select…'));
@@ -232,13 +246,15 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
   const close = (restore = false) => {
     menu.hidden = true; trigger.setAttribute('aria-expanded', 'false');
     document.removeEventListener('pointerdown', outside);
+    window.removeEventListener('resize', positionMenu); resizeMenu.disconnect();
     if (restore) trigger.focus({ preventScroll: true });
   };
   const outside = event => { if (!wrapper.contains(event.target)) close(); };
   const open = (last = false) => {
     if (select.disabled || trigger.disabled || !buttons.length) return;
     menu.hidden = false; trigger.setAttribute('aria-expanded', 'true');
-    void typeset(menu);
+    positionMenu(); resizeMenu.observe(menu); window.addEventListener('resize', positionMenu);
+    void Promise.resolve(typeset(menu)).then(positionMenu);
     document.addEventListener('pointerdown', outside);
     const selected = choices.findIndex(choice => String(idOf(choice)) === select.value);
     buttons[selected >= 0 ? selected : last ? buttons.length - 1 : 0].focus({ preventScroll: true });
@@ -266,7 +282,10 @@ export function richSelect(select, choices, renderAnswer, idOf = answer => answe
     else if (event.key === 'Escape') { event.preventDefault(); close(true); }
     else if (event.key === 'Tab') close();
   });
-  wrapper.addEventListener('focusout', event => { if (!wrapper.contains(event.relatedTarget)) close(); });
+  // Pointer interactions with a popup's own padding/scrollbar can report a
+  // null focus target. Only a real focus move outside closes the popup here;
+  // outside pointer presses and Tab/Escape are already handled explicitly.
+  wrapper.addEventListener('focusout', event => { if (event.relatedTarget && !wrapper.contains(event.relatedTarget)) close(); });
   select.addEventListener('change', update);
   trigger.append(value, arrow); wrapper.append(select, trigger, menu); update();
   return wrapper;
