@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import time
 import uuid
 
 H = Path(__file__).resolve().parent
@@ -19,8 +20,10 @@ basis = db.basis()
 def save(name, value):
     (H / (name + '.json')).write_text(json.dumps(value, default=str, indent=2) + '\n')
 def query(text, inputs, name):
+    start=time.monotonic()
     result = db.query(text, inputs, H, name, basis)
     save(name, result)
+    print(name,round(time.monotonic()-start,2),flush=True)
     return result
 
 assert not (H / 'commit-intent.json').exists(), 'Reconcile existing request before preparing again.'
@@ -44,8 +47,10 @@ oldfields = [f[':db/id'] for q in targets for f in q[':question/answer-fields']]
 oldanswers = [a[':db/id'] for q in targets for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]
 uses = query('[:find ?i ?a :in $ [?a ...] :where [?i :task-item/responses ?a]]', [oldanswers], 'response-uses-before')
 assert {r[0] for r in uses} <= {i[':db/id'] for i in items}, 'Response use outside scope'
-links = query('[:find ?q ?f :in $ [?f ...] :where [?q :question/answer-fields ?f]]', [oldfields], 'field-uses-before')
-assert {r[0] for r in links} <= set(qids), 'Shared field outside scope'
+links = query('[:find (pull ?f [:db/id {[:question/_answer-fields :limit nil] [:db/id]}]) :in $ [?f ...] :where [?f :answer-field/id _]]', [oldfields], 'field-uses-before')
+def many(value):
+    return [value] if isinstance(value,dict) else value
+assert {q[':db/id'] for r in links for q in many(r[0].get(':question/_answer-fields',[]))} <= set(qids), 'Shared field outside scope'
 query('[:find (pull ?f [*]) :in $ [?f ...] :where [?f :answer-field/id _]]', [oldfields], 'old-fields-before')
 query('[:find (pull ?a [*]) :in $ [?a ...] :where [?a :answer/id _]]', [oldanswers], 'old-answers-before')
 query('[:find (pull ?q [:db/id {[:knowledge-point/_questions :limit nil] [:db/id]} {[:knowledge-point/_canonical-example :limit nil] [:db/id]}]) :in $ [?q ...] :where [?q :question/id _]]', [qids], 'memberships-before')
