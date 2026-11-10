@@ -84,6 +84,9 @@ class GeneratorApprovalTests(unittest.TestCase):
                 self.assert_rejected(broken, 'approval_invalid')
         with self.assertRaises(ValueError):
             self.make(publication=publication, published_band=None, publication_batch_hash='f' * 64)
+        broken = deepcopy(record)
+        broken['publication']['difficulty'] = 'easy'
+        self.assert_rejected(broken, 'approval_invalid')
 
     def test_missing_failed_or_stale_band_never_receives_approval(self):
         for problem in ('missing', 'failed', 'old_batch', 'no_evidence'):

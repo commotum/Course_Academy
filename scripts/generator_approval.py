@@ -145,6 +145,8 @@ def approved_band(value, identity, band, policy_version, engine_hash=None):
                          and publication.get('difficulty') is None
                          and publication.get('batch_sha256') == _digest([])
                          and _registration_only(publication.get('receipt'), identity))
+    if isinstance(publication, dict) and publication.get('kind') == 'registration' and not registration_only:
+        raise ApprovalError('approval_invalid', 'Registration-only approval has an invalid verified registration receipt')
     if (not isinstance(publication, dict)
             or (publication.get('difficulty') not in BANDS and not registration_only)
             or not _hash(publication.get('batch_sha256'))
