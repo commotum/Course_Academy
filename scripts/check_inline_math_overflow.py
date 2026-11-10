@@ -25,7 +25,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 
 def regressions():
     items = []
-    for size in [14, 15, 16, 17, 20]:
+    for size in [14, 15, 16, 17, 20, 24, 30]:
         for role in ['prose', 'choice', 'feedback']:
             for coords in ['2\\\\6', '3\\\\6', '6\\\\3', '-1\\\\3', '12\\\\-6']:
                 items.append(dict(entity=f'vector-{size}-{role}-{coords}', attribute='regression',
@@ -111,7 +111,7 @@ def check(items, baseline=False, screenshot_dir=None):
             page.goto(origin + '/fixture')
             page.wait_for_function('window.ready')
             if baseline:
-                page.add_style_tag(content='.prose mjx-container:not([display="true"]){padding-inline-end:0}')
+                page.add_style_tag(content='.prose mjx-container:not([display="true"]){padding-inline-end:0;margin-inline-end:0}')
             for width in [1100, 390]:
                 page.set_viewport_size(dict(width=width, height=1000))
                 for offset in range(0, len(items), 24):
