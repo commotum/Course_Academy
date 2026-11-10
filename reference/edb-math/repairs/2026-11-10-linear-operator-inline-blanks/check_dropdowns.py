@@ -87,7 +87,7 @@ try:
                 assert menu.is_visible()
                 page.keyboard.press('Escape')
                 assert not menu.is_visible()
-                checks.append(dict(question=field['question'], field=field['id'], viewport=width, **result))
+                checks.append(dict(question=field['question'], field=field['id'], **result))
                 if field['question'] == 17592186311880 and field['id'] == 17592186311440:
                     trigger.click()
                     menu.screenshot(path=str(H / 'visual' / f'dropdown-{width}.png'))

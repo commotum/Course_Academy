@@ -12,6 +12,8 @@ use std::collections::{BTreeMap, BTreeSet};
 
 #[path = "equation_answers.rs"]
 mod equation_answers;
+#[path = "differential_operator_answers.rs"]
+mod differential_operator_answers;
 
 // Two ordinary binomial powers can exceed 128 expanded monomials,
 // including common exponent-summing errors in polynomial LCM practice.
@@ -2643,6 +2645,9 @@ fn plus_minus(source: &str) -> Option<&str> {
 
 /// Whether a canonical answer has a bounded, supported representation.
 pub fn supports(source: &str, context: Context) -> bool {
+    if let Some(result) = differential_operator_answers::compare(source, source, context) {
+        return matches!(result, Ok(true));
+    }
     if let Some(result) = equation_answers::compare(source, source, context) {
         return matches!(result, Ok(true));
     }
@@ -2862,6 +2867,9 @@ pub fn compare_rational_on_source_domain(
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
 pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
+    if let Some(result) = differential_operator_answers::compare(a, b, context) {
+        return result;
+    }
     if let Some(result) = equation_answers::compare(a, b, context) {
         return result;
     }
