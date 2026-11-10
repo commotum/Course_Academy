@@ -2,6 +2,7 @@
 import functools
 import http.server
 import json
+import argparse
 from pathlib import Path
 import threading
 
@@ -22,7 +23,7 @@ window.showDropdown=async field=>{
   const empty=document.createElement('option');empty.value='';select.append(empty);
   for(const a of field.choices){const option=document.createElement('option');option.value=a.id;option.textContent=a.value;select.append(option);}
   const make=a=>render(a.type==='math'?'$'+a.value+'$':a.value);
-  const control=richSelect(select,field.choices,make,a=>a.id,host=>MathJax.typesetPromise([host]));
+  const control=richSelect(select,field.choices,make,a=>a.id,host=>window.lastDropdownTypeset=MathJax.typesetPromise([host]));
   select.addEventListener('change',()=>{window.changeCount=(window.changeCount||0)+1;});window.changeCount=0;
   row.append(control);prompt.append(row);content.append(prompt);await MathJax.typesetPromise([content]);
 };window.dropdownReady=true;</script>'''
@@ -33,6 +34,9 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--all-19', action='store_true')
+args = parser.parse_args()
 questions = json.loads((H / 'questions-before.json').read_text())
 fields = []
 for q in questions:
@@ -41,6 +45,8 @@ for q in questions:
             fields.append(dict(question=q[':db/id'], id=f[':db/id'], choices=[dict(
                 id=str(a[':db/id']), type=a[':answer/type'][':db/ident'].split('/')[-1],
                 value=a[':answer/value']) for a in f[':answer-field/choices']]))
+if args.all_19:
+    fields = json.loads((H / 'all-19-dropdown-banks.json').read_text())
 
 server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(Quiet, directory=str(ROOT)))
 threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -63,8 +69,7 @@ try:
                 trigger = page.locator('.answer-select-trigger')
                 menu = page.locator('.answer-select-menu')
                 trigger.click()
-                page.wait_for_function('!document.querySelector(".answer-select-menu[hidden]")&&document.querySelector(".answer-select-menu mjx-container")||document.querySelector(".answer-select-menu").textContent.includes("linear")')
-                page.wait_for_timeout(40)
+                page.evaluate('async()=>{await window.lastDropdownTypeset;await new Promise(requestAnimationFrame);}')
                 result = menu.evaluate('''n=>{const r=n.getBoundingClientRect();return {
                   left:r.left,right:r.right,width:r.width,viewport:document.documentElement.clientWidth,
                   horizontal_overflow:n.scrollWidth>n.clientWidth+1,
@@ -83,7 +88,7 @@ try:
                 assert not menu.is_visible()
                 assert page.locator('select').input_value() == field['choices'][0]['id']
                 assert page.evaluate('changeCount') == 1
-                page.wait_for_timeout(35)
+                page.evaluate('async()=>{await window.lastDropdownTypeset;await new Promise(requestAnimationFrame);}')
                 selected = trigger.evaluate('''n=>{const r=n.getBoundingClientRect();return {
                   overflow:n.scrollWidth>n.clientWidth+1,
                   clipped:[...n.querySelectorAll('svg')].some(s=>s.getBoundingClientRect().right>r.right+1)
@@ -105,6 +110,6 @@ try:
 finally:
     server.shutdown()
     server.server_close()
-(H / 'dropdown-verification.json').write_text(json.dumps(dict(passed=True, database_writes=0,
+(H / ('all-19-dropdown-verification.json' if args.all_19 else 'dropdown-verification.json')).write_text(json.dumps(dict(passed=True, database_writes=0,
     checks=checks, popup_padding_click_keeps_open=True, keyboard_escape_and_choice_ids_preserved=True), indent=2) + '\n')
 print('All dropdown checks passed.', flush=True)
