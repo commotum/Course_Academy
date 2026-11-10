@@ -1,4 +1,7 @@
-"""Learner-facing checkbox generation requires a nonempty correct subset.
+"""Optional sampling policies for families that require a nonempty subset.
+
+The application also supports empty checkbox answers; generators can emit
+those directly without applying the nonempty sampling wrapper.
 
 This module is also copied into immutable generator packages. Keep it free of
 repository imports so registered packages remain relocatable and offline.
