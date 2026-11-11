@@ -1,0 +1,45 @@
+# Vector lesson quality audit
+
+Read-only audit of topic **17592186048780**, “Describing the Position Vector of a Point Using Known Vectors,” at math EDB **basis 14220**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. No database records, immutable packages, shared code, learner state, or service settings were changed. The root’s [closing snapshot check](../closing-verification.json) confirms the audited pools and registrations remained unchanged at basis 14225.
+
+The audit found **two current generator labeling defects**, **two stored authored questions that supply solution steps before answering**, **one eligible imported question that prints both answers**, and **two incomplete imports rejected by native practice validation**. All independently checked sampled geometry, ratio calculations, keys, and native grading controls passed.
+
+| KP | Current generator | Stored pool | Evidence scope |
+| --- | --- | --- | --- |
+| 17592186096652 — two scalar factors | **Defect:** reference-label association | **Defect:** preconstructed route; printed answers in one import | 41 pool + 1 canonical; 24 generated survivors |
+| 17592186096653 — internal ratio | Clean in this bounded audit | **Defect:** supplied path identities; two screened incomplete imports | 42 pool + 1 canonical; 24 survivors |
+| 17592186096701 — one scalar factor | **Defect:** a/b labels crowd or associate with the other arrow | Same issue confirmed in stored question 17592186735423 | 29 pool + 1 canonical; 24 survivors |
+| 17592186235285 — direction reversal | Clean in the new-seed sanity check | No additional confirmed defect | 27 pool + 1 canonical; 6 survivors; completed repair validation not repeated |
+
+## Confirmed findings
+
+1. **High priority, high confidence — imported question 17592186292807 (`q-275128`, KP 17592186096652) prints both keys.** The unanswered prompt explicitly displays `λ = −1/2` and `μ = −5/2`, then renders two empty trailing answer widgets. A learner can copy the answers without reading the grid or finding a decomposition. Its keys are supported rationals, it has no captured source exclusion, and the actual native fresh-practice validator accepts it. This is imported capture contamination, not a defect in the current generator. [Unanswered mobile screenshot](stored-render/question-002-active-390x1000.png), [complete stored records](stored-suspects.json), [native eligibility](eligibility.json).
+
+2. **Medium priority, high confidence — authored question 17592186735008 (KP 17592186096652) supplies the decomposition route.** Original `e-4287` and `q-19370` show three vectors on a grid. This stored easy question adds the dashed `O → A → C` path and tells the learner to compare its legs with the reference vectors. Counting remains, but independent path construction is removed. The current generator does not reproduce this hint. [Unanswered screenshot](stored-render/question-001-active-390x1000.png).
+
+3. **Medium priority, high confidence — authored question 17592186734994 (KP 17592186096653) supplies two derivation identities.** Its unanswered prompt gives `OX = OA + AX` and `AB = b − a`. These are the first two worked-solution steps in original `e-4288`; source practice requires the learner to choose those paths and reverse the endpoint vector. The stored question retains ratio calculation but bypasses those decisions. Current ordinary generation does not supply these identities. [Unanswered screenshot](stored-render/question-003-active-390x1000.png).
+
+4. **Medium priority, high confidence — current two-factor generator can drift a label beside the other arrow.** Reproduce with `--difficulty hard --count 4 --seed 20261111`, zero-based **index 1**. Reference vectors are `a = (−1,2)`, `b = (−2,2)`, target `c = (1,−3)`; the correct coefficients are `−2, 1/2`. Both reference labels are left of the blue arrow, and blue `a` is nearer the orange vector. The collision-search algorithm avoids intersections without retaining an association between a label and its own arrow. Geometry/key are correct. Root independently confirmed the ambiguity. [Exact delivered mobile screenshot](17592186096652/ui-label-hard-20261111/question-002-active-390x1000.png), [paired render report](17592186096652/ui-label-hard-20261111/rendering.json).
+
+5. **Medium priority, high confidence — current one-factor generator crowds the a/b labels inside a narrow wedge.** Two observed counterexamples are:
+
+   - `--difficulty moderate --count 4 --seed 47`, **index 2**: `a = (−2,0)`, `b = (−1,−1)`, `c = (−9,−3)`, known term `3b`, key `λ = 3`. [Unanswered mobile](17592186096701/ui-label-moderate-47/question-003-active-390x1000.png).
+   - `--difficulty hard --count 4 --seed 47`, **index 3**: `a = (2,−4)`, `b = (2,−3)`, `c = (4,−15/2)`, known term `(1/2)b`, key `λ = 3/2`. Labels sit toward the opposite reference arrow. [Unanswered mobile](17592186096701/ui-label-hard-47/question-004-active-390x1000.png).
+
+   Fixed opposite-side offsets ignore the signed angle between the references. Color and the endpoint caption must resolve the spatial ambiguity. Stored hard question **17592186735423** is a confirmed instance of the same readability defect: [stored screenshot](stored-render/question-005-active-390x1000.png). Root independently confirmed all three. Stored 17592186735416 was less clear-cut and is not reported as a separate failure. Small reversal diagrams 17592186735570/17592186735575 were inspected without finding a clear label-association defect.
+
+6. **Low priority, high confidence — two imported ratio records are incomplete and screened.** Question **17592186097046 (`q-12212`)** has two fields named `selection`; older field 17592186094249 lacks a canonical answer. Question **17592186097240 (`q-42659`)** lacks its canonical answer, worked solution, and difficulty. The native fresh-practice validator rejects both with “graded answer field needs a canonical answer.” These are import-completeness defects, not demonstrated served bad practice. [Stored integrity](stored-integrity.json), [native eligibility](eligibility.json).
+
+## Coverage and limits
+
+The [source-first account](source-only.json) was saved before generator inspection. It distinguishes the required construction/counting work from a worked solution. All **139 pool prompts and diagrams**, plus **4 canonical examples**, were screened; the pool contains **79 imports and 60 authored questions**. Contact sheets and full records are retained under each KP’s `stored/` directory.
+
+The three untouched generators were sampled with seeds **20261111 and 47**, four ordinary records per band. The repaired reversal generator received only seed **81**, two per band. All **78 records** survived the real offline publication filter. Exact determinant solves or displayed ordered-ratio/direction calculations independently matched all 78 sampled keys. Native grading against those exact delivered records passed **221 accepted** and **272 rejected** controls, with **zero unresolved** outcomes. Applicable unreduced rational equivalents were accepted. Reports are under each KP’s `math-checks.json` and `native/<band>/report.json`.
+
+Stored checks independently recomputed **40 complete ratio questions**. For **97 stored grid-vector questions**, keys match the complete worked-solution terminal values; this is consistency checking, not independent reconstruction of every raster diagram. The two incomplete imports were not supplied invented keys. Corrected native eligibility accepts **137/139** stored questions, including known-good repaired question 17592186735164 as a positive control. The initial harness omitted enum-ident entities; its all-rejected output is explicitly [discarded](discarded-enum-fixture/reason.txt).
+
+Actual unmodified player rendering covers **21 distinct generated representatives** and **7 stored suspects**, in unanswered/completed states at **390×1000 and 1100×1000**: **112 unique state/viewport cases**. All generated UI inputs are exact delivery-survivor objects with source/index maps; the recognized reports retain record and screenshot hashes. DOM/MathJax checks pass, which does not negate the observed spatial label defects. Native eligibility does not simulate learner history, reservations, weighted selection, or future task draws.
+
+No sampled wrong key/geometry, unrelated extra skill, demonstrated bank-only shortcut, or valid-family exclusion used to protect distractors was found. Hard ratio direction changes use the same vector-negation operation already present in the source derivation. Midpoint ratios remain available through blanks when radio-bank recipes collide. Positive-only or negative-only coefficients were not treated as defects where the source target supports them. These are bounded findings, not exhaustive catalog certification.
+
+[The machine-readable audit](audit.json) contains exact package registrations, question UUIDs, parameters, seeds/counts/indices, delivered-record hashes, screenshot hashes, and reproduction commands. No repairs were attempted here.
