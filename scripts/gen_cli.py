@@ -43,8 +43,8 @@ def policy(remaining, reserve, workers):
     return workers, 1800
 
 
-def usage_failure(path, offset=0):
-    """Read only structured errors from this launch, never tool-output text."""
+def provider_rejection(path, offset=0):
+    """Recognize specific admission failures, never content/tool-output text."""
     with Path(path).open('rb') as stream:
         if type(offset) is not int or not 0 <= offset <= os.fstat(stream.fileno()).st_size:
             raise ValueError('Invalid agent event offset')
@@ -60,13 +60,35 @@ def usage_failure(path, offset=0):
             if not isinstance(error, dict):
                 continue
             code = str(error.get('code', '')).lower()
-            message = str(error.get('message', '')).lower().replace('’', "'")
+            raw_message = str(error.get('message', ''))
+            message = raw_message.lower().replace('’', "'")
             if (code in {'usage_limit_reached', 'quota_exceeded', 'insufficient_quota'}
                     or "you've hit your usage limit" in message
                     or 'usage limit has been reached' in message
                     or 'exceeded your current quota' in message):
-                return True
-    return False
+                return 'quota'
+            if raw_message == 'Selected model is at capacity. Please try a different model.':
+                return 'capacity'
+            # Codex currently wraps the provider's JSON error in the event's
+            # message. Require its specific code/type/parameter; merely naming
+            # an invalid schema in an agent or tool message is not this failure.
+            provider = error
+            try:
+                embedded = json.loads(raw_message)
+            except ValueError:
+                embedded = None
+            if isinstance(embedded, dict) and isinstance(embedded.get('error'), dict):
+                provider = embedded['error']
+            if (provider.get('code') == 'invalid_json_schema'
+                    and provider.get('type') == 'invalid_request_error'
+                    and provider.get('param') == 'text.format.schema'):
+                return 'schema'
+    return None
+
+
+def usage_failure(path, offset=0):
+    """Keep the quota-only predicate available to incident recovery tools."""
+    return provider_rejection(path, offset) == 'quota'
 
 
 def request(socket_path, payload, timeout=5):
@@ -243,8 +265,13 @@ class Supervisor:
                 if (path != directory / 'events.jsonl'
                         or not path.is_relative_to(self.jobs.directory.resolve())):
                     raise ValueError('Agent evidence is outside the inventory directory')
-                if usage_failure(path, payload.get('events_offset', 0)):
-                    reason = 'account quota exhausted; start again explicitly when ready'
+                rejection = provider_rejection(path, payload.get('events_offset', 0))
+                if rejection:
+                    reason = {
+                        'quota': 'account quota exhausted; start again explicitly when ready',
+                        'capacity': 'selected model is at capacity; start again explicitly when ready',
+                        'schema': 'provider rejected the output schema; fix it before starting again',
+                    }[rejection]
                     if isinstance(ticket, str) and ticket.startswith(self.run_id + ':'):
                         self.drain(reason)
                     # An old rejection needs its replacement credit, but is

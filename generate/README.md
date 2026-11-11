@@ -43,7 +43,10 @@ use of the same account can take the balance below it. If a requested quota read
 cannot be completed, the parent stops admitting work and drains instead of
 running against an unknown balance. An actual quota rejection stops the run even
 without `-u`; it does not spend a content-failure retry allowance or block the
-rest of the queue. Quota resets never restart generation automatically.
+rest of the queue. Exact provider rejections for model capacity or an invalid
+output schema also stop admission, preserve retry allowances, and report their
+distinct cause. Fix an invalid schema before restarting. These failures never
+trigger an automatic retry, model switch, or restart when quota resets.
 
 The study application maintains the ranked inventory but never starts generator
 workers. Restarting the app, changing the legacy generation-disable flag, or

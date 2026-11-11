@@ -121,6 +121,52 @@ class SupervisorTests(unittest.TestCase):
         self.assertIn(current['ticket'], supervisor.tickets)
         self.assertFalse(supervisor.draining, 'Old quota evidence must not stop an explicit restart')
 
+    def test_exact_capacity_rejection_stops_admissions_without_charging_content_failure(self):
+        message = 'Selected model is at capacity. Please try a different model.'
+        for row in ({'type': 'error', 'message': message},
+                    {'type': 'turn.failed', 'error': {'message': message}}):
+            with self.subTest(row=row):
+                supervisor = self.supervisor()
+                ticket = self.admit(supervisor)['ticket']
+                response = self.evidence(supervisor, [row], ticket=ticket)
+                self.assertEqual(response['action'], 'halt')
+                self.assertTrue(response['exempt'])
+                self.assertIn('at capacity', supervisor.reason)
+                self.assertNotIn('quota', supervisor.reason)
+                self.assertEqual(self.admit(supervisor)['action'], 'halt')
+                self.assertFalse(G.usage_failure(self.jobs.directory / 'work/events.jsonl'))
+                # A fresh explicit run reconciles an old rejected turn without
+                # treating that old failure as evidence of current capacity.
+                restarted = self.supervisor()
+                self.assertTrue(self.evidence(restarted, [row], ticket=ticket)['exempt'])
+                self.assertFalse(restarted.draining)
+
+    def test_provider_output_schema_error_is_distinct_and_requires_exact_structured_evidence(self):
+        provider = {'message': "Invalid schema for response_format 'codex_output_schema'",
+                    'type': 'invalid_request_error', 'code': 'invalid_json_schema',
+                    'param': 'text.format.schema'}
+        for row in ({'type': 'error', 'message': json.dumps({'error': provider})},
+                    {'type': 'turn.failed', 'error': provider}):
+            with self.subTest(row=row):
+                supervisor = self.supervisor()
+                ticket = self.admit(supervisor)['ticket']
+                response = self.evidence(supervisor, [row], ticket=ticket)
+                self.assertEqual(response['action'], 'halt')
+                self.assertTrue(response['exempt'])
+                self.assertIn('output schema', supervisor.reason)
+                self.assertNotIn('quota', supervisor.reason)
+                self.assertEqual(self.admit(supervisor)['action'], 'halt')
+        supervisor = self.supervisor()
+        lookalikes = [
+            {'type': 'item.completed', 'item': {'aggregated_output': json.dumps({'error': provider})}},
+            {'type': 'error', 'message': 'Tool says invalid_json_schema'},
+            {'type': 'error', 'message': json.dumps({'error': {**provider, 'param': 'some-tool-input'}})},
+            {'type': 'turn.failed', 'error': {'message': 'The worksheet describes model capacity.'}},
+            {'type': 'error', 'message': 'Reconnecting... stream disconnected before completion'},
+        ]
+        self.assertEqual(self.evidence(supervisor, lookalikes), {'action': 'continue'})
+        self.assertFalse(supervisor.draining)
+
     def test_developer_mode_prevents_new_agent_turns_inside_an_existing_pipeline(self):
         supervisor = self.supervisor()
         supervisor.developer_mode = lambda: True

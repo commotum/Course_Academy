@@ -188,9 +188,9 @@ def prepare(inventory, manifest, output):
 
 
 @contextmanager
-def lock_file(path):
+def lock_file(path, *, wait=False):
     with Path(path).open('a') as stream:
-        fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fcntl.flock(stream, fcntl.LOCK_EX | (0 if wait else fcntl.LOCK_NB))
         yield
 
 
@@ -211,16 +211,35 @@ def load_plan(output):
     return plan, originals
 
 
+def refreshed_inventory_root(spec, original, current_bytes):
+    """Accept only inventory ranking after a completed, recorded recovery.
+
+    The UI marks an unfinished resumable cycle ``running`` without launching it.
+    Such refreshes must survive an interrupted recovery; no attempt, outcome,
+    cycle, stage input, or recovery marker may differ from the applied image.
+    """
+    if spec['kind'] != 'root':
+        return False
+    current = json.loads(current_bytes)
+    expected = {**json.loads(original), **spec['updates']}
+    if current.get('state') not in {'pending', 'running', 'withdrawn'}:
+        return False
+    if {k: v for k, v in current.items() if k not in {'state', 'request'}} != {
+            k: v for k, v in expected.items() if k not in {'state', 'request'}}:
+        return False
+    stable = ('knowledgePoint', 'stage', 'missing', 'script', 'difficulty', 'jobKind')
+    return all(current['request'].get(k) == expected['request'].get(k) for k in stable)
+
+
 def apply(output, daemon_lock):
     output = Path(output)
     plan, originals = load_plan(output)
     inventory = Path(plan['inventory'])
     results = []
-    with lock_file(daemon_lock):
+    with lock_file(daemon_lock), lock_file(inventory / 'jobs.lock', wait=True):
         for row in plan['jobs']:
             directory = inventory / (row['key'] + '.pipeline') / str(row['cycle'])
             with ExitStack() as locks:
-                locks.enter_context(lock_file(inventory / 'jobs.lock'))
                 locks.enter_context(lock_file(inventory / f'kp-{row["kp"]}.lock'))
                 locks.enter_context(lock_file(directory / 'worker.lock'))
                 if (directory / 'publication/request.json').exists():
@@ -231,14 +250,21 @@ def apply(output, daemon_lock):
                 # after-images makes an interrupted apply safely idempotent.
                 pending = []
                 for spec in row['files']:
-                    current = sha(Path(spec['path']).read_bytes())
+                    current_bytes = Path(spec['path']).read_bytes()
+                    current = sha(current_bytes)
                     if current not in {spec['before_sha256'], spec['after_sha256']}:
-                        raise ValueError('Concurrent change at ' + spec['path'])
+                        if not refreshed_inventory_root(spec, originals[spec['backup']], current_bytes):
+                            raise ValueError('Concurrent change at ' + spec['path'])
                     if current == spec['before_sha256']:
                         pending.append(spec)
                 for spec in pending:
                     save(Path(spec['path']), {**json.loads(originals[spec['backup']]), **spec['updates']})
                 results.append({'key': row['key'], 'written_files': len(pending)})
+        # Capture exact after-image verification while admission refresh cannot
+        # legitimately update an already-unblocked root job beneath the audit.
+        verification = verify(output)
+        if not verification['verified']:
+            raise ValueError('Recovery verification failed; inspect verification.json')
     result = {'recovery_id': plan['recovery_id'], 'applied_at': time.time(),
               'jobs': len(results), 'written_files': sum(row['written_files'] for row in results),
               'quota_launch_credits': sum(row['quota_credits'] for row in plan['jobs'])}
@@ -248,17 +274,23 @@ def apply(output, daemon_lock):
 
 def verify(output):
     plan, originals = load_plan(output)
-    failures = []
+    failures, refreshed = [], []
     for row in plan['jobs']:
         for spec in row['files']:
-            if sha(Path(spec['path']).read_bytes()) != spec['after_sha256']:
-                failures.append(spec['path'])
+            current = Path(spec['path']).read_bytes()
+            if sha(current) != spec['after_sha256']:
+                if refreshed_inventory_root(spec, originals[spec['backup']], current):
+                    refreshed.append({'key': row['key'], 'path': spec['path'], 'sha256': sha(current),
+                                      'state': json.loads(current)['state']})
+                else:
+                    failures.append(spec['path'])
         if sha(Path(row['events_path']).read_bytes()) != row['events_sha256']:
             failures.append(row['events_path'])
     result = {'verified_at': time.time(), 'jobs': len(plan['jobs']),
               'verified': not failures, 'failures': failures,
               'quota_launch_credits': sum(row['quota_credits'] for row in plan['jobs']),
-              'other_budget_changes': 0, 'event_logs_changed': 0 if not failures else None}
+              'other_budget_changes': 0, 'event_logs_changed': 0 if not failures else None,
+              'inventory_ranking_refreshes': refreshed}
     save(Path(output) / 'verification.json', result)
     return result
 
@@ -281,7 +313,11 @@ def main():
         result = apply(args.output, args.daemon_lock)
     else:
         result = verify(args.output)
-    print(json.dumps(result, indent=2))
+    display = {**result}
+    if 'failures' in display:
+        display['failures'] = len(display['failures'])
+        display['inventory_ranking_refreshes'] = len(display['inventory_ranking_refreshes'])
+    print(json.dumps(display, indent=2))
 
 
 if __name__ == '__main__':

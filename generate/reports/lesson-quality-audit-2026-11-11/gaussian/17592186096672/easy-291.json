@@ -1,0 +1,2311 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": -2,
+        "u": 2,
+        "v": 4,
+        "z": -3,
+        "p": 1,
+        "d": 1,
+        "f": 1,
+        "m": 2,
+        "n": 1,
+        "t": 0,
+        "candidates": [
+          3,
+          -3,
+          1,
+          0,
+          -2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2,
+          8
+        ],
+        [
+          1,
+          1,
+          3,
+          -1
+        ]
+      ],
+      "solution": [
+        10,
+        -2,
+        -3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "2"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "4"
+            ],
+            [
+              "1",
+              "1",
+              "3",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "2"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-3"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "b19b9266-85ae-5eb8-b35b-c59c9376687d",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 2 & 3 & 2 & 8 \\\\ 1 & 1 & 3 & -1\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 2 & 3 & 2 & 8 \\\\ 1 & 1 & 3 & -1\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 1 & 1 & 3 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & -3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b0301df8-5f3f-5976-be3e-877b62fae747",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "91eec045-34cc-56f3-bfb2-3c959b684128",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "efc57a47-a0db-574d-9dfc-96419ed7c27e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "6bed25f6-c981-5abd-9295-4171dd2a3115",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "0a5a1297-055f-5b29-970a-1bd5e1734d4e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1bf3262d-9941-58f8-b050-ffae50e1fd43",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 2 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "efc57a47-a0db-574d-9dfc-96419ed7c27e"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 1,
+        "b": -2,
+        "c": -1,
+        "u": -1,
+        "v": 0,
+        "z": 1,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": -2,
+        "n": 1,
+        "t": 0,
+        "candidates": [
+          -3,
+          1,
+          -4,
+          -1,
+          2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          1,
+          -2,
+          -1
+        ],
+        [
+          -2,
+          -1,
+          3,
+          2
+        ],
+        [
+          1,
+          1,
+          -3,
+          -2
+        ]
+      ],
+      "solution": [
+        0,
+        1,
+        1
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2+2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "1",
+              "1",
+              "-3",
+              "-2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "b1550cf8-3017-58e0-bb7c-6241ea98d9c4",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-2z&=-1 \\\\ -2x-y+3z&=2 \\\\ x+y-3z&=-2\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ -2 & -1 & 3 & 2 \\\\ 1 & 1 & -3 & -2\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 1 & 1 & -3 & -2\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & -1 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & 1\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b915b564-051a-55e4-97db-77b4b2e2c11b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "255d6519-147b-5f77-9cb7-89cbb059be52",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9e865a4e-5a77-54d0-bbb7-ec25820d564c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "328932d4-a643-5c06-bc9b-9c0a9eebd71c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "67f16a0f-27ad-587d-8367-d2be05eb0e44",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "25751430-5260-551b-940f-1a820f3be706",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9e865a4e-5a77-54d0-bbb7-ec25820d564c"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "c": 2,
+        "u": -2,
+        "v": -4,
+        "z": 3,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": 0,
+        "n": -1,
+        "t": 0,
+        "candidates": [
+          2,
+          1,
+          4,
+          3,
+          -4
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          2,
+          2,
+          -2
+        ],
+        [
+          0,
+          1,
+          2,
+          -4
+        ],
+        [
+          -1,
+          -2,
+          -3,
+          -1
+        ]
+      ],
+      "solution": [
+        12,
+        -10,
+        3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "047b2b83-930b-5645-a829-91e0ad8d02c0",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+2y+2z&=-2 \\\\ y+2z&=-4 \\\\ -x-2y-3z&=-1\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ -1 & -2 & -3 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & -1 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "27d88152-ec06-5ec1-8a76-03c90c2964cc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4a98c49f-8b0d-571c-8e6b-a49cfcb2c51e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4a5233a5-6649-506f-9f54-27f16d65b21e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a24f1e38-c178-50a8-a8f5-db3054fb6d35",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "af3611fc-51d6-5f01-b484-76c836d979e0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9c7fc8c8-7d12-535b-a88a-5ae3eb47c9cb",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 2 & -2 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "af3611fc-51d6-5f01-b484-76c836d979e0"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 1,
+        "b": -2,
+        "c": 1,
+        "u": -1,
+        "v": -4,
+        "z": 4,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": 2,
+        "n": 2,
+        "t": 0,
+        "candidates": [
+          3,
+          -4,
+          -1,
+          4,
+          -3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          1,
+          -2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -3,
+          -6
+        ],
+        [
+          2,
+          2,
+          -5,
+          -6
+        ]
+      ],
+      "solution": [
+        15,
+        -8,
+        4
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "1",
+              "-4"
+            ],
+            [
+              "2",
+              "2",
+              "-5",
+              "-6"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "1",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "1",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "4"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "2a9dc0d9-6a7f-5ff4-9ed2-71a3118fc63a",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-2z&=-1 \\\\ 2x+3y-3z&=-6 \\\\ 2x+2y-5z&=-6\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 2 & 3 & -3 & -6 \\\\ 2 & 2 & -5 & -6\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 2 & 2 & -5 & -6\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & -1 & -4\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & 4\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a0772ebc-4264-5706-a998-f0a3e4a46abf",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "931393b1-bda2-5772-84bd-b992f4985cd0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "2da5b4d8-cc5c-5cec-b9da-a9ab715eb387",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a4b53504-a46d-5ccd-9f78-43352fb745ff",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a2c6e0e3-d2db-5f98-b71c-8e810676e87b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & 4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "fc37884c-61cc-5020-bb80-1a5e1d1f7e4b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 1 & -2 & -1 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a2c6e0e3-d2db-5f98-b71c-8e810676e87b"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 0,
+        "b": 0,
+        "c": 2,
+        "u": -3,
+        "v": 4,
+        "z": -1,
+        "p": 1,
+        "d": 1,
+        "f": 2,
+        "m": 0,
+        "n": 2,
+        "t": 0,
+        "candidates": [
+          -2,
+          0,
+          1,
+          -1,
+          3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          0,
+          0,
+          -3
+        ],
+        [
+          0,
+          1,
+          2,
+          4
+        ],
+        [
+          2,
+          0,
+          2,
+          -8
+        ]
+      ],
+      "solution": [
+        -3,
+        6,
+        -1
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "0",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "4"
+            ],
+            [
+              "0",
+              "0",
+              "2",
+              "-2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "0",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-1"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "1c77e4d6-0765-57c9-b0f3-ab27a777b855",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x&=-3 \\\\ y+2z&=4 \\\\ 2x+2z&=-8\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 2 & 0 & 2 & -8\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 2 & -2\\end{array}\\right].\n$$\n\nUsing $R_3:=\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & -1\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a755be08-6c35-5a17-99d3-47f60f10ed80",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6ef3624d-25b8-521c-934c-65d46820ceb9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "f9ccc137-9bcd-55be-95d4-a0a6939c4f58",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "071d8783-8c20-5de2-a1fe-e28dc7bfe7b9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "e3769775-04f4-56fa-9b30-4b162d261fe8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "93ec3246-3da6-55a9-acc3-15e9f8ddd740",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e3769775-04f4-56fa-9b30-4b162d261fe8"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": 0,
+        "c": -2,
+        "u": 4,
+        "v": 2,
+        "z": 2,
+        "p": 1,
+        "d": 1,
+        "f": -2,
+        "m": 2,
+        "n": -1,
+        "t": 0,
+        "candidates": [
+          3,
+          1,
+          -1,
+          0,
+          2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          2,
+          0,
+          4
+        ],
+        [
+          2,
+          5,
+          -2,
+          10
+        ],
+        [
+          -1,
+          -2,
+          -2,
+          -8
+        ]
+      ],
+      "solution": [
+        -8,
+        6,
+        2
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "2"
+            ],
+            [
+              "-1",
+              "-2",
+              "-2",
+              "-8"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "2"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "-4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "2"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "2"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "e650f81a-03d5-55d8-860c-fd0fba25e3e9",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+2y&=4 \\\\ 2x+5y-2z&=10 \\\\ -x-2y-2z&=-8\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 2 & 5 & -2 & 10 \\\\ -1 & -2 & -2 & -8\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ -1 & -2 & -2 & -8\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & -2 & -4\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 2\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "14ce4e05-ae03-5c49-a429-7cece3dd92d1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "11586847-6286-5920-b93c-749ac3c74e99",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "0c8d1059-3fb3-50a2-b1ac-39720dcbd84c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "20541536-9599-5b24-b958-4a051e3690ea",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "cf108212-8db8-5ff6-9cfd-41c0c3674048",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "c357e420-8483-5469-8707-ef10a8c2a819",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & 0 & 4 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c357e420-8483-5469-8707-ef10a8c2a819"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": -1,
+        "c": -2,
+        "u": 3,
+        "v": 2,
+        "z": 4,
+        "p": 1,
+        "d": 1,
+        "f": 1,
+        "m": -2,
+        "n": -2,
+        "t": 0,
+        "candidates": [
+          -3,
+          4,
+          3,
+          -2,
+          2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          2,
+          -1,
+          3
+        ],
+        [
+          -2,
+          -3,
+          0,
+          -4
+        ],
+        [
+          -2,
+          -4,
+          3,
+          -2
+        ]
+      ],
+      "solution": [
+        -13,
+        10,
+        4
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2+2R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "2"
+            ],
+            [
+              "-2",
+              "-4",
+              "3",
+              "-2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "-2",
+              "2"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "4"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "dc613ce6-1473-555d-b51f-3602cf3cfbc0",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+2y-z&=3 \\\\ -2x-3y&=-4 \\\\ -2x-4y+3z&=-2\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ -2 & -3 & 0 & -4 \\\\ -2 & -4 & 3 & -2\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ -2 & -4 & 3 & -2\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 4\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "19ffa354-ace9-52ce-8911-17fe27c009a1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d28e54ff-0d84-5906-8cc8-6d69f719510c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4887b3b5-9879-5328-9c6a-100b3972df4e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "e01b2952-2e67-5243-890f-d2fdd9eb6d6d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "af738222-a353-5c6b-863c-97b36dcba798",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "88208f9a-306b-5828-9d44-fdd6a60870c5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -1 & 3 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4887b3b5-9879-5328-9c6a-100b3972df4e"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 0,
+        "b": 1,
+        "c": -1,
+        "u": 1,
+        "v": -4,
+        "z": 0,
+        "p": 1,
+        "d": 1,
+        "f": 2,
+        "m": -1,
+        "n": 1,
+        "t": 0,
+        "candidates": [
+          0,
+          -3,
+          -1,
+          4,
+          -4
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          0,
+          1,
+          1
+        ],
+        [
+          -1,
+          1,
+          -2,
+          -5
+        ],
+        [
+          1,
+          0,
+          3,
+          1
+        ]
+      ],
+      "solution": [
+        1,
+        -4,
+        0
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "1",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "-4"
+            ],
+            [
+              "1",
+              "0",
+              "3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "1",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "2",
+              "0"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "1",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "0"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "67f75d53-ad2f-55f8-9ec4-b81c41ed9054",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ -1 & 1 & -2 & -5 \\\\ 1 & 0 & 3 & 1\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ -1 & 1 & -2 & -5 \\\\ 1 & 0 & 3 & 1\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 1 & 0 & 3 & 1\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 2 & 0\\end{array}\\right].\n$$\n\nUsing $R_3:=\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c9e0db9d-76f0-5df5-ada4-3b7d3c8c998e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3f7f670d-540c-5eee-9070-b773c2fa6e79",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9b7114aa-5fc3-51c6-b9c6-bcaf37cce90a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "28aa6162-751f-50f9-9a03-a69a79e0f211",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "d10ff163-8b5c-5936-b6de-2171be2d713b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & 4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "02015ba6-ac03-57d5-bfe1-cc76d3540d6f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 1 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3f7f670d-540c-5eee-9070-b773c2fa6e79"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": -1,
+        "b": -2,
+        "c": -1,
+        "u": 3,
+        "v": 0,
+        "z": -2,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": 1,
+        "n": 2,
+        "t": 0,
+        "candidates": [
+          4,
+          -2,
+          1,
+          -1,
+          -4
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          -1,
+          -2,
+          3
+        ],
+        [
+          1,
+          0,
+          -3,
+          3
+        ],
+        [
+          2,
+          -2,
+          -5,
+          8
+        ]
+      ],
+      "solution": [
+        -3,
+        -2,
+        -2
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2-R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "2",
+              "-2",
+              "-5",
+              "8"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-2"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "d923127d-4901-51b7-adb0-54ad3318bc14",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x-y-2z&=3 \\\\ x-3z&=3 \\\\ 2x-2y-5z&=8\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 1 & 0 & -3 & 3 \\\\ 2 & -2 & -5 & 8\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 2 & -2 & -5 & 8\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & -1 & 2\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -2\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9a403517-f7b8-5845-8062-49cfa630e037",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ae27649f-e55f-5e16-abb7-da5e8d9f76ab",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & 4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9948d4b9-43de-55a0-b06c-44e9c9e980ef",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "ee311340-b7ce-5baf-bddd-e98de2c62f97",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "886d39fa-26ff-535b-a81d-876b5c6eb6ec",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "088c0959-a2ab-5165-b701-71fdf26e6982",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -2 & 3 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9948d4b9-43de-55a0-b06c-44e9c9e980ef"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": -2,
+        "c": 0,
+        "u": -2,
+        "v": 3,
+        "z": -3,
+        "p": 1,
+        "d": 1,
+        "f": -2,
+        "m": 0,
+        "n": -1,
+        "t": 0,
+        "candidates": [
+          1,
+          -3,
+          2,
+          -4,
+          3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          2,
+          -2,
+          -2
+        ],
+        [
+          0,
+          1,
+          0,
+          3
+        ],
+        [
+          -1,
+          -2,
+          0,
+          8
+        ]
+      ],
+      "solution": [
+        -14,
+        3,
+        -3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "3"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "6"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "3"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-3"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "dad42831-2aa0-5a52-a616-1e474f555aba",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ -1 & -2 & 0 & 8\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ -1 & -2 & 0 & 8\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & -2 & 6\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & -3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "81cb0d40-c344-59c4-b9ea-66259694424b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7aa6c1fb-ea21-5fa5-a71a-c2f877dbe2ee",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "fe438b44-83ba-513f-b798-dba96ad75e39",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1c5d57e8-bdfd-5b26-b677-9f99d4ee8012",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1eb6260e-3db9-5ddd-9dd4-a52660d5cc03",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1d4bf75a-185e-5248-b84a-3829b3c301aa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & -2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fe438b44-83ba-513f-b798-dba96ad75e39"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": -2,
+        "c": 0,
+        "u": 0,
+        "v": -4,
+        "z": -4,
+        "p": 1,
+        "d": 1,
+        "f": -2,
+        "m": -2,
+        "n": -1,
+        "t": 0,
+        "candidates": [
+          -4,
+          0,
+          -3,
+          -1,
+          3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          2,
+          -2,
+          0
+        ],
+        [
+          -2,
+          -3,
+          4,
+          -4
+        ],
+        [
+          -1,
+          -2,
+          0,
+          8
+        ]
+      ],
+      "solution": [
+        0,
+        -4,
+        -4
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2+2R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-2",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-4"
+            ],
+            [
+              "-1",
+              "-2",
+              "0",
+              "8"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-2",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "8"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-2",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-4"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "48ad9987-24a7-5989-b3d5-524c9dfd5bbc",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ -2 & -3 & 4 & -4 \\\\ -1 & -2 & 0 & 8\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ -2 & -3 & 4 & -4 \\\\ -1 & -2 & 0 & 8\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ -1 & -2 & 0 & 8\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & -2 & 8\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d0f30f7a-5a20-5dd9-babc-62fc54b8763b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2dfb0eee-02ff-5e6c-a3c3-b7efbdc7cf06",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "728029ad-2491-5532-9cb4-43e82e199ec3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4a717eee-6062-5223-9af9-d92f20353bf9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1df14354-62c5-5ea2-8ea4-dbbe1d0dd018",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "1de70c01-a1bc-5f89-9072-d4683a31d0cb",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & 2 & -2 & 0 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2dfb0eee-02ff-5e6c-a3c3-b7efbdc7cf06"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-ref-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": -1,
+        "b": -1,
+        "c": 2,
+        "u": 0,
+        "v": -4,
+        "z": 3,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": 2,
+        "n": 2,
+        "t": 0,
+        "candidates": [
+          0,
+          -4,
+          -2,
+          1,
+          3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "ref"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          -1,
+          -1,
+          0
+        ],
+        [
+          2,
+          -1,
+          0,
+          -4
+        ],
+        [
+          2,
+          -2,
+          -3,
+          -3
+        ]
+      ],
+      "solution": [
+        -7,
+        -10,
+        3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-4"
+            ],
+            [
+              "2",
+              "-2",
+              "-3",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-1",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "seed": 291
+    },
+    "question": {
+      ":question/id": "600bed1b-c0b0-545f-9f22-b1bf62420294",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 2 & -1 & 0 & -4 \\\\ 2 & -2 & -3 & -3\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 2 & -1 & 0 & -4 \\\\ 2 & -2 & -3 & -3\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 2 & -2 & -3 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & -1 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8c190f60-35bf-565a-80b7-f52e1822f812",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "081903a3-bc94-59e3-a27f-a090d1d2f88d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "c8ffbee5-5367-5659-a2cd-d89594cb040a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & -4\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "983ba1ca-c5f2-5444-8352-399070f6ad8f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a0a32ecd-f289-5551-948b-fccffdc2f269",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "b2b4b7b3-cd20-589e-850b-ad1d57c5d276",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "M\\sim \\left[\\begin{array}{ccc|c}1 & -1 & -1 & 0 \\\\ 0 & 1 & 2 & -4 \\\\ 0 & 0 & 1 & 3\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b2b4b7b3-cd20-589e-850b-ad1d57c5d276"
+          ]
+        }
+      ]
+    }
+  }
+]
