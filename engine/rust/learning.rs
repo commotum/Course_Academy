@@ -2444,6 +2444,14 @@ pub fn compare_math_in_context(
             // accept fractions/expressions in place of the requested numeral.
             return Ok(a == b);
         }
+        if permits_equivalent_decimal_numerals(prompt)
+            && let (Some(a), Some(b)) = (plain_decimal_scalar_multiple(&a), plain_decimal_scalar_multiple(&b))
+        {
+            // Rounding constrains the coefficient, not the order of a
+            // scalar and its symbol. Still require an evaluated decimal
+            // coefficient, the same symbol, and exact rounded value.
+            return Ok(a == b);
+        }
         Ok(false)
     } else {
         if let Some(source) = derivative_source_function(prompt)
@@ -2605,6 +2613,27 @@ fn plain_decimal_numeral(text: &str) -> Option<num_rational::BigRational> {
     }
     if digits == 0 || points > 1 { return None; }
     decimal_number(text).ok()
+}
+
+// A decimal coefficient times one symbol is also a rounded answer, e.g.
+// 0.850n. Keep this deliberately narrower than symbolic equivalence: fractions,
+// sums and unevaluated products do not satisfy a decimal-rounding instruction.
+fn plain_decimal_scalar_multiple(text: &str) -> Option<(num_rational::BigRational, String)> {
+    use std::sync::LazyLock;
+    static MULTIPLE: LazyLock<regex::Regex> = LazyLock::new(|| {
+        let numeral = r"([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+))";
+        let symbol = r"([a-zA-Z]|\\(?:mathbf|boldsymbol|vec)\{[a-zA-Z]\})";
+        regex::Regex::new(&format!(r"^(?:{numeral}\*?{symbol}|{symbol}\*{numeral})$"))
+            .expect("valid decimal scalar multiple")
+    });
+    let captures = MULTIPLE.captures(text)?;
+    let (coefficient, symbol) = if let Some(value) = captures.get(1) {
+        (value.as_str(), captures.get(2)?.as_str())
+    } else {
+        (captures.get(4)?.as_str(), captures.get(3)?.as_str())
+    };
+    let symbol = symbol.trim_end_matches('}').chars().last()?.to_string();
+    Some((plain_decimal_numeral(coefficient)?, symbol))
 }
 
 fn permits_equivalent_decimal_numerals(prompt: &str) -> bool {
@@ -5366,6 +5395,30 @@ pub(crate) mod tests {
                 "{rejected} must not satisfy the authored three-decimal answer"
             );
         }
+    }
+
+    #[test]
+    fn rounded_scalar_multiples_accept_decimal_notation_without_weakening_form() {
+        let mut s = fixture();
+        s.entities.get_mut(&100).unwrap().insert(
+            "question/problem".into(),
+            json!("Find the vector in terms of n. Round the coefficient to three decimal places."),
+        );
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("0.850n"));
+        for accepted in [".85n", "+00.850n", "0.8500n", "n*0.85", r"0.85\cdot n", r"0.850\mathbf{n}", r"\vec{n}*0.85"] {
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, accepted.into())])), Ok(true), "{accepted}");
+        }
+        for rejected in ["0.85", "0.85m", "-0.85n", "0.8501n", "0.8499n", "17/20*n", "(0.425+0.425)n", "8.50e-1*n", "0.85n^2"] {
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, rejected.into())])), Ok(false), "{rejected}");
+        }
+        for prompt in ["Round to three significant figures.", "Round to three decimal places and include trailing zeros.", "Write exactly three decimal places."] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, "0.850n".into())])), Ok(true));
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, "0.85n".into())])), Ok(false), "{prompt}");
+        }
+        // Ordinary symbolic questions continue to use mathematical equivalence.
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Find the vector in terms of n."));
+        assert_eq!(grade(&s, 100, &BTreeMap::from([(200, "17/20*n".into())])), Ok(true));
     }
 
     #[test]
