@@ -1,0 +1,250 @@
+[
+  {
+    "label": "samples/easy/81/delivery/accepted.json:0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186235285,
+        "id": "58a49d00-cc58-5228-af38-9369cf31d8c8",
+        "title": "Finding a Scalar Factor When Direction Reverses"
+      },
+      "question": {
+        ":question/id": "0f04dc66-175b-55c0-a3e0-45c992d262e0",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The three vectors share an origin, and each grid square has the same side length.\n\n![](images/fc/fc56bfdc34b2c992f406523067d6cba59164f0a5dd0498332ca5f0bae2e9d230.png)\n\nGiven $\\mathbf{c}=\\lambda\\mathbf{a}+3\\mathbf{b}$, find $\\lambda$.",
+        ":question/worked-solution": "First trace $3\\mathbf{b}$ from the common origin $O$ to a point $P$: keep its direction and scale its length. The remaining path from $P$ to the endpoint $C$ must be the unknown multiple of $\\mathbf{a}$.\n\n![](images/40/40d7a998f00a68f67d2a0d046c8dd6105f1c59333aa2702f3c40b8eaea73d8f5.png)\n\nFollowing the grid direction of $\\mathbf{a}$ takes $2$ steps, while the parallel path $PC$ has $4$ steps. Their length ratio is $\\frac{4}{2}=2$. The remaining path points in the opposite direction to $\\mathbf{a}$, so\n$$\n\\overrightarrow{PC}=-2\\mathbf{a}.\n$$\nAdding the path vectors gives\n$$\n\\begin{aligned}\n\\mathbf{c}&=\\overrightarrow{OP}+\\overrightarrow{PC}\\\\\n&=3\\mathbf{b}+(-2\\mathbf{a})\\\\\n&=-2\\mathbf{a}+3\\mathbf{b}.\n\\end{aligned}\n$$\nBecause $\\mathbf{a}$ and $\\mathbf{b}$ are nonparallel, these coefficients are unique. Comparing with $\\mathbf{c}=\\lambda\\mathbf{a}+3\\mathbf{b}$ gives $\\lambda=-2$. The minus sign records the reversed direction.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8e060c54-269d-513e-b498-b11dc8c4a570",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a2e858a5-5fc2-5034-9687-c98048296063",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{2}"
+              },
+              {
+                ":answer/id": "1264b678-fde2-524d-9bfe-c17201aeaad5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-4"
+              },
+              {
+                ":answer/id": "0304bdc4-2077-5c7e-a1b9-b93f3ebea9ff",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-2"
+              },
+              {
+                ":answer/id": "dab703b2-c631-5f04-9b7b-9ef2f2252157",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{3}{2}"
+              },
+              {
+                ":answer/id": "df9774d9-28c7-5f76-abb6-3c170916f7d6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0304bdc4-2077-5c7e-a1b9-b93f3ebea9ff"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "direction-reversal-v3-independent",
+        "seed": 10292745008688458795,
+        "template": "construct-radio",
+        "bank_profile": [
+          "sign",
+          "under_path",
+          "opposite_under_path",
+          "omit_reference"
+        ],
+        "parameters": {
+          "a": [
+            2,
+            0
+          ],
+          "b": [
+            1,
+            -2
+          ],
+          "k": "3",
+          "r": "2"
+        },
+        "plot_assets": {
+          "prompt": "822ab650b6a2146060b82d748248.png",
+          "solution": "a7138914cf5adc5c2db2ea9724b7.png"
+        },
+        "source": {
+          "database": "math",
+          "basis": 10545,
+          "support": [
+            "tutorial-15990",
+            "e-26144"
+          ]
+        },
+        "error_recipes": [
+          "sign",
+          "under_path",
+          "opposite_under_path",
+          "omit_reference"
+        ],
+        "rejections": 0,
+        "math_format": "course-academy-tex-v1",
+        "batch_selection_rejections": 0
+      },
+      "assets": {
+        "822ab650b6a2146060b82d748248.png": {
+          "path": "images/fc/fc56bfdc34b2c992f406523067d6cba59164f0a5dd0498332ca5f0bae2e9d230.png",
+          "sha256": "fc56bfdc34b2c992f406523067d6cba59164f0a5dd0498332ca5f0bae2e9d230",
+          "bytes": 7706
+        },
+        "a7138914cf5adc5c2db2ea9724b7.png": {
+          "path": "images/40/40d7a998f00a68f67d2a0d046c8dd6105f1c59333aa2702f3c40b8eaea73d8f5.png",
+          "sha256": "40d7a998f00a68f67d2a0d046c8dd6105f1c59333aa2702f3c40b8eaea73d8f5",
+          "bytes": 14664
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a2e858a5-5fc2-5034-9687-c98048296063",
+        "expected": "rejected",
+        "purpose": "Actual offered choice; exact independently derived coefficients"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1264b678-fde2-524d-9bfe-c17201aeaad5",
+        "expected": "rejected",
+        "purpose": "Actual offered choice; exact independently derived coefficients"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0304bdc4-2077-5c7e-a1b9-b93f3ebea9ff",
+        "expected": "accepted",
+        "purpose": "Actual offered choice; exact independently derived coefficients"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "dab703b2-c631-5f04-9b7b-9ef2f2252157",
+        "expected": "rejected",
+        "purpose": "Actual offered choice; exact independently derived coefficients"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "df9774d9-28c7-5f76-abb6-3c170916f7d6",
+        "expected": "rejected",
+        "purpose": "Actual offered choice; exact independently derived coefficients"
+      }
+    ]
+  },
+  {
+    "label": "samples/easy/81/delivery/accepted.json:1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186235285,
+        "id": "58a49d00-cc58-5228-af38-9369cf31d8c8",
+        "title": "Finding a Scalar Factor When Direction Reverses"
+      },
+      "question": {
+        ":question/id": "6f17e336-0365-5a9c-973f-ef4265ec6c1a",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The three vectors share an origin, and each grid square has the same side length.\n\n![](images/33/33e37241382a824a92c81112aecb18fd9640ec0b20b2241b3dee221d90dcae4c.png)\n\nIf $\\mathbf{c}=\\lambda\\mathbf{a}+2\\mathbf{b}$, then $\\lambda=$ {{field-1}}.",
+        ":question/worked-solution": "First trace $2\\mathbf{b}$ from the common origin $O$ to a point $P$: keep its direction and scale its length. The remaining path from $P$ to the endpoint $C$ must be the unknown multiple of $\\mathbf{a}$.\n\n![](images/44/44893c93cc2e2d89e5db2a535db2a096facf344087bfb9ebcceadbea0df1f293.png)\n\nFollowing the grid direction of $\\mathbf{a}$ takes $4$ steps, while the parallel path $PC$ has $8$ steps. Their length ratio is $\\frac{8}{4}=2$. The remaining path points in the opposite direction to $\\mathbf{a}$, so\n$$\n\\overrightarrow{PC}=-2\\mathbf{a}.\n$$\nAdding the path vectors gives\n$$\n\\begin{aligned}\n\\mathbf{c}&=\\overrightarrow{OP}+\\overrightarrow{PC}\\\\\n&=2\\mathbf{b}+(-2\\mathbf{a})\\\\\n&=-2\\mathbf{a}+2\\mathbf{b}.\n\\end{aligned}\n$$\nBecause $\\mathbf{a}$ and $\\mathbf{b}$ are nonparallel, these coefficients are unique. Comparing with $\\mathbf{c}=\\lambda\\mathbf{a}+2\\mathbf{b}$ gives $\\lambda=-2$. The minus sign records the reversed direction.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e8cf368b-7b50-5932-857b-533277b55a00",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "db52d97e-a331-5298-be58-283b9421bb11",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-2"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "db52d97e-a331-5298-be58-283b9421bb11"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "direction-reversal-v3-independent",
+        "seed": 7087624286194790064,
+        "template": "construct-blank",
+        "bank_profile": "blank",
+        "parameters": {
+          "a": [
+            0,
+            -4
+          ],
+          "b": [
+            1,
+            -2
+          ],
+          "k": "2",
+          "r": "2"
+        },
+        "plot_assets": {
+          "prompt": "7937f427b0a97cbbef9f1366e0f0.png",
+          "solution": "0316f6673a47a111da165f4ae265.png"
+        },
+        "source": {
+          "database": "math",
+          "basis": 10545,
+          "support": [
+            "tutorial-15990",
+            "e-26144"
+          ]
+        },
+        "error_recipes": [],
+        "rejections": 0,
+        "math_format": "course-academy-tex-v1",
+        "batch_selection_rejections": 0
+      },
+      "assets": {
+        "7937f427b0a97cbbef9f1366e0f0.png": {
+          "path": "images/33/33e37241382a824a92c81112aecb18fd9640ec0b20b2241b3dee221d90dcae4c.png",
+          "sha256": "33e37241382a824a92c81112aecb18fd9640ec0b20b2241b3dee221d90dcae4c",
+          "bytes": 6928
+        },
+        "0316f6673a47a111da165f4ae265.png": {
+          "path": "images/44/44893c93cc2e2d89e5db2a535db2a096facf344087bfb9ebcceadbea0df1f293.png",
+          "sha256": "44893c93cc2e2d89e5db2a535db2a096facf344087bfb9ebcceadbea0df1f293",
+          "bytes": 13355
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "-2",
+        "expected": "accepted",
+        "purpose": "Independent exact coordinate or ordered-ratio calculation"
+      },
+      {
+        "field_index": 0,
+        "submitted": "-4/2",
+        "expected": "accepted",
+        "purpose": "Equivalent unreduced rational, with no simplest-form restriction"
+      },
+      {
+        "field_index": 0,
+        "submitted": "2",
+        "expected": "rejected",
+        "purpose": "Wrong direction/sign"
+      },
+      {
+        "field_index": 0,
+        "submitted": "-1",
+        "expected": "rejected",
+        "purpose": "Wrong magnitude near miss"
+      }
+    ]
+  }
+]
