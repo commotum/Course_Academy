@@ -84,7 +84,7 @@ def main():
     assert read(H/'refill-regressions.json')['passed']
     for band in ['easy','moderate','hard']:
         assert read(H/'verification'/band/'refill/result.json')['status']=='passed'
-        assert read(H/'verification'/band/'render/rendering.json')['passed']
+        assert read(H/'verification'/band/'render-delivered/rendering.json')['passed']
     assert read(H/'stored/engine-report.json')['passed']
     assert read(H/'stored/render/rendering.json')['passed']
     p=Publisher.from_environment(source=':agent/codex');root=H/'package';manifest=read(root/'package.json')
@@ -131,7 +131,7 @@ def main():
             batches[band]=dict(batch_hash=batch_sha256(records),assets=assets,seed=20261111,count=len(records))
             reports[band]=dict(status='passed',batch_sha256=batches[band]['batch_hash'],evidence_paths=[
                 'review/report.json',f'verification/{band}/records.json',f'verification/{band}/delivery/delivery.json',
-                f'verification/{band}/refill/result.json',f'verification/{band}/refill/native-report.json',f'verification/{band}/render/rendering.json'])
+                f'verification/{band}/refill/result.json',f'verification/{band}/refill/native-report.json',f'verification/{band}/render-delivered/rendering.json'])
         binding=dict(policy_version=REVIEW_POLICY_VERSION,package_hash=sha,source_hash=digest(reviewed_source),
             inventory_hash=digest(read(H/'capture/inventory.json')),engine_hash=engine_hash,assets=batches['moderate']['assets'],
             batch_hash=batches['moderate']['batch_hash'],effective_difficulty='moderate',
