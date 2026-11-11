@@ -59,6 +59,8 @@ proposed[':question/problem']='The three vectors share an origin, and each grid 
 old_asset='images/ce/cee2a501a390c40bc1100336ff4a7cda3e7a070dff7dc0470b1762833a7a677a.png'
 proposed[':question/worked-solution']='Draw $2\\mathbf{b}$ from the common origin $O$ to a point $P$, then complete the path from $P$ to the endpoint $C$ of $\\mathbf{c}$.\n\n![]('+old_asset+')\n\n'+q[':question/worked-solution'].replace('Following the drawn path gives','Adding the two path vectors gives')
 record={'knowledge_point':{'db_id':17592186235285,'id':'58a49d00-cc58-5228-af38-9369cf31d8c8'},'question':normalized_question(proposed)}
+for field in record['question'][':question/answer-fields']:
+    field[':answer-field/correct']=[':answer/id',field[':answer-field/correct']]
 record=localize_record(record,H/'stored/assets',H/'stored/plots',library=AuditImages(H/'stored/assets',H/'stored/plots',Path('/media/jake/SSD/EDB/math')))
 proposed[':question/problem']=record['question'][':question/problem'];proposed[':question/worked-solution']=record['question'][':question/worked-solution']
 assert proposed[':question/answer-fields']==q[':question/answer-fields']

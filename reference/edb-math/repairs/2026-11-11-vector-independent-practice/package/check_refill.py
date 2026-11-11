@@ -47,6 +47,12 @@ def check(record, directory):
     coefficient = F(residual[0]*b[1]-residual[1]*b[0], det)
     assert all(residual[i] == coefficient*a[i] for i in (0, 1))
     field, = q[':question/answer-fields']
+    kval = '-' if k == -1 else '' if k == 1 else str(k)
+    equation = r'\mathbf{c}=\lambda\mathbf{a}' + ('+' if k > 0 else '') + kval + r'\mathbf{b}'
+    expected_tail = ('Given $' + equation + r'$, find $\lambda$.'
+                     if enum(field[':answer-field/type']) == ':answer-field.type/radio'
+                     else 'If $' + equation + r'$, then $\lambda=$ {{field-1}}.')
+    assert prompt.split('\n\n')[-1] == expected_tail, 'Visible coefficient differs from the diagram and assessed calculation'
     correct = next(a for a in field[':answer-field/choices'] if str(a[':answer/id']) == answer_id(field[':answer-field/correct']))
     assert parse(correct[':answer/value']) == coefficient
     assert len({parse(a[':answer/value']) for a in field[':answer-field/choices']}) == len(field[':answer-field/choices'])

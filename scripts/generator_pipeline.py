@@ -154,11 +154,13 @@ class CodexSession:
 
     def resolve_parent_completion(self, execution_path, execution):
         """Reconcile a saved completion before deciding whether a retry fits."""
-        from generator_control import GenerationPaused, request_parent
+        from generator_control import CONTROL_ENV, GenerationPaused, request_parent
         from generator_lifecycle import finish_launch
         message = execution.get('parent_completion')
         if message is None:
             return execution
+        if not self.environment.get(CONTROL_ENV):
+            raise GenerationPaused('Resume through the generation supervisor to reconcile this completed turn')
         response = request_parent(self.environment, message)
         execution = {**execution, 'status': 'failed'}
         execution.pop('parent_completion', None)
@@ -232,6 +234,8 @@ class CodexSession:
                    '--output-schema', str(templates / ('source-account.schema.json' if phase == 'source_account' else role + '.schema.json')),
                    '--output-last-message', str(output), '--json']
         command += [resume_id, '-'] if resume_id else ['-']
+        events_path = directory / 'events.jsonl'
+        events_offset = events_path.stat().st_size if events_path.exists() else 0
         # Admission is a parent decision, made before charging a launch. A
         # disconnected supervisor fails closed and leaves the job resumable.
         ticket = admit_turn(self.environment, role, directory)
@@ -244,8 +248,6 @@ class CodexSession:
             execution['source_account_isolation'] = context.get('source_account_isolation')
             execution['source_account_revision'] = context.get('source_account_revision')
         execution.pop('error', None)
-        events_path = directory / 'events.jsonl'
-        events_offset = events_path.stat().st_size if events_path.exists() else 0
         process, failure, result = None, None, None
         try:
             with events_path.open('a') as log:
