@@ -38,43 +38,62 @@ def ensure_native_grader(repo_root=ROOT, environment=None):
     (root / 'target').mkdir(exist_ok=True)
     with (root / 'target/generator-native-build.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        inputs = build_inputs(root)
-        identity = digest(inputs)
-        if binary.is_file() and sidecar.is_file():
-            saved = json.loads(sidecar.read_text())
-            if (saved.get('inputs') == inputs and saved.get('inputs_sha256') == identity
-                    and saved.get('binary_sha256') == hashlib.sha256(binary.read_bytes()).hexdigest()):
-                return saved
-        environment['COURSE_ACADEMY_GRADER_INPUTS_SHA256'] = identity
-        command = ['cargo', 'build', '--locked', '--offline', '--bin', 'generator-native-check', '--message-format=json']
-        process = subprocess.run(command, cwd=root, env=environment, capture_output=True, text=True)
-        if process.returncode:
-            raise ValueError('Native grader build failed: ' + process.stderr[-6000:])
-        executable, dependencies = None, {}
-        for line in process.stdout.splitlines():
-            try:
-                message = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if message.get('reason') != 'compiler-artifact':
-                continue
-            if message.get('target', {}).get('name') == 'generator-native-check':
-                executable = message.get('executable')
-            for name in message.get('filenames', []):
-                path = Path(name)
-                if path.is_file() and path.suffix in {'.rlib', '.so', '.a'}:
-                    dependencies[str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
-        if not executable or not dependencies or build_inputs(root) != inputs:
-            raise ValueError('Native grader build lacks dependencies or its sources changed during compilation')
-        compiler = subprocess.check_output(['rustc', '-Vv'], cwd=root, env=environment, text=True).strip()
-        temporary = binary.with_suffix('.building')
-        shutil.copy2(executable, temporary)
-        temporary.replace(binary)
-        result = {'format': 'course-academy-native-build-v1', 'inputs': inputs, 'inputs_sha256': identity,
-                  'binary_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
-                  'compiler': compiler, 'dependencies': dependencies, 'command': command}
-        sidecar.write_text(json.dumps(result, indent=2) + '\n')
-        return result
+        # Shared sources can change while Cargo compiles. Retry a bounded number
+        # of times, installing only a build whose complete inputs stayed stable.
+        for attempt in range(3):
+            inputs = build_inputs(root)
+            identity = digest(inputs)
+            if binary.is_file() and sidecar.is_file():
+                saved = json.loads(sidecar.read_text())
+                if (saved.get('inputs') == inputs and saved.get('inputs_sha256') == identity
+                        and saved.get('binary_sha256') == hashlib.sha256(binary.read_bytes()).hexdigest()):
+                    return saved
+            environment['COURSE_ACADEMY_GRADER_INPUTS_SHA256'] = identity
+            command = ['cargo', 'build', '--locked', '--offline', '--bin', 'generator-native-check', '--message-format=json']
+            process = subprocess.run(command, cwd=root, env=environment, capture_output=True, text=True)
+            if process.returncode:
+                raise ValueError('Native grader build failed: ' + process.stderr[-6000:])
+            executable, dependencies = None, {}
+            for line in process.stdout.splitlines():
+                try:
+                    message = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if message.get('reason') != 'compiler-artifact':
+                    continue
+                if message.get('target', {}).get('name') == 'generator-native-check':
+                    executable = message.get('executable')
+                for name in message.get('filenames', []):
+                    path = Path(name)
+                    if not path.is_absolute():
+                        path = root / path
+                    if path.is_file() and path.suffix in {'.rlib', '.so', '.a'}:
+                        dependencies[str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
+            if not executable:
+                raise ValueError('Native grader build did not identify its executable')
+            if not dependencies:
+                raise ValueError('Native grader build did not identify linked dependency artifacts')
+            current_inputs = build_inputs(root)
+            if current_inputs != inputs:
+                if attempt < 2:
+                    continue
+                changed = sorted(name for name in inputs.keys() | current_inputs.keys()
+                                 if inputs.get(name) != current_inputs.get(name))
+                raise ValueError('Native grader sources changed during compilation after 3 attempts: '
+                                 + ', '.join(changed))
+            compiler = subprocess.check_output(['rustc', '-Vv'], cwd=root, env=environment, text=True).strip()
+            temporary = binary.with_suffix('.building')
+            executable = Path(executable)
+            if not executable.is_absolute():
+                executable = root / executable
+            shutil.copy2(executable, temporary)
+            temporary.replace(binary)
+            result = {'format': 'course-academy-native-build-v1', 'inputs': inputs, 'inputs_sha256': identity,
+                      'binary_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
+                      'compiler': compiler, 'dependencies': dependencies, 'command': command,
+                      'source_stability_attempts': attempt + 1}
+            sidecar.write_text(json.dumps(result, indent=2) + '\n')
+            return result
 
 
 if __name__ == '__main__':
