@@ -175,9 +175,9 @@ def prepare_investigation(publisher, source, directory):
                 atomic_json(input_file, _json(current))
             if refreshed_reference != reference:
                 atomic_json(reference_file, _json(refreshed_reference))
-            return {**current, 'investigation_file': str(input_file),
+            return _json({**current, 'investigation_file': str(input_file),
                     'reference_file': str(reference_file) if reference.get('candidates') else None,
-                    'reference_candidates': reference.get('candidates', [])}
+                    'reference_candidates': reference.get('candidates', [])})
         # Never replace evidence underneath a retained account or result.
         archive = directory / ('source-revision-' + str(saved.get('preparation_key', 'legacy'))[:20])
         archive.mkdir(exist_ok=True)
@@ -190,8 +190,8 @@ def prepare_investigation(publisher, source, directory):
     if not summary['construction_needed']:
         atomic_json(reference_file, _json({**summary, 'candidates': []}))
         atomic_json(input_file, _json(summary))
-        return {**summary, 'investigation_file': str(input_file),
-                'reference_file': None, 'reference_candidates': []}
+        return _json({**summary, 'investigation_file': str(input_file),
+                'reference_file': None, 'reference_candidates': []})
     # Select IDs through the three observed refs before loading any metadata.
     # Global nested Pulls and KP x difficulty input products exceed the live
     # EDB allocation budget even when their final projection looks small.
@@ -258,9 +258,11 @@ def prepare_investigation(publisher, source, directory):
                  'instruction': 'Compare target operation, endpoint and practice stage; choose compatible evidence or no donor.'}
     atomic_json(reference_file, _json(reference))
     atomic_json(input_file, _json(summary))
-    return {**summary, 'investigation_file': str(input_file),
+    # Native Pull values include UUID objects. The live prompt must use the
+    # same JSON representation as the saved/cache-hit evidence, on first use.
+    return _json({**summary, 'investigation_file': str(input_file),
             'reference_file': str(reference_file) if candidates else None,
-            'reference_candidates': candidates}
+            'reference_candidates': candidates})
 
 
 def _schema_forms():

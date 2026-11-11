@@ -5,6 +5,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
+import uuid
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +74,29 @@ def source(questions=None):
 
 
 class InvestigationTests(unittest.TestCase):
+    def test_fresh_native_reference_ids_are_json_safe_and_identical_to_cached_evidence(self):
+        publisher = References()
+        for questions in publisher.questions.values():
+            for q in questions:
+                q[':question/id'] = uuid.uuid5(uuid.NAMESPACE_URL, str(q[':db/id']))
+                field = q[':question/answer-fields'][0]
+                field[':answer-field/id'] = uuid.uuid5(q[':question/id'], 'field')
+                field[':answer-field/choices'][0][':answer/id'] = uuid.uuid5(q[':question/id'], 'answer')
+        snapshot = source()
+        snapshot['lineage'] = uuid.uuid4()
+        with tempfile.TemporaryDirectory() as td:
+            fresh = prepare_investigation(publisher, snapshot, td)
+            json.dumps(fresh)  # This used to fail before the first agent launch.
+            cached = prepare_investigation(publisher, snapshot, td)
+            self.assertEqual(fresh, cached)
+            self.assertEqual(fresh['lineage'], str(snapshot['lineage']))
+            saved = json.loads(Path(fresh['reference_file']).read_text())
+            self.assertEqual(fresh['reference_candidates'], saved['candidates'])
+            q = fresh['reference_candidates'][0]['questions']['easy'][0]
+            self.assertIsInstance(q[':question/id'], str)
+            self.assertIsInstance(q[':question/answer-fields'][0][':answer-field/choices'][0][':answer/id'], str)
+            self.assertIsInstance(publisher.questions[20][0][':question/id'], uuid.UUID)
+
     def test_observation_is_independent_of_completeness_and_authorship(self):
         imported = question(band='moderate')
         imported.pop(':question/worked-solution')

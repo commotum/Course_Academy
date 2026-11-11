@@ -252,6 +252,39 @@ class CliTests(unittest.TestCase):
             self.assertEqual(command[-2:], ['-u', '25'])
             self.assertNotIn('--pty', command)
 
+    def test_detached_launch_keeps_shell_database_and_codex_overrides_without_exposing_values(self):
+        environment = {'PATH': '/custom/bin', 'EDB_POSTGRES_URL': 'private-database-credentials',
+                       'COURSE_ACADEMY_CODEX_EXECUTABLE': '/custom/codex',
+                       'CODEX_HOME': '/custom/account', 'UNRELATED_SECRET': 'leave-out'}
+        with tempfile.TemporaryDirectory() as temp, patch.object(G, 'RUNTIME', Path(temp)), \
+                patch.dict(os.environ, environment, clear=True), \
+                patch.object(G, 'read_status', side_effect=[{'state': 'stopped'}, {
+                    'state': 'starting', 'started_at': time.time() + 100, 'workers': 6}]), \
+                patch.object(G.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, '', '')) as run, \
+                contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(G.start(6, None), 0)
+            command = run.call_args.args[0]
+            for key in environment.keys() - {'UNRELATED_SECRET'}:
+                self.assertIn('--setenv=' + key, command)
+            self.assertNotIn('--setenv=UNRELATED_SECRET', command)
+            self.assertNotIn('private-database-credentials', ' '.join(command))
+
+    def test_status_and_stop_succeed_if_daemon_exits_before_socket_connect(self):
+        for flag in ('-s', '-k'):
+            with self.subTest(flag=flag), \
+                    patch.object(G, 'read_status', side_effect=[{'state': 'running'}, {
+                        'state': 'stopped', 'reason': 'stop requested'}]), \
+                    patch.object(G, 'request', side_effect=ConnectionRefusedError), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(G.main([flag]), 0)
+                self.assertIn('Generator stopped', output.getvalue())
+
+    def test_unavailable_socket_of_live_daemon_is_not_reported_as_stopped(self):
+        with patch.object(G, 'read_status', return_value={'state': 'running'}), \
+                patch.object(G, 'request', side_effect=ConnectionRefusedError('socket unavailable')), \
+                contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(G.main(['-k']), 1)
+
     def test_dead_parent_and_reused_pid_cannot_look_running(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

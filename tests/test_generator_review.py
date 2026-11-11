@@ -380,6 +380,24 @@ class ReviewEvidenceTests(unittest.TestCase):
                          {'easy', 'moderate', 'hard'})
         self.assertEqual(set(schema['properties']['checks']['required']), set(CHECKS))
 
+    def test_agent_output_schemas_have_no_unsupported_ref_siblings(self):
+        # The structured-output endpoint rejects a $ref with sibling metadata
+        # before any review can run. Keep substantive guidance in the prompt.
+        def check(value, path):
+            if isinstance(value, dict):
+                if '$ref' in value:
+                    self.assertEqual(set(value), {'$ref'}, path)
+                for key, child in value.items():
+                    check(child, path + '/' + key)
+            elif isinstance(value, list):
+                for index, child in enumerate(value):
+                    check(child, path + '/' + str(index))
+        for path in (ROOT / 'generate/pipeline').glob('*.schema.json'):
+            check(json.loads(path.read_text()), str(path))
+        prompt = (ROOT / 'generate/pipeline/reviewer.md').read_text()
+        self.assertIn('checks.progression', prompt)
+        self.assertIn('learner-obligations.json', prompt)
+
     def test_distribution_evidence_rejects_missing_pairs_aggregate_only_and_known_shortcuts(self):
         path = self.directory / "pedagogical-variation.json"
         original = json.loads(path.read_text())

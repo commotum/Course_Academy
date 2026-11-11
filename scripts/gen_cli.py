@@ -26,6 +26,9 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / '.local/generator'
 UNIT = 'course-academy-generator.service'
 CONTROL_ENV = 'COURSE_ACADEMY_GENERATOR_CONTROL_SOCKET'
+SERVICE_ENV = {'PATH', 'CODEX_HOME', 'LEARNING_REQUEST_DIR',
+               'COURSE_ACADEMY_CODEX_EXECUTABLE', 'COURSE_ACADEMY_GENERATOR_PYTHON',
+               'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS'}
 
 
 def policy(remaining, reserve, workers):
@@ -106,6 +109,20 @@ def print_status(value):
             print('Next quota check: ' + time.strftime('%H:%M:%S', time.localtime(value['next_poll'])) + '.')
     if state != 'stopped':
         print('Status: uv run gen -s   Stop: uv run gen -k')
+
+
+def live_status(*, stop=False):
+    """An exit between the status read and socket request is still success."""
+    value = read_status()
+    if value['state'] == 'stopped' or value.get('finishing'):
+        return value
+    try:
+        return request(RUNTIME / 'control.sock', {'event': 'stop' if stop else 'status'})
+    except (OSError, ValueError):
+        observed = read_status()
+        if observed['state'] != 'stopped' and not observed.get('finishing'):
+            raise
+        return observed
 
 
 class ControlServer(socketserver.ThreadingUnixStreamServer):
@@ -379,7 +396,12 @@ def start(workers, until):
         command = ['systemd-run', '--user', '--quiet', '--collect', '--unit=' + UNIT,
                    '--property=Restart=no', '--property=KillMode=mixed',
                    '--property=TimeoutStopSec=infinity', '--working-directory=' + str(ROOT),
-                   '--setenv=PATH=' + os.environ.get('PATH', os.defpath),
+                   # A user service does not otherwise inherit the invoking
+                   # shell's configuration. Let systemd-run copy values by name
+                   # so database credentials never appear in command arguments.
+                   *['--setenv=' + key for key in sorted(os.environ)
+                     if key in SERVICE_ENV or key.startswith('EDB_')],
+                   *([] if 'PATH' in os.environ else ['--setenv=PATH=' + os.defpath]),
                    sys.executable, '-u', str(Path(__file__).resolve()), '--_serve', '-w', str(workers)]
         if until is not None:
             command += ['-u', str(until)]
@@ -428,16 +450,10 @@ def main(argv=None):
         if args._serve:
             return run_daemon(args.workers or 6, args.until)
         if args.status:
-            value = read_status()
-            if value['state'] != 'stopped' and not value.get('finishing'):
-                value = request(RUNTIME / 'control.sock', {'event': 'status'})
-            print_status(value)
+            print_status(live_status())
             return 0
         if args.stop:
-            value = read_status()
-            if value['state'] != 'stopped' and not value.get('finishing'):
-                value = request(RUNTIME / 'control.sock', {'event': 'stop'})
-            print_status(value)
+            print_status(live_status(stop=True))
             return 0
         return start(args.workers or 6, args.until)
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
