@@ -2710,6 +2710,81 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
     compare(a, b, context)
 }
 
+
+/// Full affine one-parameter solution families, when the prompt explicitly
+/// supplies a complementary family.  A rational nonzero rescaling/translation
+/// or renaming of the free coefficient does not change that family.  This is
+/// deliberately separate from ordinary expression and antiderivative equality.
+pub fn compare_affine_solution_family(a: &str, b: &str, context: Context) -> Result<Option<bool>> {
+    fn free_poly(p: &Poly, parameter: &str) -> bool {
+        p.0.keys().all(|m| m.keys().all(|atom| match atom {
+            Atom::Variable(v) => v != parameter,
+            Atom::Root(_, p) => free_poly(p, parameter),
+            Atom::Function(_, v) => free_value(v, parameter),
+            Atom::Power(a, b) => free_value(a, parameter) && free_value(b, parameter),
+            _ => true,
+        }))
+    }
+    fn free_value(v: &Value, parameter: &str) -> bool {
+        free_poly(&v.num, parameter) && free_poly(&v.den, parameter)
+    }
+    fn split(v: &Value, parameter: &str) -> Option<(Value, Value)> {
+        if !free_poly(&v.den, parameter) { return None; }
+        let atom = Atom::Variable(parameter.into());
+        let (mut coefficient, mut rest) = (Poly::integer(0), Poly::integer(0));
+        for (mono, value) in &v.num.0 {
+            let mut mono = mono.clone();
+            let power = mono.remove(&atom).unwrap_or(0);
+            if power > 1 || !free_poly(&Poly(BTreeMap::from([(mono.clone(), value.clone())])), parameter) {
+                return None;
+            }
+            if power == 1 { coefficient.0.insert(mono, value.clone()); }
+            else { rest.0.insert(mono, value.clone()); }
+        }
+        Some((Value {num: coefficient, den:v.den.clone()}, Value {num:rest, den:v.den.clone()}))
+    }
+    let (Answer::Expression(av, ac), Answer::Expression(bv, bc)) =
+        (parse(a, context)?, parse(b, context)?) else { return Ok(None); };
+    // Select the canonical free coefficient, rather than treating every symbol
+    // as arbitrary. A solution with two independent constants is outside this
+    // bounded one-parameter rule and falls back to the existing comparison.
+    let parameters = ["A", "B", "C", "K"];
+    let canonical: Vec<_> = parameters.iter().filter(|p| !free_value(&bv,p)).collect();
+    if canonical.len() != 1 { return Ok(None); }
+    let Some((basis, origin)) = split(&bv, canonical[0]) else { return Ok(None); };
+    if basis.is_zero() { return Ok(None); }
+    let actual: Vec<_> = parameters.iter().filter(|p| !free_value(&av,p)).collect();
+    if actual.len() != 1 { return Ok(Some(false)); }
+    let Some((coefficient, offset)) = split(&av,actual[0]) else { return Ok(Some(false)); };
+    if ac != bc {
+        return Err("solution-family comparison has unresolved domain differences".into());
+    }
+    let mut algebra = Algebra {work:0, depth:0, conditions:BTreeSet::new(),
+        nonzero_power_bases:BTreeMap::new(), context};
+    let scale = algebra.div(&coefficient, &basis)?;
+    let shift = algebra.add(&offset, &origin.neg())?;
+    let shift = algebra.div(&shift, &basis)?;
+    Ok(Some(scale.constant().is_some_and(|q| !q.is_zero()) && shift.constant().is_some()))
+}
+
+#[cfg(test)]
+mod given_complementary_family_tests {
+    use super::*;
+    #[test]
+    fn given_complementary_affine_reparameterizations() {
+        let c=Context {natural_exponential:true,..Context::default()};
+        for answer in ["Ce^(-6x)-2", "(A+1)e^(-6x)-2", "2Ae^(-6x)-2", "-3Ke^(-6x)-2", "C/e^(6x)-2"] {
+            assert_eq!(compare_affine_solution_family(answer,"Ae^(-6x)-2",c),Ok(Some(true)),"{answer}");
+        }
+        for answer in ["-2", "0Ae^(-6x)-2", "A^2e^(-6x)-2", "Ae^(-3x)-2", "Ae^(-6x)+2", "A*x*e^(-6x)-2", "Ae^(-6x)-2+C"] {
+            assert_eq!(compare_affine_solution_family(answer,"Ae^(-6x)-2",c),Ok(Some(false)),"{answer}");
+        }
+        assert_eq!(compare_affine_solution_family("3x+Ce^(2x)","Ae^(2x)+3x",c),Ok(Some(true)));
+        assert_eq!(compare_affine_solution_family("3x+Ce^(2x)","Ae^(2x)+4x",c),Ok(Some(false)));
+        assert_eq!(compare_affine_solution_family("Ce^x+1","e^x+1",c),Ok(None));
+    }
+}
+
 /// Compare full polynomial antiderivative families written with an explicit C.
 /// C must have a nonzero rational coefficient independent of every variable;
 /// C^2, x*C and missing C are not the complete family. Unsupported forms fall

@@ -1986,6 +1986,11 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
                     || displayed_solution_family_constant(&prompt, key)
                 {
                     symbolic::compare_up_to_constant(submitted, canonical, context)?
+                } else if displayed_complementary_solution_family(&prompt, key) {
+                    match symbolic::compare_affine_solution_family(submitted, canonical, context)? {
+                        Some(equal) => equal,
+                        None => compare_math_in_context(submitted, canonical, &prompt, context)?,
+                    }
                 } else if key == "antiderivative" && prompt.contains("arbitrary constant")
                     && !requires_answer_form(&prompt)
                     && !["initial condition", "particular solution", "constant term is zero"]
@@ -2250,6 +2255,38 @@ fn displayed_integration_constant(prompt: &str, key: &str) -> bool {
 /// even when that group is subsequently inverted, rooted, or exponentiated.
 /// Require both an explicit general-ODE-solution contract and the arbitrary
 /// constant adjacent to this field. Merely mentioning K elsewhere is not enough.
+
+/// A whole RHS blank for a general ODE solution with its complementary family
+/// given. Do not relax expression equality for coefficient fragments, initial
+/// conditions, prescribed constants, or ordinary simplification exercises.
+fn displayed_complementary_solution_family(prompt: &str, key: &str) -> bool { let prompt = &prompt.to_lowercase();
+    if key.is_empty() || requires_answer_form(prompt)
+        || !["general solution", "differential equation", "complementary solution", "arbitrary constant"]
+            .iter().all(|text| prompt.contains(text))
+        || ["initial condition", "initial value", "satisfying", "a=", "a =", "c=", "c =", "k=", "k ="]
+            .iter().any(|text| prompt.contains(text))
+    { return false; }
+    let marker = format!("{{{{{}}}}}", key.to_lowercase());
+    let compact = normalize_math(prompt).to_lowercase().replace('$', "");
+    if compact.matches(&marker).count() != 1 { return false; }
+    [format!("y(x)={marker}"),format!("y={marker}")].iter()
+        .any(|endpoint| compact.ends_with(endpoint))
+}
+
+#[cfg(test)]
+mod given_complementary_scope_tests {
+    use super::*;
+    #[test]
+    fn given_complementary_requires_whole_unrestricted_rhs() {
+        let base="Consider the differential equation. Find its general solution given that the complementary solution is $y_c(x)=Ae^{-6x}$, where $A$ is an arbitrary constant.";
+        assert!(displayed_complementary_solution_family(&format!("{base} $y(x)=$ {{{{field-1}}}}"),"field-1"));
+        for tail in [" $y(x)=Ae^{-6x}+$ {{field-1}}", " $y(x)=$ {{field-1}} $+A$", " A=0. $y(x)=$ {{field-1}}", " With initial condition y(0)=1. $y(x)=$ {{field-1}}"] {
+            assert!(!displayed_complementary_solution_family(&format!("{base}{tail}"),"field-1"),"{tail}");
+        }
+        assert!(!displayed_complementary_solution_family("Simplify. A is an arbitrary constant. $y=$ {{x}}","x"));
+    }
+}
+
 fn displayed_solution_family_constant(prompt: &str, key: &str) -> bool {
     if key.is_empty() || requires_answer_form(prompt)
         || !((prompt.contains("general solution") && prompt.contains("differential equation"))
