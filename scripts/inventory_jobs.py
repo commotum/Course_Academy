@@ -687,6 +687,7 @@ class InventoryJobs:
             if override:
                 command = json.loads(override) + [str(path)]
             from generator_lifecycle import create_owner, stopped, OWNER_ENV, INTERRUPTED_EXIT
+            from generator_control import PAUSED_EXIT
             owner = create_owner(path, cycle)
             try:
                 with path.with_suffix('.log').open('a') as log:
@@ -696,6 +697,15 @@ class InventoryJobs:
                              OWNER_ENV: str(owner)}, pass_fds=descriptors)
                 if completed.returncode == INTERRUPTED_EXIT and stopped(owner):
                     self.finish(path, {'state': 'pending', 'retryAt': 0, 'error': None}, cycle=cycle)
+                    return True
+                if completed.returncode == PAUSED_EXIT:
+                    # Administrative deferral retains the exact pipeline and
+                    # all real failure budgets. Restarting resumes its next
+                    # turn; it must not count as a failed build/publication.
+                    self.finish(path, {'state': 'pending', 'retryAt': 0,
+                                      'attempts': job.get('attempts', 0),
+                                      'error': job.get('error'), 'exitCode': PAUSED_EXIT,
+                                      'pausedAt': time.time()}, cycle=cycle)
                     return True
                 outcome = json.loads(result_path.read_text()) if result_path.exists() else {}
                 state = ('blocked' if outcome.get('outcome') in {'blocked', 'failed', 'repair-pending'} else

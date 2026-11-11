@@ -183,83 +183,34 @@ class PageReadAdmission(unittest.TestCase):
                         self.assertEqual(reads, [])
                         self.assertEqual(replies, [400])
 
-    def test_both_generation_lanes_wait_for_ranked_inventory_and_refresh_after_work(self):
+    def test_ui_has_no_generation_workers_even_with_legacy_enable_settings(self):
         with tempfile.TemporaryDirectory() as directory:
-            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
-            with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker"):
-                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
-                loops = [(fn, 'build' if fn.__name__ == 'generator_build_loop' else 'refill',
-                          getattr(fn, 'worker_slot', 0)) for fn in cls.background
-                         if fn.__name__ in {'generator_build_loop', 'generator_refill_loop'}]
-                self.assertEqual([(lane, slot) for _, lane, slot in loops],
-                                 [('build', 0), ('build', 1), ('build', 2), ('refill', 0)])
-                for fn, lane, slot in loops:
-                    cls.scheduler_stop.clear()
-                    with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
-                        fn()
-                jobs.return_value.run_one.assert_not_called()
-                cls.inventory_ready.set()
-                for fn, lane, slot in loops:
-                    cls.scheduler_stop.clear()
-                    cls.inventory_refresh.clear()
-                    jobs.return_value.run_one.reset_mock()
-                    with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
-                        fn()
-                    jobs.return_value.run_one.assert_called_once_with(lane=lane, slot=slot)
-                    self.assertTrue(cls.inventory_refresh.is_set())
+            for disabled in ('0', '1'):
+                with self.subTest(disabled=disabled):
+                    environment = {
+                        'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused',
+                        'COURSE_ACADEMY_DISABLE_GENERATION': disabled,
+                        'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '6',
+                    }
+                    with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'):
+                        cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                    self.assertEqual([fn.__name__ for fn in cls.background],
+                                     ['scheduler_loop', 'loop', 'inventory_refresh_loop'])
+                    self.assertFalse(hasattr(cls, 'mark_generator_interruption'),
+                                     'Stopping the UI must not stop the independent generator')
+                    jobs.return_value.run_one.assert_not_called()
 
-    def test_unexpected_generator_error_keeps_lane_alive_and_retries_after_wait(self):
+    def test_invalid_legacy_generator_settings_cannot_break_study_app_startup(self):
         with tempfile.TemporaryDirectory() as directory:
-            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
-            with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'), \
-                 patch('serve_graph_explorer.developer_mode', return_value=False), \
-                 patch('serve_graph_explorer.traceback.print_exc') as diagnostic:
-                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
-                loops = [fn for fn in cls.background
-                         if fn.__name__ in {'generator_build_loop', 'generator_refill_loop'}]
-                cls.inventory_ready.set()
-                for fn in loops:
-                    cls.scheduler_stop.clear()
-                    cls.inventory_refresh.clear()
-                    jobs.return_value.run_one.reset_mock()
-                    jobs.return_value.run_one.side_effect = [KeyError('state'), True]
-                    waits = []
-                    def wait(seconds):
-                        waits.append(seconds)
-                        if len(waits) == 2:
-                            cls.scheduler_stop.set()
-                    with patch.object(cls.scheduler_stop, 'wait', side_effect=wait), patch('builtins.print'):
-                        fn()
-                    self.assertEqual(jobs.return_value.run_one.call_count, 2)
-                    self.assertEqual(waits, [5, 5])
-                    self.assertTrue(cls.inventory_refresh.is_set())
-                self.assertEqual(diagnostic.call_count, len(loops))
-
-    def test_configured_builder_count_controls_background_slots(self):
-        with tempfile.TemporaryDirectory() as directory:
-            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused',
-                           'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '2'}
+            environment = {
+                'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused',
+                'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': 'invalid',
+                'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS': 'invalid',
+            }
             with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker'):
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
-                slots = [fn.worker_slot for fn in cls.background if fn.__name__ == 'generator_build_loop']
-                self.assertEqual(slots, [0, 1])
-
-    def test_both_lanes_honor_developer_mode_and_generation_disable(self):
-        with tempfile.TemporaryDirectory() as directory:
-            for disabled, developer in ((True, False), (False, True)):
-                environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused",
-                               "COURSE_ACADEMY_DISABLE_GENERATION": '1' if disabled else '0'}
-                with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker"), \
-                     patch("serve_graph_explorer.developer_mode", return_value=developer):
-                    cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
-                    cls.inventory_ready.set()
-                    for fn in cls.background:
-                        if fn.__name__ not in {'generator_build_loop', 'generator_refill_loop'}:
-                            continue
-                        cls.scheduler_stop.clear()
-                        with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
-                            fn()
-                    jobs.return_value.run_one.assert_not_called()
+            self.assertTrue(cls.inventory_refresh.is_set())
+            self.assertEqual(len(cls.background), 3)
 
     def test_ranked_scan_does_not_take_api_lock_or_learning_worker(self):
         with tempfile.TemporaryDirectory() as directory:

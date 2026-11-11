@@ -31,10 +31,9 @@ import subprocess
 import sys
 import threading
 import time
-import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
-from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
+from inventory_jobs import InventoryJobs
 from study_outbox_compat import CompatibleStudyOutbox
 from study_outbox import StudySyncBlocked
 from read_cache import ReadCache
@@ -378,8 +377,6 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
 
     inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
-    builder_count = build_worker_count(environment)
-    review_worker_count(environment, builder_count)
     scheduler_stop = threading.Event()
     queue_refresh = threading.Event()
     inventory_refresh = threading.Event()
@@ -441,31 +438,6 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             except (OSError, ValueError) as error:
                 print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
             queue_refresh.wait(30)
-
-    def run_generator_lane(lane, slot=0):
-        while not scheduler_stop.is_set():
-            try:
-                if (inventory_ready.is_set() and not developer_mode(mode_path)
-                        and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') != '1'):
-                    if inventory_jobs.run_one(lane=lane, slot=slot):
-                        inventory_refresh.set()
-            except Exception as error:
-                # A bad job or unexpected runtime error must not permanently
-                # remove a worker lane while the HTTP service still looks live.
-                # Job retry budgets remain in run_one; this supervisor retains
-                # the lane and waits before its next admission attempt.
-                print(f'Inventory {lane} worker {slot + 1} deferred: {error}', file=sys.stderr)
-                traceback.print_exc()
-            scheduler_stop.wait(5)
-
-    def build_loop(slot):
-        def generator_build_loop():
-            run_generator_lane('build', slot)
-        generator_build_loop.worker_slot = slot
-        return generator_build_loop
-
-    def generator_refill_loop():
-        run_generator_lane('refill')
 
     def inventory_refresh_loop():
         # Inventory admission is read-only background work, not part of the
@@ -892,12 +864,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker, scheduler_worker, feedback_worker, persistence_worker, read_worker, forecast_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.queue_refresh = queue_refresh
-    Handler.mark_generator_interruption = staticmethod(inventory_jobs.mark_service_interruption)
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
     Handler.read_cache = read_cache
-    Handler.background = (scheduler_loop, review_outbox.loop, *(build_loop(slot) for slot in range(builder_count)),
-                          generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
+    # Generation has a separate, explicitly started `uv run gen` supervisor.
+    # The study service only maintains its read-only inventory handoff.
+    Handler.background = (scheduler_loop, review_outbox.loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
 
 
@@ -931,13 +903,10 @@ def main() -> None:
     def stop(_signum, _frame):
         server.RequestHandlerClass.scheduler_stop.set()
         server.RequestHandlerClass.queue_refresh.set()
-        server.RequestHandlerClass.mark_generator_interruption()
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     for background in server.RequestHandlerClass.background:
-        if background.__name__ in {'generator_build_loop', 'generator_refill_loop'} and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
-            continue
         threading.Thread(target=background, daemon=True).start()
     try:
         server.serve_forever()

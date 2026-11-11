@@ -1,0 +1,3 @@
+The original e-26144, q-120254, and q-120257 show only the three vectors and uniform grid. Students construct the known b multiple, find the residual parallel to a, count its relative length, and apply its opposite direction. Ordinary easy practice preserves those decisions while using axis-aligned a and positive integer k/r. Moderate adds diagonal a; hard adds fractional ratios and negative known b multiples.
+
+The audit of all 13 nonimported siblings found only 17592186735164 preconstructed P and the residual path, with an explicit residual length. The other 12 clean diagrams and the 14 imported records are unchanged.

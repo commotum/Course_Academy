@@ -4,7 +4,52 @@
 The three role prompts define phase responsibilities; guides and conditional task
 examples implement that contract. Historical run notes do not redefine new jobs.
 
-Run or resume one knowledge point:
+Start generation from the repository root:
+
+```bash
+uv run gen                  # Start in the background with six builders
+uv run gen -w 6 -u 25        # Start with six builders, preserving 25% remaining quota
+uv run gen -s               # Show status
+uv run gen -k               # Stop after active agent turns finish
+uv run gen -h               # Show help
+```
+
+The command returns after startup; closing its terminal does not stop generation.
+`-w`/`--workers` defaults to six and includes review slots. An independent refill
+lane executes already-approved packages without model calls. `-u`/`--until` is an
+optional **remaining-quota reserve**, not a percentage to consume.
+`-k`/`--stop` closes admission immediately, lets active agent turns finish, and
+retains unfinished jobs for the next explicit `uv run gen`. `-s`/`--status` reports
+state without starting generation. The double-dash short spellings `--w`, `--u`,
+`--k`, `--s`, and `--h` also work.
+
+The parent supervisor alone reads quota, using Codex app-server's
+`account/rateLimits/read`; this does not create an agent session or request model
+inference. It polls only when `-u` is supplied and uses the lowest remaining
+percentage of the applicable account windows. Near the requested reserve, it
+reduces new admission and polls more frequently:
+
+| Remaining quota above reserve | Agent concurrency ceiling | Poll interval |
+| --- | --- | --- |
+| More than 10 percentage points | Configured worker count | 30 minutes |
+| More than 5, through 10 points | Half the worker count, rounded up | 15 minutes |
+| More than 0, through 5 points | One | 5 minutes |
+| At or below reserve | No new turns; finish active turns and exit | No further polling |
+
+For `-u 25`, six workers become at most three at 35% remaining, then one at 30%,
+then zero at 25%. Active turns are never stopped early to enforce these ceilings.
+The reserve is therefore a soft cutoff: in-flight work, polling delays, or other
+use of the same account can take the balance below it. If a requested quota read
+cannot be completed, the parent stops admitting work and drains instead of
+running against an unknown balance. An actual quota rejection stops the run even
+without `-u`; it does not spend a content-failure retry allowance or block the
+rest of the queue. Quota resets never restart generation automatically.
+
+The study application maintains the ranked inventory but never starts generator
+workers. Restarting the app, changing the legacy generation-disable flag, or
+opening a lesson does not start this CLI. Developer mode still prevents new work.
+
+Run or resume one knowledge point directly:
 
 ```bash
 .venv/bin/python scripts/generator_pipeline.py --kp 17592186096841 --difficulty easy --count 5
@@ -23,18 +68,14 @@ build implements and verifies easy, moderate, and hard together; the requested
 band controls immediate inventory publication, not generator coverage. Existing
 source questions are preserved.
 
-When generation is enabled, the learner application defaults to three concurrent
-generator builders and one independent refill worker. This installation sets
-`COURSE_ACADEMY_GENERATOR_BUILD_WORKERS=6`, so it runs six builders plus the refill
-worker. Builders use the
-[finder's urgency ordering](scripts/README.md). With two or more builders, one
-slot prefers queued reviews of existing packages, so a continuing lesson backlog
-cannot consume all approval-review capacity. Immediate activity deficits and
-unfinished publication recovery still come first. The review slot takes ordinary
-work when no eligible, unlocked review is waiting; the other builders retain the
-finder order. Shared KP locks prevent builders and refills from publishing
-competing versions. Builder slot locks preserve the total concurrency limit
-across service restarts.
+Builders use the [finder's urgency ordering](scripts/README.md). With two or more
+builders, one slot prefers queued reviews of existing packages, so a continuing
+lesson backlog cannot consume all approval-review capacity. Immediate activity
+deficits and unfinished publication recovery still come first. The review slot
+takes ordinary work when no eligible, unlocked review is waiting; the other
+builders retain the finder order. Shared KP locks prevent builders and refills
+from publishing competing versions. Builder slot locks preserve the total
+concurrency limit across supervisor restarts.
 
 Each review covers the entire package's three difficulty bands. Pending review
 requests for different bands of the same KP/package are consolidated into one
@@ -63,11 +104,11 @@ packages outside the current scope. Legacy scripts and approved drafts enter the
 build worker for packaging and review at their current priority. Saved drafts are
 retained; uncertain publications are reconciled using their exact requests.
 
-The application refreshes the ranking at startup, after learner actions and completed
-generation jobs, and through the scheduler's 30-second refresh. Both workers wait for
-the first ranked inventory. The read-only scan runs separately from learner requests
-and does not hold their API lock. The existing `COURSE_ACADEMY_DISABLE_GENERATION=1`
-and developer-mode switches control both generation workers.
+The application refreshes the ranking at startup, after learner actions, and
+through the scheduler's 30-second refresh. The generator supervisor also refreshes
+its inventory while running. Workers wait for the first ranked inventory. The
+read-only scan runs separately from learner requests and does not hold their API
+lock. Developer mode prevents generation admission.
 
 ## Investigation, authorship, and verification
 
@@ -323,11 +364,11 @@ contributor. Codex uses the existing login; every phase explicitly selects
 
 - `COURSE_ACADEMY_CODEX_EXECUTABLE`: explicit Codex CLI path.
 - `COURSE_ACADEMY_GENERATOR_PYTHON`: Python interpreter; defaults to `.venv/bin/python`.
-- `COURSE_ACADEMY_GENERATOR_BUILD_WORKERS`: simultaneous builder pipelines;
-  defaults to 3; this installation configures 6. Each pipeline runs investigation,
-  authorship, and verification/repair. The
-  refill worker runs separately. Set to 1 for sequential builds; restart the
-  service after changing the setting.
+- `-w`/`--workers`: simultaneous builder pipelines for `uv run gen`; defaults to
+  six. Each pipeline runs investigation, authorship, and verification/repair.
+  The refill worker runs separately. `COURSE_ACADEMY_GENERATOR_BUILD_WORKERS`
+  remains an internal configuration for lower-level runners; the CLI supplies
+  its explicit count, and the study application no longer reads this setting.
 - `COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS`: builder slots that prefer pending
   approval/repair reviews for existing packages; defaults to 1 with multiple
   builders and 0 with a single builder. Valid values are 0 through the builder
@@ -353,16 +394,20 @@ creator. Routine inventory/basis churn alone does not restart authorship. Genuin
 retry budgets and explicit errors; restarting alone does not renew those budgets
 or replace uncertain publication requests.
 
-A controlled UI service stop records the exact unfinished agent launches owned
-by that service before terminating its children. On restart, each matching launch
-receives one replacement launch; the original execution and shutdown evidence
-remain recorded. Completed results are reused. Failed agents, unmarked crashes,
-and ordinary process failures retain their existing retry limits, and logical
-author-attempt limits do not reset. Shutdown also closes new pipeline and agent
-admission, so it cannot start fresh work while stopping. Older interrupted jobs
-without ownership markers require explicit, evidence-backed recovery; a restart
-alone never grants them more attempts. Publication intents and approval state are
-not changed by this mechanism.
+The CLI's ordinary stop drains active agent turns instead of terminating them.
+Agent processes ask their parent for admission and report completion evidence;
+they do not read quota or choose quota policy. A parent-requested pause retains
+the current phase, draft, session identity, and completed output without counting
+as a job or content failure. Explicitly exempted rejected launches retain their
+history and receive only the matching replacement allowance on a later run.
+Genuine content failures keep their existing bounded retry budgets.
+
+Older controlled-service-stop markers remain supported when resuming saved jobs:
+only the exact unfinished launch recorded by its owner gets one replacement.
+Completed results are reused; failed agents, unmarked crashes, and ordinary
+process failures keep their limits. Older interrupted jobs without ownership
+markers require explicit, evidence-backed recovery. Neither stop mechanism
+changes publication intents or approval state.
 
 Scoped campaigns use persistent user-service definitions installed by
 `scripts/generator_services.py`, with restart on unexpected process failure. The

@@ -152,6 +152,34 @@ class CodexSession:
         self.root, self.environment, self.timeout = Path(root), dict(os.environ if environment is None else environment), timeout
         self.max_launches = max_launches
 
+    def resolve_parent_completion(self, execution_path, execution):
+        """Reconcile a saved completion before deciding whether a retry fits."""
+        from generator_control import GenerationPaused, request_parent
+        from generator_lifecycle import finish_launch
+        message = execution.get('parent_completion')
+        if message is None:
+            return execution
+        response = request_parent(self.environment, message)
+        execution = {**execution, 'status': 'failed'}
+        execution.pop('parent_completion', None)
+        if response['action'] == 'halt':
+            if response.get('exempt') is True:
+                credits = execution.get('parent_deferrals', [])
+                identity = execution.get('launch_id')
+                if not any(row.get('launch_id') == identity for row in credits):
+                    execution['launch_limit'] = execution.get('launch_limit', self.max_launches) + 1
+                    execution['parent_deferrals'] = [*credits, {
+                        'launch_id': identity, 'ticket': message['ticket'],
+                        'reason': response.get('reason'), 'at': time.time(),
+                        'events_path': message['events_path'], 'events_offset': message['events_offset']}]
+                execution['status'] = 'deferred'
+            finish_launch(execution_path, execution)
+            raise GenerationPaused(response.get('reason', 'Generation supervisor stopped admissions'))
+        if response['action'] != 'continue':
+            raise GenerationPaused('Generation supervisor did not reconcile the completed turn')
+        finish_launch(execution_path, execution)
+        return execution
+
     def __call__(self, role, context, directory):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
@@ -175,6 +203,8 @@ class CodexSession:
                           and context.get('_execution_budget_file') else directory / 'execution.json')
         execution = read(execution_path) if execution_path.exists() else {'launches': 0}
         from generator_lifecycle import begin_launch, credit_interruption, finish_launch
+        from generator_control import GenerationPaused, admit_turn, completion_message, request_parent
+        execution = self.resolve_parent_completion(execution_path, execution)
         execution = credit_interruption(execution_path, execution, self.max_launches)
         launch_limit = execution.get('launch_limit', self.max_launches)
         if execution['launches'] >= launch_limit:
@@ -202,6 +232,9 @@ class CodexSession:
                    '--output-schema', str(templates / ('source-account.schema.json' if phase == 'source_account' else role + '.schema.json')),
                    '--output-last-message', str(output), '--json']
         command += [resume_id, '-'] if resume_id else ['-']
+        # Admission is a parent decision, made before charging a launch. A
+        # disconnected supervisor fails closed and leaves the job resumable.
+        ticket = admit_turn(self.environment, role, directory)
         # Count before spawning so parent/process crashes cannot reset an
         # unfinished ephemeral session's budget and launch it forever.
         execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running',
@@ -211,8 +244,11 @@ class CodexSession:
             execution['source_account_isolation'] = context.get('source_account_isolation')
             execution['source_account_revision'] = context.get('source_account_revision')
         execution.pop('error', None)
+        events_path = directory / 'events.jsonl'
+        events_offset = events_path.stat().st_size if events_path.exists() else 0
+        process, failure, result = None, None, None
         try:
-            with (directory / 'events.jsonl').open('a') as log:
+            with events_path.open('a') as log:
                 execution, process = begin_launch(execution_path, execution, self.environment,
                     lambda: subprocess.Popen(command, stdin=subprocess.PIPE, text=True, stdout=log,
                                            stderr=subprocess.STDOUT, env={
@@ -228,15 +264,38 @@ class CodexSession:
                 if process.returncode:
                     raise subprocess.CalledProcessError(process.returncode, command)
             result = read(output)
-        except (OSError, ValueError, subprocess.SubprocessError) as error:
+        except BaseException as error:
+            failure = error
+        # Release the parent's admission even when spawning or reading output
+        # failed. Only the parent interprets the raw span for this exact turn.
+        message = completion_message(ticket, directory, events_path, events_offset,
+                                     process.returncode if process is not None else None)
+        if failure is not None and isinstance(failure, (OSError, ValueError, subprocess.SubprocessError)):
             execution.update(thread_id=session_thread(directory) or resume_id)
-            execution.update(status='failed', error=str(error))
+            execution.update(status='failed', error=str(failure))
+            if ticket is not None:
+                execution.update(status='awaiting-parent', parent_completion=message)
             finish_launch(execution_path, execution)
+            execution = self.resolve_parent_completion(execution_path, execution)
             if execution['launches'] >= launch_limit:
-                raise SessionRetryExhausted(role, directory, execution, execution_path=execution_path) from error
-            raise
+                raise SessionRetryExhausted(role, directory, execution, execution_path=execution_path) from failure
+            raise failure
+        if failure is not None:
+            if ticket is not None:
+                try:
+                    request_parent(self.environment, message)
+                except GenerationPaused:
+                    pass
+            raise failure
         finish_launch(execution_path, {**execution, 'status': 'completed',
                                      'thread_id': session_thread(directory) or resume_id})
+        if ticket is not None:
+            try:
+                request_parent(self.environment, message)
+            except GenerationPaused:
+                # The completed structured output is still valid. Consume and
+                # checkpoint it; any subsequent turn must request admission.
+                pass
         return result
 
 
