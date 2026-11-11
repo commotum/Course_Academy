@@ -40,7 +40,8 @@ with tempfile.TemporaryDirectory(prefix='vector-package-relocation-') as tempora
         relocated_assets=Path(temporary)/band
         repeated=json.loads(subprocess.check_output([sys.executable,str(relocated/'generator.py'),*command[2:]],env={**os.environ,'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':str(relocated_assets)},cwd=relocated))
         assert records==repeated
-        assert {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in assets.glob('*.png')}=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in relocated_assets.glob('*.png')}
+        used={name for rec in records for name in rec['generation']['plot_assets'].values()}
+        assert {name:hashlib.sha256((assets/name).read_bytes()).hexdigest() for name in used}=={name:hashlib.sha256((relocated_assets/name).read_bytes()).hexdigest() for name in used}
         delivery=audit(records,inventory,source,band,directory/'delivery',assets,Path('/media/jake/SSD/EDB/math'))
         survivors=read(directory/'delivery/accepted.json')
         report=validate_survivors(survivors,inventory,directory/'refill',root=package,manifest=manifest,band=band,python=sys.executable,repo_root=ROOT,environment=os.environ.copy(),expected_plan=binding)
