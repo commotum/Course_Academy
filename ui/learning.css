@@ -371,3 +371,11 @@ main:has(> .study-layout) { padding-top: 24px; }
   padding-inline-end: .3em;
   vertical-align: middle;
 }
+
+/* Captured TeX uses explicit black for ordinary, unhighlighted coefficients.
+   Follow the player's ink in either theme instead of hiding them on dark panels.
+   Keep authored red/blue emphasis distinct with readable theme variants. */
+.prose mjx-container g[fill="black" i][stroke="black" i] { fill: var(--ink); stroke: var(--ink); }
+:root:not([data-theme="light"]) .prose mjx-container g[fill="blue" i][stroke="blue" i] { fill: #7aafff; stroke: #7aafff; }
+:root:not([data-theme="light"]) .prose mjx-container g[fill="red" i][stroke="red" i] { fill: #ff7777; stroke: #ff7777; }
+:root[data-theme="light"] .prose mjx-container g[fill="red" i][stroke="red" i] { fill: #c00000; stroke: #c00000; }
