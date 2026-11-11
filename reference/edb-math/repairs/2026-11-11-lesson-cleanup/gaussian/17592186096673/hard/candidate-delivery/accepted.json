@@ -1,0 +1,882 @@
+[
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "83e64850-0509-590c-9b94-f4e62ac5f1ba",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}3x-3y+3z &=12 \\\\ -2x+2y-4z &=-12 \\\\ -2y-5z &=-2\\end{aligned}\\right.\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form, and then solve the linear system. Select the solution $(x,y,z)$.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}3 & -3 & 3 & 12 \\\\ -2 & 2 & -4 & -12 \\\\ 0 & -2 & -5 & -2\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ -2 & 2 & -4 & -12 \\\\ 0 & -2 & -5 & -2\\end{array}\\right]\n$$\n\n$R_2:=R_2+(2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ 0 & 0 & -2 & -4 \\\\ 0 & -2 & -5 & -2\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ 0 & -2 & -5 & -2 \\\\ 0 & 0 & -2 & -4\\end{array}\\right]\n$$\n\nNormalize with $R_2:=-\\frac{1}{2}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ 0 & 1 & \\frac{5}{2} & 1 \\\\ 0 & 0 & -2 & -4\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ 0 & 1 & \\frac{5}{2} & 1 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & 4 \\\\ 0 & 1 & \\frac{5}{2} & 1 \\\\ 0 & 0 & 1 & 2\\end{array}\\right]\n$$\n\nBack substitute, starting with the last row:\n\n$$\n\\begin{aligned}z &=2 \\\\ y &=1-\\left(\\frac{5}{2}\\right)(2) \\\\ &=-4 \\\\ x &=4-(-1)(-4) \\\\ &\\quad -(1)(2) \\\\ &=-2\\end{aligned}\n$$\n\nThe solution $(x,y,z)$ is\n\n$$\n\\left(-2,-4,2\\right)\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "34950614-8d32-5d7b-bd06-3e0aea19cac4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e9584271-ed4a-54ca-8510-b0c1361a7157",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{5}{2},\\frac{1}{2},2\\right)"
+            },
+            {
+              ":answer/id": "2a160681-7201-5bee-bd1c-62e46ffbe915",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{1}{2},-3,\\frac{1}{2}\\right)"
+            },
+            {
+              ":answer/id": "4cb09da0-e09d-5bc0-b0ef-4ea096c5e202",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(4,2,2\\right)"
+            },
+            {
+              ":answer/id": "77db4b55-0abd-5153-a695-0299528b91cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(-2,-4,2\\right)"
+            },
+            {
+              ":answer/id": "ea125361-e7e2-5801-b79e-0628906c9fa7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{5}{4},-\\frac{9}{4},\\frac{1}{2}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "77db4b55-0abd-5153-a695-0299528b91cb"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "equations-solve",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-1",
+          "1",
+          "4"
+        ],
+        "tail": [
+          "5/2",
+          "1",
+          "2"
+        ],
+        "pivot_scales": [
+          3,
+          -2,
+          -2
+        ],
+        "first_column_multipliers": [
+          -2,
+          0
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "317f3a41-9753-5a32-85a3-96260f5dd9aa",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & 2 & -2 & 2 \\\\ 1 & -1 & 3 & -4 \\\\ -2 & 5 & -4 & 4\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form, and then solve the linear system. Select the solution $(x,y,z)$.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & 2 & -2 & 2 \\\\ 1 & -1 & 3 & -4 \\\\ -2 & 5 & -4 & 4\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{2}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 1 & -1 & 3 & -4 \\\\ -2 & 5 & -4 & 4\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-1)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 0 & 2 & -3 \\\\ -2 & 5 & -4 & 4\\end{array}\\right]\n$$\n\n$R_3:=R_3+(2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 0 & 2 & -3 \\\\ 0 & 3 & -2 & 2\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 3 & -2 & 2 \\\\ 0 & 0 & 2 & -3\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{3}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 1 & -\\frac{2}{3} & \\frac{2}{3} \\\\ 0 & 0 & 2 & -3\\end{array}\\right]\n$$\n\nNormalize with $R_3:=\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 1 & -\\frac{2}{3} & \\frac{2}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 1 & -1 \\\\ 0 & 1 & -\\frac{2}{3} & \\frac{2}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]\n$$\n\nBack substitute, starting with the last row:\n\n$$\n\\begin{aligned}z &=-\\frac{3}{2} \\\\ y &=\\frac{2}{3}-\\left(-\\frac{2}{3}\\right)\\left(-\\frac{3}{2}\\right) \\\\ &=-\\frac{1}{3} \\\\ x &=-1-(-1)\\left(-\\frac{1}{3}\\right) \\\\ &\\quad -(1)\\left(-\\frac{3}{2}\\right) \\\\ &=\\frac{1}{6}\\end{aligned}\n$$\n\nThe solution $(x,y,z)$ is\n\n$$\n\\left(\\frac{1}{6},-\\frac{1}{3},-\\frac{3}{2}\\right)\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4954a085-5d7d-5464-982a-f4705a2f1dc2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9ef53c63-1bbc-5e5c-9acd-a5f4523f2a65",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{1}{6},-\\frac{1}{3},-\\frac{3}{2}\\right)"
+            },
+            {
+              ":answer/id": "4d25d6bf-e5a9-5760-88df-91e34f137b99",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{13}{3},\\frac{17}{6},-\\frac{5}{2}\\right)"
+            },
+            {
+              ":answer/id": "d6a70da9-a394-5d79-95c5-006da45e61e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{7}{6},\\frac{2}{3},-\\frac{3}{2}\\right)"
+            },
+            {
+              ":answer/id": "9f61efa0-19b3-5431-99b4-46753bba2e51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{11}{3},\\frac{19}{6},-\\frac{3}{2}\\right)"
+            },
+            {
+              ":answer/id": "a231af11-b454-55b4-812d-542d057b7b96",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(5,\\frac{7}{2},-\\frac{5}{2}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9ef53c63-1bbc-5e5c-9acd-a5f4523f2a65"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-solve",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-1",
+          "1",
+          "-1"
+        ],
+        "tail": [
+          "-2/3",
+          "2/3",
+          "-3/2"
+        ],
+        "pivot_scales": [
+          -2,
+          3,
+          2
+        ],
+        "first_column_multipliers": [
+          1,
+          -2
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "c7fef141-2404-5b2b-a33a-8cb657d5d1b6",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}3 & 6 & 0 & 15 \\\\ 1 & 2 & -2 & 8 \\\\ 0 & 3 & -4 & 2\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form, and then solve the linear system. Select the solution $(x,y,z)$.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}3 & 6 & 0 & 15 \\\\ 1 & 2 & -2 & 8 \\\\ 0 & 3 & -4 & 2\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 1 & 2 & -2 & 8 \\\\ 0 & 3 & -4 & 2\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-1)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 0 & 0 & -2 & 3 \\\\ 0 & 3 & -4 & 2\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 0 & 3 & -4 & 2 \\\\ 0 & 0 & -2 & 3\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{3}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 0 & 1 & -\\frac{4}{3} & \\frac{2}{3} \\\\ 0 & 0 & -2 & 3\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 0 & 1 & -\\frac{4}{3} & \\frac{2}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 5 \\\\ 0 & 1 & -\\frac{4}{3} & \\frac{2}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]\n$$\n\nBack substitute, starting with the last row:\n\n$$\n\\begin{aligned}z &=-\\frac{3}{2} \\\\ y &=\\frac{2}{3}-\\left(-\\frac{4}{3}\\right)\\left(-\\frac{3}{2}\\right) \\\\ &=-\\frac{4}{3} \\\\ x &=5-(2)\\left(-\\frac{4}{3}\\right) \\\\ &\\quad -(0)\\left(-\\frac{3}{2}\\right) \\\\ &=\\frac{23}{3}\\end{aligned}\n$$\n\nThe solution $(x,y,z)$ is\n\n$$\n\\left(\\frac{23}{3},-\\frac{4}{3},-\\frac{3}{2}\\right)\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3f6fd1d0-5051-5855-a7ae-e702090ec2fe",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bedb5138-4edc-5fd5-9feb-336f7b8bc281",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(10,-\\frac{5}{2},-\\frac{3}{2}\\right)"
+            },
+            {
+              ":answer/id": "d6e85be5-9c78-59ee-9ed8-17dc2e0fb459",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(3,1,0\\right)"
+            },
+            {
+              ":answer/id": "c3e283f5-7441-5d70-a65d-424e858c44ae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{17}{3},-\\frac{1}{3},0\\right)"
+            },
+            {
+              ":answer/id": "ffa893df-a2cc-53a4-b451-8d49d9e42a0c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{17}{3},-\\frac{1}{3},-\\frac{3}{2}\\right)"
+            },
+            {
+              ":answer/id": "949287ab-6944-573e-bbf3-963783511ebe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{23}{3},-\\frac{4}{3},-\\frac{3}{2}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "949287ab-6944-573e-bbf3-963783511ebe"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-solve",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "2",
+          "0",
+          "5"
+        ],
+        "tail": [
+          "-4/3",
+          "2/3",
+          "-3/2"
+        ],
+        "pivot_scales": [
+          3,
+          3,
+          -2
+        ],
+        "first_column_multipliers": [
+          1,
+          0
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "377c898f-0c2c-584d-a092-98db4db5ead0",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}-2x+4y+2z &=6 \\\\ 2x-4y &=-10 \\\\ 2x-2y &=-10\\end{aligned}\\right.\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form. Select the resulting augmented matrix.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & 4 & 2 & 6 \\\\ 2 & -4 & 0 & -10 \\\\ 2 & -2 & 0 & -10\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{2}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 2 & -4 & 0 & -10 \\\\ 2 & -2 & 0 & -10\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 0 & 2 & -4 \\\\ 2 & -2 & 0 & -10\\end{array}\\right]\n$$\n\n$R_3:=R_3+(-2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 0 & 2 & -4 \\\\ 0 & 2 & 2 & -4\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 2 & 2 & -4 \\\\ 0 & 0 & 2 & -4\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{2}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 2 & -4\\end{array}\\right]\n$$\n\nNormalize with $R_3:=\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1abee6f9-061c-54b4-b0e0-53857454a24a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b534c83b-7504-529f-972a-7bd528ab983b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 2 & -\\frac{1}{2} \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "7fff9f91-ec04-5af5-aa4d-444342b9a9ee",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "2a145373-84ed-5f88-bb3a-cbd8f350a4b8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & \\frac{3}{2} & 0 \\\\ 0 & 0 & 1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "cc954e0e-2d42-56d5-82c3-aa0bbc8149b4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 1 & \\frac{3}{2}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a64e0396-a8b4-5b88-a34c-83cc64d6a3b3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -3 \\\\ 0 & 1 & -1 & \\frac{1}{2} \\\\ 0 & 0 & 1 & \\frac{3}{2}\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7fff9f91-ec04-5af5-aa4d-444342b9a9ee"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "equations-echelon",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-2",
+          "-1",
+          "-3"
+        ],
+        "tail": [
+          "1",
+          "-2",
+          "-2"
+        ],
+        "pivot_scales": [
+          -2,
+          2,
+          2
+        ],
+        "first_column_multipliers": [
+          2,
+          2
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "482cfb1f-8698-5924-9de2-febe6aba1362",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}3 & -6 & 0 & -3 \\\\ 3 & -6 & -2 & -1 \\\\ 2 & -1 & 1 & -3\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form. Select the resulting augmented matrix.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}3 & -6 & 0 & -3 \\\\ 3 & -6 & -2 & -1 \\\\ 2 & -1 & 1 & -3\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 3 & -6 & -2 & -1 \\\\ 2 & -1 & 1 & -3\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-3)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 0 & -2 & 2 \\\\ 2 & -1 & 1 & -3\\end{array}\\right]\n$$\n\n$R_3:=R_3+(-2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 0 & -2 & 2 \\\\ 0 & 3 & 1 & -1\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 3 & 1 & -1 \\\\ 0 & 0 & -2 & 2\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{3}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & \\frac{1}{3} & -\\frac{1}{3} \\\\ 0 & 0 & -2 & 2\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & \\frac{1}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & -1\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & \\frac{1}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & -1\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "86ad4a04-55e4-5245-8624-35e4f65c2b71",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "03cf2a9e-7b07-5d77-8a3a-0b436094ddb3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & -\\frac{5}{3} & -\\frac{5}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "cd34fcd4-e422-553d-8bb6-817b9b18bd55",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "7b486507-ef95-53dc-9b72-1965d1d25c58",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & \\frac{1}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "ba4738fe-f976-5576-8294-794dfb9c649f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & 1 & -\\frac{2}{3} \\\\ 0 & 0 & 1 & -\\frac{3}{2}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "665a2b1c-338e-54d2-993c-6113972b5031",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & 0 & -1 \\\\ 0 & 1 & \\frac{2}{3} & -1 \\\\ 0 & 0 & 1 & -1\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7b486507-ef95-53dc-9b72-1965d1d25c58"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-echelon",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-2",
+          "0",
+          "-1"
+        ],
+        "tail": [
+          "1/3",
+          "-1/3",
+          "-1"
+        ],
+        "pivot_scales": [
+          3,
+          3,
+          -2
+        ],
+        "first_column_multipliers": [
+          3,
+          2
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "d8ca33cb-3993-5890-820f-589eb879c1cc",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & 6 & -4 & 4 \\\\ 1 & -3 & -1 & 1 \\\\ 0 & 2 & 0 & -5\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form, and then solve the linear system. Select the solution $(x,y,z)$.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & 6 & -4 & 4 \\\\ 1 & -3 & -1 & 1 \\\\ 0 & 2 & 0 & -5\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{2}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 1 & -3 & -1 & 1 \\\\ 0 & 2 & 0 & -5\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-1)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 0 & 0 & -3 & 3 \\\\ 0 & 2 & 0 & -5\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 0 & 2 & 0 & -5 \\\\ 0 & 0 & -3 & 3\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{2}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 0 & 1 & 0 & -\\frac{5}{2} \\\\ 0 & 0 & -3 & 3\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{3}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 0 & 1 & 0 & -\\frac{5}{2} \\\\ 0 & 0 & 1 & -1\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 2 & -2 \\\\ 0 & 1 & 0 & -\\frac{5}{2} \\\\ 0 & 0 & 1 & -1\\end{array}\\right]\n$$\n\nBack substitute, starting with the last row:\n\n$$\n\\begin{aligned}z &=-1 \\\\ y &=-\\frac{5}{2}-(0)(-1) \\\\ &=-\\frac{5}{2} \\\\ x &=-2-(-3)\\left(-\\frac{5}{2}\\right) \\\\ &\\quad -(2)(-1) \\\\ &=-\\frac{15}{2}\\end{aligned}\n$$\n\nThe solution $(x,y,z)$ is\n\n$$\n\\left(-\\frac{15}{2},-\\frac{5}{2},-1\\right)\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d49060d0-e5a9-5689-8c2b-363fea024eb3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ef797059-6a63-5053-9a8c-c064c60a6f65",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(-\\frac{31}{3},-\\frac{5}{3},\\frac{5}{3}\\right)"
+            },
+            {
+              ":answer/id": "b7c7ade1-8636-5a2d-a583-54a4dfb1f51c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{9}{2},\\frac{3}{2},-1\\right)"
+            },
+            {
+              ":answer/id": "add1bf4d-4df2-5d39-8be1-1b5c648d19ee",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{43}{6},\\frac{25}{6},\\frac{5}{3}\\right)"
+            },
+            {
+              ":answer/id": "87cb78e8-4142-5ff8-b60b-f061a3957b05",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(-\\frac{52}{3},-4,\\frac{5}{3}\\right)"
+            },
+            {
+              ":answer/id": "6557bc99-ac8d-52f3-8f9b-f5acef21f56a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(-\\frac{15}{2},-\\frac{5}{2},-1\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6557bc99-ac8d-52f3-8f9b-f5acef21f56a"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-solve",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-3",
+          "2",
+          "-2"
+        ],
+        "tail": [
+          "0",
+          "-5/2",
+          "-1"
+        ],
+        "pivot_scales": [
+          -2,
+          2,
+          -3
+        ],
+        "first_column_multipliers": [
+          1,
+          0
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "17d36362-dc83-54b0-8858-efceb0b470b8",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & -6 & 0 & 8 \\\\ 3 & 9 & 3 & -12 \\\\ 0 & 3 & 1 & 1\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form. Select the resulting augmented matrix.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-2 & -6 & 0 & 8 \\\\ 3 & 9 & 3 & -12 \\\\ 0 & 3 & 1 & 1\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{2}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 3 & 9 & 3 & -12 \\\\ 0 & 3 & 1 & 1\\end{array}\\right]\n$$\n\n$R_2:=R_2+(-3)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 0 & 3 & 0 \\\\ 0 & 3 & 1 & 1\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 3 & 1 & 1 \\\\ 0 & 0 & 3 & 0\\end{array}\\right]\n$$\n\nNormalize with $R_2:=\\frac{1}{3}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{1}{3} & \\frac{1}{3} \\\\ 0 & 0 & 3 & 0\\end{array}\\right]\n$$\n\nNormalize with $R_3:=\\frac{1}{3}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{1}{3} & \\frac{1}{3} \\\\ 0 & 0 & 1 & 0\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{1}{3} & \\frac{1}{3} \\\\ 0 & 0 & 1 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "26c2bc68-b3d7-550c-a773-ae2490596c56",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d236a4a9-cf22-54f0-9356-adb8870ec3d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & 0 & \\frac{5}{3} \\\\ 0 & 0 & 1 & -\\frac{1}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4dcc3aa9-b1b7-562a-9e29-786d4669fc1c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{1}{3} & \\frac{1}{3} \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "48f878b7-2619-5919-a21b-7ba9886deb0a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{2}{3} & -\\frac{2}{3} \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "687d2d63-78e5-5878-8f5b-1949aae610c2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{2}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "585646cd-f233-5629-9770-040c96b6285c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 3 & 0 & -4 \\\\ 0 & 1 & \\frac{5}{3} & -1 \\\\ 0 & 0 & 1 & -\\frac{1}{3}\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4dcc3aa9-b1b7-562a-9e29-786d4669fc1c"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-echelon",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "3",
+          "0",
+          "-4"
+        ],
+        "tail": [
+          "1/3",
+          "1/3",
+          "0"
+        ],
+        "pivot_scales": [
+          -2,
+          3,
+          3
+        ],
+        "first_column_multipliers": [
+          3,
+          0
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "193b69ec-7bf5-515f-91d0-9f1485353ab7",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}-3x+9y-3z &=-3 \\\\ -2x+6y &=-1 \\\\ -x+4z &=0\\end{aligned}\\right.\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form, and then solve the linear system. Select the solution $(x,y,z)$.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-3 & 9 & -3 & -3 \\\\ -2 & 6 & 0 & -1 \\\\ -1 & 0 & 4 & 0\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ -2 & 6 & 0 & -1 \\\\ -1 & 0 & 4 & 0\\end{array}\\right]\n$$\n\n$R_2:=R_2+(2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & 0 & 2 & 1 \\\\ -1 & 0 & 4 & 0\\end{array}\\right]\n$$\n\n$R_3:=R_3+(1)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & 0 & 2 & 1 \\\\ 0 & -3 & 5 & 1\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & -3 & 5 & 1 \\\\ 0 & 0 & 2 & 1\\end{array}\\right]\n$$\n\nNormalize with $R_2:=-\\frac{1}{3}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & 1 & -\\frac{5}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 2 & 1\\end{array}\\right]\n$$\n\nNormalize with $R_3:=\\frac{1}{2}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & 1 & -\\frac{5}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & \\frac{1}{2}\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 1 \\\\ 0 & 1 & -\\frac{5}{3} & -\\frac{1}{3} \\\\ 0 & 0 & 1 & \\frac{1}{2}\\end{array}\\right]\n$$\n\nBack substitute, starting with the last row:\n\n$$\n\\begin{aligned}z &=\\frac{1}{2} \\\\ y &=-\\frac{1}{3}-\\left(-\\frac{5}{3}\\right)\\left(\\frac{1}{2}\\right) \\\\ &=\\frac{1}{2} \\\\ x &=1-(-3)\\left(\\frac{1}{2}\\right) \\\\ &\\quad -(1)\\left(\\frac{1}{2}\\right) \\\\ &=2\\end{aligned}\n$$\n\nThe solution $(x,y,z)$ is\n\n$$\n\\left(2,\\frac{1}{2},\\frac{1}{2}\\right)\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b315515a-3bae-5233-9f07-e86db1812ee1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c54e3baa-221c-5149-8c0a-80d562518fdb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(2,\\frac{1}{2},\\frac{1}{2}\\right)"
+            },
+            {
+              ":answer/id": "cdc5721d-755f-51cc-8258-57058d42c460",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(1,\\frac{1}{6},\\frac{1}{2}\\right)"
+            },
+            {
+              ":answer/id": "dca61868-b732-5d3c-84a6-ffb1c10c68f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(8,2,-1\\right)"
+            },
+            {
+              ":answer/id": "1590e363-635e-514e-8a0e-8c86967e7cdf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(5,1,-1\\right)"
+            },
+            {
+              ":answer/id": "d8007bce-e4f8-5cb5-abd9-debcad0a79fd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(-\\frac{7}{2},-\\frac{4}{3},\\frac{1}{2}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c54e3baa-221c-5149-8c0a-80d562518fdb"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "equations-solve",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-3",
+          "1",
+          "1"
+        ],
+        "tail": [
+          "-5/3",
+          "-1/3",
+          "1/2"
+        ],
+        "pivot_scales": [
+          -3,
+          -3,
+          2
+        ],
+        "first_column_multipliers": [
+          -2,
+          -1
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "dbc1a462-72a1-59bc-bbbb-01bb0a5cec55",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}-3 & -6 & -3 & -6 \\\\ -2 & -4 & -5 & -6 \\\\ 0 & -2 & -1 & -1\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form. Select the resulting augmented matrix.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-3 & -6 & -3 & -6 \\\\ -2 & -4 & -5 & -6 \\\\ 0 & -2 & -1 & -1\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ -2 & -4 & -5 & -6 \\\\ 0 & -2 & -1 & -1\\end{array}\\right]\n$$\n\n$R_2:=R_2+(2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 0 & -3 & -2 \\\\ 0 & -2 & -1 & -1\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & -2 & -1 & -1 \\\\ 0 & 0 & -3 & -2\\end{array}\\right]\n$$\n\nNormalize with $R_2:=-\\frac{1}{2}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2} \\\\ 0 & 0 & -3 & -2\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{3}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2} \\\\ 0 & 0 & 1 & \\frac{2}{3}\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2} \\\\ 0 & 0 & 1 & \\frac{2}{3}\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2dce0f9b-c6cd-587c-af8a-2131b8d67fcb",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "922e4c18-b0ed-5b51-9645-1acbe5a6ce67",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & 0 & -\\frac{1}{2} \\\\ 0 & 0 & 1 & -\\frac{4}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "ec82aea6-e9a5-53b9-b57d-fc2f53f7c90e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2} \\\\ 0 & 0 & 1 & \\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a754b2e3-3e4c-5799-a3aa-70f8296f7033",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & 1 & -\\frac{5}{2} \\\\ 0 & 0 & 1 & \\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a1f03d34-92c9-5f32-b6c5-e9fc9e41fc33",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 1 & \\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "19fb4558-ea0e-5725-b2d4-e0714be823b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 2 & 1 & 2 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 1 & -\\frac{4}{3}\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ec82aea6-e9a5-53b9-b57d-fc2f53f7c90e"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-echelon",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "2",
+          "1",
+          "2"
+        ],
+        "tail": [
+          "1/2",
+          "1/2",
+          "2/3"
+        ],
+        "pivot_scales": [
+          -3,
+          -2,
+          -3
+        ],
+        "first_column_multipliers": [
+          -2,
+          0
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": 17592186096673,
+    "question": {
+      ":question/id": "c0d703de-3941-55f0-8a83-551f32fb8315",
+      ":question/problem": "Consider the augmented matrix $M$ for the variables $x,y,z$ in that order.\n\n$$\n\\left[\\begin{array}{ccc|c}-3 & 6 & 3 & 3 \\\\ -2 & 4 & -1 & 4 \\\\ 1 & -4 & -1 & 3\\end{array}\\right]\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix to row echelon form. Select the resulting augmented matrix.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}-3 & 6 & 3 & 3 \\\\ -2 & 4 & -1 & 4 \\\\ 1 & -4 & -1 & 3\\end{array}\\right]\n$$\n\nNormalize the first pivot with $R_1:=-\\frac{1}{3}R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ -2 & 4 & -1 & 4 \\\\ 1 & -4 & -1 & 3\\end{array}\\right]\n$$\n\n$R_2:=R_2+(2)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 0 & -3 & 2 \\\\ 1 & -4 & -1 & 3\\end{array}\\right]\n$$\n\n$R_3:=R_3+(-1)R_1$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 0 & -3 & 2 \\\\ 0 & -2 & 0 & 4\\end{array}\\right]\n$$\n\nThe second pivot is zero, while the third row has a nonzero second entry. Exchange $R_2$ and $R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & -2 & 0 & 4 \\\\ 0 & 0 & -3 & 2\\end{array}\\right]\n$$\n\nNormalize with $R_2:=-\\frac{1}{2}R_2$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & -3 & 2\\end{array}\\right]\n$$\n\nNormalize with $R_3:=-\\frac{1}{3}R_3$.\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & 1 & -\\frac{2}{3}\\end{array}\\right]\n$$\n\nThus the row echelon matrix is\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & 1 & -\\frac{2}{3}\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0554bd1b-cf3e-5a54-9f2e-0534c968139f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7d78e56f-ed04-57bf-adba-9dbdefb391ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & -2 & -\\frac{5}{2} \\\\ 0 & 0 & 1 & \\frac{5}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "547bc65c-3d06-5547-9fd8-eb970cbe527b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & 1 & -\\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "5973e491-0ba7-5a5a-b32d-4b6438ea8def",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & -\\frac{5}{2} & \\frac{1}{2} \\\\ 0 & 0 & 1 & -\\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "643131da-4e67-5f69-9b1a-bdb0e34b8943",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & -\\frac{5}{2} & -1 \\\\ 0 & 0 & 1 & -\\frac{2}{3}\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3368ecf7-9ed9-53cb-8ef4-3df8abd0a31c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -2 & -1 & -1 \\\\ 0 & 1 & -\\frac{5}{2} & -1 \\\\ 0 & 0 & 1 & \\frac{5}{3}\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "547bc65c-3d06-5547-9fd8-eb970cbe527b"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "generator_version": "1.1.0",
+      "family": "matrix-echelon",
+      "bank": "authored-exchangeable-v1",
+      "source_refs": [
+        "e-4702",
+        "q-73396",
+        "q-73397",
+        "tutorial 3156 / 17592186097842"
+      ],
+      "observed_difficulty": null,
+      "authored_difficulty": "hard",
+      "seed": 202611115,
+      "parameters": {
+        "first_row": [
+          "1",
+          "-2",
+          "-1",
+          "-1"
+        ],
+        "tail": [
+          "0",
+          "-2",
+          "-2/3"
+        ],
+        "pivot_scales": [
+          -3,
+          -2,
+          -3
+        ],
+        "first_column_multipliers": [
+          -2,
+          1
+        ]
+      },
+      "domain": "x,y,z real; p,q,s nonzero; nonsingular 3-by-3 coefficient matrix"
+    },
+    "generation": {
+      "math_format": "course-academy-tex-v1"
+    },
+    "assets": {}
+  }
+]

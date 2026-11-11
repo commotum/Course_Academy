@@ -13,11 +13,17 @@ SEED=202611113
 summary=[];reps=[];cases=[]
 for kp in KPS:
  D=H/str(kp);D.mkdir(exist_ok=True)
- with file_lock(LOCK/f'kp-{kp}.lock'):
-  status=p.client.status();basis=status['basis'];K=p.read_kp(kp,D/'inventory',basis);inventory=p.save_inventory(kp,K,status,basis,D/'inventory');source=p.extract_source(kp,D/'source',basis=basis)
-  assert all(next(q for q in K[':knowledge-point/questions'] if q[':db/id']==eid).get(':question/retired') for eid in RETIRE[kp])
-  save(D/'kp.json',jsonable(K))
- script=source['registered_generator'][':question-generator/script'];P=p.config.math_root/Path(script).parent;package_hash=P.name;verify_package(P,package_hash);manifest=read(P/'generator-package.json');save(D/'package.json',dict(package_sha256=package_hash,registration=script,manifest=manifest))
+ if (D/'source/source.json').exists():
+  source=read(D/'source/source.json');K=read(D/'kp.json');inventory=read(D/'inventory/inventory.json')
+ else:
+  with file_lock(LOCK/f'kp-{kp}.lock'):
+   status=p.client.status();basis=status['basis'];K=p.read_kp(kp,D/'inventory',basis);inventory=p.save_inventory(kp,K,status,basis,D/'inventory');source=p.extract_source(kp,D/'source',basis=basis);save(D/'kp.json',jsonable(K))
+ assert all(next(q for q in K[':knowledge-point/questions'] if q[':db/id']==eid).get(':question/retired') for eid in RETIRE[kp])
+ original_script=source['registered_generator'][':question-generator/script']
+ if (D/'reviewed-package.json').exists():
+  pkg=read(D/'reviewed-package.json');P=D/'package';script=pkg['registration'];package_hash=pkg['package_sha256'];manifest=pkg['manifest']
+ else:
+  script=original_script;P=p.config.math_root/Path(script).parent;package_hash=P.name;verify_package(P,package_hash);manifest=read(P/'generator-package.json');save(D/'reviewed-package.json',dict(package_sha256=package_hash,registration=script,manifest=manifest))
  with tempfile.TemporaryDirectory(prefix='normal-cleanup-',dir='/tmp') as tmp:
   T=Path(tmp)
   for name in manifest['files']:

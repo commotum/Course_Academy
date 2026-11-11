@@ -1,0 +1,2407 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "two-constraints",
+      "parameters": {
+        "a": -2,
+        "b": 2,
+        "c": 2,
+        "u": -2,
+        "v": -6,
+        "z": -2,
+        "p": 3,
+        "d": 1,
+        "f": -2,
+        "m": -2,
+        "n": 2,
+        "t": -1,
+        "candidates": [
+          4,
+          0,
+          -4,
+          -1,
+          2
+        ],
+        "bank_profile": "two-constraints",
+        "pair_candidates": [
+          [
+            1,
+            -1
+          ],
+          [
+            -2,
+            -2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            -1,
+            0
+          ],
+          [
+            -2,
+            2
+          ]
+        ],
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          3,
+          -6,
+          6,
+          -6
+        ],
+        [
+          -2,
+          5,
+          -2,
+          -2
+        ],
+        [
+          2,
+          -5,
+          0,
+          6
+        ]
+      ],
+      "solution": [
+        -2,
+        -2,
+        -2
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{3}R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "2",
+              "-2"
+            ],
+            [
+              "-2",
+              "5",
+              "-2",
+              "-2"
+            ],
+            [
+              "2",
+              "-5",
+              "0",
+              "6"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2+2R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-6"
+            ],
+            [
+              "2",
+              "-5",
+              "0",
+              "6"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-6"
+            ],
+            [
+              "0",
+              "-1",
+              "-4",
+              "10"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_2",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-6"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-6"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-2"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "444016af-4629-5082-9f66-18cc746c012d",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & -6 & 6 & -6 \\\\ -2 & 5 & -2 & -2 \\\\ 2 & -5 & 0 & 6\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & -6 & 6 & -6 \\\\ -2 & 5 & -2 & -2 \\\\ 2 & -5 & 0 & 6\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{3}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & -2 \\\\ -2 & 5 & -2 & -2 \\\\ 2 & -5 & 0 & 6\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & -2 \\\\ 0 & 1 & 2 & -6 \\\\ 2 & -5 & 0 & 6\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & -2 \\\\ 0 & 1 & 2 & -6 \\\\ 0 & -1 & -4 & 10\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & -2 \\\\ 0 & 1 & 2 & -6 \\\\ 0 & 0 & -2 & 4\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & -2 \\\\ 0 & 1 & 2 & -6 \\\\ 0 & 0 & 1 & -2\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-2y+2z&=-2 \\\\ y+2z&=-6 \\\\ z&=-2\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=-2 \\\\ y&=-6-(2)(-2)=-2 \\\\ x&=-2-(-2)(-2)-(2)(-2)=-2.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -2,-2,-2\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "27f5cbca-abe8-5f6a-8507-171acec313c3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a936d6f9-2da5-5092-8fe2-bc2f988b56b7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 2,1,-1\\rangle"
+            },
+            {
+              ":answer/id": "a370aba2-9a55-54a1-b1ae-def392a4ac7a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -2,-2,-2\\rangle"
+            },
+            {
+              ":answer/id": "8a27f6f6-25de-53eb-acdc-c13b53e83311",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 0,2,1\\rangle"
+            },
+            {
+              ":answer/id": "82474c7d-ba08-5b65-be0b-e57f40003665",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -4,-1,0\\rangle"
+            },
+            {
+              ":answer/id": "45cbfd29-c127-5bc2-a49d-7bea5bba2f3c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -10,-2,2\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a370aba2-9a55-54a1-b1ae-def392a4ac7a"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": 0,
+        "u": -3,
+        "v": -1,
+        "z": -4,
+        "p": -2,
+        "d": 1,
+        "f": -1,
+        "m": 2,
+        "n": -2,
+        "t": 1,
+        "candidates": [
+          -4,
+          0,
+          4,
+          -2,
+          2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          -2,
+          -2,
+          -4,
+          6
+        ],
+        [
+          2,
+          3,
+          4,
+          -7
+        ],
+        [
+          -2,
+          -1,
+          -5,
+          9
+        ]
+      ],
+      "solution": [
+        6,
+        -1,
+        -4
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=-\\frac{1}{2}R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "2",
+              "3",
+              "4",
+              "-7"
+            ],
+            [
+              "-2",
+              "-1",
+              "-5",
+              "9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-1"
+            ],
+            [
+              "-2",
+              "-1",
+              "-5",
+              "9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_1",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_2",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-1"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-1"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-4"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "23274682-1e2e-55fe-8b61-bc3e7c025dc4",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & -2 & -4 & 6 \\\\ 2 & 3 & 4 & -7 \\\\ -2 & -1 & -5 & 9\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & -2 & -4 & 6 \\\\ 2 & 3 & 4 & -7 \\\\ -2 & -1 & -5 & 9\\end{array}\\right].\n$$\n\nUsing $R_1:=-\\frac{1}{2}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & -3 \\\\ 2 & 3 & 4 & -7 \\\\ -2 & -1 & -5 & 9\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & -3 \\\\ 0 & 1 & 0 & -1 \\\\ -2 & -1 & -5 & 9\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & -3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 1 & -1 & 3\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & -3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & -1 & 4\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & 2 & -3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & -4\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x+y+2z&=-3 \\\\ y&=-1 \\\\ z&=-4\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=-4 \\\\ y&=-1-(0)(-4)=-1 \\\\ x&=-3-(1)(-1)-(2)(-4)=6.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle 6,-1,-4\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e8fab9f1-4815-5234-b4e5-d0bd9a374d4a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "296b03b0-f171-5ef7-84d6-71a8df22318d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 6,-1,-4\\rangle"
+            },
+            {
+              ":answer/id": "fff542bb-07c5-5a2d-8af1-585c879beb76",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -2,-1,0\\rangle"
+            },
+            {
+              ":answer/id": "95fb1070-75ec-5e29-98a4-db253cae31a2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -10,-1,4\\rangle"
+            },
+            {
+              ":answer/id": "9be8b565-428b-5a34-82f6-0b4121b8ff0e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 2,-1,-2\\rangle"
+            },
+            {
+              ":answer/id": "43a8d6ed-7062-531e-9a40-d9e3025c8103",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -6,-1,2\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "296b03b0-f171-5ef7-84d6-71a8df22318d"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": -1,
+        "b": -2,
+        "c": 2,
+        "u": 1,
+        "v": -2,
+        "z": 3,
+        "p": -2,
+        "d": 1,
+        "f": 1,
+        "m": -1,
+        "n": 1,
+        "t": 2,
+        "candidates": [
+          1,
+          4,
+          3,
+          0,
+          -3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          -2,
+          2,
+          4,
+          -2
+        ],
+        [
+          -1,
+          2,
+          4,
+          -3
+        ],
+        [
+          1,
+          1,
+          3,
+          0
+        ]
+      ],
+      "solution": [
+        -1,
+        -8,
+        3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=-\\frac{1}{2}R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "1"
+            ],
+            [
+              "-1",
+              "2",
+              "4",
+              "-3"
+            ],
+            [
+              "1",
+              "1",
+              "3",
+              "0"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-2"
+            ],
+            [
+              "1",
+              "1",
+              "3",
+              "0"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "2",
+              "5",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_2",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "-2",
+              "1"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-2"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "b7fb0506-7c34-54c7-a4f3-46e929d0a5d8",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & 2 & 4 & -2 \\\\ -1 & 2 & 4 & -3 \\\\ 1 & 1 & 3 & 0\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & 2 & 4 & -2 \\\\ -1 & 2 & 4 & -3 \\\\ 1 & 1 & 3 & 0\\end{array}\\right].\n$$\n\nUsing $R_1:=-\\frac{1}{2}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 1 \\\\ -1 & 2 & 4 & -3 \\\\ 1 & 1 & 3 & 0\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 1 \\\\ 0 & 1 & 2 & -2 \\\\ 1 & 1 & 3 & 0\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 1 \\\\ 0 & 1 & 2 & -2 \\\\ 0 & 2 & 5 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -2 & 1 \\\\ 0 & 1 & 2 & -2 \\\\ 0 & 0 & 1 & 3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-y-2z&=1 \\\\ y+2z&=-2 \\\\ z&=3\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=3 \\\\ y&=-2-(2)(3)=-8 \\\\ x&=1-(-1)(-8)-(-2)(3)=-1.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -1,-8,3\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f7d861eb-e5fd-5171-b789-1d5821f67178",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0276c236-f251-5a41-ba4a-4c4de559b97a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-4,1\\rangle"
+            },
+            {
+              ":answer/id": "f0ebf15f-e516-5711-8847-0fe649569d66",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-10,4\\rangle"
+            },
+            {
+              ":answer/id": "d30c5325-e94f-577c-a57b-211c6d5e6709",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-8,3\\rangle"
+            },
+            {
+              ":answer/id": "61d9b3de-a17a-56e7-9ebc-f921108773aa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-2,0\\rangle"
+            },
+            {
+              ":answer/id": "2b09b11f-dfaf-5e00-b6ad-f33d40df9340",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,4,-3\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d30c5325-e94f-577c-a57b-211c6d5e6709"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-assignments-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": 0,
+        "c": -1,
+        "u": 0,
+        "v": 3,
+        "z": -2,
+        "p": 3,
+        "d": 1,
+        "f": -2,
+        "m": 0,
+        "n": 2,
+        "t": 2,
+        "candidates": [
+          -2,
+          -4,
+          3,
+          2,
+          0
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "assignments"
+      },
+      "augmented_matrix": [
+        [
+          3,
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          -1,
+          3
+        ],
+        [
+          2,
+          6,
+          -4,
+          10
+        ]
+      ],
+      "solution": [
+        -2,
+        1,
+        -2
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{3}R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "3"
+            ],
+            [
+              "2",
+              "6",
+              "-4",
+              "10"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "3"
+            ],
+            [
+              "0",
+              "2",
+              "-4",
+              "10"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_2",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "3"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "3"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "-2"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "4875fc77-4093-544b-a44b-bdcade264638",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & 6 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 2 & 6 & -4 & 10\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & 6 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 2 & 6 & -4 & 10\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{3}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 2 & 6 & -4 & 10\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 2 & -4 & 10\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 0 & -2 & 4\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & 0 & 0 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 0 & 1 & -2\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x+2y&=0 \\\\ y-z&=3 \\\\ z&=-2\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=-2 \\\\ y&=3-(-1)(-2)=1 \\\\ x&=0-(2)(1)-(0)(-2)=-2.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -2,1,-2\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a63a22e3-cb7c-5d8f-9732-f14254daa252",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b2e6da6e-9898-56a2-aecf-0e6e29e58019",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=-2,\\quad y=1,\\quad z=-2"
+            },
+            {
+              ":answer/id": "58b5f39c-d7dd-5f4e-978c-d816cc1cb9cc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=2,\\quad y=-1,\\quad z=-4"
+            },
+            {
+              ":answer/id": "adab9f90-429a-583b-9ec1-d72ee290aafc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=-12,\\quad y=6,\\quad z=3"
+            },
+            {
+              ":answer/id": "e2168708-ed8e-5635-bdff-128743e13442",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=-10,\\quad y=5,\\quad z=2"
+            },
+            {
+              ":answer/id": "66c4bcad-d98d-555a-9eea-72df3c1cfb33",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=-6,\\quad y=3,\\quad z=0"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b2e6da6e-9898-56a2-aecf-0e6e29e58019"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 2,
+        "b": -1,
+        "c": 2,
+        "u": -2,
+        "v": -3,
+        "z": 4,
+        "p": 2,
+        "d": 1,
+        "f": -2,
+        "m": -1,
+        "n": -1,
+        "t": -2,
+        "candidates": [
+          -3,
+          -4,
+          2,
+          -1,
+          4
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          2,
+          4,
+          -2,
+          -4
+        ],
+        [
+          -1,
+          -1,
+          3,
+          -1
+        ],
+        [
+          -1,
+          -4,
+          -5,
+          0
+        ]
+      ],
+      "solution": [
+        24,
+        -11,
+        4
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{2}R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "-2"
+            ],
+            [
+              "-1",
+              "-1",
+              "3",
+              "-1"
+            ],
+            [
+              "-1",
+              "-4",
+              "-5",
+              "0"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "-1",
+              "-4",
+              "-5",
+              "0"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "-2",
+              "-6",
+              "-2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_2",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "-8"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "2",
+              "-1",
+              "-2"
+            ],
+            [
+              "0",
+              "1",
+              "2",
+              "-3"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "4"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "87dcd8c4-5325-5c49-b81c-ff7fe130ca90",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}2x+4y-2z&=-4 \\\\ -x-y+3z&=-1 \\\\ -x-4y-5z&=0\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}2 & 4 & -2 & -4 \\\\ -1 & -1 & 3 & -1 \\\\ -1 & -4 & -5 & 0\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{2}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & -2 \\\\ -1 & -1 & 3 & -1 \\\\ -1 & -4 & -5 & 0\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & -2 \\\\ 0 & 1 & 2 & -3 \\\\ -1 & -4 & -5 & 0\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & -2 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & -2 & -6 & -2\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & -2 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & -2 & -8\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 2 & -1 & -2 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & 1 & 4\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x+2y-z&=-2 \\\\ y+2z&=-3 \\\\ z&=4\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=4 \\\\ y&=-3-(2)(4)=-11 \\\\ x&=-2-(2)(-11)-(-1)(4)=24.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle 24,-11,4\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "316244c8-c642-5875-afa6-0bf0c07a1aab",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "703bafec-fa02-5442-8164-2b43b4caf792",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -11,3,-3\\rangle"
+            },
+            {
+              ":answer/id": "3c437434-c5c5-5494-9e85-3e81662b80d8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -16,5,-4\\rangle"
+            },
+            {
+              ":answer/id": "aee8ce06-6b31-5478-9c97-2ea5d5909a7b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 14,-7,2\\rangle"
+            },
+            {
+              ":answer/id": "c08ca318-cc2b-51d3-8c18-c04388dd23c8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-1,-1\\rangle"
+            },
+            {
+              ":answer/id": "4e706458-e8f2-5f83-b2eb-639112aadf5e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 24,-11,4\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4e706458-e8f2-5f83-b2eb-639112aadf5e"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": -2,
+        "b": -2,
+        "c": 0,
+        "u": 3,
+        "v": -2,
+        "z": 2,
+        "p": 2,
+        "d": 1,
+        "f": 1,
+        "m": -1,
+        "n": 1,
+        "t": -2,
+        "candidates": [
+          4,
+          3,
+          -4,
+          1,
+          2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "equations",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          2,
+          -4,
+          -4,
+          6
+        ],
+        [
+          -1,
+          3,
+          2,
+          -5
+        ],
+        [
+          1,
+          -4,
+          -1,
+          9
+        ]
+      ],
+      "solution": [
+        3,
+        -2,
+        2
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{2}R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "3"
+            ],
+            [
+              "-1",
+              "3",
+              "2",
+              "-5"
+            ],
+            [
+              "1",
+              "-4",
+              "-1",
+              "9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "1",
+              "-4",
+              "-1",
+              "9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "0",
+              "-2",
+              "1",
+              "6"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_2",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "3"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "2"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "9e908737-a645-57fa-b3e1-1db3d8c1f2d3",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}2x-4y-4z&=6 \\\\ -x+3y+2z&=-5 \\\\ x-4y-z&=9\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}2 & -4 & -4 & 6 \\\\ -1 & 3 & 2 & -5 \\\\ 1 & -4 & -1 & 9\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{2}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 3 \\\\ -1 & 3 & 2 & -5 \\\\ 1 & -4 & -1 & 9\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 3 \\\\ 0 & 1 & 0 & -2 \\\\ 1 & -4 & -1 & 9\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 3 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & -2 & 1 & 6\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 3 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & 1 & 2\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-2y-2z&=3 \\\\ y&=-2 \\\\ z&=2\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=2 \\\\ y&=-2-(0)(2)=-2 \\\\ x&=3-(-2)(-2)-(-2)(2)=3.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle 3,-2,2\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7a49341a-5ace-59dd-8be4-fad26cf321c5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5a6f0eec-1706-55a0-85a8-a324acea5b03",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 7,-2,4\\rangle"
+            },
+            {
+              ":answer/id": "957276f2-5405-5f19-b2bb-23767f6e9dc3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 5,-2,3\\rangle"
+            },
+            {
+              ":answer/id": "5f8a8669-7af4-5e7d-acd6-e8c5c3e4bad9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -9,-2,-4\\rangle"
+            },
+            {
+              ":answer/id": "d3b7c6aa-4547-537e-ad1c-b3fc76bba956",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 1,-2,1\\rangle"
+            },
+            {
+              ":answer/id": "6fef915f-7123-53a0-9fc6-707483d10bd0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 3,-2,2\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6fef915f-7123-53a0-9fc6-707483d10bd0"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "equations-to-assignments-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "two-constraints",
+      "parameters": {
+        "a": -2,
+        "b": -2,
+        "c": 0,
+        "u": -1,
+        "v": 1,
+        "z": 3,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": -1,
+        "n": 2,
+        "t": -2,
+        "candidates": [
+          -4,
+          4,
+          -1,
+          1,
+          -2
+        ],
+        "bank_profile": "two-constraints",
+        "pair_candidates": [
+          [
+            1,
+            3
+          ],
+          [
+            -3,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "given": "equations",
+        "response": "assignments"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          -2,
+          -2,
+          -1
+        ],
+        [
+          -1,
+          3,
+          2,
+          2
+        ],
+        [
+          2,
+          -6,
+          -5,
+          -7
+        ]
+      ],
+      "solution": [
+        7,
+        1,
+        3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "2",
+              "-6",
+              "-5",
+              "-7"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "0",
+              "-2",
+              "-1",
+              "-5"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_2",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "-2",
+              "-1"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "ef467853-c266-5bbb-a388-a5be8390f56f",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x-2y-2z&=-1 \\\\ -x+3y+2z&=2 \\\\ 2x-6y-5z&=-7\\end{aligned}\\right..\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & -2 & -1 \\\\ -1 & 3 & 2 & 2 \\\\ 2 & -6 & -5 & -7\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & -1 \\\\ 0 & 1 & 0 & 1 \\\\ 2 & -6 & -5 & -7\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & -1 \\\\ 0 & 1 & 0 & 1 \\\\ 0 & -2 & -1 & -5\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & -1 \\\\ 0 & 1 & 0 & 1 \\\\ 0 & 0 & -1 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & -1 \\\\ 0 & 1 & 0 & 1 \\\\ 0 & 0 & 1 & 3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-2y-2z&=-1 \\\\ y&=1 \\\\ z&=3\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=3 \\\\ y&=1-(0)(3)=1 \\\\ x&=-1-(-2)(1)-(-2)(3)=7.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle 7,1,3\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6933266e-2969-5467-b627-61877be25f8f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7af7bf3d-1fa2-5c9c-b060-abe7b79aef73",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=7,\\quad y=1,\\quad z=3"
+            },
+            {
+              ":answer/id": "f4e25f64-12b4-58b0-9f3e-dead1d946972",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=1,\\quad y=-3,\\quad z=4"
+            },
+            {
+              ":answer/id": "74ad2021-d2f2-516c-bce7-0153ce4398d0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=1,\\quad y=1,\\quad z=0"
+            },
+            {
+              ":answer/id": "cf97cc8a-50bd-50af-b81c-5710fc140ec4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=13,\\quad y=3,\\quad z=4"
+            },
+            {
+              ":answer/id": "68da3406-fa54-5193-8637-19b1332d2167",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "x=11,\\quad y=2,\\quad z=4"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7af7bf3d-1fa2-5c9c-b060-abe7b79aef73"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": 0,
+        "b": -1,
+        "c": -1,
+        "u": -3,
+        "v": 1,
+        "z": 1,
+        "p": 3,
+        "d": 1,
+        "f": -2,
+        "m": -1,
+        "n": -1,
+        "t": -2,
+        "candidates": [
+          -4,
+          -3,
+          4,
+          1,
+          3
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          3,
+          0,
+          -3,
+          -9
+        ],
+        [
+          -1,
+          1,
+          0,
+          4
+        ],
+        [
+          -1,
+          -2,
+          1,
+          -1
+        ]
+      ],
+      "solution": [
+        -2,
+        2,
+        1
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{3}R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "-1",
+              "-3"
+            ],
+            [
+              "-1",
+              "1",
+              "0",
+              "4"
+            ],
+            [
+              "-1",
+              "-2",
+              "1",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2+R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "-1",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "1"
+            ],
+            [
+              "-1",
+              "-2",
+              "1",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "-1",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "1"
+            ],
+            [
+              "0",
+              "-2",
+              "0",
+              "-4"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_2",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "-1",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "1"
+            ],
+            [
+              "0",
+              "0",
+              "-2",
+              "-2"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-\\frac{1}{2}R_3",
+          "matrix": [
+            [
+              "1",
+              "0",
+              "-1",
+              "-3"
+            ],
+            [
+              "0",
+              "1",
+              "-1",
+              "1"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "ee360101-4693-54b1-a71e-7c5eb7ebbb3e",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & 0 & -3 & -9 \\\\ -1 & 1 & 0 & 4 \\\\ -1 & -2 & 1 & -1\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & 0 & -3 & -9 \\\\ -1 & 1 & 0 & 4 \\\\ -1 & -2 & 1 & -1\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{3}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -3 \\\\ -1 & 1 & 0 & 4 \\\\ -1 & -2 & 1 & -1\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -3 \\\\ 0 & 1 & -1 & 1 \\\\ -1 & -2 & 1 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -3 \\\\ 0 & 1 & -1 & 1 \\\\ 0 & -2 & 0 & -4\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -3 \\\\ 0 & 1 & -1 & 1 \\\\ 0 & 0 & -2 & -2\\end{array}\\right].\n$$\n\nUsing $R_3:=-\\frac{1}{2}R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -3 \\\\ 0 & 1 & -1 & 1 \\\\ 0 & 0 & 1 & 1\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-z&=-3 \\\\ y-z&=1 \\\\ z&=1\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=1 \\\\ y&=1-(-1)(1)=2 \\\\ x&=-3-(0)(2)-(-1)(1)=-2.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -2,2,1\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4ee92c03-685d-556e-9dbf-620c4b2c445a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c3b14833-8635-59df-af9c-44c9e5446197",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -7,-3,-4\\rangle"
+            },
+            {
+              ":answer/id": "55bd207a-7b5f-5b3b-99a8-4eb77ae80a22",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -6,-2,-3\\rangle"
+            },
+            {
+              ":answer/id": "48a5e22b-c086-566d-b015-dba7238bbedf",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 1,5,4\\rangle"
+            },
+            {
+              ":answer/id": "1327ba0d-5a11-5cfd-b94a-44edb25ba67f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -2,2,1\\rangle"
+            },
+            {
+              ":answer/id": "ca0842af-e51f-5007-b015-93eddd9f46b5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 0,4,3\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1327ba0d-5a11-5cfd-b94a-44edb25ba67f"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "two-constraints",
+      "parameters": {
+        "a": -1,
+        "b": 2,
+        "c": 0,
+        "u": -4,
+        "v": 0,
+        "z": 3,
+        "p": 1,
+        "d": 1,
+        "f": -1,
+        "m": 0,
+        "n": 1,
+        "t": -2,
+        "candidates": [
+          -3,
+          -1,
+          -2,
+          0,
+          1
+        ],
+        "bank_profile": "two-constraints",
+        "pair_candidates": [
+          [
+            4,
+            -2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          1,
+          -1,
+          2,
+          -4
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          -3,
+          1,
+          -7
+        ]
+      ],
+      "solution": [
+        -10,
+        0,
+        3
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_3:=R_3-R_1",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "-2",
+              "-1",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+2R_2",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-3"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "-1",
+              "2",
+              "-4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "bccfe2d5-e9db-5e8d-9d96-512fb6a22d2a",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -1 & 2 & -4 \\\\ 0 & 1 & 0 & 0 \\\\ 1 & -3 & 1 & -7\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -1 & 2 & -4 \\\\ 0 & 1 & 0 & 0 \\\\ 1 & -3 & 1 & -7\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 2 & -4 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & -2 & -1 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 2 & -4 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & -1 & -3\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & 2 & -4 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 3\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-y+2z&=-4 \\\\ y&=0 \\\\ z&=3\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=3 \\\\ y&=0-(0)(3)=0 \\\\ x&=-4-(-1)(0)-(2)(3)=-10.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -10,0,3\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e0586be7-e197-5598-be1a-1ae345a3bab1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2091807f-0c59-522a-945d-ac4fd4bfeaf6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 4,4,-2\\rangle"
+            },
+            {
+              ":answer/id": "4f66b1b3-ecd1-544b-a7cc-dfa40c407dc3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -10,0,3\\rangle"
+            },
+            {
+              ":answer/id": "1e311a29-8c11-5592-9436-e2f62045569d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 3,1,-3\\rangle"
+            },
+            {
+              ":answer/id": "3b8f92cc-7cfd-5101-8581-ee8830be842a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -7,-1,1\\rangle"
+            },
+            {
+              ":answer/id": "088604a4-abd8-5b4d-ba7f-aa36ec9cce6f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -12,0,4\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4f66b1b3-ecd1-544b-a7cc-dfa40c407dc3"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186096672,
+      "id": "739b1cbc-c1a7-547d-a9fb-1f244bd36827",
+      "title": "Solving a 3x3 System of Equations Using Standard Gaussian Elimination"
+    },
+    "generation": {
+      "version": "1.1.0",
+      "template": "matrix-to-vector-radio",
+      "origin": "authored-from-target-teaching",
+      "source_refs": [
+        "tutorial 3156 / 17592186097842",
+        "q-20505 / 17592186097183",
+        "q-73569 / 17592186368702",
+        "q-130926 / 17592186266014",
+        "e-4701 / 17592186096459"
+      ],
+      "source_basis": 13939,
+      "bank_profile": "last-constraint",
+      "parameters": {
+        "a": -2,
+        "b": 1,
+        "c": 0,
+        "u": 4,
+        "v": -2,
+        "z": 1,
+        "p": 3,
+        "d": 1,
+        "f": -1,
+        "m": 2,
+        "n": -1,
+        "t": 2,
+        "candidates": [
+          -3,
+          1,
+          -4,
+          -1,
+          -2
+        ],
+        "bank_profile": "last-constraint",
+        "pair_candidates": null,
+        "given": "matrix",
+        "response": "vector"
+      },
+      "augmented_matrix": [
+        [
+          3,
+          -6,
+          3,
+          12
+        ],
+        [
+          2,
+          -3,
+          2,
+          6
+        ],
+        [
+          -1,
+          4,
+          -2,
+          -9
+        ]
+      ],
+      "solution": [
+        -1,
+        -2,
+        1
+      ],
+      "domain": "nonsingular real linear system; no exchanges; integer entries",
+      "derivation": [
+        {
+          "operation": "R_1:=\\frac{1}{3}R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "2",
+              "-3",
+              "2",
+              "6"
+            ],
+            [
+              "-1",
+              "4",
+              "-2",
+              "-9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_2:=R_2-2R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "-1",
+              "4",
+              "-2",
+              "-9"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3+R_1",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "0",
+              "2",
+              "-1",
+              "-5"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=R_3-2R_2",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "0",
+              "0",
+              "-1",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "operation": "R_3:=-1R_3",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "0",
+              "-2"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "seed": 202611114
+    },
+    "question": {
+      ":question/id": "9ac2430e-775d-5392-ad5f-c51dab053b87",
+      ":question/problem": "Consider the augmented matrix\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & -6 & 3 & 12 \\\\ 2 & -3 & 2 & 6 \\\\ -1 & 4 & -2 & -9\\end{array}\\right].\n$$\n\nUse the standard method of Gaussian elimination to reduce the augmented matrix $M$ of the system to row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & -6 & 3 & 12 \\\\ 2 & -3 & 2 & 6 \\\\ -1 & 4 & -2 & -9\\end{array}\\right].\n$$\n\nUsing $R_1:=\\frac{1}{3}R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 2 & -3 & 2 & 6 \\\\ -1 & 4 & -2 & -9\\end{array}\\right].\n$$\n\nUsing $R_2:=R_2-2R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & 0 & -2 \\\\ -1 & 4 & -2 & -9\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3+R_1$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 2 & -1 & -5\\end{array}\\right].\n$$\n\nUsing $R_3:=R_3-2R_2$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & -1 & -1\\end{array}\\right].\n$$\n\nUsing $R_3:=-1R_3$, we obtain\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & 0 & -2 \\\\ 0 & 0 & 1 & 1\\end{array}\\right].\n$$\n\nThe matrix is in row echelon form: each pivot lies to the right of the pivot above it, with zeros below each pivot.\n\nThe corresponding triangular system is\n\n$$\n\\left\\{\\begin{aligned}x-2y+z&=4 \\\\ y&=-2 \\\\ z&=1\\end{aligned}\\right..\n$$\n\nBack substitution gives\n\n$$\n\\begin{aligned}z&=1 \\\\ y&=-2-(0)(1)=-2 \\\\ x&=4-(-2)(-2)-(1)(1)=-1.\\end{aligned}\n$$\n\nTherefore, the solution is $\\langle -1,-2,1\\rangle$.",
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8d6242c0-ce11-57e2-972c-922b3e887e1a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ceb1d56f-090b-566c-86e9-ac4bbbc0bee2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 3,-2,-3\\rangle"
+            },
+            {
+              ":answer/id": "9f21c0a7-b7d0-55d1-be5d-6c578ed9a8f1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle -1,-2,1\\rangle"
+            },
+            {
+              ":answer/id": "d35dbb06-66ad-561f-a0f7-331768958224",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 4,-2,-4\\rangle"
+            },
+            {
+              ":answer/id": "77818989-267b-5d24-9df2-504172ceb5f8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 1,-2,-1\\rangle"
+            },
+            {
+              ":answer/id": "8c8a78cc-c3a6-52da-bd98-884518c0b2ce",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\langle 2,-2,-2\\rangle"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9f21c0a7-b7d0-55d1-be5d-6c578ed9a8f1"
+          ]
+        }
+      ]
+    }
+  }
+]

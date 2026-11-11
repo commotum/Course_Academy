@@ -32,5 +32,5 @@ def endpoint_labels(fig,ax,items):
                 covered=sum(box.contains(*ax.transData.transform(tuple(map(float,p)))) for _,_,p,_ in items)
                 choices.append((10000*collisions+1000*covered+100*outside+radius+abs(turn)*3,offset,box))
         score,offset,box=min(choices,key=lambda c:c[0]);artist.set_position(offset);occupied.append(box)
-        witness.append(dict(endpoint=endpoint,symbol=symbol,arrow_endpoint=list(map(str,point)),leader_xy=list(map(float,point)),offset_points=list(offset),font_points=17,text=text,score=score))
+        witness.append(dict(endpoint=endpoint,symbol=symbol,arrow_endpoint=list(map(str,point)),leader_xy=list(map(float,point)),offset_points=list(offset),font_points=17,text=text,score=float(score)))
     return witness
