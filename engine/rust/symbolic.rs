@@ -1595,7 +1595,7 @@ impl Algebra {
                 }
             }
             "exp" => {
-                // exp(n*ln(u)) = u^n for bounded integer n. Evaluating ln(u)
+                // exp(r*ln(u)) = u^r for bounded rational r. Evaluating ln(u)
                 // already required u > 0; retain that guard when cancelling
                 // the inverse functions, even if the resulting power has a
                 // larger real domain. Sums of rational logarithms are handled
@@ -1605,11 +1605,11 @@ impl Algebra {
                     if m.len() == 1
                         && let Some((Atom::Function(name, argument), 1)) = m.first_key_value()
                         && name == "ln"
-                        && c.is_integer()
-                        && let Some(n) = c.to_integer().to_i32().filter(|n| n.unsigned_abs() <= 64)
+                        && c.denom() <= &BigInt::from(8)
+                        && c.numer().to_i32().is_some_and(|n| n.unsigned_abs() <= MAX_POWER)
                     {
                         self.sign_condition(argument, true)?;
-                        return self.integer_power(argument, n);
+                        return self.power(argument, &Value::number(c.clone()));
                     }
                 }
                 // A linear fractional argument has a unique constant part:
@@ -4212,6 +4212,26 @@ mod tests {
         assert!(supports("exp(1/100)", Context::default()));
         assert!(!supports("exp(1/0)", Context::default()));
         assert!(compare("exp((x/x)/2)", "e^(1/2)", Context::default()).is_err());
+    }
+    #[test]
+    fn rational_log_exponents_keep_exact_roots_and_domains() {
+        for (a, b) in [
+            ("exp(ln(3)/2)", "sqrt(3)"),
+            ("-5*exp(ln(sqrt(3)/2)+ln(2))", "-5*sqrt(3)"),
+            ("exp(-3*ln(2)/2)", "1/(2*sqrt(2))"),
+            ("exp(ln(5)/3)", "cbrt(5)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for wrong in ["-sqrt(3)", "sqrt(3)/2", "sqrt(2)"] {
+            assert_eq!(compare("exp(ln(3)/2)", wrong, Context::default()), Ok(false));
+        }
+        // ln requires strict positivity: root cancellation must not admit zero,
+        // negative log arguments, or a cancelled hole in a separate factor.
+        assert!(compare("exp(ln(x)/2)", "sqrt(x)", Context::default()).is_err());
+        assert!(!supports("exp(ln(-3)/2)", Context::default()));
+        assert!(compare("exp(ln(3)/2)*(x/x)", "sqrt(3)", Context::default()).is_err());
     }
     #[test]
     fn repeated_e_roots_reduce_multiplicities() {
