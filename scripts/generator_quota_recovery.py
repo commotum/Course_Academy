@@ -246,6 +246,9 @@ def apply(output, daemon_lock):
                     raise ValueError('A publication intent appeared after planning')
                 if sha(Path(row['events_path']).read_bytes()) != row['events_sha256']:
                     raise ValueError('Agent evidence changed after planning')
+                for evidence in row.get('additional_evidence', []):
+                    if sha(Path(evidence['path']).read_bytes()) != evidence['sha256']:
+                        raise ValueError('Supporting recovery evidence changed after planning')
                 # Check every member before any write. Accepting exact planned
                 # after-images makes an interrupted apply safely idempotent.
                 pending = []
@@ -267,7 +270,9 @@ def apply(output, daemon_lock):
             raise ValueError('Recovery verification failed; inspect verification.json')
     result = {'recovery_id': plan['recovery_id'], 'applied_at': time.time(),
               'jobs': len(results), 'written_files': sum(row['written_files'] for row in results),
-              'quota_launch_credits': sum(row['quota_credits'] for row in plan['jobs'])}
+              'quota_launch_credits': sum(row['quota_credits'] for row in plan['jobs']),
+              'all_infrastructure_launch_credits': sum(row.get('launch_credits', row['quota_credits']) for row in plan['jobs']),
+              'infrastructure_process_failure_credits': sum(row.get('process_credits', 0) for row in plan['jobs'])}
     save(output / 'applied.json', result)
     return result
 
@@ -286,10 +291,16 @@ def verify(output):
                     failures.append(spec['path'])
         if sha(Path(row['events_path']).read_bytes()) != row['events_sha256']:
             failures.append(row['events_path'])
+        for evidence in row.get('additional_evidence', []):
+            if sha(Path(evidence['path']).read_bytes()) != evidence['sha256']:
+                failures.append(evidence['path'])
     result = {'verified_at': time.time(), 'jobs': len(plan['jobs']),
               'verified': not failures, 'failures': failures,
               'quota_launch_credits': sum(row['quota_credits'] for row in plan['jobs']),
-              'other_budget_changes': 0, 'event_logs_changed': 0 if not failures else None,
+              'content_budget_changes': 0,
+              'infrastructure_process_failure_credits': sum(row.get('process_credits', 0) for row in plan['jobs']),
+              'all_infrastructure_launch_credits': sum(row.get('launch_credits', row['quota_credits']) for row in plan['jobs']),
+              'event_logs_changed': 0 if not failures else None,
               'inventory_ranking_refreshes': refreshed}
     save(Path(output) / 'verification.json', result)
     return result
@@ -318,7 +329,8 @@ def main():
         display['failures'] = len(display['failures'])
         display['inventory_ranking_refreshes'] = len(display['inventory_ranking_refreshes'])
     print(json.dumps(display, indent=2))
+    return int(result.get('verified') is False)
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

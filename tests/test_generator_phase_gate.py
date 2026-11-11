@@ -13,6 +13,30 @@ class PhaseGateTests(unittest.TestCase):
     tearDown = fixtures.GeneratorPipelineTests.tearDown
     pipeline = fixtures.GeneratorPipelineTests.pipeline
 
+    def test_phase_upgrade_continues_unfinished_final_author_attempt_without_new_budget(self):
+        session = FakeSession()
+        pipeline = self.pipeline(session, attempts=3)
+        pipeline.persist(stage='generate', phase_policy_version=2,
+                         attempt=3, author_attempt_limit=3, author_running=True)
+        result = pipeline.run(stop_after='generate')
+        self.assertEqual(result['stage'], 'validate')
+        self.assertEqual(result['attempt'], 3)
+        self.assertEqual(result['author_attempt_limit'], 3)
+        self.assertEqual([path for role, path in session.calls if role == 'author'],
+                         [str(self.job / 'author-3')])
+        self.assertFalse((self.job / 'author-4').exists())
+
+    def test_phase_upgrade_does_not_rearm_a_finished_final_author_attempt(self):
+        session = FakeSession()
+        pipeline = self.pipeline(session, attempts=3)
+        pipeline.persist(stage='generate', phase_policy_version=2,
+                         attempt=3, author_attempt_limit=3, author_running=False)
+        result = pipeline.run(stop_after='generate')
+        self.assertEqual(result['stage'], 'blocked')
+        self.assertEqual(result['error']['code'], 'author_attempts_exhausted')
+        self.assertEqual(result['author_attempt_limit'], 3)
+        self.assertEqual([role for role, _ in session.calls if role == 'author'], [])
+
     def prepare(self, session):
         pipeline = self.pipeline(session)
         source = self.publisher.extract_source(123, self.job / 'source')

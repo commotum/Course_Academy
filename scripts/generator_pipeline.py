@@ -1540,7 +1540,10 @@ class Pipeline(InstructionalPhases):
             fresh = self.publisher.extract_source(self.state['request']['kp'], source.parent)
             save(source, fresh)
         self.persist(stage='source', phase_policy_version=PHASE_POLICY_VERSION,
-                     author_running=False, investigation_complete=False, inventory_hash=None,
+                     # Re-investigation must not charge another author attempt
+                     # when the saved attempt has not finished yet.
+                     author_running=self.state.get('author_running', False),
+                     investigation_complete=False, inventory_hash=None,
                      review=None, review_binding=None, review_policy_version=None,
                      review_after_publication=False, approval_recorded=False,
                      report_repair_directory=None, review_report_error=None,

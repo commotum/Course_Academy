@@ -25,4 +25,8 @@ for kp in [17592186096672,17592186096673]:
   allcases.append({'label':'stored/'+r['question'][':question/id'],'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==key else'rejected','control':'canonical'if a[':answer/id']==key else'wrong','purpose':'Independently verified original stored matrix/solution and every option; selection equivalence is discrete.'}for a in f[':answer-field/choices']]})
  summary[str(kp)]=bandreports
 (H/'native-input.json').write_text(json.dumps(allcases,indent=2)+'\n');subprocess.run([str(R/'generate/runs/current/check-engine'),str(H/'native-input.json'),str(H/'native-report.json')],check=True)
+for kp,ids in [(17592186096672,[17592186097183,17592186760446]),(17592186096673,[17592186266015,17592186757021])]:
+ qs=json.loads((H/str(kp)/'kp.json').read_text())[':knowledge-point/questions'];normalized=json.loads((H/str(kp)/'stored-records.json').read_text())
+ for qid in ids:
+  q=next(q for q in qs if q[':db/id']==qid);rec=next(r for r in normalized if r['question'][':question/id']==q[':question/id']);field=rec['question'][':question/answer-fields'][0];key=field[':answer-field/correct'];field[':answer-field/correct']=[':answer/id',key[1] if isinstance(key,list)else key];reps.append(rec);rep_meta.append({'index':len(reps)-1,'kp':kp,'stored_id':qid,'source_id':q.get(':question/math-academy-id'),'difficulty':q[':question/difficulty']})
 (H/'render-records.json').write_text(json.dumps(reps,indent=2)+'\n');(H/'render-index.json').write_text(json.dumps(rep_meta,indent=2)+'\n');(H/'delivery-summary.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps({'delivery':summary,'native_records':len(allcases),'ui_representatives':len(reps)},indent=2))

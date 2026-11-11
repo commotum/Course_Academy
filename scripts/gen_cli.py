@@ -43,8 +43,8 @@ def policy(remaining, reserve, workers):
     return workers, 1800
 
 
-def provider_rejection(path, offset=0):
-    """Recognize specific admission failures, never content/tool-output text."""
+def provider_rejection(path, offset=0, *, quota_only=False):
+    """Recognize specific provider failures, never content/tool-output text."""
     with Path(path).open('rb') as stream:
         if type(offset) is not int or not 0 <= offset <= os.fstat(stream.fileno()).st_size:
             raise ValueError('Invalid agent event offset')
@@ -67,7 +67,7 @@ def provider_rejection(path, offset=0):
                     or 'usage limit has been reached' in message
                     or 'exceeded your current quota' in message):
                 return 'quota'
-            if raw_message == 'Selected model is at capacity. Please try a different model.':
+            if not quota_only and raw_message == 'Selected model is at capacity. Please try a different model.':
                 return 'capacity'
             # Codex currently wraps the provider's JSON error in the event's
             # message. Require its specific code/type/parameter; merely naming
@@ -79,7 +79,7 @@ def provider_rejection(path, offset=0):
                 embedded = None
             if isinstance(embedded, dict) and isinstance(embedded.get('error'), dict):
                 provider = embedded['error']
-            if (provider.get('code') == 'invalid_json_schema'
+            if (not quota_only and provider.get('code') == 'invalid_json_schema'
                     and provider.get('type') == 'invalid_request_error'
                     and provider.get('param') == 'text.format.schema'):
                 return 'schema'
@@ -88,7 +88,7 @@ def provider_rejection(path, offset=0):
 
 def usage_failure(path, offset=0):
     """Keep the quota-only predicate available to incident recovery tools."""
-    return provider_rejection(path, offset) == 'quota'
+    return provider_rejection(path, offset, quota_only=True) == 'quota'
 
 
 def request(socket_path, payload, timeout=5):

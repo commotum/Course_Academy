@@ -120,26 +120,29 @@
         "render/question-020-completed-390x1000.png",
         "render/question-020-completed-390x1000-math-scroll-right.png"
       ],
-      "generator_attribution": "Current3692ddb\u2026 source replay explicitly removes this free-x intermediate at generator.py198-199. Ordinary samples use evaluated numeric chains; no matching generated defect found."
-    },
-    {
-      "id": "incomplete-imports",
-      "severity": "stored-completeness-limitation",
-      "origin": "imported capture",
-      "confirmed": true,
-      "question_ids": [
-        17592186234077,
-        17592186092723,
-        17592186092725,
-        17592186234307,
-        17592186233928,
-        17592186234308
-      ],
-      "description": "Six imported records have missing fields, correct-answer links/banks or solutions. They are listed individually in stored-ledger.json and excluded from complete-key coverage. These are not newly generated records or evidence of a wrong mathematical key.",
-      "evidence": [
-        "stored-ledger.json"
-      ]
-    },
+      "generator_attribution": "Current3692ddb\u2026 source replay explicitly removes this free-x intermediate at generator.py186-187. Ordinary samples use evaluated numeric chains; no matching generated defect found."
+    }
+  ],
+  "screened_incomplete_imports": {
+    "id": "incomplete-imports",
+    "severity": "stored-completeness-limitation",
+    "origin": "imported capture",
+    "confirmed": true,
+    "question_ids": [
+      17592186234077,
+      17592186092723,
+      17592186092725,
+      17592186234307,
+      17592186233928,
+      17592186234308
+    ],
+    "description": "Six imported records are rejected by native validate_practice_question for missing answer fields or canonical answers, with a known-good positive control. They have missing fields, correct-answer links/banks or solutions. They are listed individually in stored-ledger.json and excluded from complete-key coverage. These are not newly generated records or evidence of a wrong mathematical key.",
+    "evidence": [
+      "stored-ledger.json",
+      "eligibility-verification.json"
+    ]
+  },
+  "context_limits": [
     {
       "id": "equation-context-dependent-parts",
       "severity": "context-limitation-already-excluded",
@@ -250,6 +253,7 @@
   },
   "limitations": [
     "Finite sample and bounded content audit; no proof of absence of every shortcut or future mathematical error.",
+    "Stored checks cover all standalone displayed functions, points and available final keys; intermediate solution equations received targeted review rather than an exhaustive symbolic proof.",
     "Current slope ordinary family coverage is narrower than imported power cases: quadratic, factored cubic, and signed(x+b)^2/sqrt(x); source degree5 and reciprocal-power cases are replayed but not ordinarily sampled. This is a coverage limitation, not a demonstrated wrong task or key.",
     "Hard normal-intercept practice supplies only the abscissa and requires evaluating f to get the ordinate; this adds a prerequisite stage while preserving the source normal/intersection operation. Difficulty bands are authored progression, not empirically calibrated.",
     "Normal-equation repaired generator used prior detailed all-band repair evidence plus current saved-basis inventory/registration sanity, rather than repeating all generator checks.",
