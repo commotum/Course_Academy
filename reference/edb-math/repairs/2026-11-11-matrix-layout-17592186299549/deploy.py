@@ -97,6 +97,9 @@ def main():
     rows = json.loads((H/('proposals.json' if stage == 'initial' else stage+'-proposals.json')).read_text())
     kps = json.loads((H/(stage+'-kps.json')).read_text())
     assert json.loads((H/'render/rendering.json').read_text())['passed']
+    if stage == 'lesson':
+        for path in ('lesson-render/rendering.json', 'lesson-native-report.json', 'math-verification.json', 'layout-verification.json'):
+            assert json.loads((H/path).read_text())['passed']
     p = Publisher.from_environment(source=':agent/codex')
     work = H/(stage+'-publication')
     with ExitStack() as stack:

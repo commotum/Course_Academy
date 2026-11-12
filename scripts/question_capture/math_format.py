@@ -693,6 +693,18 @@ def normalize_matrix_answer_tables(value):
     text = re.sub(r'```[\s\S]*?```|`[^`\n]*`', protect, text)
     if not re.search(r'\\begin\{(?:bmatrix|pmatrix|matrix)\}', text):
         return str(value)
+    def answer_label(cell):
+        label = re.fullmatch(r'\$([^$]+?)\$', cell)
+        if not label:
+            return None
+        expression = re.sub(r'(?:\s*\\,)+\s*$', '', label[1]).strip()
+        if expression.endswith('=') and expression[:-1].strip():
+            return expression
+        # A transformation's output is a column vector, not another equality.
+        # Preserve the input vector and mapping arrow as the grid's label.
+        if re.fullmatch(r'[^:]+:\s*\\begin\{(bmatrix|pmatrix|matrix)\}[\s\S]+\\end\{\1\}\s*(?:⟶|→|↦|\\(?:longrightarrow|rightarrow|mapsto|to))', expression):
+            return expression
+        return None
     def replace(match):
         rows, labels = [], []
         for line in match[0].splitlines():
@@ -706,10 +718,10 @@ def normalize_matrix_answer_tables(value):
                 if re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', cell):
                     fields.append(cell)
                     continue
-                label = re.fullmatch(r'\$([^$]+?)=\s*(?:\\,\s*)*\$', cell)
+                label = answer_label(cell)
                 if not label:
                     return match[0]
-                labels.append(label[1].strip())
+                labels.append(label)
             if fields:
                 rows.append(fields)
         if len(labels) != 1 or not rows or len({len(row) for row in rows}) != 1:
@@ -717,7 +729,7 @@ def normalize_matrix_answer_tables(value):
         keys = [cell for row in rows for cell in row]
         if len(keys) != len(set(keys)):
             return match[0]
-        return matrix_answer(labels[0], rows)
+        return matrix_equation([labels[0], rows])
     text = re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', replace, text)
     def source_html(match):
         body = match[1]
@@ -727,7 +739,7 @@ def normalize_matrix_answer_tables(value):
         if len(rows) < 2 or not rows[0]: return match[0]
         span = re.search(r'\browspan\s*=\s*["\']?(\d+)', rows[0][0][0], re.I)
         if not span or int(span[1]) != len(rows): return match[0]
-        label = re.fullmatch(r'\$([^$]+?)=\s*(?:\\,\s*)*\$', html.unescape(rows[0][0][1]).strip())
+        label = answer_label(html.unescape(rows[0][0][1]).strip())
         if not label: return match[0]
         matrix_rows = []
         for index, row in enumerate(rows):
@@ -741,7 +753,7 @@ def normalize_matrix_answer_tables(value):
         if len({len(row) for row in matrix_rows}) != 1: return match[0]
         keys = [field for row in matrix_rows for field in row]
         if len(set(keys)) != len(keys): return match[0]
-        return matrix_answer(label[1].strip(), matrix_rows)
+        return matrix_equation([label, matrix_rows])
     text = re.sub(r'<table\b[^>]*>(.*?)</table>', source_html, text, flags=re.S|re.I)
     return re.sub(prefix+r'(\d+)END', lambda match:saved[int(match[1])], text)
 

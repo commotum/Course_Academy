@@ -185,6 +185,33 @@ class MathContentTests(unittest.TestCase):
         # This shape cannot be inferred without the explicit matrix context.
         self.assertEqual(normalize_prose(table), table)
 
+    def test_transformation_mapping_tables_keep_the_arrow_and_column_vector(self):
+        # Imported q-317039 and its 3D/HTML siblings use a mapping arrow,
+        # rather than an equals sign, before the editable output vector.
+        from math_format import normalize_matrix_answer_tables
+        for dimension in (2, 3):
+            vector = matrix_tex([[v] for v in ['x', 'y', 'z'][:dimension]])
+            fields = ['{{field-' + str(i + 1) + '}}' for i in range(dimension)]
+            for arrow in ('⟶', r'\longrightarrow', r'\mapsto'):
+                label = 'T:' + vector + arrow
+                markdown = ('| $' + label + r'\,\,$ | | ' + fields[0] + ' | |\n'
+                            '| --- | --- | --- | --- |\n' + '\n'.join(
+                                '| | ' + field + ' | | |' for field in fields[1:]))
+                source_html = ('<table rules="all"><tr><td rowspan="' + str(dimension)
+                               + '">$' + label + r'\,\,$</td><td></td><td>' + fields[0]
+                               + '</td><td></td></tr>' + ''.join(
+                                   '<tr><td></td><td>' + field + '</td><td></td></tr>'
+                                   for field in fields[1:]) + '</table>')
+                for table in (markdown, source_html):
+                    with self.subTest(dimension=dimension, arrow=arrow, html=table.startswith('<')):
+                        result = normalize_matrix_answer_tables(table)
+                        self.assertIn('$' + label + '$', result)
+                        self.assertNotIn(arrow + '=', result)
+                        self.assertIn('\n'.join('<tr><td>' + field + '</td></tr>' for field in fields), result)
+                        self.assertNotIn('rules="all"', result)
+                        self.assertNotIn('| ---', result)
+                        self.assertEqual(normalize_matrix_answer_tables(result), result)
+
     def test_matrix_recovery_preserves_data_tables_code_and_ambiguous_controls(self):
         given = r'$A=\begin{bmatrix}1\\2\end{bmatrix}$'+'\n\n'
         table = '| $A=$ | {{a}} |\n| --- | --- |\n| | {{b}} |'
