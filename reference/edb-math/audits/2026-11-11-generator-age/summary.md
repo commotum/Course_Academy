@@ -21,3 +21,19 @@ registration. Age alone does not determine current instructional compliance.
 `counts.json` contains all current KP IDs, generator IDs, script paths,
 registration/binding dates, and the count cohorts. Read-only query capture is in
 `/tmp/generator-age-audit-2026-11-11`. No generation or database changes occurred.
+
+## Replacements of older generators
+
+Retained knowledge-point → generator assertion history at the same EDB basis
+shows that, among the 286 current versions first registered after the Oct 28
+saved change, **181 replaced a generator for a KP that already had one before
+that change**, while **105 were first registrations** for their KPs.
+
+Among the 121 current versions since the Nov 5 phase change, 48 replaced
+pre-existing generators and 73 were first registrations. These are overlapping
+cutoff analyses, not additive groups.
+
+A replacement identifies a new registered version; it does not itself distinguish
+pedagogical repair from repackaging. Reviews of unchanged versions are additional
+work not counted as replacements. Per-KP records are in
+`oct28-replacement-history.json` and `nov5-replacement-history.json`.
