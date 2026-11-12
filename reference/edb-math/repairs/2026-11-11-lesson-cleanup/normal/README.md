@@ -1,0 +1,13 @@
+# Normal-line lesson cleanup
+
+The live stored cleanup is verified at bases 14246–14248: fourteen questions retired (eight intercept radio banks with a demonstrated finite bank-only shortcut, six incomplete imports) and the free-x evaluated derivative intermediate corrected on question 17592186317210. Exact question siblings, old-basis snapshots and learner task-items were verified after each durable CAS request. The five existing multistep fragments remain unchanged.
+
+`cleanup-results/` contains the actual commit verification. `cleanup-publication/` retains durable request/receipt history and exact before/after evidence. The independent acceptance is `../review/normal-cleanup-review.json`.
+
+Fresh packages and delivery objects are independently verified against actual post-retirement source captures. The equation package is unchanged. Minimal new slope/intercept packages retain their samplers, mathematical domains, prompts, solutions and answer endpoints while adding current declared refill checker/plan resources and eligible-source provenance. The intercept replay branch filters retired historical banks. Old immutable archives remain intact.
+
+`validation.json` records 270 raw questions across all nine KP/band pairs and 264 final delivery survivors. All 264 displayed functions, points and final keys were independently checked. `independent-native-report.json` records 443 accepted rational equivalents and 443 rejected wrong responses with zero unresolved checks. `package-equivalence.json` confirms 180 sampled old/new ordinary questions and parameter objects are identical. `checker-regressions.json` records 24 intentional checker rejections plus the retired-replay exclusion.
+
+`render/rendering.json` contains 108 actual unmodified learner UI checks over 27 exact final representatives, in active/completed states at 390×1000 and 1280×1000. Accessible horizontal math right-edge screenshots are retained where needed. This finite saved-seed evidence is not exhaustive domain or empirical difficulty validation.
+
+The exact forty-five intended publication objects are `<KP>/publish/{easy,moderate,hard}.json`, five per band per KP. `publish.py` requires accepted package/source/batch hashes, uses per-KP and shared publication locks, preserves approval history, recovers exact durable pending requests before fresh planning, and revalidates the exact five surviving objects inside Publisher preparation. `publication-results.json` is written only from actual Publisher results. `final-verification.json` is written only after exact live readback and native fresh-practice eligibility verify the new question counts and total floors.

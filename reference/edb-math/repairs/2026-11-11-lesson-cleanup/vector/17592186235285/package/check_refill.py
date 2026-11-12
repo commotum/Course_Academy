@@ -59,7 +59,7 @@ def check(r,out):
 
  import check_prior
  check_prior.check(r,out/'prior')
- kp=generator.KP['db_id'];q=r['question'];g=r['generation'];p=g.get('instance',g.get('parameters'));values=expected(kp,r);prompt=q[':question/problem'];solution=q[':question/worked-solution']
+ kp=generator.KP_ID;q=r['question'];g=r['generation'];p=g.get('instance',g.get('parameters'));values=expected(kp,r);prompt=q[':question/problem'];solution=q[':question/worked-solution']
  assert not re.search(r'compare its legs|following the drawn|path is drawn|OX.?=.?.?OA|AB.?=.?.?b',prompt,re.I),'Prompt supplies assessed route'
  assert not set(map(str,g.get('source_ids',[]))) & {'q-275128','17592186292807','17592186097046','17592186097240'}
  checks=[];fields=sorted(q[':question/answer-fields'],key=lambda f:f[':answer-field/key'])
