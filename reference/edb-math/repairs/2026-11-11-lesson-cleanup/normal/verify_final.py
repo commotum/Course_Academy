@@ -53,6 +53,7 @@ for kp in KPS:
   fresh_counts[band]=sum(byid[q[':db/id']]['eligible'] and enum(q.get(':question/difficulty'))==':question.difficulty/'+band for q in new);assert counts[band]>=5 and fresh_counts[band]==5
   expected.extend(read(D/'publish'/f'{band}.json'))
  assert {content_fingerprint(q) for q in new}=={content_fingerprint(r['question']) for r in expected}
+ assert {str(q[':question/id']):normalized_question(q) for q in new}=={str(r['question'][':question/id']):normalized_question(r['question']) for r in expected},'Exact new question/field/key/solution readback changed'
  oldpackage=read(D/'package.json');verify_package(p.config.math_root/Path(oldpackage['registration']).parent,oldpackage['package_sha256'])
  package=read(D/'reviewed-package.json');P=p.config.math_root/Path(package['registration']).parent;verify_package(P,package['package_sha256']);identity={**source_identity(sources[kp]),'package_sha256':package['package_sha256'],'registration':package['registration']};A=p.config.math_root/'generators/approvals'/package['package_sha256']/f'{kp}.json'
  for band in counts:approved_band(read(A),identity,band,REVIEW_POLICY_VERSION)

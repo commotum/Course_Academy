@@ -21,14 +21,15 @@ from scripts.generator_refill_plan import validate_refill_plan
 BANDS=['easy','moderate','hard']
 def read(p):return json.loads(Path(p).read_text())
 def save(p,x):atomic_json(Path(p),jsonable(x))
-def submit(p,kp,records,package,sha,base,source,assets,expected,validator=None):
+def submit(p,kp,records,package,sha,base,source,assets,expected,validator=None,expected_records=None):
+ expected_records=records if expected_records is None else expected_records
  for attempt in range(1,5):
   directory=base/str(attempt)
   try:
    if not (directory/'preparation.json').exists():
     prepared=p.prepare(kp,records,package.reference,sha,directory,source_snapshot=source,assets_directory=assets,expected_registered_generator=expected,records_validator=validator)
-    assert len(prepared['records'])==len(records),'Fresh reviewed batch no longer wholly survives dedup; refresh inventory review'
-    if records:assert prepared['records']==records,'Publication preparation changed actual reviewed survivor objects'
+    assert len(prepared['records'])==len(expected_records),'Fresh reviewed batch no longer wholly survives dedup; refresh inventory review'
+    if records:assert prepared['records']==expected_records,'Publication preparation changed actual reviewed survivor objects'
    result=p.publish(directory);assert result['passed'];return result
   except StaleBasis:
    save(directory/'confirmed-stale.json',dict(reason='Confirmed basis rejection; exact Publisher pending request retired before reprepare'))
@@ -38,6 +39,9 @@ def main(kp):
  d=H/str(kp);root=d/'package';manifest=read(root/'package.json');candidate=read(d/'package-candidate.json');review=read(d/'review/report.json');source=read(d/'source/source.json')
  assert read(H/'retirement/verification.json')['passed'];assert read(d/'publication-selection.json')['passed'];assert review['verdict']=='accepted';assert read(d/'preflight-verification.json')['passed'];assert read(d/'refill-regressions.json')['passed']
  sha=manifest_digest(build_manifest(root,manifest['entrypoint'],manifest['files'],dependencies=manifest['dependencies']));assert sha==candidate['sha256']==review['package_sha256'],'Independent review bound to different bytes'
+ assert hashlib.sha256((d/'source/source.json').read_bytes()).hexdigest()==review['source_file_sha256'],'Independent review bound to different source bytes'
+ for band in BANDS:
+  assert batch_sha256(read(d/'publish'/band/'delivery/accepted.json'))==review['publication_batch_hashes'][band],'Independent review bound to different final survivor batch'
  for band in BANDS:
   out=d/'verification'/band;assert read(out/'refill/result.json')['status']=='passed';assert read(out/'render/rendering.json')['passed'];assert read(out/'native-report.json')['passed'];assert len(read(out/'delivery-postretirement/accepted.json'))>=5
  findings=[dict(id=x) for check in read(root/'refill-review-plan.json')['checks'] for x in check['finding_ids']];plan=validate_refill_plan(root,manifest,findings,d/'review');assert plan==candidate['refill_plan'];check_dependencies(manifest['dependencies'],sys.executable)
@@ -68,7 +72,11 @@ def main(kp):
    def validator(actual,inventory,directory):
     assert actual==records,'Only the exact independently reviewed final survivor objects may publish'
     return validate_survivors(actual,inventory,directory,root=package.directory,manifest=read(root/'package.json'),band=band,python=sys.executable,repo_root=ROOT,environment=os.environ.copy(),expected_plan=plan)
-   publications[band]=submit(p,kp,records,package,sha,d/'publication'/band,source,out/'delivery/assets',package.reference,validator)
+   raw_batch=read(d/'verification'/band/'records.json');original_delivery=read(d/'verification'/band/'delivery-postretirement/accepted.json');mapping=read(out/'ui-coverage.json')['records']
+   assert len(raw_batch)==len(original_delivery),'Raw-to-survivor index mapping needs explicit refresh'
+   assert [original_delivery[x['source_index']] for x in mapping]==records
+   raw_records=[raw_batch[x['source_index']] for x in mapping]
+   publications[band]=submit(p,kp,raw_records,package,sha,d/'publication'/band,source,d/'verification'/band/'assets',package.reference,validator,expected_records=records)
    assert publications[band]['new_questions']>=5
   status=p.client.status();current=jsonable(p.read_kp(kp,d/'final-readback',status['basis']));save(d/'final-readback/kp.json',current);save(d/'final-readback/status.json',status)
   baseline=read(d/'capture-after-retirement/kp.json');oldids={q[':db/id'] for q in baseline[':knowledge-point/questions']};new=[q for q in current[':knowledge-point/questions'] if q[':db/id'] not in oldids]

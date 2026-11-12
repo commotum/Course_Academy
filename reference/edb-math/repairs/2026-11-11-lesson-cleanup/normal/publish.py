@@ -3,7 +3,7 @@ import json,sys,hashlib,copy,shutil
 from pathlib import Path
 H=Path(__file__).resolve().parent;ROOT=H.parents[4];sys.path[:0]=[str(ROOT),str(ROOT/'scripts')]
 from cleanup import p,KPS,LOCK,read,save
-from generator_publish import file_lock,digest,StaleBasis
+from generator_publish import file_lock,digest,StaleBasis,jsonable
 from generator_pipeline import source_identity
 from scripts.generator_approval import make_approval,approved_band
 from scripts.generator_review import REVIEW_POLICY_VERSION
@@ -51,7 +51,7 @@ for kp in KPS:
    # bind the actual current identity readback explicitly without inventing a tx.
    basis=registration['basis_after'];current=p.read_kp(kp,D/'registration-readback',basis)
    assert current[':knowledge-point/question-generator'][':question-generator/script']==script
-   receipt={**registration,'generator_registration_verified':True,'registration_readback_basis':basis,'actual_registration':current[':knowledge-point/question-generator']}
+   receipt={**registration,'generator_registration_verified':True,'registration_readback_basis':basis,'actual_registration':jsonable(current[':knowledge-point/question-generator'])}
    batches={};reports={}
    for band in ['easy','moderate','hard']:
     rows=read(D/'verification'/f'{band}.json');batches[band]=dict(batch_hash=batch_sha256(rows),assets={},seed=202611113,count=len(rows));reports[band]=dict(status='passed',batch_sha256=batches[band]['batch_hash'],evidence_paths=[str(H/'review/final-review.json'),str(H/'validation.json'),str(H/'independent-native-report.json'),str(H/'render/rendering.json'),str(D/'independent'/f'{band}.json'),str(D/'delivery'/band/'delivery.json'),str(D/'delivery'/band/'native/result.json')])
