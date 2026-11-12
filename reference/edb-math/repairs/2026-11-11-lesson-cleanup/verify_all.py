@@ -3,7 +3,7 @@ import copy,hashlib,json,subprocess,sys
 from contextlib import ExitStack
 from pathlib import Path
 H=Path(__file__).resolve().parent;ROOT=H.parents[3];sys.path[:0]=[str(ROOT),str(ROOT/'scripts')]
-from generator_publish import Publisher,jsonable,content_fingerprint,enum,kw
+from generator_publish import Publisher,jsonable,content_fingerprint,normalized_question,enum,kw
 from generator_pipeline import source_identity
 from generator_packages import verify_package
 from generator_approval import approved_band
@@ -71,11 +71,18 @@ with ExitStack() as locks:
    assert canon(now[eid])==canon(expected),('Unexpected old-question edit',kp,eid)
   for eid in retired&set(now):assert now[eid][':question/retired'] and not eligible[eid]
   newfp=[content_fingerprint(now[eid]) for eid in fresh[kp]];assert len(newfp)==len(set(newfp));assert not set(newfp)&{content_fingerprint(q) for q in old.values()}
+  expected_new=[]
+  for band in ['easy','moderate','hard']:
+   if meta['lesson']=='normal':file=H/'normal'/str(kp)/'publish'/f'{band}.json'
+   elif meta['lesson']=='vector':file=H/'vector'/str(kp)/'publish'/band/'delivery/accepted.json'
+   else:file=H/'gaussian'/str(kp)/band/'records.json'
+   expected_new.extend(read(file))
+  assert {str(now[e][':question/id']):canon(normalized_question(now[e])) for e in fresh[kp]}=={str(r['question'][':question/id']):canon(normalized_question(r['question'])) for r in expected_new},('Exact new prompt/fields/keys/solution differ from reviewed batch',kp)
   counts={};newcounts={}
   for band in ['easy','moderate','hard']:
    counts[band]=sum(eligible[e] and enum(q.get(':question/difficulty'))==':question.difficulty/'+band for e,q in now.items());newcounts[band]=sum(eligible[e] and enum(now[e].get(':question/difficulty'))==':question.difficulty/'+band for e in fresh[kp]);assert counts[band]>=5 and newcounts[band]>=5,(kp,band,counts,newcounts)
   ref=current[kp][':knowledge-point/question-generator'][':question-generator/script'];sha=Path(ref).parent.name;verify_package((p.config.math_root/ref).parent,sha);approval=read(p.config.math_root/'generators/approvals'/sha/(str(kp)+'.json'));identity={**source_identity(sources[kp]),'package_sha256':sha,'registration':ref}
   for band in counts:approved_band(approval,identity,band,REVIEW_POLICY_VERSION)
   oldref=before[':knowledge-point/question-generator'][':question-generator/script'];verify_package((p.config.math_root/oldref).parent,Path(oldref).parent.name)
-  results.append({'kp':kp,'registration':ref,'total_native_usable_by_band':counts,'new_native_usable_by_band':newcounts,'new_question_ids':sorted(fresh[kp]),'retired_ids':sorted(retired&set(now)),'all_old_question_edits_exactly_scoped':True,'old_and_current_packages_intact':True,'all_band_approval_current_source_matches':True})
+  results.append({'kp':kp,'registration':ref,'total_native_usable_by_band':counts,'new_native_usable_by_band':newcounts,'new_question_ids':sorted(fresh[kp]),'retired_ids':sorted(retired&set(now)),'all_new_prompts_fields_keys_solutions_match_reviewed_batches':True,'all_old_question_edits_exactly_scoped':True,'old_and_current_packages_intact':True,'all_band_approval_current_source_matches':True})
  report={'passed':True,'basis':basis,'retired_questions':len(retired),'notation_repairs':1,'new_questions':sum(len(v) for v in fresh.values()),'results':results,'native_entry_point':'learning::validate_practice_question','real_multistep_context_captured':True,'helper_sha256':hashlib.sha256(helper.read_bytes()).hexdigest(),'global_generation_setting':[line for line in (ROOT/'.local/ui.env').read_text().splitlines() if line.startswith('COURSE_ACADEMY_DISABLE_GENERATION=')],'service_configuration_edited_by_task':False,'database_writes':0};save(H/'final-verification.json',report);print(json.dumps(report,indent=2))
