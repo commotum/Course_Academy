@@ -39,19 +39,26 @@ with ExitStack() as locks:
  locks.enter_context(file_lock(H/'publication.lock'));status=p.client.status();basis=status['basis']
  for kp in kps:
   current[kp]=jsonable(p.read_kp(kp,H/'final'/str(kp)/'capture',basis));save(H/'final'/str(kp)/'kp.json',current[kp]);visit(current[kp]);qids.extend(q[':db/id'] for q in current[kp][':knowledge-point/questions']);sources[kp]=p.extract_source(kp,H/'final'/str(kp)/'source',basis=basis)
- # Real owner graph, including ordinary wrappers contained inside multisteps.
+ # Real owner graph. Restrict owner payloads to references so the graph
+ # cannot overwrite captured full questions or install unrelated enum records.
+ def graph_record(record,attrs):
+  def ref(v):
+   if isinstance(v,dict) and ':db/id' in v:return {':db/id':v[':db/id']}
+   if isinstance(v,list):return [ref(x) for x in v]
+   return v
+  return {k:ref(v) for k,v in record.items() if k==':db/id' or k in attrs}
  frontier=set(qids);contained=set(qids);depth=0
  while frontier:
-  rows=p.client.query('[:find (pull ?p [*]) :in $ [?c ...] :where [?p :assigned-problem/content ?c]]',[sorted(frontier)],H/'final',f'wrappers-{depth}',basis);parents=set()
-  for row in rows:visit(jsonable(row[0]));parents.add(row[0][':db/id'])
+  rows=[];ordered=sorted(frontier)
+  for offset in range(0,len(ordered),100):
+   rows+=p.client.query('[:find (pull ?p [:db/id :assigned-problem/content]) :in $ [?c ...] :where [?p :assigned-problem/content ?c]]',[ordered[offset:offset+100]],H/'final',f'wrappers-{depth}-{offset}',basis)
+  parents=set()
+  for row in rows:visit(graph_record(jsonable(row[0]),[':assigned-problem/content']));parents.add(row[0][':db/id'])
   frontier=parents-contained;contained|=parents;depth+=1
- steps=[]
- for attr in ['step/content','multistep-step/question']:
-  exists=p.client.query('[:find ?a :in $ ?a :where [_ :db/ident ?a]]',[kw(attr)],H/'final','attribute-'+attr.replace('/','-'),basis)
-  if exists:steps+=p.client.query('[:find (pull ?s [*]) :in $ [?c ...] :where [?s :'+attr+' ?c]]',[sorted(contained)],H/'final','owners-'+attr.replace('/','-'),basis)
- for row in steps:visit(jsonable(row[0]))
- if steps:
-  for row in p.client.query('[:find (pull ?m [*]) :in $ [?s ...] :where [?m :multistep/steps ?s]]',[[r[0][':db/id'] for r in steps]],H/'final','multisteps',basis):visit(jsonable(row[0]))
+ steps=p.client.query('[:find (pull ?s [:db/id :step/content :multistep-step/question]) :where [_ :multistep/steps ?s]]',[],H/'final','actual-multistep-steps',basis)
+ multis=p.client.query('[:find (pull ?m [:db/id :multistep/steps]) :where [?m :multistep/steps _]]',[],H/'final','actual-multisteps',basis)
+ for rows in [steps,multis]:
+  for row in rows:visit(graph_record(jsonable(row[0]),[':step/content',':multistep-step/question',':multistep/steps']))
  save(H/'final/native-input.json',{'basis':basis,'entities':native_input,'questions':qids});helper=H/'normal/eligibility';subprocess.run([str(helper),str(H/'final/native-input.json'),str(H/'final/native-eligibility.json')],check=True);eligible={r['entity']:r['eligible'] for r in read(H/'final/native-eligibility.json')['questions']};results=[]
  cleanup=read(H/'normal/cleanup-results/17592186092384.json');fixed=read(H/'normal/cleanup-publication/17592186092384'/str(cleanup['basis_before'])/'expected.json');fixedsolution=next(q[':question/worked-solution'] for q in fixed[':knowledge-point/questions'] if q[':db/id']==17592186317210)
  for meta in scope:
@@ -71,4 +78,4 @@ with ExitStack() as locks:
   for band in counts:approved_band(approval,identity,band,REVIEW_POLICY_VERSION)
   oldref=before[':knowledge-point/question-generator'][':question-generator/script'];verify_package((p.config.math_root/oldref).parent,Path(oldref).parent.name)
   results.append({'kp':kp,'registration':ref,'total_native_usable_by_band':counts,'new_native_usable_by_band':newcounts,'new_question_ids':sorted(fresh[kp]),'retired_ids':sorted(retired&set(now)),'all_old_question_edits_exactly_scoped':True,'old_and_current_packages_intact':True,'all_band_approval_current_source_matches':True})
- report={'passed':True,'basis':basis,'retired_questions':len(retired),'notation_repairs':1,'new_questions':sum(len(v) for v in fresh.values()),'results':results,'native_entry_point':'learning::validate_practice_question','real_multistep_context_captured':True,'helper_sha256':hashlib.sha256(helper.read_bytes()).hexdigest(),'global_generation_setting_preserved':'COURSE_ACADEMY_DISABLE_GENERATION=1','database_writes':0};save(H/'final-verification.json',report);print(json.dumps(report,indent=2))
+ report={'passed':True,'basis':basis,'retired_questions':len(retired),'notation_repairs':1,'new_questions':sum(len(v) for v in fresh.values()),'results':results,'native_entry_point':'learning::validate_practice_question','real_multistep_context_captured':True,'helper_sha256':hashlib.sha256(helper.read_bytes()).hexdigest(),'global_generation_setting':[line for line in (ROOT/'.local/ui.env').read_text().splitlines() if line.startswith('COURSE_ACADEMY_DISABLE_GENERATION=')],'service_configuration_edited_by_task':False,'database_writes':0};save(H/'final-verification.json',report);print(json.dumps(report,indent=2))

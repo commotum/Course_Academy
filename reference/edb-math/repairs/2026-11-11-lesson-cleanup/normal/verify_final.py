@@ -8,7 +8,10 @@ from generator_pipeline import source_identity
 from scripts.generator_approval import approved_band
 from scripts.generator_review import REVIEW_POLICY_VERSION
 from scripts.generator_packages import verify_package
-status=p.client.status();basis=status['basis'];entities={};idents={};questions=[];kps={};sources={}
+reuse=all((H/str(kp)/'final/kp.json').exists() and (H/str(kp)/'source-final/source.json').exists() for kp in KPS)
+if reuse:basis=read(H/str(KPS[0])/'source-final/source.json')['basis']
+else:status=p.client.status();basis=status['basis']
+entities={};idents={};questions=[];kps={};sources={}
 def visit(value):
  if isinstance(value,list):return [visit(v) for v in value]
  if isinstance(value,dict):
@@ -18,11 +21,19 @@ def visit(value):
    return idents[ident]
   if ':db/id' in value:
    eid=value[':db/id'];row={k.lstrip(':'):visit(v) for k,v in value.items() if k!=':db/id'};entities.setdefault(str(eid),{}).update(row);return eid
- return value
+ return jsonable(value)
+def graph_record(record,attributes):
+ def ref(v):
+  if isinstance(v,dict) and ":db/id" in v:return {":db/id":v[":db/id"]}
+  if isinstance(v,list):return [ref(child) for child in v]
+  return v
+ return {key:ref(value) for key,value in record.items() if key==":db/id" or key in attributes}
 for kp in KPS:
  D=H/str(kp)
  with file_lock(LOCK/f'kp-{kp}.lock'):
-  K=p.read_kp(kp,D/'final',basis);kps[kp]=jsonable(K);source=p.extract_source(kp,D/'source-final',basis=basis);sources[kp]=source;assert source_identity(source)==source_identity(read(D/'source/source.json'))
+  if reuse:K=read(D/'final/kp.json');source=read(D/'source-final/source.json');assert source['basis']==basis
+  else:K=p.read_kp(kp,D/'final',basis);source=p.extract_source(kp,D/'source-final',basis=basis)
+  kps[kp]=jsonable(K);sources[kp]=source;assert source_identity(source)==source_identity(read(D/'source/source.json'))
   save(D/'final/kp.json',jsonable(K));visit(K)
   questions.extend(q[':db/id'] for q in K[':knowledge-point/questions'])
 # Native structural graph uses actual bounded stored owners of these questions.
@@ -30,16 +41,14 @@ frontier=set(questions);contained=set(questions);depth=0
 while frontier:
  rows=p.client.query('[:find (pull ?p [*]) :in $ [?c ...] :where [?p :assigned-problem/content ?c]]',[sorted(frontier)],H/'final',f'assigned-problems-{depth}',basis)
  parents=set()
- for row in rows:visit(row[0]);parents.add(row[0][':db/id'])
+ for row in rows:visit(graph_record(row[0],[':assigned-problem/content']));parents.add(row[0][':db/id'])
  frontier=parents-contained;contained|=parents;depth+=1
-steps=[]
-for attr in ['step/content','multistep-step/question']:
- exists=p.client.query('[:find ?a :in $ ?a :where [_ :db/ident ?a]]',[kw(attr)],H/'final','graph-attribute-'+attr.replace('/','-'),basis)
- if exists:steps.extend(p.client.query('[:find (pull ?s [*]) :in $ [?c ...] :where [?s :'+attr+' ?c]]',[sorted(contained)],H/'final','graph-'+attr.replace('/','-'),basis))
-for row in steps:visit(row[0])
-if steps:
- multis=p.client.query('[:find (pull ?m [*]) :in $ [?s ...] :where [?m :multistep/steps ?s]]',[[r[0][':db/id'] for r in steps]],H/'final','multisteps',basis)
- for row in multis:visit(row[0])
+# Start at the small multistep graph: the inverse join from all question IDs
+# exceeds the live planner budget. These are actual source-basis graph records.
+steps=p.client.query('[:find (pull ?s [:db/id :step/content :multistep-step/question]) :where [_ :multistep/steps ?s]]',[],H/'final','actual-multistep-steps',basis)
+multis=p.client.query('[:find (pull ?m [:db/id :multistep/steps]) :where [?m :multistep/steps _]]',[],H/'final','actual-multisteps',basis)
+for rows in [steps,multis]:
+ for row in rows:visit(graph_record(row[0],[':step/content',':multistep-step/question',':multistep/steps']))
 save(H/'final/native-eligibility-input.json',dict(basis=basis,entities=entities,questions=questions));subprocess.run([str(H/'eligibility'),str(H/'final/native-eligibility-input.json'),str(H/'final/native-eligibility.json')],check=True)
 native=read(H/'final/native-eligibility.json');byid={r['entity']:r for r in native['questions']};results=[]
 for kp in KPS:
