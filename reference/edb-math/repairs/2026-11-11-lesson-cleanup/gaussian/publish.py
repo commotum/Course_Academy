@@ -19,6 +19,8 @@ assert read(H/'native-report.json')['passed'] and read(H/'render/rendering.json'
 p=Publisher.from_environment(source=':agent/codex');results=[]
 for kp in [17592186096672,17592186096673]:
  D=H/str(kp);source=read(D/'source/source.json');info=read(D/'package.json');ref=info['registration'];sha=info['package_sha256'];package=p.config.math_root/ref;manifest=info['manifest'];verify_package(package.parent,sha)
+ assert review['package_hashes'][str(kp)]==sha
+ assert review['source_file_hashes'][str(kp)]==hashlib.sha256((D/'source/source.json').read_bytes()).hexdigest()
  approval=read(p.config.math_root/'generators/approvals'/sha/(str(kp)+'.json'));identity={**source_identity(source),'package_sha256':sha,'registration':ref}
  with file_lock(ROOT/'.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051'/f'kp-{kp}.lock'):
   for band in ['easy','moderate','hard']:
