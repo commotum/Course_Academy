@@ -148,6 +148,20 @@ fn answer_json(s: &EntitySnapshot, answer: u64, feedback: bool) -> Result<Json> 
     Ok(value)
 }
 
+// Imported completed answers can have a source date without per-question duration.
+// Keep that duration unknown instead of manufacturing a clock checkpoint.
+fn recorded_elapsed(s: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Result<Option<f64>> {
+    if !s.entity(item)?.contains_key("task-item/elapsed-seconds")
+        && s.refs(item, "task-item/working-periods")?.is_empty()
+    {
+        let history = timing::history(s, item, "task-item/status")?;
+        if history.len() == 1 && timing::terminal(&history[0].1) {
+            return Ok(None);
+        }
+    }
+    Ok(Some(timing::elapsed(s, item, at)?))
+}
+
 fn enrich_content(
     s: &EntitySnapshot,
     content: &mut Json,
@@ -186,7 +200,7 @@ fn enrich_content(
             content["itemId"] = json!(item);
             content["status"] = json!(state);
             content["elapsedSeconds"] =
-                json!(item.map(|item| timing::elapsed(s, item, at)).transpose()?);
+                json!(item.map(|item| recorded_elapsed(s, item, at)).transpose()?.flatten());
             let responses = item
                 .map(|item| s.refs(item, "task-item/responses"))
                 .transpose()?
@@ -242,11 +256,11 @@ pub(super) fn enrich(s: &EntitySnapshot, assignment: &mut Json, preview: bool) -
         if let Some(&item) = presentations.get(&entry.step) {
             task_items.push(json!({
                 "itemId": item, "stepId": entry.step, "contentId": entry.question,
-                "status": status(s, item, "task-item/status")?, "elapsedSeconds": timing::elapsed(s, item, at)?,
+                "status": status(s, item, "task-item/status")?, "elapsedSeconds": recorded_elapsed(s, item, at)?,
             }));
         }
     }
-    assignment["elapsedSeconds"] = if task_items.is_empty() {
+    assignment["elapsedSeconds"] = if task_items.is_empty() || task_items.iter().any(|item| item["elapsedSeconds"].is_null()) {
         Json::Null
     } else {
         json!(

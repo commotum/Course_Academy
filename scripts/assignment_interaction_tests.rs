@@ -679,3 +679,36 @@ fn study_projection_assignment_focus_answer_and_switch_replay_with_stable_identi
     assert_eq!(status(&s,f.lesson_task,"learner-task/status")?,"locked");
     Ok(())
 }
+
+#[test]
+fn imported_answers_without_question_durations_render_with_unknown_time() -> Result<()> {
+    let mut f = Fixture::new()?;
+    let task_id = "00000000-0000-4000-8000-000000000099";
+    let before = f.snapshot()?;
+    let question = before.reference(f.first, "step/content")?;
+    let answer = before.reference(f.first_field, "answer-field/correct")?;
+    let item_id = item_uuid(&before, task_id, f.first)?;
+    let tx = format!(r#"[
+      {{:db/id "imported-task" :learner-task/id #uuid "{task_id}"
+        :learner-task/activity {} :learner-task/status :learner-task.status/completed
+        :learner-task/finished-at #inst "1970-01-01T00:00:02Z"
+        :learner-task/items ["imported-item"]}}
+      {{:db/id "imported-item" :task-item/id #uuid "{item_id}"
+        :task-item/content {question} :task-item/status :task-item.status/correct
+        :task-item/responses [{answer}]
+        :task-item/working-ended-at #inst "1970-01-01T00:00:02Z"}}
+      [:db/add {} :learner/activity "imported-task"]
+    ]"#, f.activity, f.learner);
+    f.db = offline_tx(&f.db, &tx, 3000, engine_source())?.db_after;
+    let s = f.snapshot()?;
+    let detail = assignment_reader::detail(&s, f.learner, ASSIGNMENT)?;
+    let assignment = &detail["assignment"];
+    assert!(assignment["elapsedSeconds"].is_null());
+    assert!(assignment["items"][0]["elapsedSeconds"].is_null());
+    let first = &assignment["steps"][0]["content"];
+    assert_eq!(first["status"], "correct");
+    assert_eq!(first["fields"][0]["response"]["value"], "2");
+    assert!(first["elapsedSeconds"].is_null());
+    assert!(!s.entity(question)?.contains_key("task-item/elapsed-seconds"));
+    Ok(())
+}
