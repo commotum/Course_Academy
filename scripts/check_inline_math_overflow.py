@@ -135,13 +135,19 @@ def check(items, baseline=False, screenshot_dir=None, stylesheets=('learning', '
                 ''')
             for stylesheet in stylesheets:
                 page.evaluate('''name=>new Promise((resolve,reject)=>{
-                    const link=document.getElementById('pageStyle');link.onload=resolve;link.onerror=reject;
+                    const link=document.createElement('link');link.id='pageStyle';link.rel='stylesheet';
+                    const timeout=setTimeout(()=>reject(new Error('Stylesheet load timed out: '+name)),10000);
+                    link.onload=()=>{clearTimeout(timeout);resolve()};link.onerror=()=>{clearTimeout(timeout);reject(new Error('Stylesheet failed: '+name))};
                     link.href='/ui/'+name+'.css';
+                    document.getElementById('pageStyle').replaceWith(link);
                 })''', stylesheet)
+                # Topic and Course render prose and canonical answers, not
+                # interactive choice fieldsets (whose layout lives in learning.css).
+                visible_items = items if stylesheet == 'learning' else [f for f in items if f.get('role') not in ('choice', 'checkbox')]
                 for width in [1100, 390]:
                     page.set_viewport_size(dict(width=width, height=1000))
-                    for offset in range(0, len(items), 24):
-                        batch = items[offset:offset + 24]
+                    for offset in range(0, len(visible_items), 24):
+                        batch = visible_items[offset:offset + 24]
                         checks = page.evaluate(SHOW, batch)
                         for row in checks:
                             row['width'] = width
@@ -152,7 +158,7 @@ def check(items, baseline=False, screenshot_dir=None, stylesheets=('learning', '
                                 page.locator(f'article[data-entity="{row["entity"]}"][data-attribute="{row["attribute"]}"]').first.screenshot(path=str(screenshot_dir / filename))
                                 screenshots.append(filename)
                             results.append(row)
-                    print(f'Checked {len(items)} fields with {stylesheet}.css at {width}px.', flush=True)
+                    print(f'Checked {len(visible_items)} fields with {stylesheet}.css at {width}px.', flush=True)
             browser.close()
     finally:
         server.shutdown()
