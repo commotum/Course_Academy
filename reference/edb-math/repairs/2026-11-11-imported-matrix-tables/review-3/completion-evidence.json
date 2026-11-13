@@ -1,0 +1,559 @@
+{
+  "basis": 14371,
+  "authorship": "Locally authored exact mathematical completion; canonical solutions supply the method, not observed target answers.",
+  "verification": "Exact SymPy E(0)=I and Eprime=A E checks. Application grader/rendering reserved to root; no learner data written.",
+  "templates": [
+    {
+      "knowledge_point": 17592186221408,
+      "title": "Finding the Matrix Exponent for a Matrix With Distinct Real Eigenvalues",
+      "canonical": {
+        ":db/id": 17592186221150,
+        ":question/id": "35a158c3-37b6-5123-ba90-1fd05218ce43",
+        ":question/math-academy-id": "e-21271",
+        ":question/problem": "Find $e^{At}$ for $A = {\\left[ \\begin{array}{cc}1 & 0 \\\\ - 3 & 4\\end{array} \\right]}.$ \n\n*Hint: The eigenvalues of $A$ are $1$ and $4.$*",
+        ":question/worked-solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}1 & 0 \\\\ -3 & 4\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}{\\alpha }_{1}t+{\\alpha }_{0} & 0 \\\\ -3{\\alpha }_{1}t & 4{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix},\\end{aligned}\n$$\n\nwhere $\\alpha_1$ and $\\alpha_0$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda) = \\alpha_1 \\lambda + \\alpha_0.$ The eigenvalues of $At$ are \n\n$$\n\\lambda_1=t, \\qquad\n\\lambda_2=4t,\n$$\n\nboth of multiplicity one. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(t) &={e}^{t} \\\\ r(4t) &={e}^{4t}\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{t} \\\\ 4t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{4t}\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for $\\alpha_1$ and $\\alpha_0{:}$\n\n- Subtracting the first equation from the second one, we get\n\n$$\n3t\\alpha_1 = e^{4t} - e^{t}\n\\qquad\\Rightarrow\\qquad\n\\alpha_1 = \\dfrac{1}{3t}\\bigl(e^{4t}-e^{t}\\bigr).\n$$\n\n- Multiplying the first equation by $4$ and subtracting the second one, we get\n\n$$\n3\\alpha_0 = 4e^{t} - e^{4t}\n\\qquad\\Rightarrow\\qquad\n\\alpha_0 = \\dfrac{1}{3}\\bigl(4e^{t}-e^{4t}\\bigr).\n$$\n\nSubstituting $\\alpha_1$ and $\\alpha_0$ into the expressions for the entries of $e^{At},$ we get the following:\n\n$$\n\\begin{aligned}{\\alpha }_{1}t+{\\alpha }_{0} & =\\left(\\frac{1}{3t}({e}^{4t}-{e}^{t})\\right)t+\\frac{1}{3}(4{e}^{t}-{e}^{4t}) \\\\  & =\\frac{1}{3}({e}^{4t}-{e}^{t}+4{e}^{t}-{e}^{4t}) \\\\  & ={e}^{t} \\\\ -3{\\alpha }_{1}t & =-3\\left(\\frac{1}{3t}({e}^{4t}-{e}^{t})\\right)t \\\\  & ={e}^{t}-{e}^{4t} \\\\ 4{\\alpha }_{1}t+{\\alpha }_{0} & =4\\left(\\frac{1}{3t}({e}^{4t}-{e}^{t})\\right)t+\\frac{1}{3}(4{e}^{t}-{e}^{4t}) \\\\  & =\\frac{1}{3}((4{e}^{4t}-4{e}^{t})+(4{e}^{t}-{e}^{4t})) \\\\  & ={e}^{4t}\\end{aligned}\n$$\n\nTherefore,\n$$\ne^{At} = \n{\\left[ \\begin{array}{cc}{e}^{t} & 0 \\\\ {e}^{t} - {e}^{4 t} & {e}^{4 t}\\end{array} \\right]}.\n$$"
+      },
+      "nearby_inspected": [
+        {
+          "entity": 17592186221925,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}-6 & 7 \\\\ -2 & 3\\end{bmatrix}.$ \n\n*Hint: The eigenvalues of $A$ are $-4$ and $1.$*\n\n| ${e}^{At}=\\,\\,\\frac{1}{5}$ |  | {{field-1}} | $-7{e}^{-4t}+7{e}^{t}$ |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-2}} | $-2{e}^{-4t}+7{e}^{t}$ |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}-6 & 7 \\\\ -2 & 3\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}-6{\\alpha }_{1}t+{\\alpha }_{0} & 7{\\alpha }_{1}t \\\\ -2{\\alpha }_{1}t & 3{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix}.\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The eigenvalues of $At$ are \n\n$$\n{\\lambda }_{1}=-4t,\\,{\\lambda }_{2}=t,\n$$\n\nboth of multiplicity one. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(-4t) &={e}^{-4t} \\\\ r(t) &={e}^{t}\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}-4t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{-4t} \\\\ t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{t}\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n- Subtraction the second equation from the first one, we get\n\n$$\n-5t{\\alpha }_{1}={e}^{-4t}-{e}^{t}\\,⇒\\,{\\alpha }_{1}=-\\frac{1}{5t}({e}^{-4t}-{e}^{t}).\n$$\n\n- Multiplying the second equation by $4$ and adding to the first one, we get\n\n$$\n5{\\alpha }_{0}={e}^{-4t}+4{e}^{t}\\,⇒\\,{\\alpha }_{0}=\\frac{1}{5}({e}^{-4t}+4{e}^{t}).\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}6{\\alpha }_{1}t+{\\alpha }_{0} & =6\\left(-\\frac{1}{5t}({e}^{-4t}-{e}^{t})\\right)t+\\frac{1}{5}({e}^{-4t}+4{e}^{t}) \\\\  & =\\frac{1}{5}((-6{e}^{-4t}+6{e}^{t}))+({e}^{-4t}+4{e}^{t})) \\\\  & =\\frac{1}{5}(7{e}^{-4t}-2{e}^{t}) \\\\ -2{\\alpha }_{1}t & =-2\\left(-\\frac{1}{5t}({e}^{-4t}-{e}^{t})\\right)t \\\\  & =\\frac{1}{5}(2{e}^{-4t}-2{e}^{t})\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}=\\frac{1}{5}\\begin{bmatrix}7{e}^{-4t}-2{e}^{t} & -7{e}^{-4t}+7{e}^{t} \\\\ 2{e}^{-4t}-2{e}^{t} & -2{e}^{-4t}+7{e}^{t}\\end{bmatrix}.\n$$"
+        },
+        {
+          "entity": 17592186308532,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}-6 & -6 \\\\ 2 & 2\\end{bmatrix}.$ \n\n*Hint: The eigenvalues of $A$ are $-4$ and $0.$*\n\n| ${e}^{At}=\\,\\,\\frac{1}{2}$ |  | {{field-1}} | $-3+3{e}^{-4t}$ |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-2}} | $3-{e}^{-4t}$ |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}-6 & -6 \\\\ 2 & 2\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}-6{\\alpha }_{1}t+{\\alpha }_{0} & -6{\\alpha }_{1}t \\\\ 2{\\alpha }_{1}t & 2{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix}.\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The eigenvalues of $At$ are \n\n$$\n{\\lambda }_{1}=-4t,\\,{\\lambda }_{2}=0,\n$$\n\nboth of multiplicity one. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(-4t) &={e}^{-4t} \\\\ r(0) &=1\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}-4t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{-4t} \\\\ {\\alpha }_{0} &=1\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n- From the second equation, we get\n\n$$\n{\\alpha }_{0}=1.\n$$\n\n- Substituting ${\\alpha }_{0}=1$ into the first equation, we get\n\n$$\n-4t{\\alpha }_{1}+1={e}^{-4t}\\,⇒\\,{\\alpha }_{1}=-\\frac{1}{4t}({e}^{-4t}-1).\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}-6{\\alpha }_{1}t+{\\alpha }_{0} & =-6\\left(-\\frac{1}{4t}({e}^{-4t}-1)\\right)t+1 \\\\  & =\\frac{6}{4}({e}^{-4t}-1)+1 \\\\  & =\\frac{3}{2}({e}^{-4t}-1)+1 \\\\  & =\\frac{-3+3{e}^{-4t}+2}{2} \\\\  & =\\frac{-1+3{e}^{-4t}}{2} \\\\ 2{\\alpha }_{1}t & =2\\left(-\\frac{1}{4t}({e}^{-4t}-1)\\right)t \\\\  & =-\\frac{2}{4}({e}^{-4t}-1) \\\\  & =-\\frac{1}{2}({e}^{-4t}-1) \\\\  & =\\frac{1-{e}^{-4t}}{2}\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}=\\frac{1}{2}\\begin{bmatrix}-1+3{e}^{-4t} & -3+3{e}^{-4t} \\\\ 1-{e}^{-4t} & 3-{e}^{-4t}\\end{bmatrix}.\n$$"
+        }
+      ],
+      "backbone": [
+        "Write e^(At)=alpha1 At+alpha0 I and expand all entries.",
+        "Interpolate r(lambda)=alpha1 lambda+alpha0 at eigenvalues of At; for a repeated eigenvalue include derivative interpolation.",
+        "Solve coefficients; complex conjugates use real/imaginary parts.",
+        "Substitute into required entries and extract supplied outer factor, then present whole matrix."
+      ],
+      "constraints": "Real2x2 matrices, known distinct real/complex conjugate or defective repeated eigenvalues; same field layout and externally supplied factor."
+    },
+    {
+      "knowledge_point": 17592186221409,
+      "title": "Finding the Matrix Exponent for a Matrix With Distinct Complex Eigenvalues",
+      "canonical": {
+        ":db/id": 17592186221151,
+        ":question/id": "18064c11-63d3-599a-b504-7b589f46c3dc",
+        ":question/math-academy-id": "e-21272",
+        ":question/problem": "Find $e^{At}$ for $A = {\\left[ \\begin{array}{cc}7 & 4 \\\\ - 5 & - 1\\end{array} \\right]}.$ \n\n*Hint: The eigenvalues of $A$ are $3 \\pm 2\\textrm{i}.$*",
+        ":question/worked-solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}7 & 4 \\\\ -5 & -1\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}7{\\alpha }_{1}t+{\\alpha }_{0} & 4{\\alpha }_{1}t \\\\ -5{\\alpha }_{1}t & -{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix}.\\end{aligned}\n$$\n\nwhere $\\alpha_1$ and $\\alpha_0$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda) = \\alpha_1 \\lambda + \\alpha_0.$ The eigenvalues or $At$ are \n\n$$\n\\lambda_1= (3+2\\textrm{i}) t, \\qquad\n\\lambda_2= (3-2\\textrm{i}) t,\n$$\n\nwhich are complex conjugates. Thus, we have the following:\n\n$$\n\\begin{aligned}r((3+2\\text{i})t) & ={e}^{(3+2\\text{i})t} \\\\ {\\alpha }_{1}(3+2\\text{i})t+{\\alpha }_{0} & ={e}^{3t}(\\operatorname{cos}⁡(2t)+\\text{i}\\operatorname{sin}⁡(2t)) \\\\ (3{\\alpha }_{1}t+{\\alpha }_{0})+2{\\alpha }_{1}\\text{i}t & ={e}^{3t}\\operatorname{cos}⁡(2t)+\\text{i}\\,{e}^{3t}\\operatorname{sin}⁡(2t)\\end{aligned}\n$$\n\nNow, we equate the real and imaginary parts, and solve for $\\alpha_1$ and $\\alpha_0{:}$\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}3{\\alpha }_{1}t+{\\alpha }_{0} &={e}^{3t}\\operatorname{cos}⁡(2t) \\\\ 2t{\\alpha }_{1} &={e}^{3t}\\operatorname{sin}⁡(2t)\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}{\\alpha }_{1} &=\\frac{1}{2t}{e}^{3t}\\operatorname{sin}⁡(2t) \\\\ {\\alpha }_{0} &={e}^{3t}\\left(\\operatorname{cos}⁡(2t)-\\frac{3}{2}\\operatorname{sin}⁡(2t)\\right)\\end{aligned}\\right.\\end{aligned}\n$$\n\nSubstituting $\\alpha_1$ and $\\alpha_0$ into the expressions for the entries of $e^{At},$ we get the following:\n\n$$\n\\begin{aligned}7{\\alpha }_{1}t+{\\alpha }_{0} & =7\\cdot \\frac{1}{2t}{e}^{3t}\\operatorname{sin}⁡(2t)\\cdot t+{e}^{3t}\\left(\\operatorname{cos}⁡(2t)-\\frac{3}{2}\\operatorname{sin}⁡(2t)\\right) \\\\  & =\\frac{7}{2}{e}^{3t}\\operatorname{sin}⁡(2t)+{e}^{3t}\\operatorname{cos}⁡(2t)-\\frac{3}{2}{e}^{3t}\\operatorname{sin}⁡(2t) \\\\  & ={e}^{3t}(\\operatorname{cos}⁡(2t)+2\\operatorname{sin}⁡(2t)), \\\\ 4{\\alpha }_{1}t & =4\\cdot \\frac{1}{2t}{e}^{3t}\\operatorname{sin}⁡(2t)\\cdot t \\\\  & =2{e}^{3t}\\operatorname{sin}⁡(2t), \\\\ -5{\\alpha }_{1}t & =-5\\cdot \\frac{1}{2t}{e}^{3t}\\operatorname{sin}⁡(2t)\\cdot t \\\\  & =-\\frac{5}{2}{e}^{3t}\\operatorname{sin}⁡(2t), \\\\ -{\\alpha }_{1}t+{\\alpha }_{0} & =-\\frac{1}{2t}{e}^{3t}\\operatorname{sin}⁡(2t)\\cdot t+{e}^{3t}\\left(\\operatorname{cos}⁡(2t)-\\frac{3}{2}\\operatorname{sin}⁡(2t)\\right) \\\\  & =-\\frac{1}{2}{e}^{3t}\\operatorname{sin}⁡(2t)+{e}^{3t}\\operatorname{cos}⁡(2t)-\\frac{3}{2}{e}^{3t}\\operatorname{sin}⁡(2t) \\\\  & ={e}^{3t}(\\operatorname{cos}⁡(2t)-2\\operatorname{sin}⁡(2t))\\end{aligned}\n$$\n\nTherefore,\n$$\ne^{At} = e^{3t}\n{\\left[ \\begin{array}{cc}\\cos   ( 2 t ) + 2 \\sin   ( 2 t ) & 2 \\sin   ( 2 t ) \\\\ - {\\displaystyle \\frac{5}{2}} \\sin   ( 2 t ) & \\cos   ( 2 t ) - 2 \\sin   ( 2 t )\\end{array} \\right]}.\n$$"
+      },
+      "nearby_inspected": [
+        {
+          "entity": 17592186308654,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}5 & 8 \\\\ -4 & -3\\end{bmatrix}.$ \n\n*Hint: The eigenvalues of $A$ are $1\\pm 4\\text{i}.$*\n\n| ${e}^{At}={e}^{t}\\,\\,$ |  | $\\operatorname{cos}⁡(4t)+\\operatorname{sin}⁡(4t)$ | $2\\operatorname{sin}⁡(4t)$ |  |\n| --- | --- | --- | --- | --- |\n|  | {{field-1}} | {{field-2}} |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}5 & 8 \\\\ -4 & -3\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}5{\\alpha }_{1}t+{\\alpha }_{0} & 8{\\alpha }_{1}t \\\\ -4{\\alpha }_{1}t & -3{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix}.\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The eigenvalues or $At$ are \n\n$$\n{\\lambda }_{1}=(1+4\\text{i})t,\\,{\\lambda }_{2}=(1-4\\text{i})t,\n$$\n\nwhich are complex conjugates. Thus, we have the following:\n\n$$\n\\begin{aligned}r((1+4\\text{i})t) & ={e}^{(1+4\\text{i})t} \\\\ {\\alpha }_{1}(1+4\\text{i})t+{\\alpha }_{0} & ={e}^{t}(\\operatorname{cos}⁡(4t)+\\text{i}\\operatorname{sin}⁡(4t)) \\\\ ({\\alpha }_{1}t+{\\alpha }_{0})+4{\\alpha }_{1}\\text{i}t & ={e}^{t}\\operatorname{cos}⁡(4t)+\\text{i}\\,{e}^{t}\\operatorname{sin}⁡(4t)\\end{aligned}\n$$\n\nNow, we equate the real and imaginary parts, and solve for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}{\\alpha }_{1}t+{\\alpha }_{0} &={e}^{t}\\operatorname{cos}⁡(4t) \\\\ 4t{\\alpha }_{1} &={e}^{t}\\operatorname{sin}⁡(4t)\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}{\\alpha }_{1} &=\\frac{1}{4t}{e}^{t}\\operatorname{sin}⁡(4t) \\\\ {\\alpha }_{0} &={e}^{t}\\left(\\operatorname{cos}⁡(4t)-\\frac{1}{4}\\operatorname{sin}⁡(4t)\\right)\\end{aligned}\\right.\\end{aligned}\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}5{\\alpha }_{1}t+{\\alpha }_{0} & =5\\cdot \\frac{1}{4t}{e}^{t}\\operatorname{sin}⁡(4t)\\cdot t+{e}^{t}\\left(\\operatorname{cos}⁡(4t)-\\frac{1}{4}\\operatorname{sin}⁡(4t)\\right) \\\\  & =\\frac{5}{4}{e}^{t}\\operatorname{sin}⁡(4t)+{e}^{t}\\operatorname{cos}⁡(4t)-\\frac{1}{4}{e}^{t}\\operatorname{sin}⁡(4t) \\\\  & ={e}^{t}(\\operatorname{cos}⁡(4t)+\\operatorname{sin}⁡(4t)) \\\\ -4{\\alpha }_{1}t & =-4\\cdot \\frac{1}{4t}{e}^{t}\\operatorname{sin}⁡(4t)\\cdot t \\\\  & =-{e}^{t}\\operatorname{sin}⁡(4t)\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}={e}^{t}\\begin{bmatrix}\\operatorname{cos}⁡(4t)+\\operatorname{sin}⁡(4t) & 2\\operatorname{sin}⁡(4t) \\\\ -\\operatorname{sin}⁡(4t) & \\operatorname{cos}⁡(4t)-\\operatorname{sin}⁡(4t)\\end{bmatrix}.\n$$"
+        },
+        {
+          "entity": 17592186308655,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}-3 & 4 \\\\ -2 & 1\\end{bmatrix}.$ \n\n*Hint: The eigenvalues of $A$ are $-1\\pm 2\\text{i}.$*\n\n| ${e}^{At}={e}^{-t}\\,\\,$ |  | {{field-1}} | $2\\operatorname{sin}⁡(2t)$ |  |\n| --- | --- | --- | --- | --- |\n|  | $-\\operatorname{sin}⁡(2t)$ | {{field-2}} |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}-3 & 4 \\\\ -2 & 1\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}-3{\\alpha }_{1}t+{\\alpha }_{0} & 4{\\alpha }_{1}t \\\\ -2{\\alpha }_{1}t & {\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix}.\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The eigenvalues or $At$ are \n\n$$\n{\\lambda }_{1}=(-1+2\\text{i})t,\\,{\\lambda }_{2}=(-1-2\\text{i})t,\n$$\n\nwhich are complex conjugates. Thus, we have the following:\n\n$$\n\\begin{aligned}r((-1+2\\text{i})t) & ={e}^{(-1+2\\text{i})t} \\\\ {\\alpha }_{1}(-1+2\\text{i})t+{\\alpha }_{0} & ={e}^{-t}(\\operatorname{cos}⁡(2t)+\\text{i}\\operatorname{sin}⁡(2t)) \\\\ (-{\\alpha }_{1}t+{\\alpha }_{0})+2{\\alpha }_{1}\\text{i}t & ={e}^{-t}\\operatorname{cos}⁡(2t)+\\text{i}\\,{e}^{-t}\\operatorname{sin}⁡(2t)\\end{aligned}\n$$\n\nNow, we equate the real and imaginary parts, and solve for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}-{\\alpha }_{1}t+{\\alpha }_{0} &={e}^{-t}\\operatorname{cos}⁡(2t) \\\\ 2t{\\alpha }_{1} &={e}^{-t}\\operatorname{sin}⁡(2t)\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}{\\alpha }_{1} &=\\frac{1}{2t}{e}^{-t}\\operatorname{sin}⁡(2t) \\\\ {\\alpha }_{0} &={e}^{-t}\\left(\\operatorname{cos}⁡(2t)+\\frac{1}{2}\\operatorname{sin}⁡(2t)\\right)\\end{aligned}\\right.\\end{aligned}\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}-3{\\alpha }_{1}t+{\\alpha }_{0} & =-3\\cdot \\frac{1}{2t}{e}^{-t}\\operatorname{sin}⁡(2t)\\cdot t+{e}^{-t}\\left(\\operatorname{cos}⁡(2t)+\\frac{1}{2}\\operatorname{sin}⁡(2t)\\right) \\\\  & =-\\frac{3}{2}{e}^{-t}\\operatorname{sin}⁡(2t)+{e}^{-t}\\operatorname{cos}⁡(2t)+\\frac{1}{2}{e}^{-t}\\operatorname{sin}⁡(2t) \\\\  & ={e}^{-t}(\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)) \\\\ {\\alpha }_{1}t+{\\alpha }_{0} & =\\frac{1}{2t}{e}^{-t}\\operatorname{sin}⁡(2t)\\cdot t+{e}^{-t}\\left(\\operatorname{cos}⁡(2t)+\\frac{1}{2}\\operatorname{sin}⁡(2t)\\right) \\\\  & =\\frac{1}{2}{e}^{-t}\\operatorname{sin}⁡(2t)+{e}^{-t}\\operatorname{cos}⁡(2t)+\\frac{1}{2}{e}^{-t}\\operatorname{sin}⁡(2t) \\\\  & ={e}^{-t}(\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t))\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}={e}^{-t}\\begin{bmatrix}\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t) & 2\\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t)\\end{bmatrix}.\n$$"
+        }
+      ],
+      "backbone": [
+        "Write e^(At)=alpha1 At+alpha0 I and expand all entries.",
+        "Interpolate r(lambda)=alpha1 lambda+alpha0 at eigenvalues of At; for a repeated eigenvalue include derivative interpolation.",
+        "Solve coefficients; complex conjugates use real/imaginary parts.",
+        "Substitute into required entries and extract supplied outer factor, then present whole matrix."
+      ],
+      "constraints": "Real2x2 matrices, known distinct real/complex conjugate or defective repeated eigenvalues; same field layout and externally supplied factor."
+    },
+    {
+      "knowledge_point": 17592186221410,
+      "title": "Finding the Matrix Exponent for a Matrix With Repeated Eigenvalues",
+      "canonical": {
+        ":db/id": 17592186221152,
+        ":question/id": "40a6318a-a1c9-55f3-afdb-02b43891d7b5",
+        ":question/math-academy-id": "e-21273",
+        ":question/problem": "Find $e^{At}$ for $A = {\\left[ \\begin{array}{cc}8 & - 2 \\\\ 2 & 4\\end{array} \\right]}.$ \n\n*Hint: The only eigenvalue of $A$ is $6,$ and it has multiplicity two.*",
+        ":question/worked-solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}8 & -2 \\\\ 2 & 4\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}8{\\alpha }_{1}t+{\\alpha }_{0} & -2{\\alpha }_{1}t \\\\ 2{\\alpha }_{1}t & 4{\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix},\\end{aligned}\n$$\n\nwhere $\\alpha_1$ and $\\alpha_0$ are constants to be determined.\n\nConsider the polynomial $r(\\lambda) = \\alpha_1 \\lambda + \\alpha_0.$ The only eigenvalue of $At$ is \n\n$$\n\\lambda_1 = 6t\n$$\n\nof multiplicity two. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(6t) &={e}^{6t} \\\\ \\frac{\\text{d}}{\\text{d}\\lambda }r(6t) &={e}^{6t}\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}6t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{6t} \\\\ {\\alpha }_{1} &={e}^{6t}\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for $\\alpha_1$ and $\\alpha_0{:}$\n\n- From the second equation, we get\n\n$$\n\\alpha_1 = e^{6t}.\n$$\n\n- Substituting this into the first one, we get\n\n$$\n6t e^{6t} + \\alpha_0 = e^{6t}\n\\qquad\\Rightarrow\\qquad\n\\alpha_0 = e^{6t}(1-6t).\n$$\n\nSubstituting $\\alpha_1$ and $\\alpha_0$ into the expressions for the required entries of $e^{At},$ we get the following:\n\n$$\n\\begin{aligned}8{\\alpha }_{1}t+{\\alpha }_{0} & =8{e}^{6t}t+{e}^{6t}(1-6t) \\\\  & ={e}^{6t}(1+2t), \\\\ -2{\\alpha }_{1}t & =-2{e}^{6t}t \\\\  & ={e}^{6t}(-2t), \\\\ 2{\\alpha }_{1}t & =2{e}^{6t}t \\\\  & ={e}^{6t}(2t), \\\\ 4{\\alpha }_{1}t+{\\alpha }_{0} & =4{e}^{6t}t+{e}^{6t}(1-6t) \\\\  & ={e}^{6t}(1-2t).\\end{aligned}\n$$\n\nTherefore,\n$$\ne^{At} = \ne^{6t} \n{\\left[ \\begin{array}{cc}1 + 2 t & - 2 t \\\\ 2 t & 1 - 2 t\\end{array} \\right]}.\n$$"
+      },
+      "nearby_inspected": [
+        {
+          "entity": 17592186222003,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}3 & 1 \\\\ -1 & 1\\end{bmatrix}.$ \n\n*Hint: The only eigenvalue of $A$ is $2,$ and it has multiplicity two.*\n\n| ${e}^{At}={e}^{2t}\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | $-t$ | $1-t$ |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}3 & 1 \\\\ -1 & 1\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}3{\\alpha }_{1}t+{\\alpha }_{0} & {\\alpha }_{1}t \\\\ -{\\alpha }_{1}t & {\\alpha }_{1}t+{\\alpha }_{0}\\end{bmatrix},\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The only eigenvalue of $At$ is \n\n$$\n{\\lambda }_{1}=2t\n$$\n\nof multiplicity two. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(2t) &={e}^{2t} \\\\ \\frac{\\text{d}}{\\text{d}\\lambda }r(2t) &={e}^{2t}\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}2t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{2t} \\\\ {\\alpha }_{1} &={e}^{2t}\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n- From the second equation, we get\n\n$$\n{\\alpha }_{1}={e}^{2t}.\n$$\n\n- Substituting this into the first one, we get\n\n$$\n2t{e}^{2t}+{\\alpha }_{0}={e}^{2t}\\,⇒\\,{\\alpha }_{0}={e}^{2t}(1-2t).\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}3{\\alpha }_{1}t+{\\alpha }_{0} & =3{e}^{2t}t+{e}^{2t}(1-2t) \\\\  & ={e}^{2t}(1+t), \\\\ {\\alpha }_{1}t & ={e}^{2t}t\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}={e}^{2t}\\begin{bmatrix}1+t & t \\\\ -t & 1-t\\end{bmatrix}.\n$$"
+        },
+        {
+          "entity": 17592186308670,
+          "problem": "Find ${e}^{At}$ for $A=\\begin{bmatrix}6 & -3 \\\\ 3 & 0\\end{bmatrix}.$ \n\n*Hint: The only eigenvalue of $A$ is $3,$ and it has multiplicity two.*\n\n| ${e}^{At}={e}^{3t}\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | $3t$ | $1-3t$ |  |  |",
+          "worked_solution": "We have a square matrix of dimension $n=2.$ Thus, \n\n$$\n\\begin{aligned}{e}^{At} & ={\\alpha }_{1}At+{\\alpha }_{0}I \\\\  & ={\\alpha }_{1}\\begin{bmatrix}6 & -3 \\\\ 3 & 0\\end{bmatrix}t+{\\alpha }_{0}\\begin{bmatrix}1 & 0 \\\\ 0 & 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}6{\\alpha }_{1}t+{\\alpha }_{0} & -3{\\alpha }_{1}t \\\\ 3{\\alpha }_{1}t & {\\alpha }_{0}\\end{bmatrix},\\end{aligned}\n$$\n\nwhere ${\\alpha }_{1}$ and ${\\alpha }_{0}$ are functions to be determined.\n\nConsider the polynomial $r(\\lambda )={\\alpha }_{1}\\lambda +{\\alpha }_{0}.$ The only eigenvalue of $At$ is \n\n$$\n{\\lambda }_{1}=3t\n$$\n\nof multiplicity two. Thus, we have the following:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}r(3t) &={e}^{3t} \\\\ \\frac{\\text{d}}{\\text{d}\\lambda }r(3t) &={e}^{3t}\\end{aligned}\\right.\\,⇒\\,\\left\\{\\begin{aligned}3t{\\alpha }_{1}+{\\alpha }_{0} &={e}^{3t} \\\\ {\\alpha }_{1} &={e}^{3t}\\end{aligned}\\right.\\end{aligned}\n$$\n\nNow, we solve the system for ${\\alpha }_{1}$ and ${\\alpha }_{0}:$\n\n- From the second equation, we get\n\n$$\n{\\alpha }_{1}={e}^{3t}.\n$$\n\n- Substituting this into the first one, we get\n\n$$\n3t{e}^{3t}+{\\alpha }_{0}={e}^{3t}\\,⇒\\,{\\alpha }_{0}={e}^{3t}(1-3t).\n$$\n\nSubstituting ${\\alpha }_{1}$ and ${\\alpha }_{0}$ into the expressions for the required entries of ${e}^{At},$ we get the following:\n\n$$\n\\begin{aligned}6{\\alpha }_{1}t+{\\alpha }_{0} & =6{e}^{3t}t+{e}^{3t}(1-3t) \\\\  & ={e}^{3t}(1+3t), \\\\ -3{\\alpha }_{1}t & =-3{e}^{3t}t\\end{aligned}\n$$\n\nTherefore,\n\n$$\n{e}^{At}={e}^{3t}\\begin{bmatrix}1+3t & -3t \\\\ 3t & 1-3t\\end{bmatrix}.\n$$"
+        }
+      ],
+      "backbone": [
+        "Write e^(At)=alpha1 At+alpha0 I and expand all entries.",
+        "Interpolate r(lambda)=alpha1 lambda+alpha0 at eigenvalues of At; for a repeated eigenvalue include derivative interpolation.",
+        "Solve coefficients; complex conjugates use real/imaginary parts.",
+        "Substitute into required entries and extract supplied outer factor, then present whole matrix."
+      ],
+      "constraints": "Real2x2 matrices, known distinct real/complex conjugate or defective repeated eigenvalues; same field layout and externally supplied factor."
+    }
+  ],
+  "questions": [
+    {
+      "entity": 17592186221932,
+      "source_id": "q-328966",
+      "knowledge_point": 17592186221409,
+      "problem_before": "Find $e^{At}$ for $A = \\begin{bmatrix}3 & -4 \\\\ 2 & -1\\end{bmatrix}$.\n\n*Hint: The eigenvalues of $A$ are $1 ± 2\\textrm{i}$.*\n\n| $e^{At} = e^{t}$ |  | $\\cos (2t) + \\sin (2t)$ | {{field-1}} |  |\n| --- | ---: | ---: | ---: | ---: |\n|  | $\\sin (2t)$ | {{field-2}} |  |  |",
+      "repaired_layout_rows": [
+        [
+          "$\\cos (2t) + \\sin (2t)$",
+          "{{field-1}}"
+        ],
+        [
+          "$\\sin (2t)$",
+          "{{field-2}}"
+        ]
+      ],
+      "A": [
+        [
+          "3",
+          "-4"
+        ],
+        [
+          "2",
+          "-1"
+        ]
+      ],
+      "eigenvalues": {
+        "1 - 2*I": 1,
+        "1 + 2*I": 1
+      },
+      "exact_exponential": "\\left[\\begin{matrix}\\left(\\sin{\\left(2 t \\right)} + \\cos{\\left(2 t \\right)}\\right) e^{t} & - 2 e^{t} \\sin{\\left(2 t \\right)}\\\\e^{t} \\sin{\\left(2 t \\right)} & \\left(- \\sin{\\left(2 t \\right)} + \\cos{\\left(2 t \\right)}\\right) e^{t}\\end{matrix}\\right]",
+      "factor": "e^{t}",
+      "inner": "\\left[\\begin{matrix}\\sin{\\left(2 t \\right)} + \\cos{\\left(2 t \\right)} & - 2 \\sin{\\left(2 t \\right)}\\\\\\sin{\\left(2 t \\right)} & - \\sin{\\left(2 t \\right)} + \\cos{\\left(2 t \\right)}\\end{matrix}\\right]",
+      "fields": [
+        {
+          "field": 17592186220206,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            2
+          ],
+          "expected_fragment": "-2\\sin(2t)",
+          "exact_fragment": "- 2 \\sin{\\left(2 t \\right)}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220206,
+            "key": "field-1",
+            "type": ":answer.type/math",
+            "value": "-2\\sin(2t)",
+            "answer_uuid": "8c2371a1-7c60-58b2-9bb8-a00dfa2ee75f",
+            "answer_tempid": "matrix-completion-answer-17592186220206"
+          }
+        },
+        {
+          "field": 17592186220207,
+          "key": "field-2",
+          "position_1_based": [
+            2,
+            2
+          ],
+          "expected_fragment": "\\cos(2t)-\\sin(2t)",
+          "exact_fragment": "- \\sin{\\left(2 t \\right)} + \\cos{\\left(2 t \\right)}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220207,
+            "key": "field-2",
+            "type": ":answer.type/math",
+            "value": "\\cos(2t)-\\sin(2t)",
+            "answer_uuid": "6607e52b-da9a-5c36-a4d6-c6853a75d8b8",
+            "answer_tempid": "matrix-completion-answer-17592186220207"
+          }
+        }
+      ],
+      "checks": {
+        "E(0)=I": true,
+        "Eprime=A E": true,
+        "all_field_positions_match_repaired_layout": true,
+        "interpolation_coefficients_verified": true
+      },
+      "solution_preserved": false
+    },
+    {
+      "entity": 17592186221933,
+      "source_id": "q-329001",
+      "knowledge_point": 17592186221410,
+      "problem_before": "Find $e^{At}$ for $A = \\begin{bmatrix}1 & 2 \\\\ -2 & 5\\end{bmatrix}$.\n\n*Hint: The only eigenvalue of $A$ is $3$, and it has multiplicity two.*\n\n| $e^{At} = e^{3t}$ |  | {{field-1}} | $2t$ |  |\n| --- | ---: | ---: | ---: | ---: |\n|  | {{field-2}} | $2t + 1$ |  |  |",
+      "repaired_layout_rows": [
+        [
+          "{{field-1}}",
+          "$2t$"
+        ],
+        [
+          "{{field-2}}",
+          "$2t + 1$"
+        ]
+      ],
+      "A": [
+        [
+          "1",
+          "2"
+        ],
+        [
+          "-2",
+          "5"
+        ]
+      ],
+      "eigenvalues": {
+        "3": 2
+      },
+      "exact_exponential": "\\left[\\begin{matrix}\\left(1 - 2 t\\right) e^{3 t} & 2 t e^{3 t}\\\\- 2 t e^{3 t} & \\left(2 t + 1\\right) e^{3 t}\\end{matrix}\\right]",
+      "factor": "e^{3 t}",
+      "inner": "\\left[\\begin{matrix}1 - 2 t & 2 t\\\\- 2 t & 2 t + 1\\end{matrix}\\right]",
+      "fields": [
+        {
+          "field": 17592186220209,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            1
+          ],
+          "expected_fragment": "1-2t",
+          "exact_fragment": "1 - 2 t",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220209,
+            "key": "field-1",
+            "type": ":answer.type/math",
+            "value": "1-2t",
+            "answer_uuid": "9a8ac38a-3e8d-584c-a2aa-699a7cc5dc1e",
+            "answer_tempid": "matrix-completion-answer-17592186220209"
+          }
+        },
+        {
+          "field": 17592186220208,
+          "key": "field-2",
+          "position_1_based": [
+            2,
+            1
+          ],
+          "expected_fragment": "-2t",
+          "exact_fragment": "- 2 t",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220208,
+            "key": "field-2",
+            "type": ":answer.type/math",
+            "value": "-2t",
+            "answer_uuid": "d39cd71b-0e59-53ea-9c07-2f953ce0e1bf",
+            "answer_tempid": "matrix-completion-answer-17592186220208"
+          }
+        }
+      ],
+      "checks": {
+        "E(0)=I": true,
+        "Eprime=A E": true,
+        "all_field_positions_match_repaired_layout": true,
+        "interpolation_coefficients_verified": true
+      },
+      "solution_preserved": false
+    },
+    {
+      "entity": 17592186221994,
+      "source_id": "q-333852",
+      "knowledge_point": 17592186221408,
+      "problem_before": "Find $e^{At}$ for $A = \\begin{bmatrix}0 & 6 \\\\ 1 & -1\\end{bmatrix}$.\n\n*Hint: The eigenvalues of $A$ are $-3$ and $2$.*\n\n| $e^{At} = \\frac{1}{5}$ |  | {{field-1}} | $6e^{2t} - 6e^{-3t}$ |  |\n| --- | ---: | ---: | ---: | ---: |\n|  | {{field-2}} | $2e^{2t} + 3e^{-3t}$ |  |  |",
+      "repaired_layout_rows": [
+        [
+          "{{field-1}}",
+          "$6e^{2t} - 6e^{-3t}$"
+        ],
+        [
+          "{{field-2}}",
+          "$2e^{2t} + 3e^{-3t}$"
+        ]
+      ],
+      "A": [
+        [
+          "0",
+          "6"
+        ],
+        [
+          "1",
+          "-1"
+        ]
+      ],
+      "eigenvalues": {
+        "2": 1,
+        "-3": 1
+      },
+      "exact_exponential": "\\left[\\begin{matrix}\\frac{3 e^{2 t}}{5} + \\frac{2 e^{- 3 t}}{5} & \\frac{6 e^{2 t}}{5} - \\frac{6 e^{- 3 t}}{5}\\\\\\frac{e^{2 t}}{5} - \\frac{e^{- 3 t}}{5} & \\frac{2 e^{2 t}}{5} + \\frac{3 e^{- 3 t}}{5}\\end{matrix}\\right]",
+      "factor": "\\frac{1}{5}",
+      "inner": "\\left[\\begin{matrix}3 e^{2 t} + 2 e^{- 3 t} & 6 e^{2 t} - 6 e^{- 3 t}\\\\e^{2 t} - e^{- 3 t} & 2 e^{2 t} + 3 e^{- 3 t}\\end{matrix}\\right]",
+      "fields": [
+        {
+          "field": 17592186220635,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            1
+          ],
+          "expected_fragment": "3e^{2t}+2e^{-3t}",
+          "exact_fragment": "3 e^{2 t} + 2 e^{- 3 t}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220635,
+            "key": "field-1",
+            "type": ":answer.type/math",
+            "value": "3e^{2t}+2e^{-3t}",
+            "answer_uuid": "ff7ec059-8261-5844-99df-dcab402d179a",
+            "answer_tempid": "matrix-completion-answer-17592186220635"
+          }
+        },
+        {
+          "field": 17592186220636,
+          "key": "field-2",
+          "position_1_based": [
+            2,
+            1
+          ],
+          "expected_fragment": "e^{2t}-e^{-3t}",
+          "exact_fragment": "e^{2 t} - e^{- 3 t}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220636,
+            "key": "field-2",
+            "type": ":answer.type/math",
+            "value": "e^{2t}-e^{-3t}",
+            "answer_uuid": "995f1d32-3286-5f3e-b36c-068a34ed7dfe",
+            "answer_tempid": "matrix-completion-answer-17592186220636"
+          }
+        }
+      ],
+      "checks": {
+        "E(0)=I": true,
+        "Eprime=A E": true,
+        "all_field_positions_match_repaired_layout": true,
+        "interpolation_coefficients_verified": true
+      },
+      "solution_preserved": false
+    },
+    {
+      "entity": 17592186222002,
+      "source_id": "q-334632",
+      "knowledge_point": 17592186221409,
+      "problem_before": "Find $e^{At}$ for $A = \\begin{bmatrix}1 & 1 \\\\ -2 & -1\\end{bmatrix}$.\n\n*Hint: The eigenvalues of $A$ are $± \\textrm{i}$.*\n\n| $e^{At} =$ |  | {{field-1}} | $\\sin (t)$ |  |\n| --- | ---: | ---: | ---: | ---: |\n|  | {{field-2}} | $\\cos (t) - \\sin (t)$ |  |  |",
+      "repaired_layout_rows": [
+        [
+          "{{field-1}}",
+          "$\\sin (t)$"
+        ],
+        [
+          "{{field-2}}",
+          "$\\cos (t) - \\sin (t)$"
+        ]
+      ],
+      "A": [
+        [
+          "1",
+          "1"
+        ],
+        [
+          "-2",
+          "-1"
+        ]
+      ],
+      "eigenvalues": {
+        "-I": 1,
+        "I": 1
+      },
+      "exact_exponential": "\\left[\\begin{matrix}\\sin{\\left(t \\right)} + \\cos{\\left(t \\right)} & \\sin{\\left(t \\right)}\\\\- 2 \\sin{\\left(t \\right)} & - \\sin{\\left(t \\right)} + \\cos{\\left(t \\right)}\\end{matrix}\\right]",
+      "factor": "1",
+      "inner": "\\left[\\begin{matrix}\\sin{\\left(t \\right)} + \\cos{\\left(t \\right)} & \\sin{\\left(t \\right)}\\\\- 2 \\sin{\\left(t \\right)} & - \\sin{\\left(t \\right)} + \\cos{\\left(t \\right)}\\end{matrix}\\right]",
+      "fields": [
+        {
+          "field": 17592186220687,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            1
+          ],
+          "expected_fragment": "\\cos(t)+\\sin(t)",
+          "exact_fragment": "\\sin{\\left(t \\right)} + \\cos{\\left(t \\right)}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220687,
+            "key": "field-1",
+            "type": ":answer.type/math",
+            "value": "\\cos(t)+\\sin(t)",
+            "answer_uuid": "effc766e-e4c6-557a-9837-46e0eae2da45",
+            "answer_tempid": "matrix-completion-answer-17592186220687"
+          }
+        },
+        {
+          "field": 17592186220688,
+          "key": "field-2",
+          "position_1_based": [
+            2,
+            1
+          ],
+          "expected_fragment": "-2\\sin(t)",
+          "exact_fragment": "- 2 \\sin{\\left(t \\right)}",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "author missing field-owned math answer and link as choice/correct",
+          "answer_creation": {
+            "field_entity": 17592186220688,
+            "key": "field-2",
+            "type": ":answer.type/math",
+            "value": "-2\\sin(t)",
+            "answer_uuid": "46602a79-9a70-5fcb-a131-bfca962bd470",
+            "answer_tempid": "matrix-completion-answer-17592186220688"
+          }
+        }
+      ],
+      "checks": {
+        "E(0)=I": true,
+        "Eprime=A E": true,
+        "all_field_positions_match_repaired_layout": true,
+        "interpolation_coefficients_verified": true
+      },
+      "solution_preserved": false
+    },
+    {
+      "entity": 17592186222003,
+      "source_id": "q-334721",
+      "knowledge_point": 17592186221410,
+      "problem_before": "Find ${e}^{At}$ for $A=\\begin{bmatrix}3 & 1 \\\\ -1 & 1\\end{bmatrix}.$ \n\n*Hint: The only eigenvalue of $A$ is $2,$ and it has multiplicity two.*\n\n| ${e}^{At}={e}^{2t}\\,\\,$ |  | {{field-1}} | {{field-2}} |  |\n| --- | --- | --- | --- | --- |\n|  | $-t$ | $1-t$ |  |  |",
+      "repaired_layout_rows": [
+        [
+          "{{field-1}}",
+          "{{field-2}}"
+        ],
+        [
+          "$-t$",
+          "$1-t$"
+        ]
+      ],
+      "A": [
+        [
+          "3",
+          "1"
+        ],
+        [
+          "-1",
+          "1"
+        ]
+      ],
+      "eigenvalues": {
+        "2": 2
+      },
+      "exact_exponential": "\\left[\\begin{matrix}\\left(t + 1\\right) e^{2 t} & t e^{2 t}\\\\- t e^{2 t} & \\left(1 - t\\right) e^{2 t}\\end{matrix}\\right]",
+      "factor": "e^{2 t}",
+      "inner": "\\left[\\begin{matrix}t + 1 & t\\\\- t & 1 - t\\end{matrix}\\right]",
+      "fields": [
+        {
+          "field": 17592186220689,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            1
+          ],
+          "expected_fragment": "1+t",
+          "exact_fragment": "t + 1",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "unlink empty duplicate field; preserve populated same-key field"
+        },
+        {
+          "field": 17592186370134,
+          "key": "field-1",
+          "position_1_based": [
+            1,
+            1
+          ],
+          "expected_fragment": "1+t",
+          "exact_fragment": "t + 1",
+          "existing_choices": [
+            {
+              ":answer/id": "ce8f981b-71da-59bb-b809-35a5f6eec166",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "1+t",
+              ":db/id": 17592186370135
+            }
+          ],
+          "existing_correct": {
+            ":answer/id": "ce8f981b-71da-59bb-b809-35a5f6eec166",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "1+t",
+            ":db/id": 17592186370135
+          },
+          "status": "existing keyed same-key field preserved"
+        },
+        {
+          "field": 17592186220690,
+          "key": "field-2",
+          "position_1_based": [
+            1,
+            2
+          ],
+          "expected_fragment": "t",
+          "exact_fragment": "t",
+          "existing_choices": [],
+          "existing_correct": null,
+          "status": "unlink empty duplicate field; preserve populated same-key field"
+        },
+        {
+          "field": 17592186370136,
+          "key": "field-2",
+          "position_1_based": [
+            1,
+            2
+          ],
+          "expected_fragment": "t",
+          "exact_fragment": "t",
+          "existing_choices": [
+            {
+              ":answer/id": "1f520118-5444-5b50-9789-1db81dcf5c4c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "t",
+              ":db/id": 17592186370137
+            }
+          ],
+          "existing_correct": {
+            ":answer/id": "1f520118-5444-5b50-9789-1db81dcf5c4c",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "t",
+            ":db/id": 17592186370137
+          },
+          "status": "existing keyed same-key field preserved"
+        }
+      ],
+      "checks": {
+        "E(0)=I": true,
+        "Eprime=A E": true,
+        "all_field_positions_match_repaired_layout": true
+      },
+      "solution_preserved": true
+    }
+  ],
+  "unresolved": []
+}

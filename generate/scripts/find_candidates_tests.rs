@@ -1,6 +1,38 @@
 use super::*;
 use edb_core::{Database, EntityRef};
 
+#[test]
+fn explicit_topic_scope_includes_all_owned_kps_without_other_selections_or_neighbors() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let topic = identity(&db, "topic/title", "Locked lesson")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let shared = identity(&db, "knowledge-point/title", "KP Queue")?;
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {topic} :topic/knowledge-points {shared}]
+      [:db/add {queue} :topic/next {topic}]
+    ]"#), 0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
+    let mut result = explicit_candidates(&db, &BTreeSet::from([topic]), "lesson")?;
+    assert_eq!(titles(&result), ["Locked lesson"].into_iter().map(String::from).collect());
+    assert_eq!(result[0]["knowledge_points"].as_array().unwrap().len(), 2);
+    assert!(result[0]["knowledge_points"].as_array().unwrap().iter().all(|kp| kp["has_generator"] == false));
+    assert_eq!(result[0]["triggers"], json!([{"reason":"scheduler-selected", "activity_type":"lesson", "task":null}]));
+    find_candidates_ranking::annotate(&db, learner, at("2026-10-11T00:00:00Z"), &mut result)?;
+    assert!(result[0]["activity_demands"].as_array().unwrap().iter().any(|d|
+        d["activity_type"] == "lesson" && d["relevance_tier"] == 0));
+    Ok(())
+}
+
+#[test]
+fn explicit_topic_scope_rejects_missing_topics_and_knowledge_point_ids() -> Result<()> {
+    let db = fixture()?;
+    let kp = identity(&db, "knowledge-point/title", "KP Queue")?;
+    for topics in [BTreeSet::new(), BTreeSet::from([1]), BTreeSet::from([kp])] {
+        assert!(explicit_candidates(&db, &topics, "lesson").is_err());
+    }
+    Ok(())
+}
+
 fn fixture() -> Result<DatabaseValue> {
     let source = EntityRef::Ident(Keyword::new("db.source", "system"));
     let mut db = Database::bootstrap()?;

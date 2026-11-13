@@ -1,0 +1,1098 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186204083,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[1,2]\\times [0,1]⊆{R}^{2},$ where\n\n$$\nf(x,y)=\\begin{bmatrix}{x}^{2}+y-xy-3 \\\\ {x}^{2}-x+y-2\\end{bmatrix}.\n$$\n\nCalculate the second iteration of the Newton-Raphson process that starts at ${x}_{0}=[1,\\,0]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[2,\\,1]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of finding the zeros of a multivariable function $f:{R}^{n}\\to {R}^{n}$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{J}_{f}({x}_{n})]^{-1}f({x}_{n}),\n$$\n\nwhere ${J}_{f}({x}_{n})$ is the Jacobian of $f$ evaluated at ${x}_{n}.$\n\nIn our case, the Jacobian is\n\n$$\n\\begin{aligned}{J}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}({x}^{2}+y-xy-3) & \\frac{∂}{∂y}({x}^{2}+y-xy-3) \\\\ \\frac{∂}{∂x}({x}^{2}-x+y-2) & \\frac{∂}{∂y}({x}^{2}-x+y-2)\\end{bmatrix} \\\\  & =\\begin{bmatrix}2x-y & 1-x \\\\ 2x-1 & 1\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}2x-y & 1-x \\\\ 2x-1 & 1\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}{x}^{2}+y-xy-3 \\\\ {x}^{2}-x+y-2\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}2x-y & 1-x \\\\ 2x-1 & 1\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}{x}^{2}+y-xy-3 \\\\ {x}^{2}-x+y-2\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}2 \\\\ 1\\end{bmatrix}-{\\begin{bmatrix}2(2)-(1) & 1-(2) \\\\ 2(2)-1 & 1\\end{bmatrix}}^{-1}\\begin{bmatrix}(2)^{2}+(1)-(2)(1)-3 \\\\ (2)^{2}-(2)+(1)-2\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ 1\\end{bmatrix}-{\\begin{bmatrix}3 & -1 \\\\ 3 & 1\\end{bmatrix}}^{-1}\\begin{bmatrix}0 \\\\ 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ 1\\end{bmatrix}-\\frac{1}{3\\cdot 1-(-1)\\cdot 3}\\begin{bmatrix}1 & 1 \\\\ -3 & 3\\end{bmatrix}\\begin{bmatrix}0 \\\\ 1\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ 1\\end{bmatrix}-\\frac{1}{6}\\begin{bmatrix}1 \\\\ 3\\end{bmatrix} \\\\  & =\\begin{bmatrix}\\frac{11}{6} \\\\ \\frac{1}{2}\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}1.833 \\\\ 0.5\\end{bmatrix},\\end{aligned}\n$$\n\nrounded to three decimal places.",
+      ":question/id": "d0cfa679-aa5b-51c4-931a-565874b7b55c",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "92364554-9a56-5fc9-a213-26fef185e12e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "bd989671-2c1e-5bbb-94f9-494424b1a3dd"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1.833",
+              ":answer/id": "bd989671-2c1e-5bbb-94f9-494424b1a3dd"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "a60e0a3f-163a-5e05-8bd1-47a4212a299c",
+          ":answer-field/correct": [
+            ":answer/id",
+            "c258f45e-68f8-5329-aa93-8ebb45317590"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0.5",
+              ":answer/id": "c258f45e-68f8-5329-aa93-8ebb45317590"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186204500
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204088,
+      "title": "Computing Second-Order Derivatives"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x, y, z) = x^{2}y + yz^{2}$, compute $∇_{x, y}(∇_{x, y}f)$.\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$∇_{x, y}(∇_{x, y}f) =$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "First, we take the variable subset gradient:\n\n$$\n\\nabla_{x,y}f=\\begin{bmatrix}\\frac{\\partial}{\\partial x}(x^{2}y+yz^{2}) \\\\ \\frac{\\partial}{\\partial y}(x^{2}y+yz^{2})\\end{bmatrix}=\\begin{bmatrix}2xy \\\\ x^{2}+z^{2}\\end{bmatrix}\n$$\n\nNext, we compute the second derivatives with respect to $x$ and $y$:\n\n$$\n\\begin{aligned}\\frac{\\partial}{\\partial x}(2xy) &=2y & \\frac{\\partial}{\\partial y}(2xy) &=2x \\\\ \\frac{\\partial}{\\partial x}(x^{2}+z^{2}) &=2x & \\frac{\\partial}{\\partial y}(x^{2}+z^{2}) &=0\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}\\nabla_{x,y}(\\nabla_{x,y}f) &=\\begin{bmatrix}\\frac{\\partial^{2}f}{\\partial x^{2}} & \\frac{\\partial^{2}f}{\\partial x\\partial y} \\\\ \\frac{\\partial^{2}f}{\\partial y\\partial x} & \\frac{\\partial^{2}f}{\\partial y^{2}}\\end{bmatrix} \\\\ &=\\begin{bmatrix}2y & 2x \\\\ 2x & 0\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "be654207-046b-55c9-aa46-016c55ab939b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "e27bd1c7-aa84-55ff-b5e3-30804d3de9bd",
+          ":answer-field/correct": [
+            ":answer/id",
+            "b78e5dff-cf1f-506a-bea9-be33ddbc4b60"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2y",
+              ":answer/id": "b78e5dff-cf1f-506a-bea9-be33ddbc4b60"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "719f9082-c556-56b7-b7c0-70fe5a6b87f4",
+          ":answer-field/correct": [
+            ":answer/id",
+            "d7506c76-5acd-588b-adbe-45afe1d6f2ba"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2x",
+              ":answer/id": "d7506c76-5acd-588b-adbe-45afe1d6f2ba"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "274740af-c4f1-5115-86da-339552c9ddc2",
+          ":answer-field/correct": [
+            ":answer/id",
+            "71df5d91-527f-5b0d-bb62-536dba99118e"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2x",
+              ":answer/id": "71df5d91-527f-5b0d-bb62-536dba99118e"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "93ca5015-f894-5ff4-98e3-ee6c9be4374e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "06205ea4-c95d-5dce-aab4-8c6668b55e1d"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "06205ea4-c95d-5dce-aab4-8c6668b55e1d"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186204562
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204082,
+      "title": "Computing One Iteration of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[1,3]\\times [-1,0]⊆{R}^{2},$ where\n\n$$\nf(x,y)=\\begin{bmatrix}{x}^{2}{y}^{3}-{y}^{2}+x \\\\ {x}^{3}-{y}^{4}-2\\end{bmatrix}.\n$$\n\nCalculate one iteration of the Newton-Raphson process that starts with ${x}_{0}=[2,\\,-1]^{T}.$ Round your answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{1}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of finding the zeros of a multivariable function $f:{R}^{n}\\to {R}^{n}$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{J}_{f}({x}_{n})]^{-1}f({x}_{n}),\n$$\n\nwhere ${J}_{f}({x}_{n})$ is the Jacobian of $f$ evaluated at ${x}_{n}.$\n\nIn our case, the Jacobian is\n\n$$\n\\begin{aligned}{J}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}({x}^{2}{y}^{3}-{y}^{2}+x) & \\frac{∂}{∂y}({x}^{2}{y}^{3}-{y}^{2}+x) \\\\ \\frac{∂}{∂x}({x}^{3}-{y}^{4}-2) & \\frac{∂}{∂y}({x}^{3}-{y}^{4}-2)\\end{bmatrix} \\\\  & =\\begin{bmatrix}2x{y}^{3}+1 & 3{x}^{2}{y}^{2}-2y \\\\ 3{x}^{2} & -4{y}^{3}\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}2x{y}^{3}+1 & 3{x}^{2}{y}^{2}-2y \\\\ 3{x}^{2} & -4{y}^{3}\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}{x}^{2}{y}^{3}-{y}^{2}+x \\\\ {x}^{3}-{y}^{4}-2\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nStarting with ${x}_{0}=\\begin{bmatrix}2 \\\\ -1\\end{bmatrix},$ we have\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}-{\\begin{bmatrix}2x{y}^{3}+1 & 3{x}^{2}{y}^{2}-2y \\\\ 3{x}^{2} & -4{y}^{3}\\end{bmatrix}}_{{x}_{0}}^{-1}{\\begin{bmatrix}{x}^{2}{y}^{3}-{y}^{2}+x \\\\ {x}^{3}-{y}^{4}-2\\end{bmatrix}}_{{x}_{0}} \\\\  & =\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}-{\\begin{bmatrix}2(2)(-1)^{3}+1 & 3(2)^{2}(-1)^{2}-2(-1) \\\\ 3(2)^{2} & -4(-1)^{3}\\end{bmatrix}}^{-1}\\begin{bmatrix}(2)^{2}(-1)^{3}-(-1)^{2}+2 \\\\ (2)^{3}-(-1)^{4}-2\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}-{\\begin{bmatrix}-3 & 14 \\\\ 12 & 4\\end{bmatrix}}^{-1}\\begin{bmatrix}-3 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}-\\frac{1}{(-3)\\cdot 4-14\\cdot 12}\\begin{bmatrix}4 & -14 \\\\ -12 & -3\\end{bmatrix}\\begin{bmatrix}-3 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}+\\frac{1}{180}\\begin{bmatrix}-82 \\\\ 21\\end{bmatrix} \\\\  & =\\begin{bmatrix}\\frac{139}{90} \\\\ -\\frac{53}{60}\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}1.544 \\\\ -0.883\\end{bmatrix},\\end{aligned}\n$$\n\nrounded to three decimal places.",
+      ":question/id": "89a1a448-da71-581e-a9b4-07c847d8758d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "bb1f27b8-6238-57ac-a72c-c510738dc772",
+          ":answer-field/correct": [
+            ":answer/id",
+            "f62102ab-0149-5e20-aeb5-a104c6c13696"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1.544",
+              ":answer/id": "f62102ab-0149-5e20-aeb5-a104c6c13696"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ac4baef7-4d59-5c94-b495-0efe691e290e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "b1328794-c970-5fec-a097-0c9c6a55f625"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-0.883",
+              ":answer/id": "b1328794-c970-5fec-a097-0c9c6a55f625"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186292576
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204083,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[2,5]\\times [0,5]⊆{R}^{2},$ where\n\n$$\nf(x,y)=\\begin{bmatrix}{x}^{2}+{y}^{2}-25 \\\\ {x}^{2}-y-20\\end{bmatrix}.\n$$\n\nCalculate the second iteration of the Newton-Raphson process that starts at ${x}_{0}=[5,\\,0]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[5,\\,5]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>$2.727$</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of finding the zeros of a multivariable function $f:{R}^{n}\\to {R}^{n}$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{J}_{f}({x}_{n})]^{-1}f({x}_{n}),\n$$\n\nwhere ${J}_{f}({x}_{n})$ is the Jacobian of $f$ evaluated at ${x}_{n}.$\n\nIn our case, the Jacobian is\n\n$$\n\\begin{aligned}{J}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}({x}^{2}+{y}^{2}-25) & \\frac{∂}{∂y}({x}^{2}+{y}^{2}-25) \\\\ \\frac{∂}{∂x}({x}^{2}-y-20) & \\frac{∂}{∂y}({x}^{2}-y-20)\\end{bmatrix} \\\\  & =\\begin{bmatrix}2x & 2y \\\\ 2x & -1\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}2x & 2y \\\\ 2x & -1\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}{x}^{2}+{y}^{2}-25 \\\\ {x}^{2}-y-20\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}2x & 2y \\\\ 2x & -1\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}{x}^{2}+{y}^{2}-25 \\\\ {x}^{2}-y-20\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}5 \\\\ 5\\end{bmatrix}-{\\begin{bmatrix}2(5) & 2(5) \\\\ 2(5) & -1\\end{bmatrix}}^{-1}\\begin{bmatrix}(5)^{2}+(5)^{2}-25 \\\\ (5)^{2}-5-20\\end{bmatrix} \\\\  & =\\begin{bmatrix}5 \\\\ 5\\end{bmatrix}-{\\begin{bmatrix}10 & 10 \\\\ 10 & -1\\end{bmatrix}}^{-1}\\begin{bmatrix}25 \\\\ 0\\end{bmatrix} \\\\  & =\\begin{bmatrix}5 \\\\ 5\\end{bmatrix}-\\frac{1}{10\\cdot (-1)-10\\cdot 10}\\begin{bmatrix}-1 & -10 \\\\ -10 & 10\\end{bmatrix}\\begin{bmatrix}25 \\\\ 0\\end{bmatrix} \\\\  & =\\begin{bmatrix}5 \\\\ 5\\end{bmatrix}+\\frac{1}{110}\\begin{bmatrix}-25 \\\\ -250\\end{bmatrix} \\\\  & =\\begin{bmatrix}\\frac{105}{22} \\\\ \\frac{30}{11}\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}4.773 \\\\ 2.727\\end{bmatrix},\\end{aligned}\n$$\n\nrounded to three decimal places.",
+      ":question/id": "8e20d025-cc7a-5777-9e32-357698088f38",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "0417d2a8-633a-599a-b735-9b002cab50b7",
+          ":answer-field/correct": [
+            ":answer/id",
+            "dbd53130-5a74-53d6-a026-a867b5fa3607"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4.773",
+              ":answer/id": "dbd53130-5a74-53d6-a026-a867b5fa3607"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186292585
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204024,
+      "title": "Computing One Iteration of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[0,1]\\times [1,2]⊆{R}^{2},$ where\n\n$$\nf(x,y)=3{x}^{2}y-{x}^{2}+2xy-3x.\n$$\n\nCalculate one iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[1,\\,2]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{1}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>$0.375$</td></tr>\n<tr><td>{{field-1}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(3{x}^{2}y-{x}^{2}+2xy-3x) \\\\ \\frac{∂}{∂y}(3{x}^{2}y-{x}^{2}+2xy-3x)\\end{bmatrix} \\\\  & =\\begin{bmatrix}6xy-2x+2y-3 \\\\ 3{x}^{2}+2x\\end{bmatrix},\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(6xy-2x+2y-3) & \\frac{∂}{∂x}(3{x}^{2}+2x) \\\\ \\frac{∂}{∂y}(6xy-2x+2y-3) & \\frac{∂}{∂y}(3{x}^{2}+2x)\\end{bmatrix} \\\\  & =\\begin{bmatrix}6y-2 & 6x+2 \\\\ 6x+2 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}6y-2 & 6x+2 \\\\ 6x+2 & 0\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}6xy-2x+2y-3 \\\\ 3{x}^{2}+2x\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nStarting with\n${x}_{0}=\\begin{bmatrix}1 \\\\ 2\\end{bmatrix},$ we have\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}-{\\begin{bmatrix}6y-2 & 6x+2 \\\\ 6x+2 & 0\\end{bmatrix}}_{{x}_{0}}^{-1}{\\begin{bmatrix}6xy-2x+2y-3 \\\\ 3{x}^{2}+2x\\end{bmatrix}}_{{x}_{0}} \\\\  & =\\begin{bmatrix}1 \\\\ 2\\end{bmatrix}-{\\begin{bmatrix}6(2)-2 & 6(1)+2 \\\\ 6(1)+2 & 0\\end{bmatrix}}^{-1}\\begin{bmatrix}6(1)(2)-2(1)+2(2)-3 \\\\ 3(1)^{2}+2(1)\\end{bmatrix} \\\\  & =\\begin{bmatrix}1 \\\\ 2\\end{bmatrix}-{\\begin{bmatrix}10 & 8 \\\\ 8 & 0\\end{bmatrix}}^{-1}\\begin{bmatrix}11 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}1 \\\\ 2\\end{bmatrix}-\\frac{1}{10\\cdot 0-8\\cdot 8}\\begin{bmatrix}0 & -8 \\\\ -8 & 10\\end{bmatrix}\\begin{bmatrix}11 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}1 \\\\ 2\\end{bmatrix}+\\frac{1}{64}\\begin{bmatrix}-40 \\\\ -38\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}0.375 \\\\ 1.406\\end{bmatrix}.\\end{aligned}\n$$",
+      ":question/id": "97348c09-e403-5a97-a03e-fb606466c922",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "720fd5b7-85bb-58e2-86fb-2531c871334c",
+          ":answer-field/correct": [
+            ":answer/id",
+            "def7241a-f318-5412-8108-0cf7b982670e"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1.406",
+              ":answer/id": "def7241a-f318-5412-8108-0cf7b982670e"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186292591
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204025,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[0,2]\\times [-1,0]⊆{R}^{2},$ where\n\n$$\nf(x,y)=4{x}^{2}y+{x}^{2}+{y}^{2}-5y.\n$$\n\nCalculate the second iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[1,\\,0]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[1.2,\\,-0.3]^{T}.$ Round your final answer to **three decimal places.**\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(4{x}^{2}y+{x}^{2}+{y}^{2}-5y) \\\\ \\frac{∂}{∂y}(4{x}^{2}y+{x}^{2}+{y}^{2}-5y)\\end{bmatrix} \\\\  & =\\begin{bmatrix}8xy+2x \\\\ 4{x}^{2}+2y-5\\end{bmatrix},\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(8xy+2x) & \\frac{∂}{∂x}(4{x}^{2}+2y-5) \\\\ \\frac{∂}{∂y}(8xy+2x) & \\frac{∂}{∂y}(4{x}^{2}+2y-5)\\end{bmatrix} \\\\  & =\\begin{bmatrix}8y+2 & 8x \\\\ 8x & 2\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}8y+2 & 8x \\\\ 8x & 2\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}8xy+2x \\\\ 4{x}^{2}+2y-5\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}8y+2 & 8x \\\\ 8x & 2\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}8xy+2x \\\\ 4{x}^{2}+2y-5\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}1.2 \\\\ -0.3\\end{bmatrix}-{\\begin{bmatrix}8(-0.3)+2 & 8(1.2) \\\\ 8(1.2) & 2\\end{bmatrix}}^{-1}\\begin{bmatrix}8(1.2)(-0.3)+2(1.2) \\\\ 4(1.2)^{2}+2(-0.3)-5\\end{bmatrix} \\\\  & =\\begin{bmatrix}1.2 \\\\ -0.3\\end{bmatrix}-{\\begin{bmatrix}-0.4 & 9.6 \\\\ 9.6 & 2\\end{bmatrix}}^{-1}\\begin{bmatrix}-0.48 \\\\ 0.16\\end{bmatrix} \\\\  & =\\begin{bmatrix}1.2 \\\\ -0.3\\end{bmatrix}-\\frac{1}{(-0.4)\\cdot 2-(9.6)\\cdot (9.6)}\\begin{bmatrix}2 & -9.6 \\\\ -9.6 & -0.4\\end{bmatrix}\\begin{bmatrix}-0.48 \\\\ 0.16\\end{bmatrix} \\\\  & =\\begin{bmatrix}1.2 \\\\ -0.3\\end{bmatrix}+\\frac{1}{92.96}\\begin{bmatrix}-2.496 \\\\ 4.544\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}1.173 \\\\ -0.251\\end{bmatrix}.\\end{aligned}\n$$",
+      ":question/id": "e75b7884-0db9-5057-af74-06eae87f1648",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "bb0d63ff-b9e7-584a-8830-b9f609c9ca58",
+          ":answer-field/correct": [
+            ":answer/id",
+            "52638e27-ee03-5499-bffe-d9b57d7c2457"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1.173",
+              ":answer/id": "52638e27-ee03-5499-bffe-d9b57d7c2457"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "43021020-58e9-51ce-8d67-a91938fc055e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "3d0eda7a-e56c-5c03-a079-88c490debd6b"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-0.251",
+              ":answer/id": "3d0eda7a-e56c-5c03-a079-88c490debd6b"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186292599
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204025,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[-2,2]\\times [-3,3]⊆{R}^{2},$ where\n\n$$\nf(x,y)=x{y}^{2}-2{x}^{2}+5{y}^{2}-8.\n$$\n\nCalculate the second iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[-2,\\,-2]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[-1.4,\\,0.4]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>$-0.07$</td></tr>\n<tr><td>{{field-1}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(x{y}^{2}-2{x}^{2}+5{y}^{2}-8) \\\\ \\frac{∂}{∂y}(x{y}^{2}-2{x}^{2}+5{y}^{2}-8)\\end{bmatrix} \\\\  & =\\begin{bmatrix}-4x+{y}^{2} \\\\ 2xy+10y\\end{bmatrix},\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(-4x+{y}^{2}) & \\frac{∂}{∂x}(2xy+10y) \\\\ \\frac{∂}{∂y}(-4x+{y}^{2}) & \\frac{∂}{∂y}(2xy+10y)\\end{bmatrix} \\\\  & =\\begin{bmatrix}-4 & 2y \\\\ 2y & 2x+10\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}-4 & 2y \\\\ 2y & 2x+10\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}-4x+{y}^{2} \\\\ 2xy+10y\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}-4 & 2y \\\\ 2y & 2x+10\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}-4x+{y}^{2} \\\\ 2xy+10y\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}-1.4 \\\\ 0.4\\end{bmatrix}-{\\begin{bmatrix}-4 & 2(0.4) \\\\ 2(0.4) & 2(-1.4)+10\\end{bmatrix}}^{-1}\\begin{bmatrix}-4(-1.4)+(0.4)^{2} \\\\ 2(-1.4)(0.4)+10(0.4)\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.4 \\\\ 0.4\\end{bmatrix}-{\\begin{bmatrix}-4 & 0.8 \\\\ 0.8 & 7.2\\end{bmatrix}}^{-1}\\begin{bmatrix}5.76 \\\\ 2.88\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.4 \\\\ 0.4\\end{bmatrix}-\\frac{1}{(-4)\\cdot (7.2)-(0.8)\\cdot (0.8)}\\begin{bmatrix}7.2 & -0.8 \\\\ -0.8 & -4\\end{bmatrix}\\begin{bmatrix}5.76 \\\\ 2.88\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.4 \\\\ 0.4\\end{bmatrix}+\\frac{1}{29.44}\\begin{bmatrix}39.168 \\\\ -16.128\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}-0.07 \\\\ -0.148\\end{bmatrix}.\\end{aligned}\n$$",
+      ":question/id": "bb492612-c99e-5fe3-b071-6352c602d9f8",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "580f51f0-4922-5f78-b6ca-3966d0d0e0e1",
+          ":answer-field/correct": [
+            ":answer/id",
+            "61d3c41b-3020-5a51-87b4-7a70cb9cd142"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-0.148",
+              ":answer/id": "61d3c41b-3020-5a51-87b4-7a70cb9cd142"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186292603
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204083,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a zero of the function $f(x,y)$ in the region $[-2,2]\\times [0,2]⊆{R}^{2},$ where\n\n$$\nf(x,y)=\\begin{bmatrix}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{bmatrix}.\n$$\n\nCalculate the second iteration of the Newton-Raphson process that starts at ${x}_{0}=[0,\\,1]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[-1.5,\\,1.5]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}\\,≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>$-1.198$</td></tr>\n<tr><td>{{field-1}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of finding the zeros of a multivariable function $f:{R}^{n}\\to {R}^{n}$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{J}_{f}({x}_{n})]^{-1}f({x}_{n}),\n$$\n\nwhere ${J}_{f}({x}_{n})$ is the Jacobian of $f$ evaluated at ${x}_{n}.$\n\nIn our case, the Jacobian is\n\n$$\n\\begin{aligned}{J}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}({x}^{2}+{y}^{3}-xy-4) & \\frac{∂}{∂y}({x}^{2}+{y}^{3}-xy-4) \\\\ \\frac{∂}{∂x}({x}^{4}-2xy+{y}^{2}-5) & \\frac{∂}{∂y}({x}^{4}-2xy+{y}^{2}-5)\\end{bmatrix} \\\\  & =\\begin{bmatrix}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}2x-y & 3{y}^{2}-x \\\\ 4{x}^{3}-2y & -2x+2y\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}{x}^{2}+{y}^{3}-xy-4 \\\\ {x}^{4}-2xy+{y}^{2}-5\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}-1.5 \\\\ 1.5\\end{bmatrix}-{\\begin{bmatrix}2(-1.5)-1.5 & 3(1.5)^{2}-(-1.5) \\\\ 4(-1.5)^{3}-2(1.5) & -2(-1.5)+2(1.5)\\end{bmatrix}}^{-1}\\begin{bmatrix}(-1.5)^{2}+{1.5}^{3}-(-1.5)\\cdot 1.5-4 \\\\ (-1.5)^{4}-2(-1.5)(1.5)+{1.5}^{2}-5\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.5 \\\\ 1.5\\end{bmatrix}-{\\begin{bmatrix}-4.5 & 8.25 \\\\ -16.5 & 6\\end{bmatrix}}^{-1}\\begin{bmatrix}3.875 \\\\ 6.8125\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.5 \\\\ 1.5\\end{bmatrix}-\\frac{1}{-4.5\\cdot 6-8.25\\cdot (-16.5)}\\begin{bmatrix}6 & -8.25 \\\\ 16.5 & -4.5\\end{bmatrix}\\begin{bmatrix}3.875 \\\\ 6.8125\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1.5 \\\\ 1.5\\end{bmatrix}-\\frac{1}{109.125}\\begin{bmatrix}-32.953\\,125 \\\\ 33.281\\,250\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}-1.198 \\\\ 1.195\\end{bmatrix},\\end{aligned}\n$$\n\nrounded to three decimal places.",
+      ":question/id": "5ac9e5bf-af01-5959-b439-811506e729b8",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "8cdcd08e-9171-55af-8219-dbf0a9b8d105",
+          ":answer-field/correct": [
+            ":answer/id",
+            "4162e894-71c2-544b-ba5b-a69c45719930"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1.195",
+              ":answer/id": "4162e894-71c2-544b-ba5b-a69c45719930"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186365483
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186221418,
+      "title": "Finding the Linear Approximations Near Equilibria"
+    },
+    "question": {
+      ":question/problem": "$$\n\\left\\{\\begin{aligned}{x}^{′}(t) &={x}^{2}(t)-6y(t) \\\\ {y}^{′}(t) &=5x(t)+{y}^{2}(t)\\end{aligned}\\right.\n$$\n\nConsider the system of differential equations above. What is the corresponding linearized system at the equilibrium point ${x}^{∗}=[0,\\text{ }0]^{T}?$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${u}^{′}=\\,\\,$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n<span class=\"matrix-answer-label\">$\\,\\,u,\\,$</span>\n</div> where $u=x-{x}^{∗}$",
+      ":question/worked-solution": "The system can be rewritten in matrix form as \n\n$$\n{x}^{′}=\\boldsymbol{f}(x)\n$$\n\nwhere $x=\\begin{bmatrix}x(t) \\\\ y(t)\\end{bmatrix}$ and $\\boldsymbol{f}(x)=\\begin{bmatrix}{x}^{2}-6y \\\\ 5x+{y}^{2}\\end{bmatrix}.$\n\nWe need to compute the Jacobian matrix (or the total derivative) of $\\boldsymbol{f}(x).$ \n\nIn our case, we have the following:\n\n$$\n\\boldsymbol{f}^{′}(x)=\\begin{bmatrix}\\frac{∂{f}_{1}}{∂x} & \\frac{∂{f}_{1}}{∂y} \\\\ \\frac{∂{f}_{2}}{∂x} & \\frac{∂{f}_{2}}{∂y}\\end{bmatrix}\n$$\n\nFirst, we compute the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & =\\frac{∂}{∂x}({x}^{2}-6y)=2x,\\, & \\frac{∂{f}_{1}}{∂y} & =\\frac{∂}{∂y}({x}^{2}-6y)=-6 \\\\ \\frac{∂{f}_{2}}{∂x} & =\\frac{∂}{∂x}(5x+{y}^{2})=5,\\, & \\frac{∂{f}_{2}}{∂y} & =\\frac{∂}{∂y}(5x+{y}^{2})=2y\\end{aligned}\n$$\n\nThus, we have\n\n$$\n\\boldsymbol{f}^{′}(x)=\\begin{bmatrix}2x & -6 \\\\ 5 & 2y\\end{bmatrix}.\n$$\n\nNext, we evaluate the Jacobian at the equilibrium ${x}^{∗}=\\begin{bmatrix}0 \\\\ 0\\end{bmatrix}$ to get\n\n$$\n\\boldsymbol{f}^{′}({x}^{∗})=\\begin{bmatrix}2(0) & -6 \\\\ 5 & 2(0)\\end{bmatrix}=\\begin{bmatrix}0 & -6 \\\\ 5 & 0\\end{bmatrix}.\n$$\n\nFinally, near the equilibrium, the nonlinear system is approximated by\n\n$$\n{u}^{′}=\\begin{bmatrix}0 & -6 \\\\ 5 & 0\\end{bmatrix}u,\n$$\n\nwhere the deviation vector is\n\n$$\nu=x-{x}^{∗}=\\begin{bmatrix}x \\\\ y\\end{bmatrix}-\\begin{bmatrix}0 \\\\ 0\\end{bmatrix}=\\begin{bmatrix}x \\\\ y\\end{bmatrix}.\n$$",
+      ":question/id": "a7c1fead-d116-5ff5-8a51-16479e32a1be",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "716fc112-ec9d-5477-b2f4-e9bcd055d9ab",
+          ":answer-field/correct": [
+            ":answer/id",
+            "ae6b473e-b1cb-5db0-b656-6bd350d4cc95"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "ae6b473e-b1cb-5db0-b656-6bd350d4cc95"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "de9ff44a-b07b-5446-85f9-ac842528eee4",
+          ":answer-field/correct": [
+            ":answer/id",
+            "f1bfd009-a3de-53d0-9807-5dd8439b1489"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-6",
+              ":answer/id": "f1bfd009-a3de-53d0-9807-5dd8439b1489"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ab69a6c9-9e52-550e-a210-d6a66fa5e7ec",
+          ":answer-field/correct": [
+            ":answer/id",
+            "55a93356-54fe-580e-a771-0217ba2ea791"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5",
+              ":answer/id": "55a93356-54fe-580e-a771-0217ba2ea791"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "8f3438ac-f157-51ab-8ccd-08f17757b2bc",
+          ":answer-field/correct": [
+            ":answer/id",
+            "9b2a5ff7-1e97-56f1-a842-9573ed3faf72"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "9b2a5ff7-1e97-56f1-a842-9573ed3faf72"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186368152
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186221418,
+      "title": "Finding the Linear Approximations Near Equilibria"
+    },
+    "question": {
+      ":question/problem": "$$\n\\left\\{\\begin{aligned}{x}^{′}(t) &={x}^{2}(t)-2x(t)+3y(t)+3 \\\\ {y}^{′}(t) &=-4x(t)+2{y}^{2}(t)-y(t)+5\\end{aligned}\\right.\n$$\n\nConsider the system of differential equations above. What is the corresponding linearized system at the equilibrium point ${x}^{∗}=[2,\\text{ }-1]^{T}?$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${u}^{′}=\\,\\,$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n<span class=\"matrix-answer-label\">$\\,\\,u,\\,$</span>\n</div> where $u=x-{x}^{∗}$",
+      ":question/worked-solution": "The system can be rewritten in matrix form as \n\n$$\n{x}^{′}=\\boldsymbol{f}(x)\n$$\n\nwhere $x=\\begin{bmatrix}x(t) \\\\ y(t)\\end{bmatrix}$ and \n$$\n\\displaystyle \\boldsymbol{f}(x)=\\begin{bmatrix}{x}^{2}-2x+3y+3 \\\\ -4x+2{y}^{2}-y+5\\end{bmatrix}.\n$$\n\nWe need to compute the Jacobian matrix (or the total derivative) of $\\boldsymbol{f}(x).$ \n\nIn our case, we have the following:\n\n$$\n\\boldsymbol{f}^{′}(x)=\\begin{bmatrix}\\frac{∂{f}_{1}}{∂x} & \\frac{∂{f}_{1}}{∂y} \\\\ \\frac{∂{f}_{2}}{∂x} & \\frac{∂{f}_{2}}{∂y}\\end{bmatrix}\n$$\n\nFirst, we compute the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & =\\frac{∂}{∂x}({x}^{2}-2x+3y+3)=2x-2,\\, & \\frac{∂{f}_{1}}{∂y} & =\\frac{∂}{∂y}({x}^{2}-2x+3y+3)=3 \\\\ \\frac{∂{f}_{2}}{∂x} & =\\frac{∂}{∂x}(-4x+2{y}^{2}-y+5)=-4,\\, & \\frac{∂{f}_{2}}{∂y} & =\\frac{∂}{∂y}(-4x+2{y}^{2}-y+5)=4y-1\\end{aligned}\n$$\n\nThus, we have\n\n$$\n\\boldsymbol{f}^{′}(x)=\\begin{bmatrix}2x-2 & 3 \\\\ -4 & 4y-1\\end{bmatrix}.\n$$\n\nNext, we evaluate the Jacobian at the equilibrium ${x}^{∗}=\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}$ to get\n\n$$\n\\boldsymbol{f}^{′}({x}^{∗})=\\begin{bmatrix}2(2)-2 & 3 \\\\ -4 & 4(-1)-1\\end{bmatrix}=\\begin{bmatrix}2 & 3 \\\\ -4 & -5\\end{bmatrix}.\n$$\n\nFinally, near the equilibrium, the nonlinear system is approximated by\n\n$$\n{u}^{′}=\\begin{bmatrix}2 & 3 \\\\ -4 & -5\\end{bmatrix}u,\n$$\n\nwhere the deviation vector is\n\n$$\nu=x-{x}^{∗}=\\begin{bmatrix}x \\\\ y\\end{bmatrix}-\\begin{bmatrix}2 \\\\ -1\\end{bmatrix}=\\begin{bmatrix}x-2 \\\\ y+1\\end{bmatrix}.\n$$",
+      ":question/id": "4189cf97-4019-5e9f-9f66-1a0dc740de8d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ed8eb70b-344a-5050-b370-92b4d15051d8",
+          ":answer-field/correct": [
+            ":answer/id",
+            "080e961a-297c-5b7d-9c41-af81d7198804"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2",
+              ":answer/id": "080e961a-297c-5b7d-9c41-af81d7198804"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "4a0a7ee5-4574-567f-ae65-cd2e7676f0b8",
+          ":answer-field/correct": [
+            ":answer/id",
+            "ee096123-d43d-5356-8566-8623f265bf9b"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3",
+              ":answer/id": "ee096123-d43d-5356-8566-8623f265bf9b"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "1cbfa53a-6d93-5264-b814-7e6efcdd6d4b",
+          ":answer-field/correct": [
+            ":answer/id",
+            "4aa59ac8-cd8f-54fc-832d-b165c63d5079"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4",
+              ":answer/id": "4aa59ac8-cd8f-54fc-832d-b165c63d5079"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "194dfd1f-21e6-59b2-9593-2beb7f9e8250",
+          ":answer-field/correct": [
+            ":answer/id",
+            "86448ffa-4985-5006-92fe-7235fceb5be8"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-5",
+              ":answer/id": "86448ffa-4985-5006-92fe-7235fceb5be8"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186444536
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204086,
+      "title": "Computing Parameter Subset Gradients"
+    },
+    "question": {
+      ":question/problem": "Given the quadratic function $f(x;a,b)=a{x}^{2}+bx,$ compute ${∇}_{a,b}\\,f.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{a,b}\\,f=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "To compute ${∇}_{a,b}\\,f$, we take partial derivatives with respect to $a$ and $b.$\n\n$$\n\\begin{aligned}\\frac{∂f}{∂a} & =\\frac{∂}{∂a}(a{x}^{2}+bx)={x}^{2} \\\\ \\frac{∂f}{∂b} & =\\frac{∂}{∂b}(a{x}^{2}+bx)=x\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{a,b}\\,f & =\\begin{bmatrix}\\frac{∂f}{∂a} \\\\ \\frac{∂f}{∂b}\\end{bmatrix} \\\\  & =\\begin{bmatrix}{x}^{2} \\\\ x\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "15f52165-8151-599f-bfe3-492fccf77d4a",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "044cf6f0-86a5-5828-8057-974cbc3f803e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "972d1eaf-0176-5ff0-8dc5-13be7f9f609f"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{x}^{2}",
+              ":answer/id": "972d1eaf-0176-5ff0-8dc5-13be7f9f609f"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "3259ba75-6612-58b0-8781-9f978e6e6efc",
+          ":answer-field/correct": [
+            ":answer/id",
+            "c2871d26-b3e7-5641-b8d2-3a52bc0b14bb"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "x",
+              ":answer/id": "c2871d26-b3e7-5641-b8d2-3a52bc0b14bb"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186530425
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204085,
+      "title": "Computing Basic Subset Gradients"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x,y,z,w)=zw{e}^{xy}$, compute ${∇}_{x,z}\\,f.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{x,z}\\,f=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "To compute ${∇}_{x,z}\\,f$, we take partial derivatives with respect to $x$ and $z$ only.\n\n$$\n\\begin{aligned}\\frac{∂f}{∂x}=\\frac{∂}{∂x}(zw{e}^{xy}) & =yzw{e}^{xy} \\\\ \\frac{∂f}{∂z}=\\frac{∂}{∂z}(zw{e}^{xy}) & =w{e}^{xy}\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{x,z}\\,f & =\\begin{bmatrix}\\frac{∂f}{∂x} \\\\ \\frac{∂f}{∂z}\\end{bmatrix} \\\\  & =\\begin{bmatrix}yzw{e}^{xy} \\\\ w{e}^{xy}\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "5f065247-cbf1-5f49-a2d5-a7f84645d603",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ff841eb9-ea63-531b-90a6-805faeb34a87",
+          ":answer-field/correct": [
+            ":answer/id",
+            "6e1059c8-1450-595d-99c4-bc23f2778995"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "yzw e^{xy}",
+              ":answer/id": "6e1059c8-1450-595d-99c4-bc23f2778995"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ad5db1c2-7e76-5b04-be17-aecabe2de001",
+          ":answer-field/correct": [
+            ":answer/id",
+            "39910e2d-af60-54ec-b668-356df38be141"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "w e^{xy}",
+              ":answer/id": "39910e2d-af60-54ec-b668-356df38be141"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186530463
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204086,
+      "title": "Computing Parameter Subset Gradients"
+    },
+    "question": {
+      ":question/problem": "Given the cubic function $f(x;a,b,c)=a{x}^{3}+b{x}^{2}+cx,$ compute ${∇}_{a,c}\\,f.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{a,c}\\,f=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "To compute ${∇}_{a,c}\\,f$, we take partial derivatives with respect to $a$ and $c.$\n\n$$\n\\begin{aligned}\\frac{∂f}{∂a} & =\\frac{∂}{∂a}(a{x}^{3}+b{x}^{2}+cx)={x}^{3} \\\\ \\frac{∂f}{∂c} & =\\frac{∂}{∂c}(a{x}^{3}+b{x}^{2}+cx)=x\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{a,c}\\,f & =\\begin{bmatrix}\\frac{∂f}{∂a} \\\\ \\frac{∂f}{∂c}\\end{bmatrix} \\\\  & =\\begin{bmatrix}{x}^{3} \\\\ x\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "9a84fcca-bb7c-52d6-bb54-0e47f9a1105b",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "f439e6a0-d4de-55aa-9133-55a14ef4190c",
+          ":answer-field/correct": [
+            ":answer/id",
+            "c2a76f01-03ac-5c67-a67f-e4ce2fd942d1"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{x}^{3}",
+              ":answer/id": "c2a76f01-03ac-5c67-a67f-e4ce2fd942d1"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "e623b32f-ee75-5b9f-809d-6c6129aabbba",
+          ":answer-field/correct": [
+            ":answer/id",
+            "2ceab98f-831e-547a-97fa-8a706519b6cd"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "x",
+              ":answer/id": "2ceab98f-831e-547a-97fa-8a706519b6cd"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186530496
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204088,
+      "title": "Computing Second-Order Derivatives"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x,y,z)=x{e}^{yz}$, compute ${∇}_{x,y}({∇}_{x,y}\\,f).$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{x,y}({∇}_{x,y}f)=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "First, we take the variable subset gradient:\n\n$$\n\\begin{aligned}{∇}_{x,y}\\,f & =\\begin{bmatrix}\\frac{∂}{∂x}(x{e}^{yz}) \\\\ \\frac{∂}{∂y}(x{e}^{yz})\\end{bmatrix}=\\begin{bmatrix}{e}^{yz} \\\\ xz{e}^{yz}\\end{bmatrix}\\end{aligned}\n$$\n\nNext, we compute the second derivatives with respect to $x$ and $y$:\n\n$$\n\\begin{aligned} & \\frac{∂}{∂x}({e}^{yz})=0\\,\\, &  & \\frac{∂}{∂y}({e}^{yz})=z{e}^{yz} \\\\  & \\frac{∂}{∂x}(xz{e}^{yz})=z{e}^{yz}\\,\\, &  & \\frac{∂}{∂y}(xz{e}^{yz})=x{z}^{2}{e}^{yz}\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{x,y}({∇}_{x,y}\\,f) & =\\begin{bmatrix}\\frac{{∂}^{2}f}{∂{x}^{2}} & \\frac{{∂}^{2}f}{∂x∂y} \\\\ \\frac{{∂}^{2}f}{∂y∂x} & \\frac{{∂}^{2}f}{∂{y}^{2}}\\end{bmatrix} \\\\  & =\\begin{bmatrix}0 & z{e}^{yz} \\\\ z{e}^{yz} & x{z}^{2}{e}^{yz}\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "ef911a6f-8eaa-541f-ada4-10af4c9994c6",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "54132b05-6b53-5a59-a55a-32250c5ba899",
+          ":answer-field/correct": [
+            ":answer/id",
+            "b9887375-d8c7-5b8f-8932-603f171ad7b5"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "b9887375-d8c7-5b8f-8932-603f171ad7b5"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "c27b4e5d-55a0-5453-9ef5-40b4c02e0023",
+          ":answer-field/correct": [
+            ":answer/id",
+            "c3559be5-9ddd-5be3-86e4-201b8acfad49"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "ze^{yz}",
+              ":answer/id": "c3559be5-9ddd-5be3-86e4-201b8acfad49"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "44a70234-afbd-5b95-b6d0-57f5d9b17da8",
+          ":answer-field/correct": [
+            ":answer/id",
+            "a961726f-d2e5-5c4e-aa58-b8b021e50fd5"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "ze^{yz}",
+              ":answer/id": "a961726f-d2e5-5c4e-aa58-b8b021e50fd5"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "7075f514-a4aa-5bcc-8c11-8e3071322458",
+          ":answer-field/correct": [
+            ":answer/id",
+            "0e1601a7-b20b-5f51-9f9a-5b71e91349ba"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "xz^2e^{yz}",
+              ":answer/id": "0e1601a7-b20b-5f51-9f9a-5b71e91349ba"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186530538
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204088,
+      "title": "Computing Second-Order Derivatives"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x,y,z)=xyz$, compute ${∇}_{x,z}({∇}_{x,z}\\,f).$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{x,z}({∇}_{x,z}f)=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "First, we take the variable subset gradient:\n\n$$\n\\begin{aligned}{∇}_{x,z}\\,f & =\\begin{bmatrix}\\frac{∂}{∂x}(xyz) \\\\ \\frac{∂}{∂z}(xyz)\\end{bmatrix}=\\begin{bmatrix}yz \\\\ xy\\end{bmatrix}\\end{aligned}\n$$\n\nNext, we compute the second derivatives with respect to $x$ and $z$:\n\n$$\n\\begin{aligned} & \\frac{∂}{∂x}(yz)=0\\,\\, &  & \\frac{∂}{∂z}(yz)=y \\\\  & \\frac{∂}{∂x}(xy)=y\\,\\, &  & \\frac{∂}{∂z}(xy)=0\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{x,z}({∇}_{x,z}\\,f) & =\\begin{bmatrix}\\frac{{∂}^{2}f}{∂{x}^{2}} & \\frac{{∂}^{2}f}{∂x∂z} \\\\ \\frac{{∂}^{2}f}{∂z∂x} & \\frac{{∂}^{2}f}{∂{z}^{2}}\\end{bmatrix} \\\\  & =\\begin{bmatrix}0 & y \\\\ y & 0\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "892266dd-4065-579e-8406-1b3b7c58257b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "b586955b-6ca9-5533-8861-e70a511d63db",
+          ":answer-field/correct": [
+            ":answer/id",
+            "6988ec71-c280-5ab5-8895-24dd8a6cb7d1"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "6988ec71-c280-5ab5-8895-24dd8a6cb7d1"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "29c11c41-4251-59f9-a07b-6dd2357b05fe",
+          ":answer-field/correct": [
+            ":answer/id",
+            "0b6be170-22a5-50c2-b423-ef63a5649a71"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y",
+              ":answer/id": "0b6be170-22a5-50c2-b423-ef63a5649a71"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "f507b184-60c6-57e9-b5d9-709338cca4d7",
+          ":answer-field/correct": [
+            ":answer/id",
+            "a1dbc036-af8b-5f8a-96be-7cf52a033cef"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y",
+              ":answer/id": "a1dbc036-af8b-5f8a-96be-7cf52a033cef"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "2fc216b1-dcc1-5053-b784-b1697b063058",
+          ":answer-field/correct": [
+            ":answer/id",
+            "cfe611bb-4ff6-5647-a480-93c4ac02a258"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "cfe611bb-4ff6-5647-a480-93c4ac02a258"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186540066
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204025,
+      "title": "Computing Two Iterations of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[2,3]\\times [1,2]⊆{R}^{2},$ where\n\n$$\nf(x,y)={x}^{3}+{y}^{3}-3{x}^{2}-6y+13.\n$$\n\nCalculate the second iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[3,\\,2]^{T}$ if the first iteration of the algorithm gives ${x}_{1}=[2.25,\\,1.5]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{2}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>$1.417$</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =\\begin{bmatrix}\\frac{∂}{∂x}({x}^{3}+{y}^{3}-3{x}^{2}-6y+13) \\\\ \\frac{∂}{∂y}({x}^{3}+{y}^{3}-3{x}^{2}-6y+13)\\end{bmatrix} \\\\  & =\\begin{bmatrix}3{x}^{2}-6x \\\\ 3{y}^{2}-6\\end{bmatrix},\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(3{x}^{2}-6x) & \\frac{∂}{∂x}(3{y}^{2}-6) \\\\ \\frac{∂}{∂y}(3{x}^{2}-6x) & \\frac{∂}{∂y}(3{y}^{2}-6)\\end{bmatrix} \\\\  & =\\begin{bmatrix}6x-6 & 0 \\\\ 0 & 6y\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}6x-6 & 0 \\\\ 0 & 6y\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}3{x}^{2}-6x \\\\ 3{y}^{2}-6\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nFor the second iteration, we have\n\n$$\n\\begin{aligned}{x}_{2} & ={x}_{1}-{\\begin{bmatrix}6x-6 & 0 \\\\ 0 & 6y\\end{bmatrix}}_{{x}_{1}}^{-1}{\\begin{bmatrix}3{x}^{2}-6x \\\\ 3{y}^{2}-6\\end{bmatrix}}_{{x}_{1}} \\\\  & =\\begin{bmatrix}2.25 \\\\ 1.5\\end{bmatrix}-{\\begin{bmatrix}6(2.25)-6 & 0 \\\\ 0 & 6(1.5)\\end{bmatrix}}^{-1}\\begin{bmatrix}3(2.25)^{2}-6(2.25) \\\\ 3(1.5)^{2}-6\\end{bmatrix} \\\\  & =\\begin{bmatrix}2.25 \\\\ 1.5\\end{bmatrix}-{\\begin{bmatrix}7.5 & 0 \\\\ 0 & 9\\end{bmatrix}}^{-1}\\begin{bmatrix}1.6875 \\\\ 0.75\\end{bmatrix} \\\\  & =\\begin{bmatrix}2.25 \\\\ 1.5\\end{bmatrix}-\\frac{1}{7.5\\cdot 9-0\\cdot 0}\\begin{bmatrix}9 & 0 \\\\ 0 & 7.5\\end{bmatrix}\\begin{bmatrix}1.6875 \\\\ 0.75\\end{bmatrix} \\\\  & =\\begin{bmatrix}2.25 \\\\ 1.5\\end{bmatrix}-\\frac{1}{67.5}\\begin{bmatrix}15.1875 \\\\ 5.625\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}2.025 \\\\ 1.417\\end{bmatrix}.\\end{aligned}\n$$",
+      ":question/id": "11575fd3-3b68-5f5f-9c8d-ffa66ae7367b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "d4e92ca9-095d-5013-a0f3-2a43f9ecb853",
+          ":answer-field/correct": [
+            ":answer/id",
+            "ccb984f5-1d1e-5d3d-89ea-171fda9ca2b4"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2.025",
+              ":answer/id": "ccb984f5-1d1e-5d3d-89ea-171fda9ca2b4"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186569962
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204024,
+      "title": "Computing One Iteration of the Newton-Raphson Method"
+    },
+    "question": {
+      ":question/problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[-2,0]\\times [-2,0]⊆{R}^{2},$ where\n\n$$\nf(x,y)=4{x}^{2}y+3{x}^{2}-xy-2x.\n$$\n\nCalculate one iteration of the Newton-Raphson process for optimization that starts at ${x}_{0}=[-1,\\,-1]^{T}.$ Round your final answer to three decimal places (if needed).\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${x}_{1}≈$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>$-0.444$</td></tr>\n<tr><td>{{field-1}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(4{x}^{2}y+3{x}^{2}-xy-2x) \\\\ \\frac{∂}{∂y}(4{x}^{2}y+3{x}^{2}-xy-2x)\\end{bmatrix} \\\\  & =\\begin{bmatrix}8xy+6x-y-2 \\\\ 4{x}^{2}-x\\end{bmatrix},\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =\\begin{bmatrix}\\frac{∂}{∂x}(8xy+6x-y-2) & \\frac{∂}{∂x}(4{x}^{2}-x) \\\\ \\frac{∂}{∂y}(8xy+6x-y-2) & \\frac{∂}{∂y}(4{x}^{2}-x)\\end{bmatrix} \\\\  & =\\begin{bmatrix}8y+6 & 8x-1 \\\\ 8x-1 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson formula is\n\n$$\n{x}_{n+1}={x}_{n}-{\\begin{bmatrix}8y+6 & 8x-1 \\\\ 8x-1 & 0\\end{bmatrix}}_{{x}_{n}}^{-1}{\\begin{bmatrix}8xy+6x-y-2 \\\\ 4{x}^{2}-x\\end{bmatrix}}_{{x}_{n}}.\n$$\n\nStarting with\n${x}_{0}=\\begin{bmatrix}-1 \\\\ -1\\end{bmatrix},$ we have\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}-{\\begin{bmatrix}8y+6 & 8x-1 \\\\ 8x-1 & 0\\end{bmatrix}}_{{x}_{0}}^{-1}{\\begin{bmatrix}8xy+6x-y-2 \\\\ 4{x}^{2}-x\\end{bmatrix}}_{{x}_{0}} \\\\  & =\\begin{bmatrix}-1 \\\\ -1\\end{bmatrix}-{\\begin{bmatrix}8(-1)+6 & 8(-1)-1 \\\\ 8(-1)-1 & 0\\end{bmatrix}}^{-1}\\begin{bmatrix}8(-1)(-1)+6(-1)-(-1)-2 \\\\ 4(-1)^{2}-(-1)\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1 \\\\ -1\\end{bmatrix}-{\\begin{bmatrix}-2 & -9 \\\\ -9 & 0\\end{bmatrix}}^{-1}\\begin{bmatrix}1 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1 \\\\ -1\\end{bmatrix}-\\frac{1}{(-2)\\cdot 0-(-9)\\cdot (-9)}\\begin{bmatrix}0 & 9 \\\\ 9 & -2\\end{bmatrix}\\begin{bmatrix}1 \\\\ 5\\end{bmatrix} \\\\  & =\\begin{bmatrix}-1 \\\\ -1\\end{bmatrix}+\\frac{1}{81}\\begin{bmatrix}45 \\\\ -1\\end{bmatrix} \\\\  & ≈\\begin{bmatrix}-0.444 \\\\ -1.012\\end{bmatrix}.\\end{aligned}\n$$",
+      ":question/id": "cd16fbf2-f5ff-5242-b610-fb61c79ec2b3",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "b1b8b6be-a31c-573e-bf6e-e966d1666af4",
+          ":answer-field/correct": [
+            ":answer/id",
+            "0f6eed4d-3207-5871-b732-3aaed9f76d38"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1.012",
+              ":answer/id": "0f6eed4d-3207-5871-b732-3aaed9f76d38"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186570021
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204088,
+      "title": "Computing Second-Order Derivatives"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x,y,z)=xy+yz+xz$, compute ${∇}_{y,z}({∇}_{y,z}\\,f).$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{y,z}({∇}_{y,z}f)=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td><td>{{field-4}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "First, we take the variable subset gradient:\n\n$$\n\\begin{aligned}{∇}_{y,z}\\,f & =\\begin{bmatrix}\\frac{∂}{∂y}(xy+yz+xz) \\\\ \\frac{∂}{∂z}(xy+yz+xz)\\end{bmatrix}=\\begin{bmatrix}x+z \\\\ x+y\\end{bmatrix}\\end{aligned}\n$$\n\nNext, we compute the second derivatives with respect to $y$ and $z$:\n\n$$\n\\begin{aligned} & \\frac{∂}{∂y}(x+z)=0\\,\\, &  & \\frac{∂}{∂z}(x+z)=1 \\\\  & \\frac{∂}{∂y}(x+y)=1\\,\\, &  & \\frac{∂}{∂z}(x+y)=0\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{y,z}({∇}_{y,z}\\,f) & =\\begin{bmatrix}\\frac{{∂}^{2}f}{∂{y}^{2}} & \\frac{{∂}^{2}f}{∂y∂z} \\\\ \\frac{{∂}^{2}f}{∂z∂y} & \\frac{{∂}^{2}f}{∂{z}^{2}}\\end{bmatrix} \\\\  & =\\begin{bmatrix}0 & 1 \\\\ 1 & 0\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "2127a517-7dc0-5912-afe0-9dd738e3fd0c",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "19a08833-a23e-519b-bca5-afb64dbf0fbe",
+          ":answer-field/correct": [
+            ":answer/id",
+            "9a86981e-29ef-53f1-94be-355946d92c3a"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "9a86981e-29ef-53f1-94be-355946d92c3a"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "2cdb5e38-5b82-5c9a-a8eb-afbdecac1df0",
+          ":answer-field/correct": [
+            ":answer/id",
+            "9acd4a36-905c-5146-8e35-454979a74ee9"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1",
+              ":answer/id": "9acd4a36-905c-5146-8e35-454979a74ee9"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-3",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "1e463f06-595a-5718-b5c8-c47422dfba58",
+          ":answer-field/correct": [
+            ":answer/id",
+            "7a0db06e-3ec3-52be-a982-69bb9717d235"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1",
+              ":answer/id": "7a0db06e-3ec3-52be-a982-69bb9717d235"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-4",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "ad8bac4e-cd63-5d17-8587-37b0a997c641",
+          ":answer-field/correct": [
+            ":answer/id",
+            "2d25cfa1-cebb-51ef-a347-dcbaffc63d95"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "2d25cfa1-cebb-51ef-a347-dcbaffc63d95"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186665370
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204085,
+      "title": "Computing Basic Subset Gradients"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x,y,z,w)=xyz+yzw,$ compute ${∇}_{x,y}\\,f.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{x,y}\\,f=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "To compute ${∇}_{x,y}\\,f$, we take partial derivatives with respect to $x$ and $y$ only.\n\n$$\n\\begin{aligned}\\frac{∂f}{∂x}=\\frac{∂}{∂x}(xyz+yzw) & =yz \\\\ \\frac{∂f}{∂y}=\\frac{∂}{∂y}(xyz+yzw) & =xz+zw\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{x,y}\\,f & =\\begin{bmatrix}\\frac{∂f}{∂x} \\\\ \\frac{∂f}{∂y}\\end{bmatrix} \\\\  & =\\begin{bmatrix}yz \\\\ xz+zw\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "909da71f-6871-5305-bb80-1faeaab2be7a",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "29416c83-e7da-59a8-9ab3-ee6c38a85286",
+          ":answer-field/correct": [
+            ":answer/id",
+            "1657e53d-a51b-532f-bd57-04cf9c9b6409"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "yz",
+              ":answer/id": "1657e53d-a51b-532f-bd57-04cf9c9b6409"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "a48f0c76-dba7-5cab-878c-c2546d136c06",
+          ":answer-field/correct": [
+            ":answer/id",
+            "a582247e-69e1-5184-b2fc-b8dae3b61420"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "xz+zw",
+              ":answer/id": "a582247e-69e1-5184-b2fc-b8dae3b61420"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186665410
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186204088,
+      "title": "Computing Second-Order Derivatives"
+    },
+    "question": {
+      ":question/problem": "Given the function $f(x;w)={w}_{1}^{2}{x}_{1}^{2}+{w}_{2}^{2}{x}_{2}^{2}$, compute ${∇}_{w}({∇}_{w}\\,f).$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">${∇}_{w}({∇}_{w}\\,f)=\\text{ }$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>$2{x}_{1}^{2}$</td><td>$0$</td></tr>\n<tr><td>{{field-1}}</td><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+      ":question/worked-solution": "First, we compute ${∇}_{w}\\,f$:\n\n$$\n\\begin{aligned}\\frac{∂f}{∂{w}_{1}} & =\\frac{∂}{∂{w}_{1}}({w}_{1}^{2}{x}_{1}^{2}+{w}_{2}^{2}{x}_{2}^{2})=2{w}_{1}{x}_{1}^{2} \\\\ \\frac{∂f}{∂{w}_{2}} & =\\frac{∂}{∂{w}_{2}}({w}_{1}^{2}{x}_{1}^{2}+{w}_{2}^{2}{x}_{2}^{2})=2{w}_{2}{x}_{2}^{2}\\end{aligned}\n$$\n\nNext, we compute the second derivatives:\n\n$$\n\\begin{aligned} & \\frac{{∂}^{2}f}{∂{w}_{1}^{2}}=2{x}_{1}^{2}\\,\\, &  & \\frac{{∂}^{2}f}{∂{w}_{1}∂{w}_{2}}=0 \\\\  & \\frac{{∂}^{2}f}{∂{w}_{2}∂{w}_{1}}=0\\,\\, &  & \\frac{{∂}^{2}f}{∂{w}_{2}^{2}}=2{x}_{2}^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following:\n\n$$\n\\begin{aligned}{∇}_{w}({∇}_{w}\\,f) & =\\begin{bmatrix}\\frac{{∂}^{2}f}{∂{w}_{1}^{2}} & \\frac{{∂}^{2}f}{∂{w}_{1}∂{w}_{2}} \\\\ \\frac{{∂}^{2}f}{∂{w}_{2}∂{w}_{1}} & \\frac{{∂}^{2}f}{∂{w}_{2}^{2}}\\end{bmatrix} \\\\  & =\\begin{bmatrix}2{x}_{1}^{2} & 0 \\\\ 0 & 2{x}_{2}^{2}\\end{bmatrix}\\end{aligned}\n$$",
+      ":question/id": "e0bc36c0-46f8-5c86-aeeb-c03594b86e35",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "8822fc62-a89d-5971-9ad2-2105b4207d19",
+          ":answer-field/correct": [
+            ":answer/id",
+            "b22662a2-33f9-5d8d-9141-d733f6721f86"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0",
+              ":answer/id": "b22662a2-33f9-5d8d-9141-d733f6721f86"
+            }
+          ]
+        },
+        {
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/id": "49427f7c-a779-5597-957b-7919756bdf3d",
+          ":answer-field/correct": [
+            ":answer/id",
+            "58219723-aa01-5b79-9c02-8f334bdc923f"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2x_{2}^{2}",
+              ":answer/id": "58219723-aa01-5b79-9c02-8f334bdc923f"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "template": "imported-matrix-layout-repair",
+      "entity": 17592186665436
+    }
+  }
+]

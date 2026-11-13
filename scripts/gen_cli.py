@@ -9,6 +9,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import signal
 import socket
 import socketserver
@@ -124,6 +125,8 @@ def print_status(value):
     if value.get('reason'):
         detail += ' — ' + value['reason']
     print(detail + '.')
+    if value.get('topic') is not None:
+        print(f"Topic: {value['topic']}" + (f" — {value['topic_title']}" if value.get('topic_title') else '') + '.')
     quota = value.get('quota')
     if quota:
         print(f"Quota: {quota['remaining_percent']:g}% remaining; reserve {value['until']:g}%.")
@@ -152,9 +155,10 @@ class ControlServer(socketserver.ThreadingUnixStreamServer):
 
 
 class Supervisor:
-    def __init__(self, jobs, runtime, workers=6, until=None, *, quota_reader=None, clock=time.time):
+    def __init__(self, jobs, runtime, workers=6, until=None, *, topic=None, quota_reader=None, clock=time.time):
         self.jobs, self.runtime = jobs, Path(runtime)
         self.workers, self.until, self.clock = workers, until, clock
+        self.topic, self.topic_title = topic, None
         self.quota_reader = quota_reader
         self.lock = threading.RLock()
         self.wake = threading.Event()
@@ -183,6 +187,7 @@ class Supervisor:
                     'started_at': self.started, 'updated_at': self.clock(), 'workers': self.workers,
                     'allowed_workers': self.allowed, 'active_turns': len(self.tickets),
                     'active_jobs': self.active_jobs, 'until': self.until,
+                    'topic': self.topic, 'topic_title': self.topic_title,
                     'quota': self.quota, 'next_poll': self.next_poll,
                     'reason': self.reason, 'inventory_error': self.refresh_error}
 
@@ -367,7 +372,7 @@ class Supervisor:
             (self.runtime / 'control.sock').unlink(missing_ok=True)
 
 
-def run_daemon(workers, until):
+def run_daemon(workers, until, topic=None):
     from serve_graph_explorer import database_environment, DEFAULT_DATABASE, DEFAULT_LEARNER, developer_mode
     RUNTIME.mkdir(parents=True, exist_ok=True)
     with (RUNTIME / 'daemon.lock').open('a') as lock:
@@ -388,12 +393,12 @@ def run_daemon(workers, until):
                            COURSE_ACADEMY_DISABLE_GENERATION='0',
                            COURSE_ACADEMY_GENERATOR_CONTROL_SOCKET=str(RUNTIME / 'control.sock'))
         jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / DEFAULT_DATABASE / DEFAULT_LEARNER,
-                             DEFAULT_LEARNER, environment)
+                             DEFAULT_LEARNER, environment, topic_id=topic)
         quota_reader = None
         if until is not None:
             from generator_quota import fetch_quota
             quota_reader = lambda: fetch_quota(environment=environment)
-        supervisor = Supervisor(jobs, RUNTIME, workers, until, quota_reader=quota_reader)
+        supervisor = Supervisor(jobs, RUNTIME, workers, until, topic=topic, quota_reader=quota_reader)
         signal.signal(signal.SIGTERM, lambda *_: supervisor.drain('stop requested'))
         signal.signal(signal.SIGINT, lambda *_: supervisor.drain('stop requested'))
         sys.path.insert(0, str(ROOT / 'generate/scripts'))
@@ -404,20 +409,29 @@ def run_daemon(workers, until):
             if binary is None:
                 binary = build(Path(environment.get('EDB_ROOT', ROOT.parent / 'EDB')).resolve())
             inventory = discover(DEFAULT_DATABASE, DEFAULT_LEARNER, environment,
-                                 binary=binary, include_registered=True)
+                                 binary=binary, include_registered=topic is None,
+                                 topics=() if topic is None else (topic,),
+                                 activity_type='assessment' if topic is None else 'lesson',
+                                 topic_only=topic is not None)
             jobs.accept(inventory)
+            if topic is not None:
+                with supervisor.lock:
+                    supervisor.topic_title = inventory['topics'][0]['topic/title']
         mode = Path(environment['LEARNING_REQUEST_DIR']) / 'developer-mode.json'
         supervisor.run(refresh, developer_mode=lambda: developer_mode(mode))
     return 0
 
 
-def start(workers, until):
+def start(workers, until, topic=None):
     RUNTIME.mkdir(parents=True, exist_ok=True)
     RUNTIME.chmod(0o700)
     with (RUNTIME / 'cli.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         old = read_status()
         if old['state'] != 'stopped':
+            if old.get('topic') != topic:
+                scope = f"topic {old['topic']}" if old.get('topic') is not None else 'all topics'
+                raise RuntimeError(f'Generator is already running for {scope}; use uv run gen -k and wait for it to stop before changing scope')
             print_status(old)
             return 0
         command = ['systemd-run', '--user', '--quiet', '--collect', '--unit=' + UNIT,
@@ -432,6 +446,8 @@ def start(workers, until):
                    sys.executable, '-u', str(Path(__file__).resolve()), '--_serve', '-w', str(workers)]
         if until is not None:
             command += ['-u', str(until)]
+        if topic is not None:
+            command += ['-t', str(topic)]
         launched = time.time()
         result = subprocess.run(command, capture_output=True, text=True, timeout=15)
         if result.returncode:
@@ -460,6 +476,13 @@ def percentage(value):
     return number
 
 
+def topic_entity(value):
+    match = re.fullmatch(r'(?::db/id=)?([0-9]+)', value)
+    if not match or not 0 < int(match[1]) <= 2**63 - 1:
+        raise argparse.ArgumentTypeError('topic must be a positive database ID, for example 17592186050938')
+    return int(match[1])
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, add_help=False,
         epilog='Example: uv run gen -w 6 -u 25. Cutoffs drain active turns; they are not a hard spending cap.')
@@ -469,20 +492,22 @@ def main(argv=None):
     actions.add_argument('-s', '--s', '--status', dest='status', action='store_true', help='show status without polling quota')
     parser.add_argument('-w', '--w', '--workers', dest='workers', type=positive_integer, default=None, help='maximum agent workers (default: 6)')
     parser.add_argument('-u', '--u', '--until', dest='until', type=percentage, help='stop at this percent quota remaining')
+    parser.add_argument('-t', '--t', '--topic', dest='topic', type=topic_entity,
+                        help='generate only for this topic database ID')
     parser.add_argument('--_serve', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
-    if (args.stop or args.status) and (args.workers is not None or args.until is not None):
-        parser.error('-w and -u apply only when starting a run')
+    if (args.stop or args.status) and (args.workers is not None or args.until is not None or args.topic is not None):
+        parser.error('-w, -u and -t apply only when starting a run')
     try:
         if args._serve:
-            return run_daemon(args.workers or 6, args.until)
+            return run_daemon(args.workers or 6, args.until, args.topic)
         if args.status:
             print_status(live_status())
             return 0
         if args.stop:
             print_status(live_status(stop=True))
             return 0
-        return start(args.workers or 6, args.until)
+        return start(args.workers or 6, args.until, args.topic)
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
         print('gen: ' + str(error), file=sys.stderr)
         return 1

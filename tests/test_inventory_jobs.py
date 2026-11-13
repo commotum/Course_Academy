@@ -202,6 +202,52 @@ class RankedInventoryJobTests(unittest.TestCase):
                 'topics': [{'db/id': kp['topic_entity'], 'knowledge_points': [copy.deepcopy(kp)]} for kp in kps],
                 'knowledge_points': [copy.deepcopy(kp) for kp in kps if not kp['generator_usable'] and kp['urgency_value']]}
 
+    def test_focused_inventory_preserves_other_jobs_and_never_dispatches_them(self):
+        self.jobs.accept(self.ranked(self.kp(), self.kp(entity=3, topic=4, score=999999)))
+        paths = {json.loads(p.read_text())['request']['knowledgePoint']: p
+                 for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json'}
+        outside = paths[3].read_bytes()
+        focused = InventoryJobs(self.directory, self.jobs.directory, 'learner', topic_id=2)
+        # Even before its first inventory, a focused supervisor cannot resume
+        # arbitrary durable work left by a general run.
+        self.assertFalse(focused.run_one())
+        focused.accept(self.ranked(self.kp(), basis=11))
+        self.assertEqual(paths[3].read_bytes(), outside)
+        self.assertEqual(len(list(self.jobs.directory.glob('*.pipeline'))), 0)
+        with patch.object(focused, '_run_pipeline') as run:
+            run.return_value.returncode = 0
+            self.assertTrue(focused.run_one())
+            self.assertIn(str(paths[1]), run.call_args.args[0])
+        self.assertEqual(paths[3].read_bytes(), outside)
+        self.assertFalse(focused.run_one())
+
+    def test_focused_run_resumes_shared_kp_workspace_without_touching_unrelated_refills(self):
+        self.jobs.accept(self.ranked(self.kp(topic=4), self.kp(entity=3, topic=4, script='generators/a/generator.py')))
+        outside = {p: p.read_bytes() for p in self.jobs.directory.glob('*.json')
+                   if p.name != 'cursor.json' and json.loads(p.read_text())['request']['knowledgePoint'] == 3}
+        original = self.path_for(1, 'build', 'unclassified')
+        original_path = original
+        focused = InventoryJobs(self.directory, self.jobs.directory, 'learner', topic_id=2)
+        focused.accept(self.ranked(self.kp(topic=2), basis=11))
+        self.assertTrue(original_path.exists())
+        self.assertEqual(json.loads(original_path.read_text())['request']['topic'], 2)
+        for path, value in outside.items():
+            self.assertEqual(path.read_bytes(), value)
+        with patch.object(focused, '_run_pipeline') as run:
+            run.return_value.returncode = 0
+            self.assertFalse(focused.run_one(lane='refill'))
+            run.assert_not_called()
+
+    def test_focused_inventory_rejects_broad_or_mislabeled_input_before_reconciliation(self):
+        self.jobs.accept(self.ranked(self.kp()))
+        before = {p: p.read_bytes() for p in self.jobs.directory.glob('*.json')}
+        focused = InventoryJobs(self.directory, self.jobs.directory, 'learner', topic_id=2)
+        for inventory in (self.ranked(self.kp(topic=4)), self.ranked(self.kp(), self.kp(entity=3, topic=4)),
+                          {**self.ranked(self.kp()), 'knowledge_points': [self.kp(entity=3, topic=4)]}):
+            with self.assertRaises(ValueError):
+                focused.accept(inventory)
+            self.assertEqual({p: p.read_bytes() for p in self.jobs.directory.glob('*.json')}, before)
+
     def test_finite_catalog_exhaustion_survives_learner_count_churn_but_not_new_domain(self):
         kp = self.kp(script='generators/aa/old/generator.py')
         kp['inventory'].update(available_total=1, rated_total=1)

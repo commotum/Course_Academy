@@ -1,0 +1,216 @@
+{
+  "question_eid": 17592186259631,
+  "math_academy_id": "q-124237",
+  "captured_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "captured_basis": 14371,
+  "scope": "Read-only suitability assessment requested; no migration requested or prepared.",
+  "decision": "convert",
+  "reason": "Three independently testable transformations; every combination option decodes without ambiguity; database key matches independent mathematics.",
+  "old_fields": [
+    {
+      ":answer-field/choices": [
+        {
+          ":answer/id": "3af05d3e-30eb-5918-91db-aa8c3a197237",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{2}$ and ${T}_{3}$ only",
+          ":db/id": 17592186257304
+        },
+        {
+          ":answer/id": "3e616a32-d29b-5f08-93ed-071ac16b3da9",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{1}$ and ${T}_{2}$ only",
+          ":db/id": 17592186257342
+        },
+        {
+          ":answer/id": "7dce96d6-a180-5c14-a0e1-d3830ccaa2d0",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{1},$ ${T}_{2},$ and ${T}_{3}$ only",
+          ":db/id": 17592186257895
+        },
+        {
+          ":answer/id": "c144722c-9c7d-5454-80ab-16bbb5e3cf27",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{1}$ and ${T}_{3}$ only",
+          ":db/id": 17592186258472
+        },
+        {
+          ":answer/id": "f753729a-b8ab-5b2d-bbfc-716c8a2bfb27",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{1}$ only",
+          ":db/id": 17592186258949
+        }
+      ],
+      ":answer-field/correct": {
+        ":db/id": 17592186257342
+      },
+      ":answer-field/id": "c5d330ca-85d9-55ae-bc23-193deb6c6d8f",
+      ":answer-field/key": "selection",
+      ":answer-field/type": {
+        ":db/id": 17592186045493
+      },
+      ":db/id": 17592186259376
+    }
+  ],
+  "database_key": {
+    ":db/id": 17592186257342
+  },
+  "difficulty": {
+    ":db/id": 17592186045485
+  },
+  "worked_solution": "An affine transformation $T:{R}^{2}\\to {R}^{2}$ is a function of the form\n\n$$\nx=Au+b,\n$$\n\nwhere $x,u,$ and $b$ are column vectors in ${R}^{2},$ and $A$ is a $2\\times 2$ matrix.\n\nWith this in mind, let's look at each transformation in turn.\n\n- Transformation ${T}_{1}$ is affine. Notice that ${T}_{1}$ can be expressed as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y\\end{bmatrix} & =\\begin{bmatrix}v-6u+7 \\\\ 4u+3v-5\\end{bmatrix} \\\\  & =\\begin{bmatrix}-6u+v \\\\ 4u+3v\\end{bmatrix}+\\begin{bmatrix}7 \\\\ -5\\end{bmatrix} \\\\  & =\\underbrace{\\begin{bmatrix}-6 & 1 \\\\ 4 & 3\\end{bmatrix}}_{A}\\cdot \\underbrace{\\begin{bmatrix}u \\\\ v\\end{bmatrix}}_{u}+\\underbrace{\\begin{bmatrix}7 \\\\ -5\\end{bmatrix}}_{b}.\\end{aligned}\n$$\n\n- Transformation ${T}_{2}$ is affine. Notice that ${T}_{2}$ can be expressed as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y\\end{bmatrix} & =\\begin{bmatrix}-7u-2v \\\\ 5u+v\\end{bmatrix} \\\\  & =\\begin{bmatrix}-7u-2v \\\\ 5u+v\\end{bmatrix}+\\begin{bmatrix}0 \\\\ 0\\end{bmatrix} \\\\  & =\\underbrace{\\begin{bmatrix}-7 & -2 \\\\ 5 & 1\\end{bmatrix}}_{A}\\cdot \\underbrace{\\begin{bmatrix}u \\\\ v\\end{bmatrix}}_{u}+\\underbrace{\\begin{bmatrix}0 \\\\ 0\\end{bmatrix}}_{b}.\\end{aligned}\n$$\n\nIn fact, the transformation ${T}_{2}$ is a linear transformation.\n\n- Transformation ${T}_{3}$ is not affine since it contains the cross term $uv.$\n\nTherefore, the correct answer is \"${T}_{1}$ and ${T}_{2}$ only.\"",
+  "universe": [
+    {
+      "label": "T1",
+      "text": "$T_1:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\mapsto\\begin{bmatrix}v-6u+7\\\\4u+3v-5\\end{bmatrix}$",
+      "true": true,
+      "proof": "A=[[-6,1],[4,3]], b=[7,-5]."
+    },
+    {
+      "label": "T2",
+      "text": "$T_2:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\mapsto\\begin{bmatrix}-7u-2v\\\\5u+v\\end{bmatrix}$",
+      "true": true,
+      "proof": "A=[[-7,-2],[5,1]], b=[0,0]."
+    },
+    {
+      "label": "T3",
+      "text": "$T_3:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\mapsto\\begin{bmatrix}2u+v\\\\uv+1\\end{bmatrix}$",
+      "true": false,
+      "proof": "Cross term uv cannot be represented by a constant matrix plus constant translation."
+    }
+  ],
+  "choice_mapping": {
+    "17592186257304": [
+      "T2",
+      "T3"
+    ],
+    "17592186257342": [
+      "T1",
+      "T2"
+    ],
+    "17592186257895": [
+      "T1",
+      "T2",
+      "T3"
+    ],
+    "17592186258472": [
+      "T1",
+      "T3"
+    ],
+    "17592186258949": [
+      "T1"
+    ]
+  },
+  "kp_ids": [
+    17592186172092
+  ],
+  "canonical_memberships": [],
+  "incoming_snapshot": "incoming.edn",
+  "context": [
+    {
+      ":db/id": 17592186045485,
+      ":db/ident": ":question.difficulty/easy"
+    },
+    {
+      ":db/id": 17592186045493,
+      ":db/ident": ":answer-field.type/radio"
+    },
+    {
+      ":db/id": 17592186172092,
+      ":knowledge-point/canonical-example": {
+        ":db/id": 17592186171898
+      },
+      ":knowledge-point/id": "035a4ded-7b92-5073-a8aa-3ffa47aff9ea",
+      ":knowledge-point/key-prerequisites": [
+        {
+          ":db/id": 17592186048203
+        }
+      ],
+      ":knowledge-point/level-coverage": [
+        {
+          ":db/id": 17592186045485
+        }
+      ],
+      ":knowledge-point/questions": [
+        {
+          ":db/id": 17592186172293
+        },
+        {
+          ":db/id": 17592186172296
+        },
+        {
+          ":db/id": 17592186259630
+        },
+        {
+          ":db/id": 17592186259631
+        },
+        {
+          ":db/id": 17592186259635
+        },
+        {
+          ":db/id": 17592186259636
+        },
+        {
+          ":db/id": 17592186259637
+        },
+        {
+          ":db/id": 17592186259638
+        },
+        {
+          ":db/id": 17592186591679
+        },
+        {
+          ":db/id": 17592186591712
+        }
+      ],
+      ":knowledge-point/title": "Identifying Affine Transformations"
+    },
+    {
+      ":db/id": 17592186761668,
+      ":task-item/content": {
+        ":db/id": 17592186259631
+      },
+      ":task-item/elapsed-seconds": 140.06,
+      ":task-item/id": "dba324eb-fbe6-448e-be64-978db96c7c7c",
+      ":task-item/next": {
+        ":db/id": 17592186761671
+      },
+      ":task-item/responses": [
+        {
+          ":answer/id": "3e616a32-d29b-5f08-93ed-071ac16b3da9",
+          ":answer/type": {
+            ":db/id": 17592186045499
+          },
+          ":answer/value": "${T}_{1}$ and ${T}_{2}$ only",
+          ":db/id": 17592186257342
+        }
+      ],
+      ":task-item/status": {
+        ":db/id": 17592186045571
+      },
+      ":task-item/working-ended-at": "2026-11-12T03:29:45.376Z",
+      ":task-item/working-periods": [
+        {
+          ":db/id": 17592186761669,
+          ":working-period/ended-at": "2026-11-12T03:29:45.376Z",
+          ":working-period/id": "40eaa2bd-3799-4afe-842a-63b62ee576e7",
+          ":working-period/started-at": "2026-11-12T03:27:25.316Z"
+        }
+      ]
+    }
+  ],
+  "problem_after": "Which of the following are affine transformations? Select all that apply.",
+  "presentation_plan": "Move each complete named transformation into its own checkbox field key; remove transformation list from prompt. Preserve worked solution and other question metadata.",
+  "commit_status": "not_requested",
+  "preview_status": "not_prepared",
+  "next_action": "If conversion is requested, refresh complete context, inspect topic and generator membership, prepare Boolean fields and learner subset migration, preview, lint and render, then commit only within authorized scope."
+}

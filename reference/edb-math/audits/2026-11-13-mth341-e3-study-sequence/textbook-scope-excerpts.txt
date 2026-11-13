@@ -1,0 +1,3306 @@
+=== 4.10.4–4.10.5 and associated exercises; extracted full-text lines9995–11798 ===
+
+
+Solution. Form the 4 × 4 matrix A having these vectors as columns:
+                                                             
+                                               1 2 0        3
+                                             2 1 1         2 
+                                        A=  3 0 1
+                                                              
+                                                            2 
+                                               0 1 2 −1
+
+Then by Theorem 4.66, the given set of vectors is linearly independent exactly if the system AX = 0 has
+only the trivial solution.
+   The augmented matrix for this system and corresponding reduced row-echelon form are given by
+                                                                      
+                          1 2 0       3 0                1 0 0      1 0
+                        2 1 1        2 0                         1 0 
+                                           → ··· →  0 1 0             
+                        3 0 1        2 0              0 0 1 −1 0 
+                          0 1 2 −1 0                     0 0 0      0 0
+
+Not all the columns of the coefficient matrix are pivot columns and so the vectors are not linearly inde-
+pendent. In this case, we say the vectors are linearly dependent.
+   It follows that there are infinitely many solutions to AX = 0, one of which is
+                                                         
+                                                       1
+                                                   1 
+                                                         
+                                                   −1 
+                                                     −1
+
+198    Rn
+
+
+Therefore we can write
+                                                  
+                               1      2      0       3      0
+                              2    1    1    2   0 
+                            1                     
+                              3 +1 0 −1 1 −1 2  =  0 
+                               0      1      2      −1      0
+
+   This can be rearranged as follows
+                                                    
+                                   1      2      0       3
+                                  2                 
+                               1    +1 1 −1 1  =  2 
+                                  3    0    1   2 
+                                   0      1      2      −1
+This gives the last vector as a linear combination of the first three vectors.
+    Notice that we could rearrange this equation to write any of the four vectors as a linear combination of
+the other three.                                                                                          ♠
+   When given a linearly independent set of vectors, we can determine if related sets are linearly inde-
+pendent.
+
+   Example 4.69: Related Sets of Vectors
+   Let {~u,~v,~w} be an independent set of Rn . Is {~u +~v, 2~u + ~w,~v − 5~w} linearly independent?
+
+
+Solution. Suppose a(~u +~v) + b(2~u + ~w) + c(~v − 5~w) = ~0n for some a, b, c ∈ R. Then
+                                   (a + 2b)~u + (a + c)~v + (b − 5c)~w = ~0n .
+
+   Since {~u,~v, ~w} is independent,
+                                                 a + 2b = 0
+                                                  a+c = 0
+                                                 b − 5c = 0
+
+    This system of three equations in three variables has the unique solution a = b = c = 0. Therefore,
+{~u +~v, 2~u + ~w,~v − 5~w} is independent.                                                          ♠
+    The following corollary follows from the fact that if the augmented matrix of a homogeneous system
+of linear equations has more columns than rows, the system has infinitely many solutions.
+
+   Corollary 4.70: Linear Dependence in Rn
+   Let {~u1 , · · · ,~uk } be a set of vectors in Rn . If k > n, then the set is linearly dependent (i.e. NOT
+   linearly independent).
+
+
+Proof. Form the n × k matrix A having the vectors {~u1 , · · · ,~uk } as its columns and suppose k > n. Then A
+has rank r ≤ n < k, so the system AX = 0 has a nontrivial solution and thus not linearly independent by
+Theorem 4.66.                                                                                               ♠
+
+                                                  4.10. Spanning, Linear Independence and Basis in Rn         199
+
+
+   Example 4.71: Linear Dependence
+   Consider the vectors                                 
+                                                  1      2   3
+                                                       ,   ,
+                                                  4      3   2
+   Are these vectors linearly independent?
+
+
+Solution. This set contains three vectors in R2 . By Corollary 4.70 these vectors are linearly dependent. In
+fact, we can write                                       
+                                             1           2         3
+                                     (−1)         + (2)       =
+                                             4           3         2
+showing that this set is linearly dependent.                                                                      ♠
+   The third vector in the previous example is in the span of the first two vectors. We could find a way to
+write this vector as a linear combination of the other two vectors. It turns out that the linear combination
+which we found is the only one, provided that the set is linearly independent.
+
+   Theorem 4.72: Unique Linear Combination
+   Let U ⊆ Rn be an independent set. Then any vector ~x ∈ span(U ) can be written uniquely as a linear
+   combination of vectors of U .
+
+
+Proof. To prove this theorem, we will show that two linear combinations of vectors in U that equal ~x must
+be the same. Let U = {~u1 ,~u2 , . . . ,~uk }. Suppose that there is a vector ~x ∈ span(U ) such that
+
+                      ~x = s1~u1 + s2~u2 + · · · + sk~uk , for some s1 , s2 , . . . , sk ∈ R, and
+                      ~x = t1~u1 + t2~u2 + · · · + tk~uk , for some t1 ,t2, . . . ,tk ∈ R.
+
+Then ~0n =~x −~x = (s1 − t1 )~u1 + (s2 − t2 )~u2 + · · · + (sk − tk )~uk .
+     Since U is independent, the only linear combination that vanishes is the trivial one, so si − ti = 0 for
+all i, 1 ≤ i ≤ k.
+     Therefore, si = ti for all i, 1 ≤ i ≤ k, and the representation is unique.Let U ⊆ Rn be an independent
+set. Then any vector ~x ∈ span(U ) can be written uniquely as a linear combination of vectors of U .       ♠
+
+      Suppose that ~u,~v and ~w are nonzero vectors in R3 , and that {~v,~w} is independent. Consider the set
+ {~u,~v,~w}. When can we know that this set is independent? It turns out that this follows exactly when
+~u 6∈ span{~v,~w}.
+
+   Example 4.73:
+   Suppose that ~u,~v and ~w are nonzero vectors in R3 , and that {~v,~w} is independent. Prove that {~u,~v,~w}
+   is independent if and only if ~u 6∈ span{~v,~w}.
+
+
+Solution. If~u ∈ span{~v,~w}, then there exist a, b ∈ R so that~u = a~v+b~w. This implies that~u−a~v−b~w =~03 ,
+so ~u − a~v − b~w is a nontrivial linear combination of {~u,~v,~w} that vanishes, and thus {~u,~v,~w} is dependent.
+
+200     Rn
+
+
+      Now suppose that~u 6∈ span{~v,~w}, and suppose that there exist a, b, c ∈ R such that a~u+b~v +c~w =~03 . If
+ a 6= 0, then ~u = − ab~v − ac ~w, and ~u ∈ span{~v,~w}, a contradiction. Therefore, a = 0, implying that b~v + c~w =
+~03 . Since {~v,~w} is independent, b = c = 0, and thus a = b = c = 0, i.e., the only linear combination of ~u,~v
+ and ~w that vanishes is the trivial one.
+      Therefore, {~u,~v,~w} is independent.                                                                         ♠
+    Consider the following useful theorem.
+
+    Theorem 4.74: Invertible Matrices
+    Let A be an invertible n × n matrix. Then the columns of A are independent and span Rn . Similarly,
+    the rows of A are independent and span the set of all 1 × n vectors.
+
+
+    This theorem also allows us to determine if a matrix is invertible. If an n × n matrix A has columns
+which are independent, or span Rn , then it follows that A is invertible. If it has rows that are independent,
+or span the set of all 1 × n vectors, then A is invertible.
+
+4.10.3. A Short Application to Chemistry
+
+The following section applies the concepts of spanning and linear independence to the subject of chemistry.
+    When working with chemical reactions, there are sometimes a large number of reactions and some are
+in a sense redundant. Suppose you have the following chemical reactions.
+                                                CO + 21 O2 → CO2
+                                                H2 + 12 O2 → H2 O
+                                           CH4 + 32 O2 → CO + 2H2 O
+                                           CH4 + 2O2 → CO2 + 2H2 O
+There are four chemical reactions here but they are not independent reactions. There is some redundancy.
+What are the independent reactions? Is there a way to consider a shorter list of reactions? To analyze this
+situation, we can write the reactions in a matrix as follows
+                                                                     
+                                     CO O2 CO2 H2 H2 O CH4
+                                   1 1/2 −1 0                0   0 
+                                                                     
+                                   0 1/2 0              1   −1   0   
+                                                                     
+                                   −1 3/2 0             0 −2     1 
+                                      0     2     −1 0 −2         1
+
+   Each row contains the coefficients of the respective elements in each reaction. For example, the top
+row of numbers comes from CO + 12 O2 −CO2 = 0 which represents the first of the chemical reactions.
+    We can write these coefficients in the following matrix
+                                                                        
+                                           1 1/2 −1 0        0         0
+                                       0 1/2        0  1   −1         0 
+                                                                        
+                                       −1 3/2       0 0 −2            1 
+                                           0     2 −1 0 −2             1
+
+                                                   4.10. Spanning, Linear Independence and Basis in Rn   201
+
+
+Rather than listing all of the reactions as above, it would be more efficient to only list those which are
+independent by throwing out that which is redundant. We can use the concepts of the previous section to
+accomplish this.
+   First, take the reduced row-echelon form of the above matrix.
+                                                              
+                                         1 0 0 3 −1 −1
+                                       0 1 0 2 −2           0 
+                                                              
+                                       0 0 1 4 −2 −1 
+                                         0 0 0 0        0    0
+The top three rows represent “independent" reactions which come from the original four reactions. One
+can obtain each of the original four rows of the matrix given above by taking a suitable linear combination
+of rows of this reduced row-echelon form matrix.
+    With the redundant reaction removed, we can consider the simplified reactions as the following equa-
+tions
+                                    CO + 3H2 − 1H2 O − 1CH4 = 0
+                                        O2 + 2H2 − 2H2 O = 0
+                                   CO2 + 4H2 − 2H2 O − 1CH4 = 0
+In terms of the original notation, these are the reactions
+                                            CO + 3H2 → H2 O +CH4
+                                              O2 + 2H2 → 2H2 O
+                                           CO2 + 4H2 → 2H2 O +CH4
+
+    These three reactions provide an equivalent system to the original four equations. The idea is that, in
+terms of what happens chemically, you obtain the same information with the shorter list of reactions. Such
+a simplification is especially useful when dealing with very large lists of reactions which may result from
+experimental evidence.
+
+4.10.4. Subspaces and Basis
+
+The goal of this section is to develop an understanding of a subspace of Rn . Before a precise definition is
+considered, we first examine the subspace test given below.
+
+   Theorem 4.75: Subspace Test
+   A subset V of Rn is a subspace of Rn if
+
+      1. the zero vector of Rn , ~0n , is in V ;
+
+      2. V is closed under addition, i.e., for all ~u,~w ∈ V , ~u + ~w ∈ V ;
+
+      3. V is closed under scalar multiplication, i.e., for all ~u ∈ V and k ∈ R, k~u ∈ V .
+
+                                                                                                   n o
+   This test allows us to determine if a given set is a subspace of Rn . Notice that the subset V = ~0 is a
+subspace of Rn (called the zero subspace ), as is Rn itself. A subspace which is not the zero subspace of
+Rn is referred to as a proper subspace.
+
+202      Rn
+
+
+    A subspace is simply a set of vectors with the property that linear combinations of these vectors remain
+in the set. Geometrically in R3 , it turns out that a subspace can be represented by either the origin as a
+single point, lines and planes which contain the origin, or the entire space R3 .
+   Consider the following example of a line in R3 .
+
+   Example 4.76: Subspace of R3
+                                                                                
+                                                                              −5
+   In R3 , the line L through the origin that is parallel to the vector d~ =  1  has (vector) equation
+                                                                          −4
+      x           −5
+    y  = t  1  ,t ∈ R, so
+      z           −4                               n            o
+                                              L = t d~ | t ∈ R .
+
+   Then L is a subspace of R3 .
+
+
+Solution. Using the subspace test given above we can verify that L is a subspace of R3 .
+
+      • First: ~03 ∈ L since 0d~ = ~03 .
+
+      • Suppose ~u,~v ∈ L. Then by definition, ~u = sd~ and ~v = t d,
+                                                                   ~ for some s,t ∈ R. Thus
+
+                                              ~u +~v = sd~ + t d~ = (s + t)d.
+                                                                           ~
+
+        Since s + t ∈ R, ~u +~v ∈ L; i.e., L is closed under addition.
+                                                              ~ for some t ∈ R, so
+      • Suppose ~u ∈ L and k ∈ R (k is a scalar). Then ~u = t d,
+                                                            ~ = (kt)d.
+                                                  k~u = k(t d)      ~
+
+        Since kt ∈ R, k~u ∈ L; i.e., L is closed under scalar multiplication.
+
+Since L satisfies all conditions of the subspace test, it follows that L is a subspace.                    ♠
+   Note that there is nothing special about the vector d~ used in this example; the same proof works for
+any nonzero vector d~ ∈ R3 , so any line through the origin is a subspace of R3 .
+   We are now prepared to examine the precise definition of a subspace as follows.
+
+   Definition 4.77: Subspace
+   Let V be a nonempty collection of vectors in Rn . Then V is called a subspace if whenever a and b
+   are scalars and ~u and ~v are vectors in V , the linear combination a~u + b~v is also in V .
+
+
+   More generally this means that a subspace contains the span of any finite collection vectors in that
+subspace. It turns out that in Rn , a subspace is exactly the span of finitely many of its vectors.
+
+                                                    4.10. Spanning, Linear Independence and Basis in Rn                203
+
+
+    Theorem 4.78: Subspaces are Spans
+    Let V be a nonempty collection of vectors in Rn . Then V is a subspace of Rn if and only if there
+    exist vectors {~u1 , · · · ,~uk } in V such that
+
+                                                 V = span {~u1 , · · · ,~uk }
+
+    Furthermore, let W be another subspace of Rn and suppose {~u1 , · · · ,~uk } ∈ W . Then it follows that
+   V is a subset of W .
+
+
+     Note that since W is arbitrary, the statement that V ⊆ W means that any other subspace of Rn that
+ contains these vectors will also contain V .
+ Proof. We first show that if V is a subspace, then it can be written as V = span {~u1 , · · · ,~uk }. Pick a vector
+~u1 in V . If V = span {~u1 } , then you have found your list of vectors and are done. If V 6= span {~u1 } , then
+ there exists ~u2 a vector of V which is not in span {~u1 } . Consider span {~u1 ,~u2 } . If V = span {~u1 ,~u2 }, we are
+ done. Otherwise, pick ~u3 not in span {~u1 ,~u2 } . Continue this way. Note that since V is a subspace, these
+ spans are each contained in V . The process must stop with ~uk for some k ≤ n by Corollary 4.70, and thus
+ V = span {~u1 , · · · ,~uk }.
+     Now suppose V = span {~u1 , · · · ,~uk }, we must show this is a subspace. So let ∑ki=1 ci~ui and ∑ki=1 di~ui be
+ two vectors in V , and let a and b be two scalars. Then
+                                          k            k            k
+                                       a ∑ ci~ui + b ∑ di~ui = ∑ (aci + bdi )~ui
+                                         i=1          i=1          i=1
+
+which is one of the vectors in span {~u1 , · · · ,~uk } and is therefore contained in V . This shows that span {~u1 , · · · ,~uk }
+has the properties of a subspace.
+    To prove that V ⊆ W , we prove that if ~ui ∈ V , then ~ui ∈ W .
+     Suppose ~u ∈ V . Then ~u = a1~u1 + a2~u2 + · · · + ak~uk for some ai ∈ R, 1 ≤ i ≤ k. Since W contain each
+~ui and W is a vector space, it follows that a1~u1 + a2~u2 + · · · + ak~uk ∈ W .                            ♠
+    Since the vectors ~ui we constructed in the proof above are not in the span of the previous vectors (by
+definition), they must be linearly independent and thus we obtain the following corollary.
+
+    Corollary 4.79: Subspaces are Spans of Independent Vectors
+   If V is a subspace of Rn , then there exist linearly independent vectors {~u1 , · · · ,~uk } in V such that
+   V = span {~u1 , · · · ,~uk }.
+
+
+    In summary, subspaces of Rn consist of spans of finite, linearly independent collections of vectors of
+Rn . Such a collection of vectors is called a basis.
+
+204     Rn
+
+
+   Definition 4.80: Basis of a Subspace
+   Let V be a subspace of Rn . Then {~u1 , · · · ,~uk } is a basis for V if the following two conditions hold.
+
+       1. span {~u1 , · · · ,~uk } = V
+
+       2. {~u1 , · · · ,~uk } is linearly independent
+
+   Note the plural of basis is bases.
+
+
+    The following is a simple but very useful example of a basis, called the standard basis.
+
+   Definition 4.81: Standard Basis of Rn
+   Let ~ei be the vector in Rn which has a 1 in the ith entry and zeros elsewhere, that is the ith column of
+   the identity matrix. Then the collection {~e1 ,~e2 , · · · ,~en } is a basis for Rn and is called the standard
+   basis of Rn .
+
+    The main theorem about bases is not only they exist, but that they must be of the same size. To show
+this, we will need the the following fundamental result, called the Exchange Theorem.
+
+   Theorem 4.82: Exchange Theorem
+   Suppose {~u1 , · · · ,~ur } is a linearly independent set of vectors in Rn , and each ~uk is contained in
+   span {~v1 , · · · ,~vs } Then s ≥ r.
+   In words, spanning sets have at least as many vectors as linearly independent sets.
+
+
+Proof. Since each ~u j is in span {~v1 , · · · ,~vs }, there exist scalars ai j such that
+                                                                      s
+                                                            ~u j = ∑ ai j~vi
+                                                                     i=1
+                                                              
+Suppose for a contradiction that s < r. Then the matrix A = ai j has fewer rows, s than columns, r. Then
+                                             ~ that is there is a d~ 6= ~0 such that Ad~ = ~0. In other words,
+the system AX = 0 has a non trivial solution d,
+                                                r
+                                              ∑ ai j d j = 0, i = 1, 2, · · · , s
+                                              j=1
+
+Therefore,
+                                         r              r         s
+                                     ∑ d j~u j = ∑ d j ∑ ai j~vi
+                                     j=1            j=1          i=1
+                                                                           !
+                                                        s        r              s
+                                               =    ∑ ∑ ai j d j ~vi = ∑ 0~vi = 0
+                                                    i=1         j=1            i=1
+
+which contradicts the assumption that {~u1 , · · · ,~ur } is linearly independent, because not all the d j are zero.
+Thus this contradiction indicates that s ≥ r.                                                                     ♠
+
+                                                    4.10. Spanning, Linear Independence and Basis in Rn                205
+
+
+    We are now ready to show that any two bases are of the same size.
+
+   Theorem 4.83: Bases of Rn are of the Same Size
+   Let V be a subspace of Rn with two bases B1 and B2 . Suppose B1 contains s vectors and B2 contains
+   r vectors. Then s = r.
+
+
+Proof. This follows right away from Theorem 9.35. Indeed observe that B1 = {~u1 , · · · ,~us } is a spanning
+set for V while B2 = {~v1 , · · · ,~vr } is linearly independent, so s ≥ r. Similarly B2 = {~v1 , · · · ,~vr } is a spanning
+set for V while B1 = {~u1 , · · · ,~us } is linearly independent, so r ≥ s.                                               ♠
+    The following definition can now be stated.
+
+   Definition 4.84: Dimension of a Subspace
+   Let V be a subspace of Rn . Then the dimension of V , written dim(V ) is defined to be the number
+   of vectors in a basis.
+
+    The next result follows.
+
+   Corollary 4.85: Dimension of Rn
+   The dimension of Rn is n.
+
+Proof. You only need to exhibit a basis for Rn which has n vectors. Such a basis is the standard basis
+{~e1 , · · · ,~en }.                                                                                ♠
+    Consider the following example.
+
+   Example 4.86: Basis of Subspace
+   Let                                                       
+                                        
+                                           a                   
+                                                                
+                                                             
+                                            b
+                                      V=      ∈ R : a−b = d −c .
+                                           c 
+                                                   4
+                                        
+                                                               
+                                                                
+                                                               
+                                            d
+   Show that V is a subspace of R4 , find a basis of V , and find dim(V ).
+
+
+Solution. The condition a − b = d − c is equivalent to the condition a = b − c + d, so we may write
+
+                                                                       
+           
+              b − c + d                
+                                            1        −1         1               
+                                      
+                                                   0        0 
+                                                                                  
+                                                                                  
+                   b                          1
+         V= 
+                          : b, c, d ∈ R = b   + c 
+                         
+                                                           + d   : b, c, d ∈ R
+           
+                  c                    
+                                           0      1        0              
+                                        
+                                                                                 
+                                                                                  
+                   d                          0         0         1
+
+    This shows that V is a subspace of R4 , since V = span{~u1 ,~u2 ,~u3 } where
+
+206    Rn
+
+
+                                                                   
+                                              1            −1           1
+                                             1          0          0 
+                                      ~u1 =                        
+                                             0  ,~u2 =  1  ,~u3 =  0 
+                                              0             0           1
+   Furthermore,
+                                                          
+                                               
+                                                  1     −1      1 
+                                                             
+                                                   1
+                                                  ,    0   0
+                                                 0   1  ,  0 
+                                               
+                                                                   
+                                                                    
+                                                   0      0      1
+is linearly independent, as can be seen by taking the reduced row-echelon form of the matrix whose
+columns are ~u1 ,~u2 and ~u3 .
+                                                                             
+                                             1 −1 1     1 0                   0
+                                            1  0 0   0 1                   0 
+                                                   →                         
+                                            0  1 0   0 0                   1 
+                                             0  0 1     0 0                   0
+    Since every column of the reduced row-echelon form matrix has a leading one, the columns are
+linearly independent.
+    Therefore {~u1 ,~u2 ,~u3 } is linearly independent and spans V , so is a basis of V . Hence V has dimension
+three.                                                                                                       ♠
+   We continue by stating further properties of a set of vectors in Rn .
+
+   Corollary 4.87: Linearly Independent and Spanning Sets in Rn
+   The following properties hold in Rn :
+
+       • Suppose {~u1 , · · · ,~un } is linearly independent. Then {~u1 , · · · ,~un } is a basis for Rn .
+
+       • Suppose {~u1 , · · · ,~um } spans Rn . Then m ≥ n.
+
+       • If {~u1 , · · · ,~un } spans Rn , then {~u1 , · · · ,~un } is linearly independent.
+
+
+Proof. Assume first that {~u1 , · · · ,~un } is linearly independent, and we need to show that this set spans Rn .
+To do so, let ~v be a vector of Rn , and we need to write ~v as a linear combination of ~ui ’s. Consider the
+matrix A having the vectors ~ui as columns:
+                                                                     
+                                                   A = ~u1 · · · ~un
+
+By linear independence of the ~ui ’s, the reduced row-echelon form of A is the identity matrix. Therefore
+the system A~x =~v has a (unique) solution, so ~v is a linear combination of the ~ui ’s.
+    To establish the second claim, suppose that m < n. Then letting ~ui1 , · · · ,~uik be the pivot columns of the
+matrix                                                         
+                                                 ~u1 · · · ~um
+
+                                                 4.10. Spanning, Linear Independence and Basis in Rn             207
+
+
+it follows k ≤ m < n and these k pivot columns would be a basis for Rn having fewer than n vectors,
+contrary to Corollary 4.85.
+     Finally consider the third claim. If {~u1 , · · · ,~un } is not linearly independent, then replace this list with
+{~ui1 , · · · ,~uik } where these are the pivot columns of the matrix
+                                                                      
+                                                       ~u1 · · · ~un
+
+Then {~ui1 , · · · ,~uik } spans Rn and is linearly independent, so it is a basis having less than n vectors again
+contrary to Corollary 4.85.                                                                                     ♠
+    The next theorem follows from the above claim.
+
+   Theorem 4.88: Existence of Basis
+   Let V be a subspace of Rn . Then there exists a basis of V with dim(V ) ≤ n.
+
+
+   Consider Corollary 4.87 together with Theorem 4.88. Let dim(V ) = r. Suppose there exists an inde-
+pendent set of vectors in V . If this set contains r vectors, then it is a basis for V . If it contains less than r
+vectors, then vectors can be added to the set to create a basis of V . Similarly, any spanning set of V which
+contains more than r vectors can have vectors removed to create a basis of V .
+    We illustrate this concept in the next example.
+
+   Example 4.89: Extending an Independent Set
+   Consider the set U given by
+                                                        
+                                        
+                                           a              
+                                                           
+                                                        
+                                           b  4
+                                     U =   ∈ R a−b = d −c
+                                        
+                                           c              
+                                                           
+                                                          
+                                            d
+
+   Then U is a subspace of R4 and dim(U ) = 3.
+   Then                                       
+                                           
+                                              1     2 
+                                                  
+                                               1 , 3  ,
+                                      S=     1   3 
+                                           
+                                                       
+                                                       
+                                               1     2
+   is an independent subset of U . Therefore S can be extended to a basis of U .
+
+
+Solution. To extend S to a basis of U , find a vector in U that is not in span(S).
+                                                           
+                                                   1 2 ?
+                                                 1 3 ? 
+                                                           
+                                                 1 3 ? 
+                                                   1 2 ?
+
+208     Rn
+
+
+                                                                             
+                                              1    2  1       1           0   0
+                                             1    3       
+                                                      0   0             1   0 
+                                                         →                     
+                                             1    3 −1   0             0   1 
+                                              1    2  0       0           0   0
+    Therefore, S can be extended to the following basis of U :
+                                                         
+                                      
+                                           1      2         1  
+                                                                
+                                                         
+                                            1
+                                          , , 3         0  ,
+                                         1   3   −1 
+                                      
+                                                               
+                                                                
+                                            1      2         0
+                                                                                                                             ♠
+    Next we consider the case of removing vectors from a spanning set to result in a basis.
+
+   Theorem 4.90: Finding a Basis from a Span
+   Let W be a subspace. Also suppose that W = span {~w1 , · · · ,~wm }. Then there exists a subset of
+   {~w1 , · · · ,~wm } which is a basis for W .
+
+
+Proof. Let S denote the set of positive integers such that for k ∈ S, there exists a subset of {~w1 , · · · ,~wm }
+consisting of exactly k vectors which is a spanning set for W . Thus m ∈ S. Pick the smallest positive
+integer in S. Call it k. Then there exists {~u1 , · · · ,~uk } ⊆ {~w1 , · · · ,~wm } such that span {~u1 , · · · ,~uk } = W . If
+                                                          k
+                                                         ∑ ci~wi = ~0
+                                                        i=1
+and not all of the ci = 0, then you could pick c j 6= 0, divide by it and solve for ~u j in terms of the others,
+                                                               
+                                                            ci
+                                             ~w j = ∑ −           ~wi
+                                                    i6= j   c j
+
+Then you could delete ~w j from the list and have the same span. Any linear combination involving ~w j
+would equal one in which ~w j is replaced with the above sum, showing that it could have been obtained as
+a linear combination of ~wi for i 6= j. Thus k − 1 ∈ S contrary to the choice of k . Hence each ci = 0 and so
+{~u1 , · · · ,~uk } is a basis for W consisting of vectors of {~w1 , · · · ,~wm }.                         ♠
+    The following example illustrates how to carry out this shrinking process which will obtain a subset of
+a span of vectors which is linearly independent.
+
+   Example 4.91: Subset of a Span
+   Let W be the subspace
+                                                   
+                        
+                           1       1       8       −6       1       1 
+                                                                      
+                           2   3   19   −15   3   5 
+                                                          
+                                                                       
+                   span        ,       ,       ,        ,       ,
+                        
+                          −1   −1   −8        6   0   0    
+                                                                       
+                            1       1       8       −6       1       1
+
+   Find a basis for W which consists of a subset of the given vectors.
+
+                                               4.10. Spanning, Linear Independence and Basis in Rn          209
+
+
+Solution. You can use the reduced row-echelon form to accomplish this reduction. Form the matrix which
+has the given vectors as columns.
+                                                               
+                                        1    1    8 −6 1 1
+                                     2      3 19 −15 3 5 
+                                                               
+                                     −1 −1 −8          6 0 0 
+                                        1    1    8 −6 1 1
+Then take the reduced row-echelon form
+                                                             
+                                           1    0   5 −3 0 −2
+                                          0    1   3 −3 0  2 
+                                                             
+                                          0    0   0  0 1  1 
+                                           0    0   0  0 0  0
+It follows that a basis for W is                   
+                                        
+                                           1      1     1 
+                                                     
+                                          2 , 3 , 3 
+                                         −1   −1   0 
+                                        
+                                                           
+                                                            
+                                            1      1     1
+Since the first, second, and fifth columns are obviously a basis for the column space of the reduced row-
+echelon form, the same is true for the matrix having the given vectors as columns.                     ♠
+   Consider the following theorems regarding a subspace contained in another subspace.
+
+   Theorem 4.92: Subset of a Subspace
+   Let V and W be subspaces of Rn , and suppose that W ⊆ V . Then dim(W ) ≤ dim(V ) with equality
+   when W = V .
+
+
+   Theorem 4.93: Extending a Basis
+   Let W be any non-zero subspace Rn and let W ⊆ V where V is also a subspace of Rn . Then every
+   basis of W can be extended to a basis for V .
+
+    The proof is left as an exercise but proceeds as follows. Begin with a basis for W , {~w1 , · · · , ~ws } and
+add in vectors from V until you obtain a basis for V . Not that the process will stop because the dimension
+of V is no more than n.
+    Consider the following example.
+
+   Example 4.94: Extending a Basis
+   Let V = R4 and let                              
+                                                
+                                                   1     0 
+                                                       
+                                                   0   1 
+                                        W = span   ,  
+                                                
+                                                   1     0 
+                                                            
+                                                    1     1
+   Extend this basis of W to a basis of Rn .
+
+210    Rn
+
+
+Solution. An easy way to do this is to take the reduced row-echelon form of the matrix
+                                                             
+                                             1 0 1 0 0 0
+                                           0 1 0 1 0 0 
+                                                                                                   (4.17)
+                                           1 0 0 0 1 0 
+                                             1 1 0 0 0 1
+Note how the given vectors were placed as the first two columns and then the matrix was extended in such
+a way that it is clear that the span of the columns of this matrix yield all of R4 . Now determine the pivot
+columns. The reduced row-echelon form is
+                                                                  
+                                             1 0 0 0        1    0
+                                           0 1 0 0 −1           1 
+                                                                                                    (4.18)
+                                           0 0 1 0 −1           0 
+                                             0 0 0 1        1 −1
+Therefore the pivot columns are                
+                                        1     0     1     0
+                                       0   1   0   1 
+                                       , , , 
+                                       1   0   0   0 
+                                        1     1     0     0
+and now this is an extension of the given basis for W to a basis for R4 .
+   Why does this work? The columns of 4.17 obviously span R4 . In fact the span of the first four is the
+same as the span of all six.                                                                          ♠
+   Consider another example.
+
+   Example 4.95: Extending a Basis
+                         
+                          1
+                         0 
+   Let W be the span of          4
+                         1  in R . Let V consist of the span of the vectors
+                          0
+                                                          
+                                 1      0         7        −5        0
+                               0   1   −6   7   0 
+                               , ,                        
+                               1   1   1 , 2 , 0 
+                                 0      1       −6           7       1
+
+   Find a basis for V which extends the basis for W .
+
+Solution. Note that the above vectors are not linearly independent, but their span, denoted as V is a
+subspace which does include the subspace W .
+   Using the process outlined in the previous example, form the following matrix
+                                                             
+                                           1 0    7 −5 0
+                                         0 1 −6        7 0 
+                                                             
+                                         1 1     1     2 0 
+                                           0 1 −6       7 1
+
+                                                    4.10. Spanning, Linear Independence and Basis in Rn   211
+
+
+Next find its reduced row-echelon form
+                                                                 
+                                                 1      0  7 −5 0
+                                                0      1 −6  7 0 
+                                                                 
+                                                0      0  0  0 1 
+                                                 0      0  0  0 0
+
+It follows that a basis for V consists of the first two vectors and the last.
+                                               
+                                          
+                                               1       0       0 
+                                                            
+                                             0 , 1 , 0 
+                                            1   1   0 
+                                          
+                                                                   
+                                                                    
+                                                0       1       1
+
+Thus V is of dimension 3 and it has a basis which extends the basis for W .                                ♠
+
+
+4.10.5. Row Space, Column Space, and Null Space of a Matrix
+
+We begin this section with a new definition.
+
+   Definition 4.96: Row and Column Space
+   Let A be an m × n matrix. The column space of A, written col(A), is the span of the columns. The
+   row space of A, written row(A), is the span of the rows.
+
+
+   Using the reduced row-echelon form , we can obtain an efficient description of the row and column
+space of a matrix. Consider the following lemma.
+
+   Lemma 4.97: Effect of Row Operations on Row Space
+   Let A and B be m×n matrices such that A can be carried to B by elementary row [column] operations.
+   Then row(A) = row(B) [col(A) = col(B)].
+
+
+Proof. We will prove that the above is true for row operations, which can be easily applied to column
+operations.
+   Let~r1 ,~r2 , . . . ,~rm denote the rows of A.
+
+    • If B is obtained from A by a interchanging two rows of A, then A and B have exactly the same rows,
+      so row(B) = row(A).
+
+    • Suppose p 6= 0, and suppose that for some j, 1 ≤ j ≤ m, B is obtained from A by multiplying row j
+      by p. Then
+
+                                            row(B) = span{~r1 , . . . , p~r j , . . . ,~rm }.
+
+212      Rn
+
+
+        Since
+                                             {~r1 , . . . , p~r j , . . . ,~rm } ⊆ row(A),
+
+        it follows that row(B) ⊆ row(A). Conversely, since
+
+                                                   {~r1 , . . . ,~rm } ⊆ row(B),
+
+        it follows that row(A) ⊆ row(B). Therefore, row(B) = row(A).
+
+      • Suppose p 6= 0, and suppose that for some i and j, 1 ≤ i, j ≤ m, B is obtained from A by adding p
+        time row j to row i. Without loss of generality, we may assume i < j.
+        Then
+
+                               row(B) = span{~r1 , . . . ,~ri−1 ,~ri + p~r j , . . . ,~r j , . . . ,~rm }.
+
+        Since
+
+                                       {~r1 , . . . ,~ri−1 ,~ri + p~r j , . . . ,~rm } ⊆ row(A),
+
+        it follows that row(B) ⊆ row(A).
+        Conversely, since
+
+                                                   {~r1 , . . . ,~rm } ⊆ row(B),
+
+        it follows that row(A) ⊆ row(B). Therefore, row(B) = row(A).
+
+                                                                                                             ♠
+
+   Consider the following lemma.
+
+   Lemma 4.98: Row Space of a Row-Echelon Form Matrix
+   Let A be an m × n matrix and let R be its row-echelon form. Then the nonzero rows of R form a
+   basis of row(R), and consequently of row(A).
+
+
+     This lemma suggests that we can examine the row-echelon form of a matrix in order to obtain the
+row space. Consider now the column space. The column space can be obtained by simply saying that it
+equals the span of all the columns. However, you can often get the column space as the span of fewer
+columns than this. A variation of the previous lemma provides a solution. Suppose A is row reduced to
+its row-echelon form R. Identify the pivot columns of R (columns which have leading ones), and take the
+corresponding columns of A. It turns out that this forms a basis of col(A).
+     Before proceeding to an example of this concept, we revisit the definition of rank.
+
+                                             4.10. Spanning, Linear Independence and Basis in Rn        213
+
+
+   Definition 4.99: Rank of a Matrix
+   Previously, we defined rank(A) to be the number of leading entries in the row-echelon form of A.
+   Using an understanding of dimension and row space, we can now define rank as follows:
+
+                                         rank(A) = dim(row(A))
+
+
+   Consider the following example.
+
+   Example 4.100: Rank, Column and Row Space
+   Find the rank of the following matrix and describe the column and row spaces.
+                                                              
+                                               1 2 1 3 2
+                                        A= 1 3 6 0 2 
+                                               3 7 8 6 6
+
+
+Solution. The reduced row-echelon form of A is
+                                                     
+                                        1 0 −9    9 2
+                                       0 1    5 −3 0 
+                                        0 0    0  0 0
+
+Therefore, the rank is 2.
+   Notice that the first two columns of R are pivot columns. By the discussion following Lemma 4.98,
+we find the corresponding columns of A, in this case the first two columns. Therefore a basis for col(A) is
+given by                                     
+                                           1           2 
+                                              1 , 3 
+                                                            
+                                                3       7
+    For example, consider the third column of the original matrix. It can be written as a linear combination
+of the first two columns of the original matrix as follows.
+                                                           
+                                         1              1        2
+                                        6  = −9  1  + 5  3 
+                                         8              3        7
+
+    What about an efficient description of the row space? By Lemma 4.98 we know that the nonzero rows
+of R create a basis of row(A). For the above matrix, the row space equals
+                                                                         
+                        row(A) = span     1 0 −9 9 2 , 0 1 5 −3 0
+
+                                                                                                         ♠
+   Notice that the column space of A is given as the span of columns of the original matrix, while the row
+space of A is the span of rows of the reduced row-echelon form of A.
+   Consider another example.
+
+214    Rn
+
+
+   Example 4.101: Rank, Column and Row Space
+   Find the rank of the following matrix and describe the column and row spaces.
+                                                            
+                                             1 2 1 3 2
+                                           1 3 6 0 2 
+                                                            
+                                           1 2 1 3 2 
+                                             1 3 2 4 0
+
+
+Solution. The reduced row-echelon form is
+                                                                
+                                                            13
+                                         1    0 0      0     2
+                                                               
+                                       0
+                                             1 0      2   − 52 
+                                                                
+                                       0     0 1 −1          1 
+                                                             2 
+                                         0    0 0      0     0
+
+and so the rank is 3. The row space is given by
+                                                                                       
+            row(A) = span      1 0 0 0 13    2   , 0 1 0 2 − 52 , 0 0 1 −1               1
+                                                                                         2
+
+Notice that the first three columns of the reduced row-echelon form are pivot columns. The column space
+is the span of the first three columns in the original matrix,
+                                                      
+                                                 
+                                                    1       2     1 
+                                                                
+                                                     1  ,  ,  6 
+                                                             3
+                                   col(A) = span   1   2   1 
+                                                 
+                                                                       
+                                                                       
+                                                     1       3     2
+
+                                                                                                        ♠
+   Consider the solution given above for Example 4.101, where the rank of A equals 3. Notice that the
+row space and the column space each had dimension equal to 3. It turns out that this is not a coincidence,
+and this essential result is referred to as the Rank Theorem and is given now. Recall that we defined
+rank(A) = dim(row(A)).
+
+   Theorem 4.102: Rank Theorem
+   Let A be an m × n matrix. Then dim(col(A)), the dimension of the column space, is equal to the
+   dimension of the row space, dim(row(A)).
+
+
+   The following statements all follow from the Rank Theorem.
+
+                                             4.10. Spanning, Linear Independence and Basis in Rn        215
+
+
+   Corollary 4.103: Results of the Rank Theorem
+   Let A be a matrix. Then the following are true:
+
+      1. rank(A) = rank(AT ).
+
+      2. For A of size m × n, rank(A) ≤ m and rank(A) ≤ n.
+
+      3. For A of size n × n, A is invertible if and only if rank(A) = n.
+
+      4. For invertible matrices B and C of appropriate size, rank(A) = rank(BA) = rank(AC).
+
+
+   Consider the following example.
+
+   Example 4.104: Rank of the Transpose
+   Let                                                       
+                                                        1 2
+                                              A=
+                                                       −1 1
+   Find rank(A) and rank(AT ).
+
+
+Solution. To find rank(A) we first row reduce to find the reduced row-echelon form.
+                                                                  
+                                            1 2                 1 0
+                                    A=              → ··· →
+                                          −1 1                  0 1
+
+   Therefore the rank of A is 2. Now consider AT given by
+                                                         
+                                            T      1 −1
+                                           A =
+                                                   2    1
+Again we row reduce to find the reduced row-echelon form.
+                                                           
+                                      1 −1                1 0
+                                               → ··· →
+                                      2    1              0 1
+
+   You can see that rank(AT ) = 2, the same as rank(A).                                                  ♠
+   We now define what is meant by the null space of a general m × n matrix.
+
+   Definition 4.105: Null Space, or Kernel, of A
+   The null space of a matrix A, also referred to as the kernel of A, is defined as follows.
+                                                     n            o
+                                         null (A) = ~x : A~x = ~0
+
+
+    It can also be referred to using the notation ker (A). Similarly, we can discuss the image of A, denoted
+by im (A). The image of A consists of the vectors of Rm which “get hit” by A. The formal definition is as
+follows.
+
+216      Rn
+
+
+   Definition 4.106: Image of A
+   The image of A, written im (A) is given by
+
+                                                im (A) = {A~x :~x ∈ Rn }
+
+
+   Consider A as a mapping from Rn to Rm whose action is given by multiplication. The following
+diagram displays this scenario.
+                                       null(A) A im(A)
+                                        Rn → Rm
+As indicated, im (A) is a subset of Rm while null (A) is a subset of Rn .
+   It turns out that the null space and image of A are both subspaces. Consider the following example.
+
+   Example 4.107: Null Space
+   Let A be an m × n matrix. Then the null space of A, null(A) is a subspace of Rn .
+
+
+Solution.
+
+      • Since A~0n = ~0m , ~0n ∈ null(A).
+
+      • Let ~x,~y ∈ null(A). Then A~x = ~0m and A~y = ~0m , so
+
+                                            A(~x +~y) = A~x + A~y = ~0m +~0m = ~0m ,
+
+        and thus ~x +~y ∈ null(A).
+
+      • Let ~x ∈ null(A) and k ∈ R. Then A~x = ~0m , so
+
+                                                A(k~x) = k(A~x) = k~0m = ~0m ,
+
+        and thus k~x ∈ null(A).
+
+Therefore by the subspace test, null(A) is a subspace of Rn .
+                                                                                                          ♠
+   The proof that im(A) is a subspace of Rm is similar and is left as an exercise to the reader.
+   We now wish to find a way to describe null(A) for a matrix A. However, finding null (A) is not new!
+There is just some new terminology being used, as null (A) is simply the solution to the system A~x = ~0.
+
+   Theorem 4.108: Basis of null(A)
+
+   Let A be an m × n matrix such that rank(A) = r. Then the system A~x = ~0m has n − r basic solutions,
+   providing a basis of null(A) with dim(null(A)) = n − r.
+
+
+   Consider the following example.
+
+                                              4.10. Spanning, Linear Independence and Basis in Rn          217
+
+
+   Example 4.109: Null Space of A
+   Let                                                   
+                                                   1  2 1
+                                             A =  0 −1 1 
+                                                   2  3 3
+   Find null (A) and im (A).
+
+
+Solution. In order to find null (A), we simply need to solve the equation A~x = ~0. This is the usual proce-
+dure of writing the augmented matrix, finding the reduced row-echelon form and then the solution. The
+augmented matrix and corresponding reduced row-echelon form are
+                                                                         
+                                 1    2 1 0                  1 0     3 0
+                               0 −1 1 0  → · · · →  0 1 −1 0 
+                                 2    3 3 0                  0 0     0 0
+
+The third column is not a pivot column, and therefore the solution will contain a parameter. The solution
+to the system A~x = ~0 is given by                
+                                              −3t
+                                                t :t ∈R
+                                                 t
+which can be written as                           
+                                                −3
+                                              t 1  :t ∈R
+                                                 1
+   Therefore, the null space of A is all multiples of this vector, which we can write as
+                                                                
+                                                         −3 
+                                        null(A) = span  1 
+                                                                   
+                                                               1
+
+    Finally im (A) is just {A~x :~x ∈ Rn } and hence consists of the span of all columns of A, that is im (A) =
+col(A).
+    Notice from the above calculation that that the first two columns of the reduced row-echelon form are
+pivot columns. Thus the column space is the span of the first two columns in the original matrix, and we
+get                                                                   
+                                                         1            2 
+                              im (A) = col(A) = span  0  ,  −1 
+                                                                          
+                                                             2         3
+                                                                                                            ♠
+
+   Here is a larger example, but the method is entirely similar.
+
+218      Rn
+
+
+   Example 4.110: Null Space of A
+   Let                                                               
+                                                  1  2 1 0          1
+                                                 2 −1 1 3          0 
+                                              A=
+                                                 3
+                                                                      
+                                                     1 2 3          1 
+                                                  4 −2 2 6          0
+   Find the null space of A.
+
+
+Solution. To find the null space, we need to solve the equation AX = 0. The augmented matrix and
+corresponding reduced row-echelon form are given by
+                                                                          
+                                                       1 0 35     6 1
+                                                                    5 5 0
+                        1    2 1 0 1 0                                    
+                      2 −1 1 3 0 0                           1   3 2    
+                                            → ··· →  0   1  5 − 5 5  0 
+                      3                                                  
+                             1 2 3 1 0                                    
+                                                        0 0 0      0  0 0 
+                        4 −2 2 6 0 0
+                                                         0 0 0      0 0 0
+
+It follows that the first two columns are pivot columns, and the next three correspond to parameters.
+Therefore, null (A) is given by
+                                                        
+                                   − 35  s + −56 t + 15  r
+                                  −1 s + 3 t + −2 r 
+                                     5       5         5     
+                                              s               : s,t, r ∈ R.
+                                                             
+                                              t              
+                                               r
+
+We write this in the form
+                                                                
+                                   − 53             − 65          1
+                                                                  5
+                                 1                 3        2 
+                                 −5                5        −5 
+                                                               
+                               s 1 +t              0  +r      0  : s,t, r ∈ R.
+                                                                
+                                 0                 1          0 
+                                   0                  0            1
+
+In other words, the null space of this matrix equals the span of the three vectors above. Thus
+                                              3   6   1 
+                                             
+                                                 −5        −5           5   
+                                                                             
+                                             
+                                                                      
+                                                                             
+                                             
+                                              − 5   5   − 5 
+                                                     1         3         2
+                                                                             
+                                                                       
+                             null (A) = span  1  ,  0  ,  0 
+                                             
+                                                                      
+                                             
+                                                0   1   0            
+                                                                             
+                                             
+                                                                            
+                                                                             
+                                                    0          0         1
+
+                                                                                                        ♠
+   Notice also that the three vectors above are linearly independent and so the dimension of null (A) is 3.
+The following is true in general, the number of parameters in the solution of AX = 0 equals the dimension
+
+                                            4.10. Spanning, Linear Independence and Basis in Rn       219
+
+
+of the null space. Recall also that the number of leading ones in the reduced row-echelon formequals the
+number of pivot columns, which is the rank of the matrix, which is the same as the dimension of either the
+column or row space.
+   Before we proceed to an important theorem, we first define what is meant by the nullity of a matrix.
+
+   Definition 4.111: Nullity
+   The dimension of the null space of a matrix is called the nullity, denoted dim(null (A)).
+
+
+   From our observation above we can now state an important theorem.
+
+   Theorem 4.112: Rank and Nullity
+   Let A be an m × n matrix. Then rank (A) + dim(null (A)) = n.
+
+
+   Consider the following example, which we first explored above in Example 4.109
+
+   Example 4.113: Rank and Nullity
+   Let                                                 
+                                                 1  2 1
+                                           A =  0 −1 1 
+                                                 2  3 3
+   Find rank (A) and dim(null (A)).
+
+
+Solution. In the above Example 4.109 we determined that the reduced row-echelon form of A is given by
+                                                       
+                                             1 0     3
+                                           0 1 −1 
+                                             0 0     0
+
+   Therefore the rank of A is 2. We also determined that the null space of A is given by
+                                                            
+                                                      −3 
+                                      null(A) = span  1 
+                                                               
+                                                            1
+
+   Therefore the nullity of A is 1. It follows from Theorem 4.112 that rank (A)+dim(null (A)) = 2+1 = 3,
+which is the number of columns of A.                                                                  ♠
+   We conclude this section with two similar, and important, theorems.
+
+220    Rn
+
+
+   Theorem 4.114:
+   Let A be an m × n matrix. The following are equivalent.
+
+      1. rank(A) = n.
+
+      2. row(A) = Rn , i.e., the rows of A span Rn .
+
+      3. The columns of A are independent in Rm .
+
+      4. The n × n matrix AT A is invertible.
+
+      5. There exists an n × m matrix C so that CA = In .
+
+      6. If A~x = ~0m for some ~x ∈ Rn , then ~x = ~0n .
+
+
+
+   Theorem 4.115:
+   Let A be an m × n matrix. The following are equivalent.
+
+      1. rank(A) = m.
+
+      2. col(A) = Rm , i.e., the columns of A span Rm .
+
+      3. The rows of A are independent in Rn .
+
+      4. The m × m matrix AAT is invertible.
+
+      5. There exists an n × m matrix C so that AC = Im .
+
+      6. The system A~x = ~b is consistent for every ~b ∈ Rm .
+
+
+
+
+Exercises
+
+Exercise 4.10.1 Here are some vectors.
+                                                        
+                              1        1      2       5       12
+                           1 , 2 , 7 ,         7  ,  17 
+                            −2        −2     −4     −10      −24
+
+Describe the span of these vectors as the span of as few vectors as possible.
+
+Exercise 4.10.2 Here are some vectors.
+                                                       
+                             1         12      1      2       5
+                           2  ,  29  ,  3  ,  9  ,  12  ,
+                            −2       −24      −2     −4     −10
+
+                                              4.10. Spanning, Linear Independence and Basis in Rn         221
+
+
+Describe the span of these vectors as the span of as few vectors as possible.
+
+Exercise 4.10.3 Here are some vectors.
+                                                       
+                               1        1      1     −1       1
+                            2  ,  3  ,  −2  ,  0  ,  3 
+                             −2        −2     −2      2      −1
+
+Describe the span of these vectors as the span of as few vectors as possible.
+
+Exercise 4.10.4 Here are some vectors.
+                                                     
+                                    1       1      1     −1
+                                1  ,  2  ,  −3  ,  1 
+                                  −2       −2     −2      2
+
+Now here is another vector:                          
+                                                    1
+                                                   2 
+                                                   −1
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+Exercise 4.10.5 Here are some vectors.
+                                                     
+                                    1       1      1     −1
+                                1  ,  2  ,  −3  ,  1 
+                                  −2       −2     −2      2
+
+Now here is another vector:                           
+                                                     2
+                                                   −3 
+                                                    −4
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+Exercise 4.10.6 Here are some vectors.
+                                                     
+                                    1       1      1      1
+                                1  ,  2  ,  −3  ,  2 
+                                  −2       −2     −2     −1
+
+Now here is another vector:                           
+                                                     1
+                                                    9 
+                                                     1
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+222     Rn
+
+
+Exercise 4.10.7 Here are some vectors.
+                                                      
+                                    1       1      1      −1
+                                −1  ,  0  ,  −5  ,  5 
+                                  −2       −2     −2       2
+Now here is another vector:                                
+                                                          1
+                                                         1 
+                                                         −1
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+Exercise 4.10.8 Here are some vectors.
+                                                      
+                                    1       1      1      −1
+                                −1  ,  0  ,  −5  ,  5 
+                                  −2       −2     −2       2
+Now here is another vector:                                
+                                                          1
+                                                         1 
+                                                         −1
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+Exercise 4.10.9 Here are some vectors.
+                                                     
+                                    1       1      2     −1
+                                0  ,  1  ,  −2  ,  4 
+                                  −2       −2     −3      2
+Now here is another vector:                                 
+                                                          −1
+                                                         −4 
+                                                           2
+Is this vector in the span of the first four vectors? If it is, exhibit a linear combination of the first four
+vectors which equals this vector, using as few vectors as possible in the linear combination.
+
+Exercise 4.10.10 Suppose {~x1 , · · · ,~xk } is a set of vectors from Rn . Show that ~0 is in span {~x1 , · · · ,~xk } .
+
+Exercise 4.10.11 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                            
+                                       1        1       1       1
+                                    3   4   4   10 
+                                                            
+                                    −1  ,  −1  ,  0  ,  2 
+                                       1        1       1       1
+
+                                            4.10. Spanning, Linear Independence and Basis in Rn      223
+
+
+Exercise 4.10.12 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                              
+                                    −1       −3          0        0
+                                   −2   −4   −1   −1 
+                                                              
+                                   2 , 3 , 4 , 6 
+                                      3        3         3        4
+
+
+Exercise 4.10.13 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                              
+                                      1        1       −1         1
+                                   5   6   −4   6 
+                                                              
+                                   −2  ,  −3  ,  1  ,  −2 
+                                      1        1       −1         1
+
+
+Exercise 4.10.14 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                    
+                                        1        1       1      1
+                                     −1   6   0   0 
+                                                    
+                                     3  ,  34  ,  7  ,  8 
+                                        1        1       1      1
+
+
+Exercise 4.10.15 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others.
+                                                             
+                                        1        1         −3      1
+                                    3   4   −10   4 
+                                                           , 
+                                    −1  ,  −1  ,       3   0 
+                                        1        1         −3      1
+
+
+Exercise 4.10.16 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                               
+                                     1         1        1          1
+                                  3   4   4   10 
+                                                               
+                                  −3  ,  −5  ,  −4  ,  −14 
+                                     1         1        1          1
+
+224    Rn
+
+
+Exercise 4.10.17 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                       
+                                       1       1        1      1
+                                      0   1   7   1 
+                                      , ,              
+                                      3   8   34  ,  7 
+                                       1       1        1      1
+
+
+Exercise 4.10.18 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                              
+                                      1        1         1        1
+                                   4   5   7   5 
+                                                              
+                                   −2  ,  −3  ,  −5  ,  −2 
+                                      1        1         1        1
+
+
+Exercise 4.10.19 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others.
+                                                              
+                                       1        3          0      0
+                                    2   4   −1   −1 
+                                                              
+                                    2  ,  1  ,  0  ,  −2 
+                                      −4       −4          4      5
+
+
+Exercise 4.10.20 Are the following vectors linearly independent? If they are, explain why and if they are
+not, exhibit one of them as a linear combination of the others. Also give a linearly independent set of
+vectors which has the same span as the given vectors.
+                                                              
+                                      2      −5        −1       −1
+                                   3   −6   −2   −2 
+                                                              
+                                   1 , 0 , 1 , 0 
+                                    −3         3         3        4
+
+
+Exercise 4.10.21 Here are some vectors in R4 .
+                                                           
+                                1         1      1       1        1
+                             1   2   −2   2   −1 
+                                                           
+                             −1  ,  −1  ,  −1  ,  0  ,  −1 
+                                1         1      1       1        1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+                                             4.10. Spanning, Linear Independence and Basis in Rn       225
+
+
+Exercise 4.10.22 Here are some vectors in R4 .
+                                                           
+                               1         1      1        4        1
+                            2   3   3   3   3 
+                                                           
+                            −2  ,  −3  ,  −2  ,  −1  ,  −2 
+                               1         1      1        4        1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.23 Here are some vectors in R4 .
+                                                  
+                                1       1      1     2       1
+                              1   2   −2   −5   2 
+                              , ,                 
+                              0   1   −3  ,  −7  ,  2 
+                                1       1      1     2       1
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.24 Here are some vectors in R4 .
+                                                         
+                               1         1     1       2        1
+                            2   3   −1   −3   3 
+                                                         
+                            −2  ,  −3  ,  1  ,  3  ,  −2 
+                               1         1     1       2        1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.25 Here are some vectors in R4 .
+                                                           
+                               1         1      1        4        1
+                            4   5   5   11   5 
+                                                           
+                            −2  ,  −3  ,  −2  ,  −1  ,  −2 
+                               1         1      1        4        1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.26 Here are some vectors in R4 .
+                                   3                  
+                                1       −2      1        2       1
+                             3   − 9   4   −1   4 
+                                   2                  
+                             −1  ,  3  ,  −1  ,  −2  ,  0 
+                                           2
+                                1       − 32    1        2       1
+
+226    Rn
+
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.27 Here are some vectors in R4 .
+                                                       
+                                1         1      1        2       1
+                             3   4   0   −1   4 
+                                                       
+                             −1  ,  −1  ,  −1  ,  −2  ,  0 
+                                1         1      1        2       1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.28 Here are some vectors in R4 .
+                                                          
+                                 1         1      1     2        1
+                             4   5   1   1   5 
+                                                          
+                             −2  ,  −3  ,  1  ,  3  ,  −2 
+                                 1         1      1     2        1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.29 Here are some vectors in R4 .
+                                                     
+                                  1       1    1        4       1
+                              −1   0   0   −9   0 
+                                                     
+                              3  ,  7  ,  8  ,  −6  ,  8 
+                                  1       1    1        4       1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+Exercise 4.10.30 Here are some vectors in R4 .
+                                                      
+                                1       −3      1        2       1
+                             −1   3   0   −9   0 
+                                                      
+                             −1  ,  3  ,  −1  ,  −2  ,  0 
+                                1       −3      1        2       1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+
+                                             4.10. Spanning, Linear Independence and Basis in Rn       227
+
+
+Exercise 4.10.31 Here are some vectors in R4 .
+                                                                
+                         1           3          1           2          1
+                   b + 1   3b + 3   b + 2   2b − 5   b + 2 
+                           ,         ,       ,         ,        
+                        a        3a   2a + 1   −5a − 7   2a + 2 
+                         1           3          1           2          1
+
+Thse vectors can’t possibly be linearly independent. Tell why. Next obtain a linearly independent subset of
+these vectors which has the same span as these vectors. In other words, find a basis for the span of these
+vectors.
+                                                            
+                                  
+                                     2        −1       5       −1   
+                                                 2   1 
+                                      1          0
+Exercise 4.10.32 Let H = span                                
+                                     1  ,  −1  ,  3  ,  −2  . Find the dimension of H and de-
+                                  
+                                                                     
+                                                                     
+                                      1        −1       3       −2
+termine a basis.
+                                                                     
+                                      
+                                            0       −1         2         0   
+                                                −1   3   1 
+                                             1
+Exercise 4.10.33 Let H denote span                                    
+                                          1  ,  −2  ,  5  ,  2  . Find the dimension of H
+                                      
+                                                                              
+                                                                              
+                                           −1         2        −5       −2
+and determine a basis.
+                                                                        
+                                      
+                                          −2        −9        −33        −22   
+                                                4   15   10 
+                                             1
+Exercise 4.10.34 Let H denote span                     
+                                          1  ,  3  ,  12  , 
+                                                                               . Find the dimension of
+                                      
+                                                                            8 
+                                                                                
+                                           −3        −9        −36        −24
+H and determine a basis.
+                                                                               
+                                        
+                                            −1       −4        −3        −1         −7    
+                                                                                           
+                                                                                
+                                               1         3        2         1          5
+Exercise 4.10.35 Let H denote span               ,      ,       ,
+                                           −1   −2   −1   −2   −3 
+                                                                               ,        . Find the di-
+                                        
+                                                                                          
+                                                                                          
+                                             −2       −4        −2        −4         −6
+mension of H and determine a basis.
+                                                              
+                                  
+                                     2       8       3       4       8  
+                                              6   6   15 
+                                      3      15
+Exercise 4.10.36 Let H denote span                             
+                                     2  ,  6  ,  2  ,  6  ,  6  . Find the dimension of
+                                  
+                                                                         
+                                                                         
+                                      1       3       1       3       3
+H and determine a basis.
+                                                              
+                                  
+                                       0      −1       −2         −3  
+                                          6   16   22 
+                                        2
+Exercise 4.10.37 Let H denote span                             
+                                    0  ,  0  ,  0  ,  0  . Find the dimension of H
+                                  
+                                                                       
+                                                                       
+                                      −1       −2       −6         −8
+and determine a basis.
+
+228    Rn
+
+                                                              
+                                  
+                                     5      14      38      47      10 
+                                              8   10   2 
+                                      1       3
+Exercise 4.10.38 Let H denote span                             
+                                     1  ,  2  ,  6  ,  7  ,  3  . Find the dimension
+                                  
+                                                                        
+                                                                        
+                                      4       8      24      28      12
+of H and determine a basis.
+                                                            
+                                  
+                                      6      17        52       18  
+                                                                     
+                                     1   3   9   3 
+                                        
+Exercise 4.10.39 Let H denote span   ,         ,      ,       . Find the dimension of H and
+                                  
+                                      1       2   7   4       
+                                                                    
+                                       5      10        35       20
+determine a basis.
+                                                       
+                         
+                                 u1                      
+                                                          
+                                u2                     
+Exercise 4.10.40 Let M = ~u =           4
+                                       ∈ R : sin (u1 ) = 1 . Is M a subspace? Explain.
+                         
+                                 u3                     
+                                                          
+                                                         
+                                  u4
+                                                  
+                        
+                               u 1                  
+                                                     
+                              u2                  
+Exercise 4.10.41 Let M = ~u = 
+                               u3 
+                                     ∈ R : ku1 k ≤ 4 . Is M a subspace? Explain.
+                                         4
+                        
+                                                    
+                                                     
+                                                    
+                                u4
+                                                                       
+                        
+                               u 1                                       
+                                                                          
+                              u2                                       
+                              
+Exercise 4.10.42 Let M = ~u =          4
+                                      ∈ R : ui ≥ 0 for each i = 1, 2, 3, 4 . Is M a subspace? Ex-
+                        
+                               u3                                       
+                                                                          
+                                                                         
+                                u4
+plain.
+
+Exercise 4.10.43 Let ~w,~w1 be given vectors in R4 and define
+                                                                           
+                              
+                                       u 1                                   
+                                                                              
+                                     u2                                    
+                         M = ~u =             4
+                                              ∈ R : ~w •~u = 0 and ~w1 •~u = 0 .
+                              
+                                       u3                                   
+                                                                              
+                                                                             
+                                        u4
+
+Is M a subspace? Explain.
+                                                                  
+                                       
+                                              u 1                   
+                                                                     
+                                                                  
+                                               u
+Exercise 4.10.44 Let ~w ∈ R and let M = ~u = 
+                           4                     2
+                                              u3 
+                                                    ∈ R : ~w •~u = 0 . Is M a subspace? Explain.
+
+=== 5.1–5.4; extracted full-text lines13724–14926 ===
+   This example also motivates the concept of velocity, defined below.
+
+   Definition 4.159: Speed and Velocity
+   The speed of an object is a measure of how fast it is going. It is measured in units of length per unit
+   time. For example, miles per hour, kilometers per minute, feet per second. The velocity is a vector
+   having the speed as the magnitude but also specifying the direction.
+
+                                                    √ ~i + 100
+   Thus the velocity vector in the above example is 100    √ ~j, while the speed is 100 miles per hour.
+                                                         2      2
+
+   Consider the following example.
+
+   Example 4.160: Position From Velocity and Time
+   The velocity of an airplane is 100~i + ~j +~k measured in kilometers per hour and at a certain instant
+   of time its position is (1, 2, 1) .
+   Find the position of this airplane one minute later.
+
+
+Solution. Here imagine a Cartesian coordinate system in which the third component is altitude and the
+first and second components are measured on a line from West to East and a line from South to North.
+                                   T
+     Consider the vector 1 2 1 , which is the initial position vector of the airplane. As the plane
+                                                                                                          1
+moves, the position vector changes according to the velocity vector. After one minute (considered as 60     of
+an hour) the airplane has moved in the~i direction a distance of 100 × 60 = 3 kilometer. In the ~j direction it
+                                                                        1   5
+
+has moved 60 1
+               kilometer during this same time, while it moves 60 1
+                                                                     kilometer in the ~k direction. Therefore,
+the new displacement vector for the airplane is
+                                     T  5 1 1 T  8 121 121 T
+                             1 2 1       + 3 60 60           = 3 60 60
+                                                                                                             ♠
+   Now consider an example which involves combining two velocities.
+
+   Example 4.161: Sum of Two Velocities
+   A certain river is one half kilometer wide with a current flowing at 4 kilometers per hour from East
+   to West. A man swims directly toward the opposite shore from the South bank of the river at a speed
+   of 3 kilometers per hour. How far down the river does he find himself when he has swam across?
+   How far does he end up swimming?
+
+
+Solution. Consider the following picture which demonstrates the above scenario.
+
+264    Rn
+
+
+                                                             3
+                                                      4
+
+
+    First we want to know the total time of the swim across the river. The velocity in the direction across
+the river is 3 kilometers per hour, and the river is 21 kilometer wide. It follows the trip takes 1/6 hour or
+10 minutes.
+    Now, we can compute how far downstream he will end up. Since the river runs at a rate
+                                                                                         of2 4 kilometers
+                                                                                      1
+per hour, and the trip takes 1/6 hour, the distance traveled downstream is given by 4 6 = 3 kilometers.
+    The distance traveled by the swimmer is given by the hypotenuse of a right triangle. The two arms of
+the triangle are given by the distance across the river, 21 km, and the distance traveled downstream, 23 km.
+Then, using the Pythagorean Theorem, we can calculate the total distance d traveled.
+                                           s
+                                              2  2
+                                                2          1      5
+                                      d=             +          = km
+                                                3          2      6
+
+   Therefore, the swimmer travels a total distance of 56 kilometers.                                      ♠
+
+
+4.12.2. Work
+
+The mathematical concept of work is an application of vectors in Rn . The physical concept of work differs
+from the notion of work employed in ordinary conversation. For example, suppose you were to slide a
+150 pound weight off a table which is three feet high and shuffle along the floor for 50 yards, keeping the
+height always three feet and then deposit this weight on another three foot high table. The physical concept
+of work would indicate that the force exerted by your arms did no work during this project. The reason
+for this definition is that even though your arms exerted considerable force on the weight, the direction of
+motion was at right angles to the force they exerted. The only part of a force which does work in the sense
+of physics is the component of the force in the direction of motion.
+    Work is defined to be the magnitude of the component of this force times the distance over which it
+acts, when the component of force points in the direction of motion. In the case where the force points
+in exactly the opposite direction of motion work is given by (−1) times the magnitude of this component
+times the distance. Thus the work done by a force on an object as the object moves from one point to
+another is a measure of the extent to which the force contributes to the motion. This is illustrated in the
+following picture in the case where the given force contributes to the motion.
+
+                                     ~F⊥              ~F
+                                                                        Q
+                                                  θ              ~F||
+                                           P
+
+   Recall that for any vector ~u in Rn , we can write ~u as a sum of two vectors, as in
+                                                ~u = ~u|| +~u⊥
+
+                                                                                      4.12. Applications     265
+
+
+For any force ~
+              F, we can write this force as the sum of a vector in the direction of the motion and a vector
+perpendicular to the motion. In other words,
+                                                  ~F = ~F|| + ~F⊥
+
+    In the above picture the force, ~F is applied to an object which moves on the straight line from P to Q.
+There are two vectors shown, ~F|| and ~F⊥ and the picture is intended to indicate that when you add these
+two vectors you get ~F. In other words, ~F = ~F|| + ~F⊥ . Notice that ~F|| acts in the direction of motion and ~F⊥
+acts perpendicular to the direction of motion. Only ~F|| contributes to the work done by ~F on the object as it
+moves from P to Q. ~F|| is called the component of the force in the direction of motion. From trigonometry,
+you see the magnitude of ~F|| should equal k~Fk |cos θ | . Thus, since ~F|| points in the direction of the vector
+from P to Q, the total work done should equal
+                                          −→
+                                     k~FkkPQk cos θ = k~Fkk~q − ~pk cos θ
+
+    Now, suppose the included angle had been obtuse. Then the work done by the force ~F on the object
+would have been negative because ~F|| would point in −1 times the direction of the motion. In this case,
+cos θ would also be negative and so it is still the case that the work done would be given by the above
+formula. Thus from the geometric description of the dot product given above, the work equals
+
+                                       k~Fkk~q −~pk cos θ = ~F • (~q − ~p)
+
+This explains the following definition.
+
+   Definition 4.162: Work Done on an Object by a Force
+   Let ~F be a force acting on an object which moves from the point P to the point Q, which have
+   position vectors given by ~p and ~q respectively. Then the work done on the object by the given force
+   equals ~F • (~q − ~p) .
+
+
+   Consider the following example.
+
+   Example 4.163: Finding Work
+                           T
+   Let ~F = 2 7 −3             Newtons. Find the work done by this force in moving from the point
+   (1, 2, 3) to the point (−9, −3, 4) along the straight line segment joining these points where distances
+   are measured in meters.
+
+
+Solution. First, compute the vector ~q − ~p, given by
+                                          T          T          T
+                                 −9 −3 4        − 1 2 3   = −10 −5 1
+
+   According to Definition 4.162 the work done is
+                                    T          T
+                             2 7 3     • −10 −5 1    = −20 + (−35) + (−3)
+
+266    Rn
+
+
+                                                              = −58 Newton meters
+
+                                                                                                            ♠
+    Note that if the force had been given in pounds and the distance had been given in feet, the units on
+the work would have been foot pounds. In general, work has units equal to units of a force times units of
+a length. Recall that 1 Newton meter is equal to 1 Joule. Also notice that the work done by the force can
+be negative as in the above example.
+
+
+
+Exercises
+
+Exercise 4.12.1 The wind blows from the South at 20 kilometers per hour and an airplane which flies at
+600 kilometers per hour in still air is heading East. Find the velocity of the airplane and its location after
+two hours.
+
+Exercise 4.12.2 The wind blows from the West at 30 kilometers per hour and an airplane which flies at
+400 kilometers per hour in still air is heading North East. Find the velocity of the airplane and its position
+after two hours.
+
+Exercise 4.12.3 The wind blows from the North at 10 kilometers per hour. An airplane which flies at 300
+kilometers per hour in still air is supposed to go to the point whose coordinates are at (100, 100). In what
+direction should the airplane fly?
+                                                                    
+                                                          3          1
+Exercise 4.12.4 Three forces act on an object. Two are  −1  and  −3  Newtons. Find the third
+                                                         −1          4
+force if the object is not to move.
+                                                                
+                                                          6        2
+Exercise 4.12.5 Three forces act on an object. Two are  −3  and 1  Newtons. Find the third force
+                                                                 
+                                                        3        3
+                                           7
+if the total force on the object is to be 1  .
+                                         
+                                           3
+
+Exercise 4.12.6 A river flows West at the rate of b miles per hour. A boat can move at the rate of 8 miles
+per hour. Find the smallest value of b such that it is not possible for the boat to proceed directly across the
+river.
+
+Exercise 4.12.7 The wind blows from West to East at a speed of 50 miles per hour and an airplane which
+travels at 400 miles per hour in still air is heading North West. What is the velocity of the airplane relative
+to the ground? What is the component of this velocity in the direction North?
+
+                                                                                   4.12. Applications      267
+
+
+Exercise 4.12.8 The wind blows from West to East at a speed of 60 miles per hour and an airplane can
+travel travels at 100 miles per hour in still air. How many degrees West of North should the airplane head
+in order to travel exactly North?
+
+Exercise 4.12.9 The wind blows from West to East at a speed of 50 miles per hour and an airplane which
+travels at 400 miles per hour in still air heading somewhat West of North so that, with the wind, it is flying
+due North. It uses 30.0 gallons of gas every hour. If it has to travel 600.0 miles due North, how much gas
+will it use in flying to its destination?
+
+Exercise 4.12.10 An airplane is flying due north at 150.0 miles per hour but it is not actually going due
+North because there is a wind which is pushing the airplane due east at 40.0 miles per hour. After one
+hour, the plane starts flying 30◦ East of North. Assuming the plane starts at (0, 0) , where is it after 2
+hours? Let North be the direction of the positive y axis and let East be the direction of the positive x axis.
+
+Exercise 4.12.11 City A is located at the origin (0, 0) while city B is located at (300, 500) where distances
+are in miles. An airplane flies at 250 miles per hour in still air. This airplane wants to fly from city A to
+city B but the wind is blowing in the direction of the positive y axis at a speed of 50 miles per hour. Find a
+unit vector such that if the plane heads in this direction, it will end up at city B having flown the shortest
+possible distance. How long will it take to get there?
+
+Exercise 4.12.12 A certain river is one half mile wide with a current flowing at 2 miles per hour from
+East to West. A man swims directly toward the opposite shore from the South bank of the river at a speed
+of 3 miles per hour. How far down the river does he find himself when he has swam across? How far does
+he end up traveling?
+
+Exercise 4.12.13 A certain river is one half mile wide with a current flowing at 2 miles per hour from
+East to West. A man can swim at 3 miles per hour in still water. In what direction should he swim in order
+to travel directly across the river? What would the answer to this problem be if the river flowed at 3 miles
+per hour and the man could swim only at the rate of 2 miles per hour?
+
+Exercise 4.12.14 Three forces are applied to a point which does not move. Two of the forces are 2~i + 2~j −
+6~k Newtons and 8~i + 8~j + 3~k Newtons. Find the third force.
+
+Exercise 4.12.15 The total force acting on an object is to be 4~i+2~j −3~k Newtons. A force of −3~i−1~j +8~k
+Newtons is being applied. What other force should be applied to achieve the desired total force?
+
+Exercise 4.12.16 A bird flies from its nest 8 km in the direction 56 π north of east where it stops to rest
+on a tree. It then flies 1 km in the direction due southeast and lands atop a telephone pole. Place an xy
+coordinate system so that the origin is the bird’s nest, and the positive x axis points east and the positive y
+axis points north. Find the displacement vector from the nest to the telephone pole.
+                                                                                    
+ Exercise 4.12.17 If ~F is a force and ~D is a vector, show proj~D F  ~ = kFk  ~ cos θ ~u where ~u is the unit
+ vector in the direction of ~D, where ~u = ~D/k~Dk and θ is the included angle between the two vectors, ~F and
+~D. k~
+     Fk cos θ is sometimes called the component of the force, ~F in the direction, ~D.
+
+268    Rn
+
+
+Exercise 4.12.18 A boy drags a sled for 100 feet along the ground by pulling on a rope which is 20 degrees
+from the horizontal with a force of 40 pounds. How much work does this force do?
+
+Exercise 4.12.19 A girl drags a sled for 200 feet along the ground by pulling on a rope which is 30 degrees
+from the horizontal with a force of 20 pounds. How much work does this force do?
+
+Exercise 4.12.20 A large dog drags a sled for 300 feet along the ground by pulling on a rope which is 45
+degrees from the horizontal with a force of 20 pounds. How much work does this force do?
+
+Exercise 4.12.21 How much work does it take to slide a crate 20 meters along a loading dock by pulling
+on it with a 200 Newton force at an angle of 30◦ from the horizontal? Express your answer in Newton
+meters.
+
+Exercise 4.12.22 An object moves 10 meters in the direction of ~j. There are two forces acting on this
+        F1 =~i + ~j + 2~k, and ~F2 = −5~i + 2~j − 6~k. Find the total work done on the object by the two forces.
+object, ~
+Hint: You can take the work done by the resultant of the two forces or you can add the work done by each
+force. Why?
+
+Exercise 4.12.23 An object moves 10 meters in the direction of ~j +~i. There are two forces acting on this
+object, ~F1 =~i + 2~j + 2~k, and ~F2 = 5~i + 2~j − 6~k. Find the total work done on the object by the two forces.
+Hint: You can take the work done by the resultant of the two forces or you can add the work done by each
+force. Why?
+
+Exercise 4.12.24 An object moves 20 meters in the direction of ~k + ~j. There are two forces acting on this
+        F1 = ~i + ~j + 2~k, and ~F2 = ~i + 2~j − 6~k. Find the total work done on the object by the two forces.
+object, ~
+Hint: You can take the work done by the resultant of the two forces or you can add the work done by each
+force.
+
+5. Linear Transformations
+
+5.1 Linear Transformations
+
+   Outcomes
+      A. Understand the definition of a linear transformation, and that all linear transformations are
+         determined by matrix multiplication.
+
+
+   Recall that when we multiply an m × n matrix by an n × 1 column vector, the result is an m × 1 column
+vector. In this section we will discuss how, through matrix multiplication, an m × n matrix transforms an
+n × 1 column vector into an m × 1 column vector.
+   Recall that the n × 1 vector given by                 
+                                                       x1
+                                                      x2 
+                                                         
+                                                ~x =  .. 
+                                                      . 
+                                                       xn
+is said to belong to Rn , which is the set of all n × 1 vectors. In this section, we will discuss transformations
+of vectors in Rn .
+    Consider the following example.
+
+   Example 5.1: A Function Which Transforms Vectors
+                                  
+                             1 2 0
+   Consider the matrix A =           . Show that by matrix multiplication A transforms vectors in
+                             2 1 0
+   R3 into vectors in R2 .
+
+Solution. First, recall that vectors in R3 are vectors of size 3 × 1, while vectors in R2 are of size 2 × 1. If
+we multiply A, which is a 2 × 3 matrix, by a 3 × 1 vector, the result will be a 2 × 1 vector. This what we
+mean when we say that A transforms vectors.
+              
+                 x
+   Now, for  y  in R3 , multiply on the left by the given matrix to obtain the new vector. This product
+                 z
+looks like                                          
+                                                  x                  
+                                         1 2 0                 x + 2y
+                                                      y =
+                                         2 1 0                   2x + y
+                                                      z
+
+                                                      269
+
+270    Linear Transformations
+
+
+The resulting product is a 2 × 1 vector which is determined by the choice of x and y. Here are some
+numerical examples.                                
+                                                1        
+                                        1 2 0              5
+                                                    2 =
+                                        2 1 0                4
+                                                    3
+                 
+                   1                                                      
+                          3                                              5
+Here, the vector 2 in R was transformed by the matrix into the vector          in R2 .
+                                                                           4
+                   3
+   Here is another example:                           
+                                              10             
+                                       1 2 0               20
+                                                     5 =
+                                       2 1 0                 25
+                                                   −3
+                                                                                                           ♠
+    The idea is to define a function which takes vectors in R3 and delivers new vectors in R2 . In this case,
+that function is multiplication by the matrix A.
+    Let T denote such a function. The notation T : Rn 7→ Rm means that the function T transforms vectors
+in Rn into vectors in Rm . The notation T (~x) means the transformation T applied to the vector~x. The above
+example demonstrated a transformation achieved by matrix multiplication. In this case, we often write
+
+                                                 TA (~x) = A~x
+
+Therefore, TA is the transformation determined by the matrix A. In this case we say that T is a matrix
+transformation.
+   Recall the property of matrix multiplication that states that for k and p scalars,
+
+                                        A (kB + pC) = kAB + pAC
+
+In particular, for A an m × n matrix and B and C, n × 1 vectors in Rn , this formula holds.
+    In other words, this means that matrix multiplication gives an example of a linear transformation,
+which we will now define.
+
+   Definition 5.2: Linear Transformation
+   Let T : Rn 7→ Rm be a function, where for each ~x ∈ Rn , T (~x) ∈ Rm . Then T is a linear transforma-
+   tion if whenever k, p are scalars and ~x1 and ~x2 are vectors in Rn (n × 1 vectors),
+
+                                    T (k~x1 + p~x2 ) = kT (~x1 ) + pT (~x2 )
+
+
+   Consider the following example.
+
+                                                                           5.1. Linear Transformations     271
+
+
+   Example 5.3: Linear Transformation
+   Let T be a transformation defined by T : R3 → R2 is defined by
+                                                           
+                                    x                       x
+                                             x+y
+                               T y =              for all  y  ∈ R3
+                                             x−z
+                                    z                         z
+
+   Show that T is a linear transformation.
+
+
+Solution. By Definition 9.55 we need to show that T (k~x1 + p~x2 ) = kT (~x1 ) + pT (~x2 ) for all scalars k, p
+and vectors ~x1 ,~x2 . Let                                   
+                                             x1            x2
+                                     ~x1 =  y1  ,~x2 =  y2 
+                                             z1             z2
+Then
+                                                                          
+                                                            x1            x2
+                            T (k~x1 + p~x2 ) =   T k  y1  + p  y2 
+                                                            z1            z2
+                                                                         
+                                                          kx1           px2
+                                             =   T  ky1  +  py2 
+                                                          kz1           pz2
+                                                                     
+                                                          kx1 + px2
+                                             =   T      ky1 + py2 
+                                                          kz1 + pz2
+                                                                                  
+                                                    (kx1 + px2 ) + (ky1 + py2 )
+                                             =
+                                                    (kx1 + px2 ) − (kz1 + pz2 )
+                                                                                  
+                                                    (kx1 + ky1 ) + (px2 + py2 )
+                                             =
+                                                    (kx1 − kz1 ) + (px2 − pz2 )
+                                                                                 
+                                                    kx1 + ky1            px2 + py2
+                                             =                     +
+                                                    kx1 − kz1            px2 − pz2
+                                                                               
+                                                      x1 + y1             x2 + y2
+                                             =   k               +p
+                                                      x1 − z1             x2 − z2
+                                             =   kT (~x1 ) + pT (~x2 )
+
+Therefore T is a linear transformation.                                                                     ♠
+
+    Two important examples of linear transformations are the zero transformation and identity transfor-
+mation. The zero transformation defined by T (~x) =~(0) for all ~x is an example of a linear transformation.
+Similarly the identity transformation defined by T (~x) =~(x) is also linear. Take the time to prove these
+using the method demonstrated in Example 5.3.
+    We began this section by discussing matrix transformations, where multiplication by a matrix trans-
+forms vectors. These matrix transformations are in fact linear transformations.
+
+272     Linear Transformations
+
+
+   Theorem 5.4: Matrix Transformations are Linear Transformations
+   Let T : Rn 7→ Rm be a transformation defined by T (~x) = A~x. Then T is a linear transformation.
+
+
+    It turns out that every linear transformation can be expressed as a matrix transformation, and thus linear
+transformations are exactly the same as matrix transformations.
+
+
+
+Exercises
+
+Exercise 5.1.1 Show the map T : Rn 7→ Rm defined by T (~x) = A~x where A is an m × n matrix and ~x is an
+m × 1 column vector is a linear transformation.
+
+Exercise 5.1.2 Show that the function T~u defined by T~u (~v) =~v − proj~u (~v) is also a linear transformation.
+
+Exercise 5.1.3 Let ~u be a fixed vector. The function T~u defined by T~u~v = ~u +~v has the effect of translating
+all vectors by adding ~u 6= ~0. Show this is not a linear transformation. Explain why it is not possible to
+represent T~u in R3 by multiplying by a 3 × 3 matrix.
+
+
+
+5.2 The Matrix of a Linear Transformation I
+
+   Outcomes
+      A. Find the matrix of a linear transformation with respect to the standard basis.
+
+       B. Determine the action of a linear transformation on a vector in Rn .
+
+
+    In the above examples, the action of the linear transformations was to multiply by a matrix. It turns
+out that this is always the case for linear transformations. If T is any linear transformation which maps
+Rn to Rm , there is always an m × n matrix A with the property that
+
+                                                  T (~x) = A~x                                             (5.1)
+
+for all ~x ∈ Rn .
+
+   Theorem 5.5: Matrix of a Linear Transformation
+   Let T : Rn 7→ Rm be a linear transformation. Then we can find a matrix A such that T (~x) = A~x. In
+   this case, we say that T is determined or induced by the matrix A.
+
+                                                              5.2. The Matrix of a Linear Transformation I           273
+
+
+    Here is why. Suppose T : Rn 7→ Rm is a linear transformation and you want to find the matrix defined
+by this linear transformation as described in 5.1. Note that
+                                                                   
+                              x1          1           0                   0
+                             x2        0         1                 0     n
+                                                                   
+                       ~x =  ..  = x1  ..  + x2  ..  + · · · + xn  ..  = ∑ xi~ei
+                             .         .         .                 .  i=1
+                              xn          0           0                   1
+
+where ~ei is the ith column of In , that is the n × 1 vector which has zeros in every slot but the ith and a 1 in
+this slot.
+    Then since T is linear,
+                                                 n
+                                   T (~x) =     ∑ xiT (~ei)
+                                                i=1
+                                                                            
+                                                  |              |         x1
+                                                                              
+                                           =  T (~e1 ) · · · T (~en )   ... 
+                                                  |              |         xn
+                                                    
+                                                 x1
+                                               .. 
+                                           = A . 
+                                                 xn
+
+The desired matrix is obtained from constructing the ith column as T (~ei ) . Recall that the set {~e1 ,~e2 , · · · ,~en }
+is called the standard basis of Rn . Therefore the matrix of T is found by applying T to the standard basis.
+We state this formally as the following theorem.
+
+   Theorem 5.6: Matrix of a Linear Transformation
+   Let T : Rn 7→ Rm be a linear transformation. Then the matrix A satisfying T (~x) = A~x is given by
+                                                                   
+                                                |             |
+                                      A =  T (~e1 ) · · · T (~en ) 
+                                                |             |
+
+   where ~ei is the ith column of In , and then T (~ei ) is the ith column of A.
+
+
+    The following Corollary is an essential result.
+
+   Corollary 5.7: Matrix and Linear Transformation
+   A transformation T : Rn → Rm is a linear transformation if and only if it is a matrix transformation.
+
+
+    Consider the following example.
+
+274    Linear Transformations
+
+
+   Example 5.8: The Matrix of a Linear Transformation
+   Suppose T is a linear transformation, T : R3 → R2 where
+                                                             
+                            1                0                0     
+                                     1                  9               1
+                       T 0 =           , T 1 =           , T 0 =
+                                     2                 −3               1
+                            0                  0                  1
+
+   Find the matrix A of T such that T (~x) = A~x for all ~x.
+
+
+Solution. By Theorem 5.6 we construct A as follows:
+                                                                
+                                              |            |
+                                   A =  T (~e1 ) · · · T (~en ) 
+                                              |            |
+
+   In this case, A will be a 2 × 3 matrix, so we need to find T (~e1 ) , T (~e2 ) , and T (~e3 ). Luckily, we have
+been given these values so we can fill in A as needed, using these vectors as the columns of A. Hence,
+                                                             
+                                                   1    9 1
+                                            A=
+                                                   2 −3 1
+
+                                                                                                               ♠
+   In this example, we were given the resulting vectors of T (~e1 ) , T (~e2 ) , and T (~e3 ). Constructing the
+matrix A was simple, as we could simply use these vectors as the columns of A. The next example shows
+how to find A when we are not given the T (~ei ) so clearly.
+
+   Example 5.9: The Matrix of Linear Transformation: Inconveniently
+                Defined
+   Suppose T is a linear transformation, T : R2 → R2 and
+                                                        
+                                      1        1         0    3
+                                  T       =       ,T        =
+                                      1        2       −1     2
+
+   Find the matrix A of T such that T (~x) = A~x for all ~x.
+
+
+Solution. By Theorem 5.6 to find this matrix, we need to determine the action of T on ~e1 and ~e2 . In
+Example 9.91, we were given these resulting vectors. However, in this example, we have been given T
+of two different vectors. How can we find out the action of T on ~e1 and ~e2 ? In particular for ~e1 , suppose
+there exist x and y such that                                
+                                        1          1           0
+                                            =x         +y                                                 (5.2)
+                                        0          1         −1
+   Then, since T is linear,                                                         
+                                              1                  1                   0
+                                      T               = xT               + yT
+                                              0                  1                  −1
+
+                                                      5.2. The Matrix of a Linear Transformation I      275
+
+
+   Substituting in values, this sum becomes
+                                                    
+                                          1      1      3
+                                       T     =x     +y                                                 (5.3)
+                                          0      2      2
+
+    Therefore, if we know the values of x and y which satisfy 5.2, we can substitute these into equation
+5.3. By doing so, we find T (~e1 ) which is the first column of the matrix A.
+    We proceed to find x and y. We do so by solving 5.2, which can be done by solving the system
+
+                                                  x=1
+                                                 x−y = 0
+
+   We see that x = 1 and y = 1 is the solution to this system. Substituting these values into equation 5.3,
+we have                                            
+                              1         1          3        1       3         4
+                         T         =1        +1        =        +        =
+                              0         2          2        2       2         4
+              
+                4
+   Therefore        is the first column of A.
+                4
+   Computing the second column is done in the same way, and is left as an exercise.
+   The resulting matrix A is given by                       
+                                                      4 −3
+                                             A=
+                                                      4 −2
+                                                                                                           ♠
+
+   This example illustrates a very long procedure for finding the matrix of A. While this method is reliable
+and will always result in the correct matrix A, the following procedure provides an alternative method.
+
+   Procedure 5.10: Finding the Matrix of Inconveniently Defined Linear Transformation
+   Suppose T : Rn → Rm is a linear transformation. Suppose there exist vectors {~a1 , · · · ,~an } in Rn
+                          −1
+   such that ~a1 · · · ~an     exists, and
+                                            T (~ai ) = ~bi
+   Then the matrix of T must be of the form
+                                                                 −1
+                                     ~b1 · · · ~bn    ~a1 · · · ~an
+
+
+   We will illustrate this procedure in the following example. You may also find it useful to work through
+Example 5.9 using this procedure.
+
+276    Linear Transformations
+
+
+   Example 5.11: Matrix of a Linear Transformation
+                 Given Inconveniently
+   Suppose T : R3 → R3 is a linear transformation and
+                                  
+                          1           0        0        2     1     0
+                     T 3 = 1 ,T 1 = 1 ,T 1 = 0 
+                                                        
+                          1           1        1        3     0     1
+
+   Find the matrix of this linear transformation.
+
+                                            −1               
+                                    1 0 1                 0 2 0
+Solution. By Procedure 5.10, A =  3 1 1  and B =  1 1 0 
+                                    1 1 0                 1 3 1
+   Then, Procedure 5.10 claims that the matrix of T is
+                                                           
+                                                     2 −2 4
+                                     C = BA−1 =  0     0 1 
+                                                     4 −3 6
+
+   Indeed you can first verify that T (~x) = C~x for the 3 vectors above:
+                                                  
+                      2 −2 4    1      0       2 −2 4   0      2
+                     0 0 1  3  =  1 ,  0 0 1  1  =  1 
+                      4 −3 6    1      1       4 −3 6   1      3
+                                           
+                                  2 −2 4     1      0
+                                0 0 1  1  =  0 
+                                  4 −3 6     0      1
+
+   But more generally T (~x) = C~x for any ~x. To see this, let ~y = A−1~x and then using linearity of T :
+                                               !
+               T (~x) = T (A~y) = T ∑~yi~ai = ∑~yi T (~ai ) ∑~yi~bi = B~y = BA−1~x = C~x
+                                         i
+
+                                                                                                             ♠
+   Recall the dot product discussed earlier. Consider the map ~v7→ proj~u (~v) which takes a vector a trans-
+forms it to its projection onto a given vector ~u. It turns out that this map is linear, a result which follows
+from the properties of the dot product. This is shown as follows.
+                                                                       
+                                                        (k~v + p~w) •~u
+                              proj~u (k~v + p~w) =                        ~u
+                                                             ~u •~u
+                                                                               
+                                                         ~v •~u            ~w •~u
+                                                 = k              ~u + p            ~u
+                                                         ~u •~u            ~u •~u
+                                                 = k proj~u (~v) + p proj~u (~w)
+
+   Consider the following example.
+
+                                                         5.2. The Matrix of a Linear Transformation I        277
+
+
+   Example 5.12: Matrix of a Projection Map
+            
+             1
+   Let ~u = 2  and let T be the projection map T : R3 7→ R3 defined by
+           
+             3
+
+                                               T (~v) = proj~u (~v)
+
+   for any ~v ∈ R3 .
+
+      1. Does this transformation come from multiplication by a matrix?
+
+      2. If so, what is the matrix?
+
+
+Solution.
+
+  1. First, we have just seen that T (~v) = proj~u (~v) is linear. Therefore by Theorem 5.5, we can find a
+     matrix A such that T (~x) = A~x.
+
+  2. The columns of the matrix for T are defined above as T (~ei ). It follows that T (~ei ) = proj~u (~ei ) gives
+     the ith column of the desired matrix. Therefore, we need to find
+                                                                    
+                                                             ~ei •~u
+                                            proj~u (~ei ) =            ~u
+                                                              ~u •~u
+
+      For the given vector ~u , this implies the columns of the desired matrix are
+                                                                 
+                                                 1         1           1
+                                           1   2   3  
+                                                 2 ,       2 ,         2
+                                          14         14          14
+                                                 3         3           3
+
+
+      which you can verify. Hence the matrix of T is
+                                                          
+                                                     1 2 3
+                                               1 
+                                                     2 4 6 
+                                              14
+                                                     3 6 9
+
+                                                                                                               ♠
+
+
+
+Exercises
+
+Exercise 5.2.1 Consider the following functions which map Rn to Rn .
+
+ (a) T multiplies the jth component of ~x by a nonzero number b.
+
+278     Linear Transformations
+
+
+  (b) T replaces the ith component of ~x with b times the jth component added to the ith component.
+  (c) T switches the ith and jth components.
+
+   Show these functions are linear transformations and describe their matrices A such that T (~x) = A~x.
+
+Exercise 5.2.2 You are given a linear transformation T : Rn → Rm and you know that
+                                                     T (Ai ) = Bi
+                         −1
+where       A1 · · · An         exists. Show that the matrix of T is of the form
+                                                                        −1
+                                            B1 · · · Bn     A1 · · · An
+
+
+
+Exercise 5.2.3 Suppose T is a linear transformation such that
+                                                      
+                                             1            5
+                                       T    2    =     1 
+                                            −6            3
+                                                      
+                                            −1            1
+                                         
+                                       T −1       =     1 
+                                             5            5
+                                                           
+                                             0              5
+                                       T  −1  =  3 
+                                             2            −2
+Find the matrix of T . That is find A such that T (~x) = A~x.
+
+Exercise 5.2.4 Suppose T is a linear transformation such that
+                                                      
+                                             1            1
+                                       T    1    =     3 
+                                            −8            1
+                                                      
+                                            −1            2
+                                       T    0    =     4 
+                                             6            1
+                                                           
+                                             0              6
+                                       T  −1  =  1 
+                                             3            −1
+Find the matrix of T . That is find A such that T (~x) = A~x.
+
+Exercise 5.2.5 Suppose T is a linear transformation such that
+                                                           
+                                             1            −3
+                                       T 3  =  1 
+                                            −7             3
+
+                                                         5.2. The Matrix of a Linear Transformation I   279
+
+                                                        
+                                               −1        1
+                                           T  −2  =  3 
+                                                6       −3
+                                                        
+                                                0        5
+                                           T  −1  =  3 
+                                                2       −3
+Find the matrix of T . That is find A such that T (~x) = A~x.
+
+Exercise 5.2.6 Suppose T is a linear transformation such that
+                                                      
+                                             1            3
+                                       T    1    =     3 
+                                            −7            3
+                                                      
+                                            −1            1
+                                       T 0  =  2 
+                                             6            3
+                                                           
+                                             0              1
+                                       T  −1  =  3 
+                                             2            −1
+Find the matrix of T . That is find A such that T (~x) = A~x.
+
+Exercise 5.2.7 Suppose T is a linear transformation such that
+                                                      
+                                              1            5
+                                       T     2    =     2 
+                                           −18             5
+                                                      
+                                            −1             3
+                                        T  −1  =  3 
+                                             15            5
+                                                            
+                                              0              2
+                                        T  −1  =  5 
+                                              4            −2
+Find the matrix of T . That is find A such that T (~x) = A~x.
+
+Exercise 5.2.8 Consider the following functions T : R3 → R2 . Show that each is a linear transformation
+and determine for each the matrix A such that T (~x) = A~x.
+         
+          x                    
+                   x + 2y + 3z
+  (a) T  y  =
+                   2y − 3x + z
+          z
+         
+          x                      
+                   7x + 2y + z
+  (b) T y =
+                   3x − 11y + 2z
+          z
+
+280    Linear Transformations
+
+           
+          x                  
+                  3x + 2y + z
+  (c) T  y  =
+                  x + 2y + 6z
+          z
+         
+          x                  
+                  2y − 5x + z
+  (d) T  y  =
+                   x+y+z
+          z
+
+
+Exercise 5.2.9 Consider the following functions T : R3 → R2 . Explain why each of these functions T is
+not linear.
+           
+          x                        
+                x + 2y + 3z + 1
+  (a) T y =
+                    2y − 3x + z
+          z
+         
+          x             2 + 3z
+                                
+                  x + 2y
+  (b) T  y  =
+                   2y + 3x + z
+          z
+         
+          x                       
+                  sin x + 2y + 3z
+  (c) T  y  =
+                    2y + 3x + z
+          z
+         
+          x                      
+                 x + 2y + 3z
+  (d) T y =
+                  2y + 3x − ln z
+          z
+
+
+Exercise 5.2.10 Suppose
+                                                             −1
+                                                A1 · · · An
+exists where each A j ∈ Rn and let vectors {B1 , · · · , Bn } in Rm be given. Show that there always exists a
+linear transformation T such that T (Ai ) = Bi .
+                                                                                  T
+Exercise 5.2.11 Find the matrix for T (~w) = proj~v (~w) where ~v =       1 −2 3           .
+                                                                                 T
+Exercise 5.2.12 Find the matrix for T (~w) = proj~v (~w) where ~v =       1 5 3        .
+                                                                                 T
+Exercise 5.2.13 Find the matrix for T (~w) = proj~v (~w) where ~v =       1 0 3        .
+
+                                                                  5.3. Properties of Linear Transformations      281
+
+
+5.3 Properties of Linear Transformations
+
+   Outcomes
+     A. Use properties of linear transformations to solve problems.
+
+     B. Find the composite of transformations and the inverse of a transformation.
+
+
+    Let T : Rn 7→ Rm be a linear transformation. Then there are some important properties of T which will
+be examined in this section. Consider the following theorem.
+
+   Theorem 5.13: Properties of Linear Transformations
+   Let T : Rn 7→ Rm be a linear transformation and let ~x ∈ Rn .
+
+       • T preserves the zero vector.
+
+                                            T (0~x) = 0T (~x). Hence T (~0) = ~0
+
+       • T preserves the negative of a vector:
+
+                                  T ((−1)~x) = (−1)T (~x). Hence T (−~x) = −T (~x).
+
+       • T preserves linear combinations:
+
+                                          Let ~x1 , ...,~xk ∈ Rn and a1 , ..., ak ∈ R.
+
+                                 Then if ~y = a1~x1 + a2~x2 + ... + ak~xk , it follows that
+                    T (~y) = T (a1~x1 + a2~x2 + ... + ak~xk ) = a1 T (~x1 ) + a2 T (~x2 ) + ... + ak T (~xk ).
+
+
+    These properties are useful in determining the action of a transformation on a given vector. Consider
+the following example.
+
+282   Linear Transformations
+
+
+   Example 5.14: Linear Combination
+   Let T : R3 7→ R4 be a linear transformation such that
+                                                                
+                                              4              4
+                                     1      4           4       
+                                   
+                                T 3 =           , T  0 = 5 
+                                                0             −1 
+                                     1                    5
+                                              −2                 5
+                
+             −7
+   Find T  3 .
+             −9
+
+                                                                                     
+                                                                   −7                −7
+Solution. Using the third property in Theorem 9.57, we can find T  3  by writing  3  as a linear
+                                                                   −9                −9
+                           
+                  1           4
+combination of 3 and 0 .
+                          
+                  1           5
+   Therefore we want to find a, b ∈ R such that
+                                                          
+                                        −7           1          4
+                                       3  = a 3  +b 0 
+                                        −9           1          5
+
+   The necessary augmented matrix and resulting reduced row-echelon form are given by:
+                                                                
+                                1 4 −7                   1 0     1
+                             3 0       3  → · · · →  0 1 −2 
+                                1 5 −9                   0 0     0
+
+   Hence a = 1, b = −2 and                           
+                                  −7         1            4
+                                  3  = 1  3  + (−2)  0 
+                                  −9         1            5
+   Now, using the third property above, we have
+                                                           
+                                 −7                  1           4
+                            T     3    = T 1 3 + (−2) 0 
+                                                            
+                                 −9                  1           5
+                                                          
+                                                   1         4
+                                         = 1T  3  − 2T  0 
+                                                   1         5
+                                                           
+                                                 4          4
+                                              4            
+                                         =         −2 5 
+                                              0         −1 
+                                               −2           5
+
+                                                             5.3. Properties of Linear Transformations   283
+
+                                                    
+                                                  −4
+                                                −6 
+                                             = 
+                                               
+                                                     
+                                                   2 
+                                                 −12
+                            
+                        −4
+                  −7    −6 
+   Therefore, T   3 =
+                       
+                             .                                                                           ♠
+                           2 
+                  −9
+                         −12
+    Suppose two linear transformations act in the same way on ~x for all vectors. Then we say that these
+transformations are equal.
+
+   Definition 5.15: Equal Transformations
+   Let S and T be linear transformations from Rn to Rm . Then S = T if and only if for every ~x ∈ Rn ,
+
+                                                 S (~x) = T (~x)
+
+
+   Suppose two linear transformations act on the same vector ~x, first the transformation T and then a
+second transformation given by S. We can find the composite transformation that results from applying
+both transformations.
+
+   Definition 5.16: Composition of Linear Transformations
+   Let T : Rk 7→ Rn and S : Rn 7→ Rm be linear transformations. Then the composite of S and T is
+
+                                               S ◦ T : Rk 7→ Rm
+
+   The action of S ◦ T is given by
+
+                                     (S ◦ T )(~x) = S(T (~x)) for all ~x ∈ Rk
+
+
+   Notice that the resulting vector will be in Rm . Be careful to observe the order of transformations. We
+write S ◦ T but apply the transformation T first, followed by S.
+
+   Theorem 5.17: Composition of Transformations
+   Let T : Rk 7→ Rn and S : Rn 7→ Rm be linear transformations such that T is induced by the matrix
+   A and S is induced by the matrix B. Then S ◦ T is a linear transformation which is induced by the
+   matrix BA.
+
+
+   Consider the following example.
+
+284      Linear Transformations
+
+
+   Example 5.18: Composition of Transformations
+   Let T be a linear transformation induced by the matrix
+                                                         
+                                                    1 2
+                                             A=
+                                                    2 0
+
+   and S a linear transformation induced by the matrix
+                                                       
+                                                    2 3
+                                             B=
+                                                    0 1
+                                                                                                   
+                                                                                                  1
+   Find the matrix of the composite transformation S ◦ T . Then, find (S ◦ T )(~x) for ~x =           .
+                                                                                                  4
+
+
+Solution. By Theorem 5.17, the matrix of S ◦ T is given by BA.
+                                                              
+                                         2 3        1 2        8 4
+                                BA =                       =
+                                         0 1        2 0        2 0
+
+   To find (S ◦ T )(~x), multiply ~x by BA as follows
+                                                        
+                                             8 4      1   24
+                                                        =
+                                             2 0      4    2
+
+   To check, first determine T (~x):                                      
+                                               1 2        1               9
+                                                                  =
+                                               2 0        4               2
+   Then, compute S(T (~x)) as follows:
+                                                                          
+                                               2 3        9               24
+                                                                  =
+                                               0 1        2                2
+                                                                                                               ♠
+     Consider a composite transformation S ◦ T , and suppose that this transformation acted such that (S ◦
+T )(~x) =~x. That is, the transformation S took the vector T (~x) and returned it to ~x. In this case, S and T are
+inverses of each other. Consider the following definition.
+
+   Definition 5.19: Inverse of a Transformation
+   Let T : Rn 7→ Rn and S : Rn 7→ Rn be linear transformations. Suppose that for each ~x ∈ Rn ,
+
+                                                 (S ◦ T )(~x) =~x
+
+   and
+                                                 (T ◦ S)(~x) =~x
+   Then, S is called an inverse of T and T is called an inverse of S. Geometrically, they reverse the
+   action of each other.
+
+                                                               5.3. Properties of Linear Transformations      285
+
+
+   The following theorem is crucial, as it claims that the above inverse transformations are unique.
+
+   Theorem 5.20: Inverse of a Transformation
+   Let T : Rn 7→ Rn be a linear transformation induced by the matrix A. Then T has an inverse trans-
+   formation if and only if the matrix A is invertible. In this case, the inverse transformation is unique
+   and denoted T −1 : Rn 7→ Rn . T −1 is induced by the matrix A−1 .
+
+
+   Consider the following example.
+
+   Example 5.21: Inverse of a Transformation
+   Let T : R2 7→ R2 be a linear transformation induced by the matrix
+                                                        
+                                                    2 3
+                                             A=
+                                                    3 4
+
+   Show that T −1 exists and find the matrix B which it is induced by.
+
+
+Solution. Since the matrix A is invertible, it follows that the transformation T is invertible. Therefore, T −1
+exists.
+   You can verify that A−1 is given by:
+                                                                    
+                                                −1           −4  3
+                                            A        =
+                                                              3 −2
+
+Therefore the linear transformation T −1 is induced by the matrix A−1 .                                            ♠
+
+
+
+Exercises
+
+                                                                                                        
+Exercise 5.3.1 Show that if a function T : Rn → Rm is linear, then it is always the case that T         ~0 = ~0.
+
+                                                                                                  
+                                                                                             3 1
+Exercise 5.3.2 Let T be a linear transformation induced by the matrix A =                      and S a linear
+                                                                                          −1 2     
+                                0 −2                                                                2
+transformation induced by B =            . Find matrix of S ◦ T and find (S ◦ T ) (~x) for ~x =         .
+                                4    2                                                            −1
+                                                                                       
+                                                                               1      2
+Exercise 5.3.3 Let T be a linear transformation and suppose T                 =           . Suppose S is a
+                                                                            −4     −3      
+                                                   1 2                                      1
+linear transformation induced by the matrix B =          . Find (S ◦ T ) (~x) for ~x =         .
+                                                  −1 3                                   −4
+
+286       Linear Transformations
+
+                                                                                                           
+                                                                                                      2 3
+Exercise 5.3.4 Let T be a linear transformation induced by the matrix A =                     and S a linear
+                                                                                                  1 1
+                                −1     3                                                           5
+transformation induced by B =              . Find matrix of S ◦ T and find (S ◦ T ) (~x) for ~x =      .
+                                 1 −2                                                              6
+                                                                                                    
+                                                                                                 2 1
+Exercise 5.3.5 Let T be a linear transformation induced by the matrix A =                              . Find the matrix of
+                                                                                                 5 2
+T −1 .
+                                                                                                     
+                                                                                                 4 −3
+Exercise 5.3.6 Let T be a linear transformation induced by the matrix A =                              . Find the matrix
+                                                                                                 2 −2
+of T −1 .
+                                                                                                           
+                                                                                      1                  9       0
+Exercise 5.3.7 Let T be a linear transformation and suppose T                                    =          , T       =
+                                                                                      2                  8      −1
+     
+  −4
+       . Find the matrix of T −1 .
+
+=== 5.7; extracted full-text lines15925–16218 ===
+rem 5.44. The three vectors which span W are easily seen to be linearly independent by making them the
+columns of a matrix and row reducing to the reduced row-echelon form.
+
+                                                                                   5.6. Isomorphisms   305
+
+
+   You can exhibit an isomorphism of these two spaces as follows.
+                                                                        
+                                       1                  0                  1
+                                      2                1                1 
+                          T (~e1 ) =                                    
+                                      1  , T (~e2 ) =  0  , T (~e3 ) =  2 
+                                       1                  1                  0
+and extend linearly. Recall that the matrix of this linear transformation is just the matrix having these
+vectors as columns. Thus the matrix of this isomorphism is
+                                                         
+                                                1 0 1
+                                               2 1 1 
+                                                         
+                                               1 0 2 
+                                                1 1 0
+You should check that multiplication on the left by this matrix does reproduce the claimed effect resulting
+from an application by T .                                                                               ♠
+   Consider the following example.
+
+   Example 5.46: Finding the Matrix of an Isomorphism
+   Let V = R3 and let W denote
+                                                 
+                                            
+                                               1     0     1 
+                                                       
+                                                2 , , 1 
+                                                      1
+                                        span  1   0   2 
+                                            
+                                                              
+                                                              
+                                                1     1     0
+
+   Let T : V 7→ W be defined as follows.
+                                                        
+                                    1        0         1
+                            1       2    0    1    1    1 
+                       T 1 =                 
+                                    1 ,T 1 =  0 ,T 1 =  2 
+                            0              1           1
+                                      1          1           0
+
+   Find the matrix of this isomorphism T .
+
+
+Solution. First note that the vectors             
+                                             1     0     1
+                                            1 , 1 , 1 
+                                             0     1     1
+are indeed a basis for R3 as can be seen by making them the columns of a matrix and using the reduced
+row-echelon form.
+    Now recall the matrix of T is a 4 × 3 matrix A which gives the same effect as T . Thus, from the way
+we multiply matrices,                                            
+                                                       1 0 1
+                                          1 0 1        2 1 1 
+                                     A 1 1 1 =
+                                       
+                                                       1 0 2 
+                                                                  
+                                          0 1 1
+                                                         1 1 0
+
+306      Linear Transformations
+
+
+Hence,                                                            
+                             1        0    1         −1    1  0  0
+                            2                  1 0 1
+                                      1    1             
+                                              1 1 1  =  0   2 −1 
+                         A=
+                            1                           
+                                                                     
+                                      0    2                 2 −1  1 
+                                                0 1 1
+                             1        1    0                −1  2 −1
+Note how the span of the columns of this new matrix must be the same as the span of the vectors defining
+W.                                                                                                    ♠
+    This idea of defining a linear transformation by what it does on a basis works for linear maps which
+are not necessarily isomorphisms.
+
+   Example 5.47: Finding the Matrix of an Isomorphism
+   Let V = R3 and let W denote
+                                                   
+                                              
+                                                 1     0     1 
+                                                         
+                                                 0   1   1 
+                                          span   ,   ,  
+                                              
+                                                 1     0     1 
+                                                                
+                                                  1     1     2
+
+   Let T : V 7→ W be defined as follows.
+                                                        
+                                    1        0         1
+                            1       0    0    1    1    1 
+                       T 1 =                 
+                                    1 ,T 1 =  0 ,T 1 =  1 
+                            0              1           1
+                                      1          1           2
+
+   Find the matrix of this linear transformation.
+
+
+Solution. Note that in this case, the three vectors which span W are not linearly independent. Nevertheless
+the above procedure will still work. The reasoning is the same as before. If A is this matrix, then
+                                                                    
+                                                          1 0 1
+                                            1 0 1         0 1 1 
+                                        A 1 1 1 =
+                                         
+                                                          1 0 1 
+                                                                     
+                                            0 1 1
+                                                            1 1 2
+
+and so                                                                    
+                               1          0   1         −1   1       0   0
+                              0                   1 0 1
+                                          1   1              0       0   1 
+                           A=
+                              1
+                                                 1 1 1  =                
+                                          0   1              1       0   0 
+                                                   0 1 1
+                               1          1   2                1       0   1
+The columns of this last matrix are obviously not linearly independent.                                  ♠
+
+                                                                                            5.6. Isomorphisms         307
+
+
+Exercises
+
+Exercise 5.6.1 Let V and W be subspaces of Rn and Rm respectively and let T : V → W be a linear
+transformation. Suppose that {T~v1 , · · · , T~vr } is linearly independent. Show that it must be the case that
+{~v1 , · · · ,~vr } is also linearly independent.
+
+Exercise 5.6.2 Let                                  
+                                               
+                                                 1     0     1 
+                                                         
+                                                  1 , , 1 
+                                                        1
+                                       V = span 
+                                                 2   1   0 
+                                               
+                                                                
+                                                                
+                                                  0     1     1
+Let T~x = A~x where A is the matrix                                
+                                                     1    1   1   1
+                                                    0    1   1   0 
+                                                                   
+                                                    0    1   2   1 
+                                                     1    1   1   2
+Give a basis for im (T ).
+
+Exercise 5.6.3 Let                                  
+                                               
+                                                 1     1     1 
+                                                         
+                                                 0   1   4 
+                                       V = span   ,   ,  
+                                               
+                                                 0     1     4 
+                                                                
+                                                  1     1     1
+Let T~x = A~x where A is the matrix                                
+                                                     1    1   1   1
+                                                    0    1   1   0 
+                                                                   
+                                                    0    1   2   1 
+                                                     1    1   1   2
+Find a basis for im (T ). In this case, the original vectors do not form an independent set.
+
+Exercise 5.6.4 If {~v1 , · · · ,~vr } is linearly independent and T is a one to one linear transformation, show
+that {T~v1 , · · · , T~vr } is also linearly independent. Give an example which shows that if T is only linear, it
+can happen that, although {~v1 , · · · ,~vr } is linearly independent, {T~v1 , · · · , T~vr } is not. In fact, show that it
+can happen that each of the T~v j equals 0.
+
+Exercise 5.6.5 Let V and W be subspaces of Rn and Rm respectively and let T : V → W be a linear
+transformation. Show that if T is onto W and if {~v1 , · · · ,~vr } is a basis for V , then span {T~v1 , · · · , T~vr } =
+W.
+
+Exercise 5.6.6 Define T : R4 → R3 as follows.
+                                                              
+                                                      3 2  1 8
+                                              T~x =  2 2 −2 6 ~x
+                                                      1 1 −1 3
+
+308     Linear Transformations
+
+
+Find a basis for im (T ). Also find a basis for ker (T ) .
+
+Exercise 5.6.7 Define T : R3 → R3 as follows.
+                                                           
+                                                      1 2 0
+                                              T~x =  1 1 1 ~x
+                                                      0 1 1
+
+where on the right, it is just matrix multiplication of the vector ~x which is meant. Explain why T is an
+isomorphism of R3 to R3 .
+
+Exercise 5.6.8 Suppose T : R3 → R3 is a linear transformation given by
+
+                                                     T~x = A~x
+
+where A is a 3 × 3 matrix. Show that T is an isomorphism if and only if A is invertible.
+
+Exercise 5.6.9 Suppose T : Rn → Rm is a linear transformation given by
+
+                                                     T~x = A~x
+
+where A is an m × n matrix. Show that T is never an isomorphism if m 6= n. In particular, show that if
+m > n, T cannot be onto and if m < n, then T cannot be one to one.
+
+Exercise 5.6.10 Define T : R2 → R3 as follows.
+                                                           
+                                                        1 0
+                                                T~x =  1 1 ~x
+                                                        0 1
+
+where on the right, it is just matrix multiplication of the vector ~x which is meant. Show that T is one to
+one. Next let W = im (T ) . Show that T is an isomorphism of R2 and im (T ).
+
+Exercise 5.6.11 In the above problem, find a 2 × 3 matrix A such that the restriction of A to im (T ) gives
+the same result as T −1 on im (T ). Hint: You might let A be such that
+                                                        
+                                        1                0        
+                                                 1                   0
+                                    A 1  =         , A 1  =
+                                                 0                   1
+                                        0                  1
+
+now find another vector ~v ∈ R3 such that
+                                                  
+                                               1        0       
+                                                1  ,  1  ,~v
+                                                                
+                                                 0       1
+is a basis. You could pick                                 
+                                                          0
+                                                   ~v =  0 
+                                                          1
+
+                                                                              5.6. Isomorphisms     309
+
+
+for example. Explain why this one works or one of your choice works. Then you could define A~v to equal
+some vector in R2 . Explain why there will be more than one such matrix A which will deliver the inverse
+isomorphism T −1 on im (T ).
+                                        
+                                      1       0 
+Exercise 5.6.12 Now let V equal span   0 , 1  and let T : V → W be a linear transformation
+                                            
+                                                 
+                                        1      1
+where                                          
+                                            
+                                             1       0  
+                                              0   1 
+                                                  
+                                   W = span   ,     
+                                            
+                                               1     1  
+                                                         
+                                                0     1
+ and                                               
+                                         1        0
+                                    1    0    0    1 
+                                 T 0 =       
+                                         1 ,T 1 =  1 
+                                    1           1
+                                          0           1
+Explain why T is an isomorphism. Determine a matrix A which, when multiplied on the left gives the same
+result as T on V and a matrix B which delivers T −1 on W . Hint: You need to have
+                                                             
+                                                       1 0
+                                            1 0         0 1 
+                                       A 0 1 =
+                                         
+                                                        1 1 
+                                                              
+                                            1 1
+                                                         0 1

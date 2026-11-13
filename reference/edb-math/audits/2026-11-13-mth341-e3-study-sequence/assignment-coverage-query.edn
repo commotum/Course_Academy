@@ -1,0 +1,4 @@
+[:find (pull ?a [:db/id :activity/id :activity/title :activity/due
+ {[:activity/steps :limit nil] [:db/id {:step/content [:db/id :assigned-problem/id
+ {[:assigned-problem/topic-coverage :limit nil] [:db/id :topic/title]}]}]}])
+ :in $ [?a ...] :where [?a :activity/id _]]

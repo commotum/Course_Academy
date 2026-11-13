@@ -9,6 +9,7 @@ Start generation from the repository root:
 ```bash
 uv run gen                  # Start in the background with six builders
 uv run gen -w 6 -u 25        # Start with six builders, preserving 25% remaining quota
+uv run gen -t 17592186050938 # Generate only for this topic
 uv run gen -s               # Show status
 uv run gen -k               # Stop after active agent turns finish
 uv run gen -h               # Show help
@@ -21,7 +22,23 @@ optional **remaining-quota reserve**, not a percentage to consume.
 `-k`/`--stop` closes admission immediately, lets active agent turns finish, and
 retains unfinished jobs for the next explicit `uv run gen`. `-s`/`--status` reports
 state without starting generation. The double-dash short spellings `--w`, `--u`,
-`--k`, `--s`, and `--h` also work.
+`--k`, `--s`, `--t`, and `--h` also work.
+
+`-t`/`--topic` accepts a topic's database entity ID (also written
+`:db/id=17592186050938`), and combines with `-w` and `-u`. For example:
+
+```bash
+uv run gen -t 17592186050938 -w 3 -u 25
+```
+
+This runs the existing build, independent review, publication and refill stages
+for that topic's knowledge points, even when it is outside the current study
+selection. It preserves and resumes saved jobs, leaves unrelated queued work
+untouched, and does not add learner targets. Shared knowledge points can also
+benefit other topics. Status displays the focused topic. Only one supervisor
+runs at a time; to switch between a focused run and the general queue, use `-k`,
+wait for it to stop, then start the desired command. A focused run stays scoped
+to that topic until stopped; it never falls through to the general queue.
 
 The parent supervisor alone reads quota, using Codex app-server's
 `account/rateLimits/read`; this does not create an agent session or request model

@@ -42,6 +42,10 @@ pub struct Context {
     /// In natural-exponential prompts, lowercase e is Euler's constant even
     /// next to digits (6e-6 means 6*e-6). Uppercase E retains scientific notation.
     pub natural_exponential: bool,
+    /// Single lowercase arguments explicitly named by a function definition
+    /// in the prompt. Only these letters may form a plain product longer
+    /// than two letters; this does not change the interpretation of e or i.
+    pub declared_function_arguments: u32,
     /// Explicit prompt declarations for single lowercase real variables.
     /// Bit zero is a, bit one b, etc. Conflicting declarations are discarded.
     pub positive_variables: u32,
@@ -1996,6 +2000,25 @@ enum Token {
     Command(String),
     Mark(char),
 }
+fn word_followed_by_group(mut tail: &[char]) -> bool {
+    loop {
+        tail = &tail[tail.iter().take_while(|c| c.is_whitespace()).count()..];
+        if tail.first() == Some(&'\u{2061}') {
+            tail = &tail[1..];
+            continue;
+        }
+        if matches!(tail.first(), Some('(' | '{')) { return true; }
+        if tail.first() != Some(&'\\') { return false; }
+        let end = 1 + tail[1..].iter().take_while(|c| c.is_ascii_alphabetic()).count();
+        let command: String = tail[1..end].iter().collect();
+        if !matches!(command.as_str(), "left" | "right" | "displaystyle" | "textstyle"
+            | "big" | "Big" | "bigg" | "Bigg"
+            | "bigl" | "bigr" | "bigm" | "Bigl" | "Bigr" | "Bigm"
+            | "biggl" | "biggr" | "biggm" | "Biggl" | "Biggr" | "Biggm")
+        { return false; }
+        tail = &tail[end..];
+    }
+}
 fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
     if source.len() > 4096 {
         return Err("math input exceeds 4096 bytes".into());
@@ -2105,7 +2128,11 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                     | "cbrt"
             ) {
                 tokens.push(Token::Word(word));
-            } else if word.chars().count() > 2 {
+            } else if word.chars().count() > 2
+                && (word_followed_by_group(&chars[at..])
+                    || !word.bytes().all(|letter| letter.is_ascii_lowercase()
+                        && (context.declared_function_arguments & (1_u32 << (letter - b'a')) != 0
+                            || letter == b'e' && context.natural_exponential))) {
                 tokens.push(Token::Command(word));
             } else {
                 for c in word.chars() {
@@ -2634,11 +2661,23 @@ fn matrix_cells(source: &str) -> Result<Option<Vec<Vec<&str>>>> {
     Ok(None)
 }
 
-fn plus_minus(source: &str) -> Option<&str> {
+// One plus/minus token denotes two branches, including inside a fraction.
+// Multiple independent signs remain unsupported rather than growing an
+// unbounded set or guessing whether the signs are correlated.
+fn plus_minus_branches(source: &str) -> Result<Option<[String; 2]>> {
     let source = source.trim();
-    source.strip_prefix('±').or_else(|| source.strip_prefix(r"\pm")
-        .filter(|rest| !rest.starts_with(|c: char| c.is_ascii_alphabetic())))
-        .map(str::trim)
+    let mut signs = source.match_indices('±').map(|(i, s)| (i, s.len()))
+        .chain(source.match_indices(r"\pm").filter(|(i, token)|
+            !source[i + token.len()..].starts_with(|c: char| c.is_ascii_alphabetic()))
+            .map(|(i, token)| (i, token.len())));
+    let Some((i, len)) = signs.next() else { return Ok(None); };
+    if signs.next().is_some() { return Err("multiple plus/minus signs are unsupported".into()); }
+    let (before, after) = (&source[..i], &source[i + len..]);
+    if i == 0 {
+        // Preserve the established leading-sign convention: ±(the remainder).
+        return Ok(Some([after.trim().to_owned(), format!("-({after})")]));
+    }
+    Ok(Some([format!("{before}+{after}"), format!("{before}-{after}")]))
 }
 
 /// Whether a canonical answer has a bounded, supported representation.
@@ -2648,7 +2687,11 @@ pub fn supports(source: &str, context: Context) -> bool {
     }
     match matrix_cells(source) {
         Ok(Some(rows)) => rows.iter().flatten().all(|cell| parse(cell, context).is_ok()),
-        Ok(None) => parse(plus_minus(source).unwrap_or(source), context).is_ok(),
+        Ok(None) => match plus_minus_branches(source) {
+            Ok(Some(branches)) => branches.iter().all(|branch| parse(branch, context).is_ok()),
+            Ok(None) => parse(source, context).is_ok(),
+            Err(_) => false,
+        },
         Err(_) => false,
     }
 }
@@ -2958,33 +3001,28 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
         }
         (None, None) => {}
     }
-    // A leading plus/minus denotes two possible values. Against a scalar,
-    // both branches must equal it: an extra, provably distinct value is wrong.
-    // This does not claim support for arbitrary set-valued expressions.
-    if let (Some(a), Some(b)) = (plus_minus(a), plus_minus(b)) {
-        // Each expression denotes the pair {u, -u}; either bijection proves
-        // equality. Preserve unresolved/domain errors when neither is proved.
-        return match (compare_single(a, b, context), compare_single(a, &format!("-({b})"), context)) {
-            (Ok(true), _) | (_, Ok(true)) => Ok(true),
-            (Ok(false), Ok(false)) => Ok(false),
-            (Err(error), _) | (_, Err(error)) => Err(error),
-        };
+    if let (None, None) = (plus_minus_branches(a)?, plus_minus_branches(b)?) {
+        return compare_single(a, b, context);
     }
-    let pair = match (plus_minus(a), plus_minus(b)) {
-        (Some(rest), None) => Some((rest, b)),
-        (None, Some(rest)) => Some((rest, a)),
-        _ => None,
+    let aa = plus_minus_branches(a)?.unwrap_or_else(|| [a.to_owned(), a.to_owned()]);
+    let bb = plus_minus_branches(b)?.unwrap_or_else(|| [b.to_owned(), b.to_owned()]);
+    // Validate all branches before comparing: malformed notation must never
+    // become a learner failure just because another branch differs.
+    for branch in aa.iter().chain(bb.iter()) { parse(branch, context)?; }
+    let both = |left: Result<bool>, right: Result<bool>| match (left, right) {
+        (Ok(false), _) | (_, Ok(false)) => Ok(false),
+        (Ok(true), Ok(true)) => Ok(true),
+        (Err(error), _) | (_, Err(error)) => Err(error),
     };
-    if let Some((rest, scalar)) = pair {
-        let positive = compare_single(rest, scalar, context);
-        let negative = compare_single(&format!("-({rest})"), scalar, context);
-        return match (positive, negative) {
-            (Ok(false), _) | (_, Ok(false)) => Ok(false),
-            (Ok(true), Ok(true)) => Ok(true),
-            (Err(error), _) | (_, Err(error)) => Err(error),
-        };
+    let direct = both(compare_single(&aa[0], &bb[0], context), compare_single(&aa[1], &bb[1], context));
+    let swapped = both(compare_single(&aa[0], &bb[1], context), compare_single(&aa[1], &bb[0], context));
+    // Either bijection proves equality of the two possible values. Treat a
+    // scalar as a repeated pair so a single root cannot pass for two roots.
+    match (direct, swapped) {
+        (Ok(true), _) | (_, Ok(true)) => Ok(true),
+        (Ok(false), Ok(false)) => Ok(false),
+        (Err(error), _) | (_, Err(error)) => Err(error),
     }
-    compare_single(a, b, context)
 }
 
 // A quotient containing a square root can have strictly disjoint real
@@ -4046,6 +4084,24 @@ mod tests {
     }
 
     #[test]
+    fn embedded_plus_minus_preserves_both_quadratic_roots() {
+        let answer = r"\frac{5\pm\sqrt{17}}{4}";
+        assert!(supports(answer, Context::default()));
+        for same in [answer, r"\frac54\pm\frac{\sqrt{17}}4", "(5±sqrt(17))/4"] {
+            eq(answer, same);
+            eq(same, answer);
+        }
+        for wrong in ["0", "(5+sqrt(17))/4", "(5-sqrt(17))/4", r"\frac{5\pm\sqrt{17}}{2}"] {
+            assert_eq!(compare(answer, wrong, Context::default()), Ok(false));
+            assert_eq!(compare(wrong, answer, Context::default()), Ok(false));
+        }
+        eq(r"2\pm0", "2");
+        assert!(!supports(r"1\pm2\pm3", Context::default()));
+        assert!(compare(r"1\pm unknown(x)", "0", Context::default()).is_err());
+        assert!(compare(r"(5\pm\sqrt{17})x/(4x)", answer, Context::default()).is_err());
+    }
+
+    #[test]
     fn fractional_counterexamples_reject_wrong_radical_answers() {
         for (a, b) in [("-x/sqrt(1-x^2)", "0"),
                        ("-x/sqrt(1-x^2)", "x/sqrt(1-x^2)"),
@@ -4851,4 +4907,66 @@ mod derivative_root_interior_regressions {
         assert!(compare("ln((pi/2+3)^2)*x/x", "2ln(pi/2+3)", c).is_err());
     }
 
+}
+
+#[cfg(test)]
+mod declared_plain_product_tests {
+    use super::*;
+
+    fn arguments(letters: &str) -> u32 {
+        letters.bytes().fold(0, |mask, c| mask | (1_u32 << (c - b'a')))
+    }
+
+    #[test]
+    fn declared_plain_products_accept_exact_gradient_forms_and_reject_errors() {
+        let context = Context {
+            declared_function_arguments: arguments("xyz"),
+            natural_exponential: true,
+            ..Context::default()
+        };
+        for (canonical, equivalent) in [
+            (r"yz e^{xyz}", r"y*z*exp(x*y*z)"),
+            (r"xz e^{xyz}", r"z*x*e^{z*y*x}"),
+            (r"xyz", "z*x*y"),
+            (r"xyze^{xyz}", "x*y*z*exp(x*y*z)"),
+        ] {
+            assert!(supports(canonical, context), "{canonical}");
+            assert_eq!(compare(canonical, equivalent, context), Ok(true));
+        }
+        for wrong in [r"y e^{xyz}", r"z e^{xyz}", r"-yz e^{xyz}", r"xz e^{xyz}"] {
+            assert_eq!(compare(wrong, r"yz e^{xyz}", context), Ok(false), "{wrong}");
+        }
+        assert!(compare(r"yz e^{xyz}*(x/x)", r"yz e^{xyz}", context).is_err());
+        for unsupported in ["xyq", "unknownfoo(x)", "xyz(x)", r"xyz\left(x\right)", r"\xyz"] {
+            assert!(!supports(unsupported, context), "{unsupported}");
+        }
+        assert!(!supports("xyz", Context::default()));
+        assert!(compare("xyz", "x*y*z", Context::default()).is_err());
+        assert!(!supports("unknownfoo(x)", Context {
+            declared_function_arguments: arguments("abcdefghijklmnopqrstuvwxyz"),
+            ..Context::default()
+        }));
+    }
+
+    #[test]
+    fn declared_plain_products_preserve_e_and_i_interpretations() {
+        let context = Context {
+            declared_function_arguments: arguments("xyz"),
+            ..Context::default()
+        };
+        // The extra e is allowed only with its existing exponential context.
+        assert!(!supports("xyze", context));
+        let natural = Context { natural_exponential: true, ..context };
+        assert_eq!(compare("xyze", "x*y*z*exp(1)", natural), Ok(true));
+        assert_eq!(compare("1e-3", "0.001", context), Ok(true));
+        assert_eq!(compare("1e-3", "0.001", natural), Ok(false));
+        let imaginary = Context { declared_function_arguments: arguments("i"), ..context };
+        assert_eq!(compare("iii", "-i", imaginary), Ok(true));
+        let formal = Context { symbolic_i: true, symbolic_e: true,
+            declared_function_arguments: arguments("ei"), ..context };
+        assert_eq!(compare("iii", "i^3", formal), Ok(true));
+        assert_eq!(compare("iii", "-i", formal), Ok(false));
+        assert_eq!(compare("eee", "e^3", formal), Ok(true));
+        assert_eq!(compare("eee", "exp(3)", formal), Ok(false));
+    }
 }

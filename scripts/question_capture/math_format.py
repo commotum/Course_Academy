@@ -780,6 +780,10 @@ def system_tex(equations, *, annotations=None):
 
 
 def _legacy_commands(text):
+    # Some source MathML exported the bold command as text beside its operand.
+    # Restore the vector-function symbol, rather than displaying a command name.
+    text = re.sub(r'\\text\{\\boldsymbol\}\s*(?:\{([A-Za-z])\}|([A-Za-z]))',
+                  lambda m: r'\boldsymbol{' + (m[1] or m[2]) + '}', text)
     for command, layout in [('matrix', 'matrix'), ('eqalign', 'aligned')]:
         offset = 0
         while match := re.search(r'\\' + command + r'\s*\{', text[offset:]):

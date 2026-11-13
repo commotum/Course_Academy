@@ -221,13 +221,21 @@ def save(path: Path, value: dict) -> None:
 
 
 class InventoryJobs:
-    def __init__(self, root: Path, directory: Path, learner: str, environment: dict | None = None):
+    def __init__(self, root: Path, directory: Path, learner: str, environment: dict | None = None,
+                 *, topic_id: int | None = None):
         self.root, self.directory, self.learner = root, directory, learner
         self.environment = dict(os.environ if environment is None else environment)
         directory.mkdir(parents=True, exist_ok=True)
         self._active_lock = threading.Lock()
         self._active_owners = set()
         self._stopping = False
+        self.topic_id = topic_id
+        # A focused supervisor shares durable workspaces and KP locks, but may
+        # only reconcile and dispatch KPs owned by its explicit topic.
+        self._scoped_kps = frozenset()
+
+    def in_scope(self, request: dict) -> bool:
+        return self.topic_id is None or request.get('knowledgePoint') in self._scoped_kps
 
     def mark_service_interruption(self):
         """Stop admissions and preserve exact launches owned by this supervisor."""
@@ -307,6 +315,15 @@ class InventoryJobs:
         return targets - completed
 
     def accept(self, inventory: dict) -> None:
+        if self.topic_id is not None:
+            if ('knowledge_points' not in inventory or len(inventory.get('topics', [])) != 1
+                    or inventory['topics'][0]['db/id'] != self.topic_id
+                    or inventory.get('maintained_knowledge_points')):
+                raise ValueError('Focused inventory must contain only the requested topic')
+            kps = frozenset(kp['db/id'] for kp in inventory['topics'][0]['knowledge_points'])
+            if any(kp['db/id'] not in kps for kp in inventory['knowledge_points']):
+                raise ValueError('Focused inventory contains unrelated knowledge points')
+            self._scoped_kps = kps
         if 'knowledge_points' not in inventory:
             return self._accept_legacy(inventory)
         requests = ranked_requests(inventory)
@@ -323,7 +340,8 @@ class InventoryJobs:
                 raise ValueError('Inventory basis regressed')
             existing = {path: json.loads(path.read_text()) for path in self.directory.glob('*.json')
                         if path.name != 'cursor.json'}
-            existing = {path: job for path, job in existing.items() if 'request' in job}
+            existing = {path: job for path, job in existing.items()
+                        if 'request' in job and self.in_scope(job['request'])}
             build_records, refill_records = {}, {}
             for path, job in existing.items():
                 request = job['request']
@@ -629,6 +647,8 @@ class InventoryJobs:
                 jobs, records = [], []
                 for path in self.directory.glob('*.json'):
                     job = json.loads(path.read_text())
+                    if not self.in_scope(job.get('request', {})):
+                        continue
                     records.append(job)
                     if (job.get('state') in {'pending', 'running'} and job.get('retryAt', 0) <= time.time()
                             and job['request'].get('jobKind', 'build') == lane):

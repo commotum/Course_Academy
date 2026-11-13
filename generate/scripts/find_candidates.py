@@ -304,11 +304,13 @@ def build(edb_root, test=False):
 
 
 def discover(database, learner, environment, *, binary, after_basis=None, lineage=None,
-             at=None, topics=(), activity_type="assessment", include_registered=False):
+             at=None, topics=(), activity_type="assessment", include_registered=False,
+             topic_only=False):
     """Capture bounded Study demand together; preserve the course-mode gate."""
     request = {"database": database, "learner": learner, "after_basis": after_basis,
                "lineage": lineage, "at": at, "topics": list(topics),
                "activity_type": activity_type, "include_registered": include_registered,
+               "topic_only": topic_only,
                "respect_study_scope": True}
     def capture(selected_only):
         response = subprocess.run([str(binary)], input=json.dumps({**request, "selected_only": selected_only}),
@@ -318,6 +320,10 @@ def discover(database, learner, environment, *, binary, after_basis=None, lineag
         check_generator_files(result, environment["EDB_MATH_ROOT"])
         return ranked_candidates(result)
 
+    if topic_only:
+        if not topics:
+            raise ValueError('Explicit topic discovery requires a topic database ID')
+        return capture(False)
     primary = capture(True)
     if primary.get("self_directed"):
         # Native discovery already captured the full current-need population at

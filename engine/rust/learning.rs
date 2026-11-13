@@ -2723,6 +2723,16 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
     static NATURAL_EXPONENTIAL: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
         regex::Regex::new(r"(?:^|[^a-z\\])e(?:\s*\})?\s*\^|\^\s*\{?\s*e(?:$|[^a-z])").expect("valid natural exponential expression")
     });
+    // A function definition declares its arguments; a referenced call, title,
+    // subscript, expression argument or arbitrary word does not. Keep this
+    // separate from e/i semantics and from sign/domain assumptions.
+    static FUNCTION_ARGUMENTS: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
+        regex::Regex::new(r"(?:^|[^a-zA-Z\\])[a-zA-Z]\s*\(\s*([a-z](?:\s*[,;]\s*[a-z])*)\s*\)\s*=")
+            .expect("valid explicit function argument declaration")
+    });
+    let declared_function_arguments = FUNCTION_ARGUMENTS.captures_iter(prompt)
+        .flat_map(|capture| capture[1].bytes().filter(u8::is_ascii_lowercase).collect::<Vec<_>>())
+        .fold(0_u32, |mask, letter| mask | (1_u32 << (letter - b'a')));
     // Read only explicit declarations in prompt prose, never a comparison to
     // be decided, a worked solution, or the owning KP's title. Restrict each
     // protected math span to a single strict sign assertion.
@@ -2771,6 +2781,7 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
         positive_variables,
         negative_variables,
         natural_exponential,
+        declared_function_arguments,
         symbolic_i: variable_matrix || ["riemann", "sigma", "\\sum", "vector"]
             .iter()
             .any(|v| wording.contains(v)),
@@ -5978,5 +5989,58 @@ mod variable_matrix_symbol_regressions {
         let complex = comparison_context(r"Complex matrix $\begin{bmatrix}i & e\end{bmatrix}$.", &title);
         assert_eq!(compare_math("i^2", "-1", complex), Ok(true));
         assert_eq!(compare_math("e", "exp(1)", complex), Ok(true));
+    }
+}
+
+#[cfg(test)]
+mod declared_function_product_regressions {
+    use super::*;
+
+    #[test]
+    fn declared_gradient_products_are_supported_and_graded_in_question_context() {
+        let mut snapshot = tests::fixture();
+        let prompt = r"Given the function $f(x,y,z)=e^{xyz}$, compute $\nabla_{x,y}f$. {{field-1}}";
+        snapshot.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+        let context = comparison_context(prompt, &[]);
+        assert!(context.natural_exponential);
+        for (canonical, accepted, rejected) in [
+            (r"yz e^{xyz}", vec![r"yz e^{xyz}", r"yze^{xyz}", "y*z*exp(x*y*z)", "z*y*e^(z*x*y)"],
+                vec![r"y e^{xyz}", r"z e^{xyz}", r"-yz e^{xyz}", r"xz e^{xyz}"]),
+            (r"xz e^{xyz}", vec![r"xz e^{xyz}", r"xze^{xyz}", "x*z*exp(x*y*z)", "z*x*e^(z*x*y)"],
+                vec![r"x e^{xyz}", r"z e^{xyz}", r"-xz e^{xyz}", r"yz e^{xyz}"]),
+        ] {
+            snapshot.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!(canonical));
+            assert!(validate_response_question(&snapshot, 100).is_ok(), "{canonical}");
+            for answer in accepted {
+                assert_eq!(grade_field(&snapshot,100,200,answer), Ok(true), "{canonical}: {answer}");
+            }
+            for answer in rejected {
+                assert_eq!(grade_field(&snapshot,100,200,answer), Ok(false), "{canonical}: {answer}");
+            }
+            for answer in ["unknownfoo(x)", "xyz(x)", r"yz e^{xyq}"] {
+                let result = grade_field(&snapshot,100,200,answer);
+                assert!(result.is_err(), "{canonical}: {answer}: {result:?}");
+            }
+            assert!(grade_field(&snapshot,100,200,&format!("{canonical}*(x/x)")).is_err());
+        }
+    }
+
+    #[test]
+    fn only_explicit_single_letter_function_definitions_declare_products() {
+        for prompt in [r"Given $f(x,y,z)=x+y+z$, simplify.", r"Let $g(a; b,c)=a+b+c$."] {
+            let context = comparison_context(prompt, &[]);
+            let (word, product) = if prompt.contains("f(") { ("xyz", "x*y*z") } else { ("abc", "a*b*c") };
+            assert_eq!(symbolic::compare(word, product, context), Ok(true), "{prompt}");
+        }
+        for prompt in [
+            "Simplify xyz.", r"Compute $f(x,y,z)$.", r"Given $f(x,y)=x+y$, simplify.",
+            r"Given $unknownfoo(x,y,z)=x+y+z$, simplify.", r"Given $f(x+y,z)=x+y+z$, simplify.",
+            r"Given $f(x_1,y,z)=x_1+y+z$, simplify.",
+        ] {
+            let context = comparison_context(prompt, &[r"Given f(x,y,z)=x+y+z".into()]);
+            assert!(!symbolic::supports("xyz", context), "{prompt}");
+            assert!(symbolic::compare("xyz", "x*y*z", context).is_err(), "{prompt}");
+            assert!(!symbolic::supports("unknownfoo(x)", context), "{prompt}");
+        }
     }
 }

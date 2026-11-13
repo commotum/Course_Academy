@@ -266,11 +266,11 @@ class CliTests(unittest.TestCase):
     def test_flags_defaults_and_aliases(self):
         with patch.object(G, 'start', return_value=0) as start:
             self.assertEqual(G.main([]), 0)
-            start.assert_called_once_with(6, None)
+            start.assert_called_once_with(6, None, None)
             self.assertEqual(G.main(['--w', '4', '--u', '25']), 0)
-            start.assert_called_with(4, 25)
+            start.assert_called_with(4, 25, None)
             self.assertEqual(G.main(['-w', '2', '--until', '30']), 0)
-            start.assert_called_with(2, 30)
+            start.assert_called_with(2, 30, None)
         with patch.object(G, 'read_status', return_value={'state': 'stopped'}), patch.object(G, 'request') as rpc:
             with contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(G.main(['--s']), 0)
@@ -279,10 +279,40 @@ class CliTests(unittest.TestCase):
 
     def test_invalid_flags_do_not_start(self):
         with patch.object(G, 'start') as start, contextlib.redirect_stderr(io.StringIO()):
-            for args in (['-w', '0'], ['-u', '101'], ['-u', 'nan'], ['-k', '-u', '25'], ['-s', '-w', '1']):
+            for args in (['-w', '0'], ['-u', '101'], ['-u', 'nan'], ['-k', '-u', '25'], ['-s', '-w', '1'],
+                         ['-t', '0'], ['-t', '-1'], ['-t', 'abc'], ['-t', '1.5'],
+                         ['-t', str(2**63)], ['-s', '-t', '123'], ['-k', '-t', '123']):
                 with self.subTest(args=args), self.assertRaises(SystemExit):
                     G.main(args)
             start.assert_not_called()
+
+    def test_topic_aliases_accept_entity_ids_and_compose_with_worker_and_quota_options(self):
+        with patch.object(G, 'start', return_value=0) as start:
+            for flag in ('-t', '--t', '--topic'):
+                for value in ('17592186050938', ':db/id=17592186050938'):
+                    self.assertEqual(G.main([flag, value, '-w', '2', '-u', '25']), 0)
+                    start.assert_called_with(2, 25, 17592186050938)
+
+    def test_topic_scope_is_passed_to_detached_service(self):
+        with tempfile.TemporaryDirectory() as temp, patch.object(G, 'RUNTIME', Path(temp)), \
+                patch.object(G, 'read_status', side_effect=[{'state': 'stopped'}, {
+                    'state': 'starting', 'started_at': time.time() + 100, 'workers': 6,
+                    'topic': 17592186050938}]), \
+                patch.object(G.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, '', '')) as run, \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(G.start(6, None, 17592186050938), 0)
+            self.assertEqual(run.call_args.args[0][-2:], ['-t', '17592186050938'])
+            self.assertIn('Topic: 17592186050938', output.getvalue())
+
+    def test_running_generator_cannot_silently_ignore_a_different_requested_scope(self):
+        for old_topic, new_topic in ((None, 123), (123, None), (123, 456)):
+            with self.subTest(old=old_topic, new=new_topic), tempfile.TemporaryDirectory() as temp, \
+                    patch.object(G, 'RUNTIME', Path(temp)), \
+                    patch.object(G, 'read_status', return_value={'state': 'running', 'topic': old_topic}), \
+                    patch.object(G.subprocess, 'run') as run:
+                with self.assertRaisesRegex(RuntimeError, 'already running'):
+                    G.start(6, None, new_topic)
+                run.assert_not_called()
 
     def test_detached_launch_is_owned_by_user_service_without_auto_restart(self):
         with tempfile.TemporaryDirectory() as temp, patch.object(G, 'RUNTIME', Path(temp)), \

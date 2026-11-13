@@ -435,6 +435,52 @@ fn candidates(
     )
 }
 
+fn generator_metadata(mut kp: Json) -> Json {
+    let generator = kp.get("knowledge-point/question-generator");
+    let entity = generator.and_then(|g| g.get("db/id")).cloned().unwrap_or(Json::Null);
+    let script = generator
+        .and_then(|g| g.get("question-generator/script"))
+        .and_then(Json::as_str)
+        .filter(|s| !s.trim().is_empty())
+        .map(str::to_owned);
+    kp["has_generator"] = json!(script.is_some());
+    kp["generator_script"] = json!(script);
+    kp["generator_entity"] = entity;
+    kp
+}
+
+/// An explicit CLI scope is independent of learner targets and study bounds.
+/// Only owning KPs enter inventory; prerequisites and other work stay untouched.
+fn explicit_candidates(db: &DatabaseValue, topics: &BTreeSet<u64>, kind: &str) -> Result<Json> {
+    if topics.is_empty() {
+        return Err("explicit topic discovery requires a topic database ID".into());
+    }
+    let rows = query(db, TOPICS, vec![ids(topics)?])?;
+    if rows.len() != topics.len() {
+        return Err("selected entity is not an existing topic".into());
+    }
+    let mut records = BTreeMap::new();
+    for row in rows {
+        let topic = eid(&row[0])?;
+        let mut record = row[1].clone();
+        record["triggers"] = json!([{"reason":"scheduler-selected", "activity_type":kind, "task":null}]);
+        record["urgency_groups"] = json!(["immediate"]);
+        record["urgency_value"] = json!(7);
+        record["studied"] = json!(false);
+        record["knowledge_points"] = json!([]);
+        records.insert(topic, record);
+    }
+    for row in query(db, KPS, vec![ids(topics)?])? {
+        let topic = eid(&row[0])?;
+        records.get_mut(&topic).ok_or("KP topic missing")?["knowledge_points"]
+            .as_array_mut().unwrap().push(generator_metadata(row[1].clone()));
+    }
+    for record in records.values_mut() {
+        record["knowledge_points"].as_array_mut().unwrap().sort_by_key(|k| k["db/id"].as_u64());
+    }
+    Ok(json!(records.into_values().collect::<Vec<_>>()))
+}
+
 fn candidates_scoped(
     db: &DatabaseValue,
     learner: u64,
@@ -654,31 +700,18 @@ fn candidates_scoped(
         }
         for row in query(db, KPS, vec![ids(&selected)?])? {
             let topic = eid(&row[0])?;
-            let mut kp = row[1].clone();
-            let generator = kp
-                .get("knowledge-point/question-generator")
-                .and_then(|g| g.get("db/id"))
-                .cloned();
-            let script = kp
-                .get("knowledge-point/question-generator")
-                .and_then(|g| g.get("question-generator/script"))
-                .and_then(Json::as_str)
-                .filter(|s| !s.trim().is_empty())
-                .map(str::to_owned);
+            let kp = generator_metadata(row[1].clone());
             // Outside direct selections, the primary pass only inventories
             // immutable registered packages. Unregistered sibling KPs must not
             // enter the ranking/inventory pass merely by sharing a topic.
             if selected_only
                 && !direct.contains(&topic)
-                && !script
-                    .as_ref()
+                && !kp["generator_script"]
+                    .as_str()
                     .is_some_and(|s| s.starts_with("generators/"))
             {
                 continue;
             }
-            kp["has_generator"] = json!(script.is_some());
-            kp["generator_script"] = json!(script);
-            kp["generator_entity"] = generator.unwrap_or(Json::Null);
             records.get_mut(&topic).ok_or("KP topic missing")?["knowledge_points"]
                 .as_array_mut()
                 .ok_or("KP array missing")?
@@ -807,7 +840,13 @@ fn main() -> Result<()> {
         None => false,
     };
     let (self_directed, selected_only) = discovery_selection(&db, learner, &request)?;
-    let mut candidates = candidates_scoped(
+    let topic_only = match request.get("topic_only") {
+        Some(value) => value.as_bool().ok_or("topic_only must be a boolean")?,
+        None => false,
+    };
+    let mut candidates = if topic_only {
+        explicit_candidates(&db, &topics, kind)?
+    } else { candidates_scoped(
         &db,
         learner,
         now,
@@ -816,13 +855,13 @@ fn main() -> Result<()> {
         kind,
         include_registered,
         selected_only,
-    )?;
+    )? };
     find_candidates_ranking::annotate(&db, learner, now, &mut candidates)?;
     println!(
         "{}",
         serde_json::to_string_pretty(&json!({"database":database,"learner":learner_id,
         "basis":basis,"cursor":{"lineage":lineage,"basis":basis},"at":DateTime::<Utc>::from_timestamp_millis(now),
-        "self_directed":self_directed,"selected_only":selected_only,"topics":candidates}))?
+        "self_directed":self_directed,"selected_only":selected_only,"topic_only":topic_only,"topics":candidates}))?
     );
     Ok(())
 }

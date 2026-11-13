@@ -6,6 +6,13 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_exported_bold_vector_function_command_is_not_literal_text(self):
+        for source, expected in [(r'\text{\boldsymbol}f(x)', r'\boldsymbol{f}(x)'),
+                                 (r'\text{\boldsymbol}{f}^{\prime}(x)', r'\boldsymbol{f}^{\prime}(x)')]:
+            self.assertEqual(normalize_tex(source), expected)
+            self.assertEqual(normalize_tex(expected), expected)
+            validate_tex(expected)
+
     def test_flattened_vector_accents_are_rejected_at_capture_boundary(self):
         for value in ['OR^(→)', 'PQ^(―)', r'OP^(\to)', 'OT^ ( → )']:
             with self.subTest(value=value):
