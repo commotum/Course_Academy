@@ -248,6 +248,32 @@ class RankedInventoryJobTests(unittest.TestCase):
                 focused.accept(inventory)
             self.assertEqual({p: p.read_bytes() for p in self.jobs.directory.glob('*.json')}, before)
 
+    def test_scope_completion_counts_delayed_retries_and_unconfirmed_publications(self):
+        self.jobs.accept(self.ranked(self.kp(), self.kp(entity=3, topic=4)))
+        focused = InventoryJobs(self.directory, self.jobs.directory, 'learner', topic_id=2)
+        focused.accept(self.ranked(self.kp(), basis=11))
+        path = self.path_for(1)
+        for state in ('pending', 'running', 'awaiting-verification'):
+            self.jobs.finish(path, {'state': state, 'retryAt': float('inf')})
+            self.assertEqual(focused.scope_status()['unfinished'], 1)
+        self.jobs.finish(path, {'state': 'blocked'})
+        self.assertEqual(focused.scope_status()['blocked'], 1)
+        self.jobs.finish(path, {'state': 'verified'})
+        self.assertEqual(focused.scope_status()['unfinished'], 0)
+        self.assertEqual(focused.scope_status()['blocked'], 0)
+        # The unrelated pending job must not keep this topic run alive.
+        self.assertEqual(self.jobs.scope_status()['unfinished'], 1)
+
+    def test_refill_only_workers_cannot_dispatch_a_build_and_fence_refill_processes(self):
+        self.jobs.environment['COURSE_ACADEMY_REFILL_ONLY'] = '1'
+        self.jobs.accept(self.ranked(self.kp(), self.kp(entity=3, script='generators/a/generator.py')))
+        with patch.object(self.jobs, '_run_pipeline') as run:
+            run.return_value.returncode = 0
+            self.assertFalse(self.jobs.run_one(lane='build'))
+            run.assert_not_called()
+            self.assertTrue(self.jobs.run_one(lane='refill'))
+            self.assertEqual(run.call_args.kwargs['env']['COURSE_ACADEMY_REFILL_ONLY'], '1')
+
     def test_finite_catalog_exhaustion_survives_learner_count_churn_but_not_new_domain(self):
         kp = self.kp(script='generators/aa/old/generator.py')
         kp['inventory'].update(available_total=1, rated_total=1)

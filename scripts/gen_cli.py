@@ -312,6 +312,12 @@ class Supervisor:
                 refresh()
                 self.ready.set()
                 self.refresh_error = None
+                if self.topic is not None:
+                    status = self.jobs.scope_status()
+                    if not status['unfinished']:
+                        self.drain('topic complete' if not status['blocked'] else
+                                   f"topic needs attention ({status['blocked']} blocked or rejected jobs)")
+                        return
             except Exception as error:
                 self.refresh_error = str(error)
                 print('Inventory refresh deferred: ' + str(error), flush=True)
@@ -496,7 +502,7 @@ def main(argv=None):
     parser.add_argument('-w', '--w', '--workers', dest='workers', type=positive_integer, default=None, help='maximum agent workers (default: 6)')
     parser.add_argument('-u', '--u', '--until', dest='until', type=percentage, help='stop at this percent quota remaining')
     parser.add_argument('-t', '--t', '--topic', dest='topic', type=topic_entity,
-                        help='generate only for this topic database ID')
+                        help='generate only for this topic database ID, then exit when settled')
     parser.add_argument('--_serve', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     if (args.stop or args.status) and (args.workers is not None or args.until is not None or args.topic is not None):

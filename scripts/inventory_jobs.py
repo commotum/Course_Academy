@@ -237,6 +237,27 @@ class InventoryJobs:
     def in_scope(self, request: dict) -> bool:
         return self.topic_id is None or request.get('knowledgePoint') in self._scoped_kps
 
+    def scope_status(self) -> dict:
+        """Settled durable work, not a momentarily empty worker slot.
+
+        Pending retries and publications awaiting an inventory confirmation
+        keep a focused run alive. Failures stop with an attention result.
+        """
+        counts = {}
+        with (self.directory / 'jobs.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            for path in self.directory.glob('*.json'):
+                job = json.loads(path.read_text())
+                if 'request' not in job or not self.in_scope(job['request']):
+                    continue
+                state = job['state']
+                counts[state] = counts.get(state, 0) + 1
+            with self._active_lock:
+                active = bool(self._active_owners)
+        return {'unfinished': sum(counts.get(s, 0) for s in ('pending', 'running', 'awaiting-verification')) + active,
+                'blocked': sum(counts.get(s, 0) for s in ('blocked', 'rejected', 'repair-needed')),
+                'states': counts}
+
     def mark_service_interruption(self):
         """Stop admissions and preserve exact launches owned by this supervisor."""
         from generator_lifecycle import mark_stopped
@@ -627,6 +648,8 @@ class InventoryJobs:
         """Independent bounded lanes, with one publisher per KP across lanes."""
         if lane not in {'build', 'refill'}:
             raise ValueError('Unknown inventory worker lane: ' + lane)
+        if self.environment.get('COURSE_ACADEMY_REFILL_ONLY') == '1' and lane != 'refill':
+            return False
         limit = build_worker_count(self.environment) if lane == 'build' else 1
         if type(slot) is not int or not 0 <= slot < limit:
             raise ValueError(f'Invalid {lane} worker slot: {slot}')
@@ -713,7 +736,8 @@ class InventoryJobs:
                 with path.with_suffix('.log').open('a') as log:
                     descriptors = (lock.fileno(), kp_lock.fileno())
                     completed = self._run_pipeline(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
-                        env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors),
+                        env={**self.environment, **({'COURSE_ACADEMY_REFILL_ONLY': '1'} if lane == 'refill' else {}),
+                             'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors),
                              OWNER_ENV: str(owner)}, pass_fds=descriptors)
                 if completed.returncode == INTERRUPTED_EXIT and stopped(owner):
                     self.finish(path, {'state': 'pending', 'retryAt': 0, 'error': None}, cycle=cycle)

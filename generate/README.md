@@ -37,8 +37,11 @@ selection. It preserves and resumes saved jobs, leaves unrelated queued work
 untouched, and does not add learner targets. Shared knowledge points can also
 benefit other topics. Status displays the focused topic. Only one supervisor
 runs at a time; to switch between a focused run and the general queue, use `-k`,
-wait for it to stop, then start the desired command. A focused run stays scoped
-to that topic until stopped; it never falls through to the general queue.
+wait for it to stop, then start the desired command. A focused run exits after
+its jobs have finished and fresh inventory confirms completion. Delayed retries
+and unconfirmed publications keep it running; blocked or rejected jobs produce
+a “topic needs attention” stop instead of a success claim. It never falls
+through to the general queue or stays resident to monitor future depletion.
 
 The parent supervisor alone reads quota, using Codex app-server's
 `account/rateLimits/read`; this does not create an agent session or request model
@@ -65,9 +68,15 @@ output schema also stop admission, preserve retry allowances, and report their
 distinct cause. Fix an invalid schema before restarting. These failures never
 trigger an automatic retry, model switch, or restart when quota resets.
 
-The study application maintains the ranked inventory but never starts generator
-workers. Restarting the app, changing the legacy generation-disable flag, or
-opening a lesson does not start this CLI. Developer mode still prevents new work.
+The study application maintains ranked inventory and automatically executes
+approved generator scripts to refill depleted questions, without model calls.
+It runs only the refill lane, with agent sessions explicitly disabled. Missing
+approvals or failed validation leave review/repair work for an explicit CLI run;
+they cannot silently start agents. The app and CLI share durable job and KP locks.
+Restarting the app, changing the legacy generation-disable flag, or opening a
+lesson does not start agent authorship/review. Developer mode pauses automatic
+refills as well as new agent work. The CLI may fill initial stock while building
+or reviewing generators; later depletion belongs to the automatic refill lane.
 
 Run or resume one knowledge point directly:
 

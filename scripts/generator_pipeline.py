@@ -183,6 +183,8 @@ class CodexSession:
         return execution
 
     def __call__(self, role, context, directory):
+        if self.environment.get('COURSE_ACADEMY_REFILL_ONLY') == '1':
+            raise ValueError('Automatic refills cannot launch agent sessions')
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         templates = self.root / 'generate/pipeline'
@@ -353,6 +355,8 @@ class Pipeline(InstructionalPhases):
 
     def session_call(self, role, context, directory):
         """Bind live upstream inputs, but distinguish this agent's own draft edits."""
+        if self.is_refill or self.environment.get('COURSE_ACADEMY_REFILL_ONLY') == '1':
+            raise ValueError('Refills cannot launch agent sessions; explicit generator review is required')
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         source = self.phase_source_identity()
@@ -1964,6 +1968,8 @@ def main(argv=None):
     failed = False
     for kp, difficulty, count, directory, registered, job_kind in jobs:
         try:
+            if env.get('COURSE_ACADEMY_REFILL_ONLY') == '1' and job_kind != 'refill':
+                raise ValueError('Automatic refill worker received an agent-build job')
             existing = None if job_kind == 'refill' or registered and registered.startswith('generators/') else existing_generator(kp)
             if not existing and registered and not registered.startswith('generators/') and job_kind != 'refill':
                 existing = str(resolve_registered_script(registered, ROOT, Path(env['EDB_MATH_ROOT'])))

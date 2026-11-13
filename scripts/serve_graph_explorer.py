@@ -376,11 +376,13 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
 
-    inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
+    inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner,
+                                   learner, {**environment, 'COURSE_ACADEMY_REFILL_ONLY': '1'})
     scheduler_stop = threading.Event()
     queue_refresh = threading.Event()
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()
+    refill_wake = threading.Event()
     inventory_refresh.set()
     def progress_saved():
         read_cache.invalidate()
@@ -417,6 +419,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             print(f"Ranked generator inventory ready: basis {ranked['basis']}, "
                   f"{len(ranked['knowledge_points'])} build candidates", flush=True)
         inventory_ready.set()
+        refill_wake.set()
 
     def scheduler_loop():
         # Automatic learner changes share the same acknowledged ordering as
@@ -451,6 +454,24 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     inventory_hook()
             except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
                 print(f'Inventory handoff deferred: {error}', file=sys.stderr)
+                inventory_refresh.set()
+                scheduler_stop.wait(5)
+
+    def refill_loop():
+        # Ordinary supply uses approved code and the existing publication checks.
+        # This lane cannot start author/reviewer agents, even on refill failure.
+        while not scheduler_stop.is_set():
+            if not refill_wake.wait(1):
+                continue
+            refill_wake.clear()
+            if not inventory_ready.is_set() or developer_mode(mode_path):
+                continue
+            try:
+                if inventory_jobs.run_one(lane='refill', slot=0):
+                    inventory_refresh.set()
+                    refill_wake.set()
+            except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+                print(f'Automatic refill deferred: {error}', file=sys.stderr)
                 inventory_refresh.set()
                 scheduler_stop.wait(5)
 
@@ -866,10 +887,11 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     Handler.queue_refresh = queue_refresh
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
+    Handler.refill_wake = refill_wake
     Handler.read_cache = read_cache
-    # Generation has a separate, explicitly started `uv run gen` supervisor.
-    # The study service only maintains its read-only inventory handoff.
-    Handler.background = (scheduler_loop, review_outbox.loop, inventory_refresh_loop) if learning_worker else ()
+    # Agent authorship/review needs explicit `uv run gen`; approved script
+    # execution remains automatic and shares durable KP/refill locks with it.
+    Handler.background = (scheduler_loop, review_outbox.loop, inventory_refresh_loop, refill_loop) if learning_worker else ()
     return Handler
 
 

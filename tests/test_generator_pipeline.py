@@ -971,6 +971,17 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertNotIn("publication", approval["bands"]["hard"])
         self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
 
+    def test_refill_agent_fence_prevents_sessions_even_if_a_saved_stage_is_wrong(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        pipeline = self.pipeline(session, request=request)
+        with self.assertRaisesRegex(ValueError, 'cannot launch agent sessions'):
+            pipeline.session_call('author', {}, self.root / 'unexpected-author')
+        self.assertEqual(session.calls, [])
+        with self.assertRaisesRegex(ValueError, 'cannot launch agent sessions'):
+            CodexSession(environment={'COURSE_ACADEMY_REFILL_ONLY': '1'})(
+                'author', {}, self.root / 'unexpected-codex')
+
     def test_duplicate_only_refill_is_bounded_and_never_reports_generated_or_finite(self):
         request, _ = self.approve_for_refill()
         def duplicates(*args, **kwargs):

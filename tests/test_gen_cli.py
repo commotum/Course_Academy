@@ -193,6 +193,41 @@ class SupervisorTests(unittest.TestCase):
         self.assertIn('not an existing topic', supervisor.reason)
         self.assertEqual(json.loads((self.runtime / 'run.json').read_text())['state'], 'stopped')
 
+    def test_focused_run_exits_when_initial_inventory_is_already_settled(self):
+        self.jobs.scope_status = Mock(return_value={'unfinished': 0, 'blocked': 0})
+        supervisor = self.supervisor(topic=123)
+        refresh = Mock()
+        supervisor.run(refresh)
+        refresh.assert_called_once()
+        self.jobs.run_one.assert_not_called()
+        self.assertEqual(supervisor.reason, 'topic complete')
+        self.assertEqual(json.loads((self.runtime / 'run.json').read_text())['state'], 'stopped')
+
+    def test_focused_run_waits_for_work_and_fresh_verification_then_exits(self):
+        self.jobs.scope_status = Mock(side_effect=[{'unfinished': 1, 'blocked': 0},
+                                                 {'unfinished': 0, 'blocked': 0}])
+        ran = threading.Event()
+        def work(lane, slot):
+            if lane == 'refill' or ran.is_set():
+                return False
+            ran.set()
+            return True
+        self.jobs.run_one = Mock(side_effect=work)
+        supervisor = self.supervisor(topic=123, workers=1)
+        refresh = Mock()
+        supervisor.run(refresh)
+        self.assertTrue(ran.is_set())
+        self.assertEqual(refresh.call_count, 2)
+        self.assertEqual(supervisor.reason, 'topic complete')
+
+    def test_focused_blocked_jobs_exit_with_attention_instead_of_claiming_completion(self):
+        self.jobs.scope_status = Mock(return_value={'unfinished': 0, 'blocked': 2})
+        supervisor = self.supervisor(topic=123)
+        supervisor.run(Mock())
+        self.assertIn('needs attention', supervisor.reason)
+        self.assertNotIn('topic complete', supervisor.reason)
+        self.jobs.run_one.assert_not_called()
+
     def test_socket_stop_returns_while_running_worker_finishes_and_saves_stopped(self):
         entered, finish = threading.Event(), threading.Event()
         supervisor = self.supervisor(workers=1)

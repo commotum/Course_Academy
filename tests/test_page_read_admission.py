@@ -183,7 +183,7 @@ class PageReadAdmission(unittest.TestCase):
                         self.assertEqual(reads, [])
                         self.assertEqual(replies, [400])
 
-    def test_ui_has_no_generation_workers_even_with_legacy_enable_settings(self):
+    def test_ui_has_only_script_refills_even_with_legacy_agent_enable_settings(self):
         with tempfile.TemporaryDirectory() as directory:
             for disabled in ('0', '1'):
                 with self.subTest(disabled=disabled):
@@ -195,7 +195,8 @@ class PageReadAdmission(unittest.TestCase):
                     with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'):
                         cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
                     self.assertEqual([fn.__name__ for fn in cls.background],
-                                     ['scheduler_loop', 'loop', 'inventory_refresh_loop'])
+                                     ['scheduler_loop', 'loop', 'inventory_refresh_loop', 'refill_loop'])
+                    self.assertEqual(jobs.call_args.args[3]['COURSE_ACADEMY_REFILL_ONLY'], '1')
                     self.assertFalse(hasattr(cls, 'mark_generator_interruption'),
                                      'Stopping the UI must not stop the independent generator')
                     jobs.return_value.run_one.assert_not_called()
@@ -210,7 +211,38 @@ class PageReadAdmission(unittest.TestCase):
             with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker'):
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
             self.assertTrue(cls.inventory_refresh.is_set())
-            self.assertEqual(len(cls.background), 3)
+            self.assertEqual(len(cls.background), 4)
+
+    def test_automatic_refills_execute_only_refill_lane_and_request_inventory_confirmation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            cls.inventory_refresh.clear()
+            cls.inventory_ready.set()
+            cls.refill_wake.set()
+            def refill(**kwargs):
+                cls.scheduler_stop.set()
+                return True
+            jobs.return_value.run_one.side_effect = refill
+            loop = next(fn for fn in cls.background if fn.__name__ == 'refill_loop')
+            loop()
+            jobs.return_value.run_one.assert_called_once_with(lane='refill', slot=0)
+            self.assertTrue(cls.inventory_refresh.is_set())
+
+    def test_developer_mode_keeps_automatic_refills_paused(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            cls.inventory_ready.set()
+            cls.refill_wake.set()
+            def paused(_):
+                cls.scheduler_stop.set()
+                return True
+            with patch('serve_graph_explorer.developer_mode', side_effect=paused):
+                next(fn for fn in cls.background if fn.__name__ == 'refill_loop')()
+            jobs.return_value.run_one.assert_not_called()
 
     def test_ranked_scan_does_not_take_api_lock_or_learning_worker(self):
         with tempfile.TemporaryDirectory() as directory:
