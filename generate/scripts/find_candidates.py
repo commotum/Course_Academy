@@ -313,9 +313,15 @@ def discover(database, learner, environment, *, binary, after_basis=None, lineag
                "topic_only": topic_only,
                "respect_study_scope": True}
     def capture(selected_only):
-        response = subprocess.run([str(binary)], input=json.dumps({**request, "selected_only": selected_only}),
-                                  text=True, env=environment, stdout=subprocess.PIPE,
-                                  check=True, timeout=180)
+        try:
+            response = subprocess.run([str(binary)], input=json.dumps({**request, "selected_only": selected_only}),
+                                      text=True, env=environment, stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE if topic_only else None,
+                                      check=True, timeout=180)
+        except subprocess.CalledProcessError as error:
+            if topic_only:
+                raise ValueError(error.stderr.strip() if error.stderr else 'Explicit topic discovery failed') from error
+            raise
         result = json.loads(response.stdout)
         check_generator_files(result, environment["EDB_MATH_ROOT"])
         return ranked_candidates(result)

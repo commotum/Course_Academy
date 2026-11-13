@@ -184,6 +184,15 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(saved['state'], 'stopped')
         self.assertFalse((self.runtime / 'control.sock').exists())
 
+    def test_invalid_topic_inventory_stops_without_dispatching_or_retrying(self):
+        supervisor = self.supervisor(topic=123)
+        refresh = Mock(side_effect=ValueError('selected entity is not an existing topic'))
+        supervisor.run(refresh)
+        refresh.assert_called_once()
+        self.jobs.run_one.assert_not_called()
+        self.assertIn('not an existing topic', supervisor.reason)
+        self.assertEqual(json.loads((self.runtime / 'run.json').read_text())['state'], 'stopped')
+
     def test_socket_stop_returns_while_running_worker_finishes_and_saves_stopped(self):
         entered, finish = threading.Event(), threading.Event()
         supervisor = self.supervisor(workers=1)
@@ -263,6 +272,34 @@ class SupervisorTests(unittest.TestCase):
 
 
 class CliTests(unittest.TestCase):
+    def test_daemon_keeps_focused_discovery_and_job_dispatch_in_the_same_scope(self):
+        from serve_graph_explorer import DEFAULT_LEARNER
+        for topic in (None, 17592186050938):
+            with self.subTest(topic=topic), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                inventory = {'topics': [{'db/id': topic, 'topic/title': 'Dot product'}]}
+                finder = SimpleNamespace(build=Mock(return_value=Path('/unused-finder')),
+                                         discover=Mock(return_value=inventory))
+                supervisor = Mock(lock=threading.RLock())
+                supervisor.run.side_effect = lambda refresh, **_: refresh()
+                with patch.object(G, 'ROOT', root), patch.object(G, 'RUNTIME', root / 'runtime'), \
+                        patch.dict(sys.modules, {'find_candidates': finder}), \
+                        patch('serve_graph_explorer.database_environment', return_value={
+                            'LEARNING_REQUEST_DIR': str(root / 'requests')}), \
+                        patch.object(G, 'InventoryJobs') as jobs, patch.object(G, 'Supervisor', return_value=supervisor), \
+                        patch.object(G.signal, 'signal'):
+                    self.assertEqual(G.run_daemon(3, None, topic), 0)
+                    self.assertEqual(jobs.call_args.kwargs['topic_id'], topic)
+                    self.assertEqual(jobs.call_args.args[1], root / '.local/learning/inventory/math' / DEFAULT_LEARNER)
+                    finder.discover.assert_called_once()
+                    scope = finder.discover.call_args.kwargs
+                    self.assertEqual(scope['topics'], () if topic is None else (topic,))
+                    self.assertEqual(scope['topic_only'], topic is not None)
+                    self.assertEqual(scope['include_registered'], topic is None)
+                    self.assertEqual(scope['activity_type'], 'assessment' if topic is None else 'lesson')
+                    jobs.return_value.accept.assert_called_once_with(inventory)
+                    self.assertEqual(G.Supervisor.call_args.kwargs['topic'], topic)
+
     def test_flags_defaults_and_aliases(self):
         with patch.object(G, 'start', return_value=0) as start:
             self.assertEqual(G.main([]), 0)

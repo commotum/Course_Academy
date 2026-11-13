@@ -315,6 +315,9 @@ class Supervisor:
             except Exception as error:
                 self.refresh_error = str(error)
                 print('Inventory refresh deferred: ' + str(error), flush=True)
+                if self.topic is not None and isinstance(error, ValueError):
+                    self.drain('topic inventory failed: ' + str(error))
+                    return
             self.wake.set()
             self.refresh_requested.wait(30)
             self.refresh_requested.clear()
