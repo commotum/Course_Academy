@@ -26,7 +26,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 def regressions():
     items = []
     for size in [14, 15, 16, 17, 20, 24, 30]:
-        for role in ['prose', 'choice', 'feedback']:
+        for role in ['prose', 'choice', 'checkbox', 'solution', 'feedback']:
             for coords in ['2\\\\6', '3\\\\6', '6\\\\3', '-1\\\\3', '12\\\\-6']:
                 items.append(dict(entity=f'vector-{size}-{role}-{coords}', attribute='regression',
                                   value=r'\begin{bmatrix}' + coords + r'\end{bmatrix}',
@@ -34,9 +34,20 @@ def regressions():
             for formula in [r'\gamma,', 'a.', 'c_2.', r'\rangle.']:
                 items.append(dict(entity=f'punctuation-{size}-{role}-{formula}', attribute='regression',
                                   value=formula, bare_math=True, role=role, font_size=size))
-    items.append(dict(entity='genuinely-wide-inline-formula', attribute='regression', role='prose',
-                      value='+'.join('x_{' + str(i) + '}' for i in range(1, 71)),
-                      bare_math=True, must_scroll=True))
+            for index, formula in enumerate([
+                r'\left\{\begin{aligned}x &=-2t \\ y &=3t \\ z &=-t\end{aligned}\right.',
+                r'\left\{\begin{aligned}x &=t \\ y &=-t \\ z &=2t\end{aligned}\right.',
+            ]):
+                for display in [False, True]:
+                    delimiter = '$$' if display else '$'
+                    items.append(dict(entity=f'system-{index}-{size}-{role}-{display}', attribute='regression',
+                                      value=delimiter + formula + delimiter, role=role, font_size=size))
+    for role in ['prose', 'choice', 'checkbox', 'solution', 'feedback']:
+        for display in [False, True]:
+            delimiter = '$$' if display else '$'
+            items.append(dict(entity=f'genuinely-wide-{role}-{display}', attribute='regression', role=role,
+                              value=delimiter + '+'.join('x_{' + str(i) + '}' for i in range(1, 71)) + delimiter,
+                              must_scroll=True))
     return items
 
 
@@ -47,10 +58,10 @@ SHOW = r'''async items => {
     card.dataset.entity=String(f.entity);card.dataset.attribute=f.attribute;
     const prose=render(f.bare_math?'$'+f.value+'$':f.value,'prose',f.fields||[]);
     if(f.font_size)prose.style.fontSize=f.font_size+'px';
-    if(f.role==='choice') {
-      const field=document.createElement('fieldset');field.className='answer-field';field.dataset.type='radio';
+    if(f.role==='choice'||f.role==='checkbox') {
+      const field=document.createElement('fieldset');field.className='answer-field';field.dataset.type=f.role==='checkbox'?'checkbox':'radio';
       const choice=document.createElement('label');choice.className='choice';
-      const input=document.createElement('input');input.type='radio';input.disabled=true;
+      const input=document.createElement('input');input.type=field.dataset.type;input.disabled=true;
       choice.append(input,prose);field.append(choice);card.append(field);
     } else if(f.role==='solution'||f.role==='feedback') {
       const section=document.createElement('section');section.className=f.role==='solution'?'worked-solution':'feedback';
@@ -66,23 +77,28 @@ SHOW = r'''async items => {
       const style=getComputedStyle(n),r=svg.getBoundingClientRect();
       const containerWidth=n.getBoundingClientRect().width;
       const available=containerWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
-      const over=n.scrollWidth>n.clientWidth;
-      return over?[{inline:n.getAttribute('display')!=='true',client:n.clientWidth,scroll:n.scrollWidth,
+      n.scrollLeft=n.scrollWidth;const range=n.scrollLeft;n.scrollLeft=0;
+      return range>0?[{inline:n.getAttribute('display')!=='true',client:n.clientWidth,scroll:n.scrollWidth,range,
         svg_width:r.width,available,container_width:containerWidth,spurious:r.width<=containerWidth+.02,
         text:n.textContent.slice(0,180)}]:[];
     });
     const errors=[...card.querySelectorAll('[data-mml-node="merror"]')].map(n=>n.textContent);
+    const accessibility_failures=nodes.filter(n=>{
+      const a=n.querySelector(':scope > mjx-assistive-mml'),r=a?.getBoundingClientRect();
+      return !a?.querySelector('math')||getComputedStyle(a).display==='none'||r.width>1.02||r.height>1.02;
+    }).length;
     return {entity:items[i].entity,attribute:items[i].attribute,topics:items[i].topics||[],
-      math_nodes:nodes.length,errors,scrolls,
+      math_nodes:nodes.length,errors,scrolls,accessibility_failures,
       must_scroll_failed:!!items[i].must_scroll&&!scrolls.some(n=>!n.spurious),
       outer_overflow:card.scrollWidth>card.clientWidth+1};
   });
 }'''
 
 
-def check(items, baseline=False, screenshot_dir=None):
+def check(items, baseline=False, screenshot_dir=None, stylesheets=('learning', 'topic', 'course')):
     fixture = (ROOT / 'reference/mathacademy/repairs/2026-10-14-study-backlog/renderer-fixture.html').read_text()
     fixture = fixture.replace('<!doctype html>', '<!doctype html><html data-theme="light"><link rel="stylesheet" href="/ui/navigation.css">')
+    fixture = fixture.replace('rel="stylesheet" href="/ui/learning.css"', 'id="pageStyle" rel="stylesheet" href="/ui/learning.css"')
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(Quiet, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     origin = f'http://127.0.0.1:{server.server_port}'
@@ -90,7 +106,7 @@ def check(items, baseline=False, screenshot_dir=None):
     screenshots = []
     try:
         with sync_playwright() as runtime:
-            browser = runtime.chromium.launch(headless=True)
+            browser = runtime.chromium.launch(headless=True, ignore_default_args=['--hide-scrollbars'])
             page = browser.new_page()
 
             def route(request):
@@ -112,26 +128,36 @@ def check(items, baseline=False, screenshot_dir=None):
             page.goto(origin + '/fixture')
             page.wait_for_function('window.ready')
             if baseline:
-                page.add_style_tag(content='.prose mjx-container:not([display="true"]){padding-inline-end:0;margin-inline-end:0}')
-            for width in [1100, 390]:
-                page.set_viewport_size(dict(width=width, height=1000))
-                for offset in range(0, len(items), 24):
-                    batch = items[offset:offset + 24]
-                    checks = page.evaluate(SHOW, batch)
-                    for row in checks:
-                        row['width'] = width
-                        if screenshot_dir and str(row['entity']) in ['17592186088928', '17592186088149']:
-                            screenshot_dir.mkdir(parents=True, exist_ok=True)
-                            filename = f'{row["entity"]}-{row["attribute"].replace(":", "").replace("/", "-")}-{width}.png'
-                            page.locator(f'article[data-entity="{row["entity"]}"][data-attribute="{row["attribute"]}"]').first.screenshot(path=str(screenshot_dir / filename))
-                            screenshots.append(filename)
-                        results.append(row)
-                print(f'Checked {len(items)} fields at {width}px.', flush=True)
+                page.add_style_tag(content='''
+                    mjx-container[jax="SVG"] > mjx-assistive-mml {width:auto!important;height:auto!important;padding:1px 0 0!important}
+                    mjx-container[jax="SVG"] > mjx-assistive-mml[display="block"] {width:100%!important}
+                    .prose mjx-container:not([display="true"]) {padding-inline-end:.3em}
+                ''')
+            for stylesheet in stylesheets:
+                page.evaluate('''name=>new Promise((resolve,reject)=>{
+                    const link=document.getElementById('pageStyle');link.onload=resolve;link.onerror=reject;
+                    link.href='/ui/'+name+'.css';
+                })''', stylesheet)
+                for width in [1100, 390]:
+                    page.set_viewport_size(dict(width=width, height=1000))
+                    for offset in range(0, len(items), 24):
+                        batch = items[offset:offset + 24]
+                        checks = page.evaluate(SHOW, batch)
+                        for row in checks:
+                            row['width'] = width
+                            row['stylesheet'] = stylesheet
+                            if screenshot_dir and str(row['entity']) in ['17592186088928', '17592186088149', '17592186640734', '17592186640784']:
+                                screenshot_dir.mkdir(parents=True, exist_ok=True)
+                                filename = f'{row["entity"]}-{row["attribute"].replace(":", "").replace("/", "-")}-{stylesheet}-{width}.png'
+                                page.locator(f'article[data-entity="{row["entity"]}"][data-attribute="{row["attribute"]}"]').first.screenshot(path=str(screenshot_dir / filename))
+                                screenshots.append(filename)
+                            results.append(row)
+                    print(f'Checked {len(items)} fields with {stylesheet}.css at {width}px.', flush=True)
             browser.close()
     finally:
         server.shutdown()
         server.server_close()
-    failures = [r for r in results if r['errors'] or r['must_scroll_failed']
+    failures = [r for r in results if r['errors'] or r['must_scroll_failed'] or (not baseline and r['accessibility_failures'])
                 or any(n['spurious'] for n in r['scrolls'])]
     return dict(passed=not failures, baseline=baseline, database_writes=0,
                 field_layout_checks=len(results), math_nodes=sum(r['math_nodes'] for r in results),
@@ -146,9 +172,10 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--baseline', action='store_true')
     parser.add_argument('--screenshots', type=Path)
+    parser.add_argument('--stylesheets', nargs='+', choices=['learning', 'topic', 'course'], default=['learning', 'topic', 'course'])
     args = parser.parse_args()
     items = json.loads(args.input.read_text()) if args.input else regressions()
-    report = check(items, args.baseline, args.screenshots)
+    report = check(items, args.baseline, args.screenshots, args.stylesheets)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: v for k, v in report.items() if k not in ('failures', 'checks', 'screenshots')}, indent=2))

@@ -1,0 +1,49 @@
+/* Shared MathJax layout for Study, Activity, Assignments, Topic and Course.
+   Clipping assistive MathML hides its paint, not its layout bounds. Keep the
+   accessible representation in the DOM without letting its native MathML
+   metrics enlarge any of the visible equation's scroll containers. Specificity
+   and !important override MathJax's inline/block assistive width rules. */
+mjx-container[jax="SVG"] > mjx-assistive-mml {
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+}
+
+.prose mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0;
+}
+
+.prose mjx-container:not([display="true"]) {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: .15em;
+  vertical-align: middle;
+}
+
+/* Selection matrices scale only when the available answer label is smaller. */
+.answer-field:is([data-type="radio"], [data-type="checkbox"]) .choice .prose mjx-container:has([data-mml-node="mtable"]) {
+  display: inline-block;
+  max-width: 100%;
+}
+.answer-field:is([data-type="radio"], [data-type="checkbox"]) .choice .prose mjx-container:has([data-mml-node="mtable"]) > svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Dropdowns size to their options, then scale math wider than the viewport. */
+.answer-dropdown :is(.answer-select-option, .answer-select-value) .prose mjx-container { overflow: visible; }
+:is(.answer-select-option, .answer-select-value) .prose mjx-container > svg { max-width: 100%; height: auto; }
+
+/* Standalone operands need no prose baseline gap around their SVG. */
+.prose .matrix-operands > div > mjx-container { display: block; line-height: 0; }
+
+/* Preserve captured mathematical emphasis while following the page's theme. */
+.prose mjx-container g[fill="black" i][stroke="black" i] { fill: var(--ink); stroke: var(--ink); }
+:root:not([data-theme="light"]) .prose mjx-container g[fill="blue" i][stroke="blue" i] { fill: #7aafff; stroke: #7aafff; }
+:root:not([data-theme="light"]) .prose mjx-container g[fill="red" i][stroke="red" i] { fill: #ff7777; stroke: #ff7777; }
+:root[data-theme="light"] .prose mjx-container g[fill="red" i][stroke="red" i] { fill: #c00000; stroke: #c00000; }

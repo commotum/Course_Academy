@@ -55,6 +55,23 @@ class UIAssets(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertEqual(self.get(path)[0], 404)
 
+    def test_page_stylesheets_share_reachable_math_styles(self):
+        for page in ['learning', 'topic', 'course']:
+            pending = [f'/ui/{page}.css']
+            visited = set()
+            while pending:
+                path = pending.pop()
+                if path in visited:
+                    continue
+                visited.add(path)
+                with self.subTest(page=page, path=path):
+                    status, body, content_type = self.get(path)
+                    self.assertEqual(status, 200)
+                    self.assertEqual(content_type, 'text/css')
+                    for specifier in re.findall(r'''@import\s+url\(['"]?([^'"\s)]+)['"]?\)''', body.decode()):
+                        pending.append(urlsplit(urljoin('http://example.test' + path, specifier)).path)
+            self.assertIn('/ui/math-content.css', visited)
+
     def test_graph_does_not_depend_on_forecast_modules(self):
         status, body, _ = self.get("/ui/Math-Academy-Graph-Explorer.html")
         self.assertEqual(status, 200)
