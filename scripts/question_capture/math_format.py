@@ -1484,6 +1484,61 @@ def normalize_fraction_answer_tables(value):
     return re.sub(prefix+r'(\d+)END',lambda m:saved[int(m[1])],text)
 
 
+def normalize_parametric_answer_tables(value):
+    """Recover coordinate-equation layouts, preserving the parameter interval.
+
+    Only x/y(/z) equation rows with one t-interval and answer markers qualify.
+    These are systems of equations, not headed data tables. Keep controls
+    outside TeX and put the interval below the system so it can wrap safely.
+    """
+    saved = []
+    prefix = 'CAPARAMETRICCODETOKEN'
+    while prefix in value:
+        prefix += 'X'
+    def protect(match):
+        saved.append(match[0])
+        return prefix + str(len(saved)-1) + 'END'
+    text = re.sub(r'```[\s\S]*?```|`[^`\n]*`', protect, str(value))
+    marker = r'\{\{(?:answer-field:)?[^{}]+\}\}'
+    def layout(rows):
+        if len(rows) not in (2, 3) or len(rows[0]) != 3:
+            return None
+        interval = rows[0][2].strip()
+        # Validate the complete interval; arbitrary extra columns are data.
+        bare = interval.replace('$', '').strip()
+        if not re.fullmatch(r't\s*\\in\s*[\[(][^\[\]()]+,[^\[\]()]+[\])]', bare):
+            return None
+        equations = []
+        for index, row in enumerate(rows):
+            if len(row) not in (2, 3) or (index and len(row) == 3 and row[2].strip()):
+                return None
+            if row[0].strip() != '$' + 'xyz'[index] + '=$':
+                return None
+            rhs = row[1].strip()
+            if not (re.fullmatch(marker, rhs) or re.fullmatch(r'\$[^$<>]+\$', rhs)):
+                return None
+            equations.append(['xyz'[index], '=', rhs.strip('$')])
+        fields = re.findall(marker, ''.join(cell for row in rows for cell in row))
+        if not fields or len(fields) != len(set(fields)):
+            return None
+        return system_answer(equations) + '\n\n<div class="question-equation">' + interval + '</div>'
+    def markdown(match):
+        lines = match[0].splitlines()
+        rows = [[c.strip() for c in line.strip().strip('|').split('|')] for line in lines]
+        if len(rows) < 3 or not all(re.fullmatch(r':?-+:?', c) for c in rows[1]):
+            return match[0]
+        return layout([rows[0], *rows[2:]]) or match[0]
+    text = re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', markdown, text)
+    def source_html(match):
+        if re.search(r'<table\b', match[1], re.I):
+            return match[0]
+        rows = [[html.unescape(c).strip() for c in re.findall(r'<t[dh]\b[^>]*>(.*?)</t[dh]>', row, re.S|re.I)]
+                for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', match[1], re.S|re.I)]
+        return layout(rows) or match[0]
+    text = re.sub(r'<table\b[^>]*>(.*?)</table>', source_html, text, flags=re.S|re.I)
+    return re.sub(prefix+r'(\d+)END', lambda match: saved[int(match[1])], text)
+
+
 def normalize_prose(value):
     def replace(match):
         whole = match[0]; display = whole.startswith(('$$', r'\['))
@@ -1501,7 +1556,7 @@ def normalize_prose(value):
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
-    return normalize_matrix_answer_tables(normalize_fraction_answer_tables(text))
+    return normalize_parametric_answer_tables(normalize_matrix_answer_tables(normalize_fraction_answer_tables(text)))
 
 
 def validate_tex(value):

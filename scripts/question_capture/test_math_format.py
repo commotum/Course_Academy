@@ -6,6 +6,34 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_parametric_segment_layout_recovers_html_and_markdown(self):
+        from math_format import normalize_parametric_answer_tables
+        sources = [
+            r'''| $x=$ | $1-3t$ | $t\in [$ {{field-1}} $,1]$ |
+| --- | --- | --- |
+| $y=$ | $9-9t$ | |
+| $z=$ | {{field-2}} | |''',
+            r'''<table width="350px" rules="all"><tr><td>$x=$</td><td>$1-3t$</td><td rowspan="3">$t\in [$ {{field-1}} $,1]$</td></tr>
+<tr><td>$y=$</td><td>$9-9t$</td></tr><tr><td>$z=$</td><td>{{field-2}}</td></tr></table>''']
+        results = [normalize_parametric_answer_tables(s) for s in sources]
+        self.assertEqual(*results)
+        for result in results:
+            self.assertIn('aria-label="System of equations"', result)
+            self.assertIn('aria-label="Equation rows"', result)
+            self.assertIn(r'$t\in [$ {{field-1}} $,1]$', result)
+            self.assertNotIn('rowspan', result)
+            self.assertNotIn('350px', result)
+            for key in ('field-1', 'field-2'):
+                self.assertEqual(result.count('{{' + key + '}}'), 1)
+            self.assertEqual(normalize_parametric_answer_tables(result), result)
+        for source in sources:
+            code = '```html\n' + source + '\n```'
+            self.assertEqual(normalize_parametric_answer_tables(code), code)
+            data = source.replace('$x=$', 'Coordinate')
+            self.assertEqual(normalize_parametric_answer_tables(data), data)
+            self.assertEqual(normalize_parametric_answer_tables(source.replace('field-2', 'field-1')), source.replace('field-2', 'field-1'))
+        self.assertIn('aria-label="System of equations"', normalize_prose(sources[0]))
+
     def test_exported_bold_vector_function_command_is_not_literal_text(self):
         for source, expected in [(r'\text{\boldsymbol}f(x)', r'\boldsymbol{f}(x)'),
                                  (r'\text{\boldsymbol}{f}^{\prime}(x)', r'\boldsymbol{f}^{\prime}(x)')]:
