@@ -1,0 +1,63 @@
+{
+  "scope": {
+    "account_lessons": 3975,
+    "binary_lesson_kp_groups": 12518,
+    "account_reviews": 4061,
+    "historical_lessons": 135,
+    "historical_reviews": 53,
+    "additional_pilot_lessons": 1
+  },
+  "findings": [
+    {
+      "area": "Early advancement at WWCC",
+      "account_lesson_counterexamples": 24,
+      "older_lesson_counterexamples": 2,
+      "account_review_counterexamples": 6,
+      "older_review_counterexamples": 1,
+      "evidence": [
+        "lessons.json",
+        "reviews.json",
+        "current-engine-check.txt"
+      ],
+      "status": "Confirmed capture difference; existing consecutive-correct policy not changed by this audit."
+    },
+    {
+      "area": "Lesson XP",
+      "failed_lesson_formula_mismatches": 57,
+      "qualified_failed_lessons": 64,
+      "evidence": [
+        "other-evidence.json"
+      ],
+      "status": "Accepted local approximation diverges from broader captures. A new formula is not identified."
+    },
+    {
+      "area": "Staged correction and partial credit",
+      "lesson_kp_groups": 88,
+      "evidence": [
+        "other-evidence.json"
+      ],
+      "status": "Capability difference from local binary grading; numeric partial-credit policy is not identified."
+    },
+    {
+      "area": "Review failures",
+      "explicit_captured_failures": 45,
+      "evidence": [
+        "reviews.json"
+      ],
+      "status": "Intentional difference from explicit November 1 success-at-five policy; not changed."
+    }
+  ],
+  "attached_component_updates": [
+    "scheduler-report.md",
+    "estimate-forecast.md",
+    "reference/scheduling-proposal.md",
+    "reference/xp-proposal.md",
+    "scripts/learning_api.rs: paused WW/CWW resume regression"
+  ],
+  "validation": {
+    "native_lesson_tests_passed": 30,
+    "optional_live_tests_ignored": 2,
+    "new_production_behavior_changes": false,
+    "live_database_mutations": false
+  }
+}

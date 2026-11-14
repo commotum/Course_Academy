@@ -1,5 +1,7 @@
 # Proposed XP policy
 
+**Lesson-controller update — November 13, 2026:** The current lesson controller fails on the third incorrect answer within one KP, whether consecutive or separated. Two misses alone do not trigger failure or its final XP award; successful completion remains a separate condition. Explicit skips retain the local negative-outcome treatment. The historical lesson-stopping and zero-failed-lesson-XP proposals below are superseded by [the current scheduler decisions](../scheduler-report.md#9-failed-lessons-and-key-prerequisite-remediation) and [accepted earned-XP formulas](xp-docs/earned-xp-formula-report.md). The failure-threshold change does not change those XP formulas.
+
 This is an initial policy for our application, using Math Academy's published design and Jake's recorded activity. It chooses usable rules where the evidence does not determine an exact formula. It is a proposal, not a description of behavior already implemented.
 
 **Review-controller update — clarified November 1, 2026:** The user's latest explicit instruction supersedes the proposal's failure-at-five interpretation. Reviews serve at least three questions; two consecutive correct answers allow early completion. Otherwise finishing all five successfully completes the review regardless of the answer sequence. Accuracy, XP, and retention updates still use the actual outcomes. The original XP discussion and failure labels below remain historical; [the accepted earned-XP report](xp-docs/earned-xp-formula-report.md) records scoring formulas separately.

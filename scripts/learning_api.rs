@@ -3881,6 +3881,50 @@ mod study_queue_tests {
     }
 
     #[test]
+    fn paused_lesson_with_two_misses_resumes_without_finalizing_or_regrading_answers() {
+        for outcomes in [vec!["incorrect", "incorrect"], vec!["correct", "incorrect", "incorrect"]] {
+            let mut s = fixture();
+            s.entities.insert(1200, json!({"policy/id":"selection-policy"}).as_object().unwrap().clone());
+            for (eid, ident) in [(1101, "task-item.status/completed"), (1102, "task-item.status/incorrect")] {
+                s.entities.insert(eid, json!({"db/ident":kw(ident)}).as_object().unwrap().clone());
+            }
+            s.entities.get_mut(&61).unwrap().insert("step/content".into(), json!(72));
+            s.entities.insert(72, json!({"knowledge-point/id":"kp","knowledge-point/title":"Current skill","knowledge-point/canonical-example":73,"knowledge-point/questions":[71,74,75,76,77]}).as_object().unwrap().clone());
+            s.entities.insert(73, json!({"question/id":"example","question/problem":"Example","question/worked-solution":"Solution"}).as_object().unwrap().clone());
+            for q in [74, 75, 76, 77] {
+                s.entities.insert(q, json!({"question/id":format!("q-{q}"),"question/problem":"Find x.","question/answer-fields":[90]}).as_object().unwrap().clone());
+            }
+            let questions = [71, 74, 75, 76, 77];
+            let mut chain = vec![95];
+            s.entities.insert(95, json!({"task-item/content":73,"task-item/status":"task-item.status/completed","task-item/next":96,"task-item/elapsed-seconds":1.0}).as_object().unwrap().clone());
+            for (index, outcome) in outcomes.iter().enumerate() {
+                let item = 96 + index as u64;
+                let mut record = json!({"task-item/content":questions[index],"task-item/status":format!("task-item.status/{outcome}"),"task-item/responses":[91],"task-item/elapsed-seconds":2.0});
+                if index + 1 < outcomes.len() {
+                    record["task-item/next"] = json!(item + 1);
+                }
+                s.entities.insert(item, record.as_object().unwrap().clone());
+                chain.push(item);
+            }
+            s.entities.get_mut(&81).unwrap().extend(json!({"learner-task/status":"learner-task.status/paused","learner-task/items":chain,"learner-task/xp-base":10,"learner-task/elapsed-seconds":1.0+2.0*outcomes.len() as f64}).as_object().unwrap().clone());
+            s = EntitySnapshot::new(s.entities.clone().into(), s.basis_t).unwrap();
+            let saved_answers: Vec<_> = chain.iter().map(|i| s.entity(*i).unwrap().clone()).collect();
+            let at = DateTime::from_timestamp(10, 0).unwrap();
+            let (resume, _) = mutate(&s, 1, "resume", &json!({"taskId":81}), at).unwrap();
+            assert_eq!(resume, vec![cas(&s, 81, "learner-task/status", "learner-task.status/started").unwrap()]);
+            s.entities.get_mut(&81).unwrap().insert("learner-task/status".into(), json!("learner-task.status/started"));
+            let tail = *chain.last().unwrap();
+            let (forms, _) = mutate(&s, 1, "continue", &json!({"taskId":81,"itemId":tail}), at).unwrap();
+            assert!(forms.iter().any(|f| f.get("task-item/content") == Some(&json!(questions[outcomes.len()]))));
+            let edn = schema::edn(&json!(forms)).unwrap();
+            assert!(!edn.contains(":learner-task/status"), "must not finalize at the second miss: {edn}");
+            assert!(!edn.contains(":learner-task/xp-earned"));
+            assert!(!edn.contains(":progress/") && !edn.contains(":performance/"));
+            assert_eq!(saved_answers, chain.iter().map(|i| s.entity(*i).unwrap().clone()).collect::<Vec<_>>());
+        }
+    }
+
+    #[test]
     fn exhausted_practice_defers_without_failure_and_can_be_resumed_when_supply_arrives() {
         let mut s = fixture();
         s.entities.insert(

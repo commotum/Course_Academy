@@ -1,0 +1,547 @@
+{
+  "scope": "Independent read-only code/source inventory and feature probes, not a duplicate whole-database scanner. No EDB changes or shared extractor edits.",
+  "date": "2026-11-13",
+  "main_findings": [
+    "General font-variant loss is historical: all three principal extractors gained mathvariant preservation in c6245fef763 on 2026-10-27. Old persisted imports do not automatically acquire that fix.",
+    "Color preservation was added in stages: legacy scripts/question_capture/dom.js at 3fa511ed17e (2026-10-13); capture/scripts/browser/extract.js and historical Python renderer at 81b8659bc63 (2026-10-27).",
+    "Authored mspace dimensions are still lost in all principal extractors: every width, including zero, negative, 1em and 2em, becomes thin space \\, without any reported extraction error.",
+    "Existing remaining-instruction reconciliation selects structural lossy_features and omits mathvariant, mathcolor and mspace. A prior broad repair can therefore leave precisely these presentation-only failures untouched."
+  ],
+  "extractor_paths": [
+    {
+      "path": "capture/scripts/browser/extract.js",
+      "used_by": "capture/scripts/browser/adapter.py:26",
+      "font_color_lines": "302-334",
+      "mspace_line": 421,
+      "status": "Current capture pipeline; preserves explicit supported font/color, still collapses spaces."
+    },
+    {
+      "path": "scripts/question_capture/dom.js",
+      "used_by": "scripts/question_capture/browser.py:15",
+      "font_color_lines": "337-367",
+      "mspace_line": 449,
+      "status": "Legacy capture runner still present; same dimension loss."
+    },
+    {
+      "path": "scripts/import_historical_question_content.py",
+      "font_color_lines": "116-140",
+      "mspace_line": 188,
+      "status": "Offline history importer; same dimension loss."
+    },
+    {
+      "path": "scripts/reconcile_remaining_ma_instruction.py",
+      "mspace_line": 112,
+      "lossy_feature_filter_line": 181,
+      "status": "Limited reconciliation converter rejects significant color/style; selects structural features only and also collapses spaces."
+    },
+    {
+      "path": "capture/scripts/database/text.py",
+      "line": 46,
+      "status": "Prefers original TeX annotation/SVG title when available, rejects unresolved math. Mixed titles containing nested MathML need careful handling, not get_text flattening."
+    },
+    {
+      "path": "capture/scripts/database/math_content.py",
+      "line": 64,
+      "status": "Normalizes already extracted question content; cannot reconstruct presentation information previously discarded by an extractor."
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "kind": "upright Greek identifier",
+      "example": "source <mi mathvariant=\"normal\">Π</mi> imported as literal Π",
+      "visible_effect": "MathJax chooses italic mathematical Pi (1D6F1) instead of upright Pi (3A0).",
+      "current_extractor": "Supported: \\mathrm{Π}. Equivalent \\Pi is also correct.",
+      "regex_limit": "A naked Π in stored content is only a candidate; source may intentionally be italic. Inherited mstyle normal requires a DOM walk."
+    },
+    {
+      "kind": "bold versus scalar identifier",
+      "example": "source bold v or zero becomes v or 0",
+      "visible_effect": "Vector/scalar distinction disappears; bold a naming a vector must not bold its scalar component a.",
+      "current_extractor": "Supported: \\mathbf, including explicit variants on each node.",
+      "regex_limit": "Presence of any \\mathbf in a field does not prove all bold source tokens survived; compare matched formulas/token positions."
+    },
+    {
+      "kind": "double-struck and other alphabet variants",
+      "example": "source double-struck R becomes ordinary italic R",
+      "visible_effect": "Number-space notation becomes a variable.",
+      "current_extractor": "Supported for listed variants; unsupported variants report errors.",
+      "regex_limit": "Unicode ℝ, \\mathbb R and \\mathbb{R} can be equivalent. Do not classify by spelling alone."
+    },
+    {
+      "kind": "colored teaching marker",
+      "example": "red terminal × or green ✓ loses color",
+      "visible_effect": "A failure/check marker appears as an unexplained mathematical operator.",
+      "current_extractor": "Supported for named and hex mathcolor; scoped per node.",
+      "regex_limit": "Marker regex must be intersected with colored source math and formula context; × is also legitimate multiplication. Colors can be inherited from mstyle/ancestors or CSS."
+    },
+    {
+      "kind": "authored spacing",
+      "example": "1em gap before red × becomes 0.167em thin space",
+      "visible_effect": "Feedback marker visually merges into equation; larger spacings and negative adjustments disappear.",
+      "current_extractor": "Active bug in all three: silent unconditional \\, output.",
+      "regex_limit": "0.167em and \\, are effectively equivalent; compare non-default width/height/depth numerically/structurally, including negative dimensions and named math spaces."
+    },
+    {
+      "kind": "mixed legacy title corruption",
+      "example": "SVG title contains raw TeX plus newer mjx-container/MathML inside it",
+      "visible_effect": "Flattening loses matrix shape, vector style and delimiters.",
+      "current_extractor": "Special paths exist, but audit must preserve nested original structure.",
+      "regex_limit": "A regex on title text alone cannot reconstruct mixed TeX/MathML; traverse child nodes and select owned assistive MathML."
+    }
+  ],
+  "recommended_regexes": {
+    "any_mathvariant_tag": "(?is)<[a-z][\\w:.-]*\\b[^>]*\\bmathvariant\\s*=\\s*([\"'])(?P<variant>[^\"']+)\\1[^>]*>",
+    "direct_upright_greek": "(?is)<(?:\\w+:)?mi\\b(?=[^>]*\\bmathvariant\\s*=\\s*[\"']normal[\"'])[^>]*>\\s*[Α-Ωα-ωϐϑϕϖϰϱϵ]\\s*</(?:\\w+:)?mi\\s*>",
+    "font_loss_candidates": "(?is)<[a-z][\\w:.-]*\\b[^>]*\\bmathvariant\\s*=\\s*[\"'](?:bold(?:-italic)?|double-struck|script|fraktur|monospace|sans-serif)[\"'][^>]*>",
+    "any_color_tag": "(?is)<[a-z][\\w:.-]*\\b[^>]*\\b(?:mathcolor|mathbackground)\\s*=\\s*([\"'])(?P<color>[^\"']+)\\1[^>]*>",
+    "check_cross_marker": "[×✓✔✗✘]|\\\\(?:times|checkmark)\\b",
+    "authored_space_tag": "(?is)<(?:\\w+:)?mspace\\b[^>]*\\b(?:width|height|depth)\\s*=\\s*([\"'])(?P<dimension>[^\"']+)\\1[^>]*>",
+    "svg_title_tex_styles": "\\\\(?:mathrm|mathit|mathbf|boldsymbol|mathbb|mathcal|mathfrak|mathsf|mathtt|mathbfit|color|textcolor|bbox|hspace|kern|mkern|quad|qquad|Pi)\\b|\\\\[,;:!]",
+    "css_style_candidates": "(?is)<[a-z][\\w:.-]*\\b[^>]*\\bstyle\\s*=\\s*([\"'])(?P<style>[^\"']*\\b(?:color|background(?:-color)?|font-(?:weight|style|family))\\s*:[^\"']*)\\1[^>]*>"
+  },
+  "regex_preconditions": [
+    "Decode JSON first, then parse/extract HTML fields; HTML-unescape entities before token-marker regexes. Do not apply these patterns directly to serialized escaped JSON.",
+    "Patterns are candidate discovery, not proof of failure and never automatic substitutions. Include namespaces and both quote styles. Parse matched HTML to resolve nesting, inherited attributes and formula ownership.",
+    "Search all mathvariant values before narrowing to recognized categories; unfamiliar variants should become review gaps, not silently disappear.",
+    "For original SVG titles/TeX annotations apply TeX-style regex to the preserved title child stream. For direct MathML apply attribute regex. Keep original source SHA256 and question/component identity.",
+    "Normalize semantic math and compare source/current font, marker color and spacing per matched formula. Then use actual renderer glyphs when equivalent TeX spellings create ambiguity.",
+    "Check prompts, worked solutions, checkbox labels, answer values and feedback, plus tutorial/canonical content. Intentional checkbox/semantic-statement migrations require component-aware matching."
+  ],
+  "source_coverage": [
+    {
+      "root": "reference/mathacademy/capture/{foundations,differential,linear,multivariable}",
+      "formats": [
+        "observations/*.html",
+        "observations/*.json html strings",
+        "content.json html_path references",
+        "history-content.json",
+        "browser-originals/*.html"
+      ],
+      "notes": "Primary current capture roots; many repeated before/after/history/render observations and repair copies. Plain rg --files misses gitignored evidence; use --no-ignore."
+    },
+    {
+      "root": "reference/mathacademy/question-capture/<task>",
+      "formats": [
+        "state.json questions.*.before/after/history.html",
+        "history-q-*.json html",
+        "content.json provenance",
+        "repairs/*/original-content.json"
+      ],
+      "notes": "Some complete originals only exist inside JSON; e.g q157375/q157392 in task14096346. Do not trust flattened problem/worked_solution as original."
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/{linear,differential,multivariable}/<task>",
+      "formats": [
+        "state.json",
+        "history-q-*.json",
+        "manual-recovery/*"
+      ],
+      "notes": "Parallel legacy originals can cover questions missing from newer captures."
+    },
+    {
+      "root": "reference/mathacademy/progress-history-2026-10-04",
+      "formats": [
+        "observations.json tasks/questions problem_html and worked_solution_html",
+        "task source_file raw_html"
+      ],
+      "notes": "Older history-import source used by scripts/import_historical_question_content.py."
+    },
+    {
+      "root": "reference/mathacademy/capture-database",
+      "formats": [
+        "batches/*/content-objects/*/*.json.gz",
+        "manifest.json content_ref/content_sha256",
+        "objects/ immutable evidence"
+      ],
+      "notes": "Snapshots are historical imported content and provenance, not automatically original HTML. Follow source references; decompress where needed and verify SHA256."
+    },
+    {
+      "root": "reference/mathacademy/{capture-audits,diagnostic-capture,repairs}",
+      "formats": [
+        "original HTML/JSON and source copies"
+      ],
+      "notes": "Supplemental evidence; avoid counting generated repair outputs or fixtures as independent originals."
+    }
+  ],
+  "coverage_challenges": [
+    "Millions of files include duplicates, assets, screenshots and backups. Count distinct database entities/components with usable source, not file hits or raw regex matches.",
+    "Current content.json may have been repaired after import; immutable archived snapshots and exact original HTML matter when determining historical failure timing.",
+    "A question can have several source captures and different prompt/history layouts. Resolve MA ID, owning component and source chronology; report conflicting or unsupported captures explicitly.",
+    "Read .previous.gz backups or *.json.gz archives only where needed; compressed sources are invisible to plain rg. Primary outputs should distinguish complete, partially sourced and unsourced entities.",
+    "MathJax has both visible CHTML/SVG and hidden assistive MathML; select one owned representation, not duplicated descendants/dropdown choice MathML.",
+    "Textual color is not rendered RGB: ui/math-content.css intentionally maps light-theme source red to #c00000. Accept theme-preserving colors rather than flagging this as source loss.",
+    "Spacing in table columnspacing/rowspacing, mo lspace/rspace, mpadded and phantom geometry is outside an mspace-only sweep; CSS/inherited fonts, SVG-only originals and images need separate review."
+  ],
+  "inventory_counts_are_file_versions_not_unique_activities": true,
+  "source_root_file_inventory": [
+    {
+      "root": "reference/mathacademy/capture-audits",
+      "kind": "browser-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture-audits/2026-10-11-quiz6/original-xp-parses/browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture-audits",
+      "kind": "content.json",
+      "count": 9,
+      "sample": "reference/mathacademy/capture-audits/2026-10-11-completeness-repairs/legacy-provenance/aggregate-controls-repairs/df8d8f660a59c278f124/content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture-audits",
+      "kind": "literal-brace-supplement-version-manifest.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture-audits/2026-10-11-completeness-repairs/literal-brace-supplement-version-manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture-audits",
+      "kind": "request-content.json",
+      "count": 5,
+      "sample": "reference/mathacademy/capture-audits/2026-10-11-completeness-repairs/legacy-provenance/aggregate-controls-repairs/df8d8f660a59c278f124/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture-audits",
+      "kind": "reviewed21-apply-manifest.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture-audits/2026-10-11-completeness-repairs/reviewed21-apply-manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture-database",
+      "kind": "*.json.gz",
+      "count": 2417,
+      "sample": "reference/mathacademy/capture-database/batches/24ccd6f3778e606420b4943c52aa62860fcd2b53ca0273a0776814cc12d189c7/content-objects/a2/a2ebab667dcc033e04f167e607d274960d235d80c1d9d9e7ed1230d792b02993.json.gz"
+    },
+    {
+      "root": "reference/mathacademy/capture-database",
+      "kind": "manifest.json",
+      "count": 223,
+      "sample": "reference/mathacademy/capture-database/batches/24ccd6f3778e606420b4943c52aa62860fcd2b53ca0273a0776814cc12d189c7/26d5994e-e10c-45de-b87a-dc11161f1e51/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "browser-state.json",
+      "count": 1384,
+      "sample": "reference/mathacademy/capture/differential/14346233/browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "content.json",
+      "count": 1460,
+      "sample": "reference/mathacademy/capture/differential/14346233/content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "history-content.json",
+      "count": 1425,
+      "sample": "reference/mathacademy/capture/differential/14346233/history-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "manifest.json",
+      "count": 1384,
+      "sample": "reference/mathacademy/capture/differential/14346233/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "observations.json",
+      "count": 1385,
+      "sample": "reference/mathacademy/capture/differential/14346233/post-activity/1792468259993098510/observations.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/differential",
+      "kind": "request-content.json",
+      "count": 202,
+      "sample": "reference/mathacademy/capture/differential/14122876/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "before-browser-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture/foundations/14191625/repairs/submit-timeout/before-browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "browser-state.json",
+      "count": 1154,
+      "sample": "reference/mathacademy/capture/foundations/14145468/browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "content.json",
+      "count": 1228,
+      "sample": "reference/mathacademy/capture/foundations/14145468/content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "history-content.json",
+      "count": 1208,
+      "sample": "reference/mathacademy/capture/foundations/14145468/history-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "manifest.json",
+      "count": 1153,
+      "sample": "reference/mathacademy/capture/foundations/14145468/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "observations.json",
+      "count": 1153,
+      "sample": "reference/mathacademy/capture/foundations/14145468/post-activity/1791829048822712465/observations.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "request-content.json",
+      "count": 249,
+      "sample": "reference/mathacademy/capture/foundations/14145468/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/foundations",
+      "kind": "source-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture/foundations/14191625/repairs/submit-timeout/source-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "browser-state.json",
+      "count": 1934,
+      "sample": "reference/mathacademy/capture/linear/14300247/browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "content.json",
+      "count": 2168,
+      "sample": "reference/mathacademy/capture/linear/14300247/content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "history-content.json",
+      "count": 2077,
+      "sample": "reference/mathacademy/capture/linear/14300247/history-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "manifest.json",
+      "count": 1936,
+      "sample": "reference/mathacademy/capture/linear/14300247/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "observations.json",
+      "count": 1936,
+      "sample": "reference/mathacademy/capture/linear/14300247/post-activity/1792357436945518535/observations.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "request-content.json",
+      "count": 197,
+      "sample": "reference/mathacademy/capture/linear/14129810/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/linear",
+      "kind": "source-content.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture/linear/14196632/repairs/diagnostic-kp-reference-v1/source-lesson/source-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "browser-state.json",
+      "count": 1190,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/browser-state.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "content.json",
+      "count": 1328,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/repairs/source-candidates-v1/originals/content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "history-content.json",
+      "count": 1266,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/history-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "manifest.json",
+      "count": 1190,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "observations.json",
+      "count": 1190,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/post-activity/1791720474137971503/observations.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "original-content.json",
+      "count": 1,
+      "sample": "reference/mathacademy/capture/multivariable/14119320/database/source-repairs/1d52b49d533b45c82a2699a27e121a1fbe95cb4b19932318752528f79d266f70/original-content.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "original-history.json",
+      "count": 10,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/repairs/completeness-798793e294a49181/same-id-source-reconstruction/q-37456/original-history.json"
+    },
+    {
+      "root": "reference/mathacademy/capture/multivariable",
+      "kind": "request-content.json",
+      "count": 176,
+      "sample": "reference/mathacademy/capture/multivariable/14111253/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/diagnostic-capture",
+      "kind": "assets-manifest.json",
+      "count": 1,
+      "sample": "reference/mathacademy/diagnostic-capture/14033238/assets-manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/diagnostic-capture",
+      "kind": "knowledge-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/diagnostic-capture/14033238/knowledge-state.json"
+    },
+    {
+      "root": "reference/mathacademy/diagnostic-capture",
+      "kind": "state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/diagnostic-capture/14033238/state.json"
+    },
+    {
+      "root": "reference/mathacademy/progress-history-2026-10-04",
+      "kind": "manifest.json",
+      "count": 1,
+      "sample": "reference/mathacademy/progress-history-2026-10-04/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/progress-history-2026-10-04",
+      "kind": "observations.json",
+      "count": 1,
+      "sample": "reference/mathacademy/progress-history-2026-10-04/observations.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "content.json",
+      "count": 1370,
+      "sample": "reference/mathacademy/question-capture/13933668/content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "history.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture/13932272/manual/history.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "manifest.json",
+      "count": 504,
+      "sample": "reference/mathacademy/question-capture/14108829/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "original-content.json",
+      "count": 1085,
+      "sample": "reference/mathacademy/question-capture/13933668/repairs/source-provenance-v2/original-content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "regenerated-study-content.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture/14042747/extraction-recovery/regenerated-study-content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "request-content.json",
+      "count": 28,
+      "sample": "reference/mathacademy/question-capture/13930906/repairs/source-provenance-v2/database-answer-repairs/aa69306148f6568ef3c0/database/request-content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture",
+      "kind": "state.json",
+      "count": 2503,
+      "sample": "reference/mathacademy/question-capture/13933668/state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "content.json",
+      "count": 480,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14071891/content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "manifest.json",
+      "count": 139,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14063607/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "original-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14070509/history-recovery/original-state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "sha256-manifest.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14041046/manual-recovery/practical-1791473061060439493/sha256-manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "solver-session-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14071917/q-338921/before-mathematical-indexing-review/solver-session-state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/differential",
+      "kind": "state.json",
+      "count": 1023,
+      "sample": "reference/mathacademy/question-capture-workers/differential/14071891/state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/linear",
+      "kind": "content.json",
+      "count": 556,
+      "sample": "reference/mathacademy/question-capture-workers/linear/14076805/content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/linear",
+      "kind": "manifest.json",
+      "count": 239,
+      "sample": "reference/mathacademy/question-capture-workers/linear/14076805/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/linear",
+      "kind": "state.json",
+      "count": 1155,
+      "sample": "reference/mathacademy/question-capture-workers/linear/14076805/state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/multivariable",
+      "kind": "content.json",
+      "count": 526,
+      "sample": "reference/mathacademy/question-capture-workers/multivariable/14095723/content.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/multivariable",
+      "kind": "interrupted-14041552-state.json",
+      "count": 1,
+      "sample": "reference/mathacademy/question-capture-workers/multivariable/14041466/manual-recovery/interrupted-14041552-state.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/multivariable",
+      "kind": "manifest.json",
+      "count": 287,
+      "sample": "reference/mathacademy/question-capture-workers/multivariable/14044606/assets/manifest.json"
+    },
+    {
+      "root": "reference/mathacademy/question-capture-workers/multivariable",
+      "kind": "state.json",
+      "count": 1125,
+      "sample": "reference/mathacademy/question-capture-workers/multivariable/14095723/state.json"
+    }
+  ],
+  "current_extractor_probe": "extractor-feature-probes.json",
+  "cross_check_status": "Completed seven independent raw-source/current checks across all six topics in the literal-Pi candidate list. Six affected questions (eleven fields), one fully correct control; mixed questions contain both correct and incorrect occurrences.",
+  "representative_cross_check_report": "pi-representative-cross-checks.json"
+}
