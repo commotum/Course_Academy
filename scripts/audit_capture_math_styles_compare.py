@@ -15,6 +15,7 @@ import gzip
 import sqlite3
 import time
 import resource
+import unicodedata
 import json
 from pathlib import Path
 import re
@@ -32,8 +33,8 @@ UNICODE = {'−':'-', '×':r'\times', '⋅':r'\cdot', '≠':r'\ne', '≤':r'\le'
            '≥':r'\ge', '∈':r'\in', '∉':r'\notin', '→':r'\to', '∞':r'\infty',
            '∅':r'\emptyset', '±':r'\pm', '∪':r'\cup', '∩':r'\cap', '∑':r'\sum',
            '∏':r'\prod', '∫':r'\int', '\u2061':'', '\u2062':''}
-FONTS = {'mathrm':'normal', 'mathnormal':'default', 'mathbf':'bold', 'boldsymbol':'bold',
-         'bm':'bold', 'mathit':'italic', 'mathbfit':'bold-italic', 'mathbb':'double-struck',
+FONTS = {'mathrm':'normal', 'mathnormal':'default', 'mathbf':'bold', 'boldsymbol':'bold-auto',
+         'bm':'bold-auto', 'mathit':'italic', 'mathbfit':'bold-italic', 'mathbb':'double-struck',
          'mathcal':'script', 'mathscr':'script', 'mathfrak':'fraktur',
          'mathsf':'sans-serif', 'mathtt':'monospace'}
 DECLARATIONS = {'rm':'normal', 'bf':'bold', 'it':'italic', 'sf':'sans-serif', 'tt':'monospace'}
@@ -74,6 +75,7 @@ class Parser:
         self.parts = TOKEN.findall(text)
         self.i = 0
         self.out = Parsed()
+        self.environments = []
 
     def peek(self):
         while self.i < len(self.parts) and self.parts[self.i].isspace(): self.i += 1
@@ -109,10 +111,17 @@ class Parser:
         default = 'italic' if identifier and not token.isdigit() else 'normal'
         if origin in GREEK and GREEK[origin].isupper():default='normal'
         font=state.get('font')
+        required=font not in (None,'default') or (origin in GREEK and GREEK[origin].isupper())
+        # Verified against the application's MathJax renderer: lowercase Greek
+        # macros retain their italic glyph under mathrm/mathbf; literal Greek
+        # glyphs and capital Greek macros honor those font wrappers.
+        if origin in GREEK and GREEK[origin].islower() and font!='bold-auto':
+            font=default;required=False
         if font in (None,'default'):font=default
+        if font=='bold-auto':font='bold-italic' if default=='italic' else 'bold'
         self.out.atoms[index]={'token':token, 'font':font, 'identifier':identifier,
                                'color':state.get('color'), 'background':state.get('background'),
-                               'required_font':state.get('font') not in (None,'default') or (origin in GREEK and GREEK[origin].isupper())}
+                               'required_font':required}
 
     def argument(self,state,semantic=False):
         if semantic:self.atom('ARG(',state,visible=False)
@@ -136,6 +145,17 @@ class Parser:
         if token=='&':self.atom('CELL',state,visible=False);return
         if not token.startswith('\\'):
             normalized=UNICODE.get(token,token)
+            unicode_name=unicodedata.name(token,'')
+            if unicode_name.startswith('MATHEMATICAL ') or 'DOUBLE-STRUCK' in unicode_name or token in 'ℂℍℕℙℚℝℤℬℰℱℋℐℒℳℛℭℌℑℜℨ':
+                normalized=unicodedata.normalize('NFKC',token)
+                sub=dict(state)
+                if 'DOUBLE-STRUCK' in unicode_name:sub['font']='double-struck'
+                elif 'BOLD ITALIC' in unicode_name:sub['font']='bold-italic'
+                elif 'BOLD' in unicode_name:sub['font']='bold'
+                elif 'ITALIC' in unicode_name:sub['font']='italic'
+                elif 'SCRIPT' in unicode_name:sub['font']='script'
+                elif 'FRAKTUR' in unicode_name or 'BLACK-LETTER' in unicode_name:sub['font']='fraktur'
+                if len(normalized)==1:self.atom(normalized,sub);return
             if normalized:self.atom(normalized,state)
             return
         name=token[1:]
@@ -179,9 +199,19 @@ class Parser:
             return
         if name in ('begin','end'):
             env=self.group_text()
-            self.atom(name+':'+env,state,visible=False)
-            if name=='begin' and env in ('array','alignedat'):self.group_text()
-            if name=='begin' and env in ('aligned','gathered','array'):self.group_text(True)
+            fences={'bmatrix':('[',']'),'pmatrix':('(',')'),'Bmatrix':(r'\{',r'\}'),'vmatrix':('|','|'),'Vmatrix':(r'\Vert',r'\Vert')}
+            if name=='begin':
+                columns=self.group_text() if env in ('array','alignedat') else None
+                mapped='matrix' if env in fences or (env=='array' and not any(c in (columns or '') for c in '|:')) else env
+                self.environments.append((env,mapped))
+                if env in fences:self.atom(fences[env][0],state)
+                self.atom(name+':'+mapped,state,visible=False)
+                if env in ('aligned','gathered','array'):self.group_text(True)
+            else:
+                if self.environments and self.environments[-1][0]==env:_,mapped=self.environments.pop()
+                else:mapped=env;self.out.errors.append('mismatched environment '+env)
+                self.atom(name+':'+mapped,state,visible=False)
+                if env in fences:self.atom(fences[env][1],state)
             return
         if name=='\\':
             self.atom('ROW',state,visible=False);self.group_text(True);return
@@ -191,7 +221,7 @@ class Parser:
             self.atom(')TEXT',state,visible=False);return
         name=ALIASES.get(name,name)
         if name in ARGUMENTS:
-            self.atom('\\'+name,state,visible=False)
+            self.atom('\\'+name,state,visible=name not in ('overset','underset','stackrel','phantom','hphantom','vphantom','smash'))
             if name=='sqrt' and self.peek()=='[':
                 index=self.group_text(True);nested=Parser(index);parsed=nested.parse()
                 self.atom('INDEX:'+','.join(parsed.tokens),state,visible=False)
@@ -219,13 +249,16 @@ def formulas(field):
     if not isinstance(value,str):return []
     # Remove fenced code examples, which are not rendered mathematical content.
     if field.get('bare_math') or field.get('math_type') in ('math',':answer.type/math','answer.type/math'):
-        return [{'tex':value,'start':0,'end':len(value)}]
-    return [{'tex':next(g for g in m.groups() if g is not None),'start':m.start(),'end':m.end()} for m in MATH.finditer(value)]
+        wrapped=MATH.fullmatch(value.strip())
+        tex=next(g for g in wrapped.groups() if g is not None) if wrapped else value
+        return [{'tex':tex,'start':0,'end':len(value)}]
+    code_spans=[m.span() for m in re.finditer(r'(?ms)^ {0,3}```[^\n]*\n.*?^ {0,3}```[^\n]*(?:\n|$)',value)]
+    return [{'tex':next(g for g in m.groups() if g is not None),'start':m.start(),'end':m.end()} for m in MATH.finditer(value) if not any(a<=m.start()<b for a,b in code_spans)]
 
 
 def preferred(records,role):
     roles={'prompt':['problem'],'solution':['worked-solution'],'label':['problem','answer'],
-           'answer':['answer'],'feedback':['worked-solution','answer'],'tutorial':['content']}.get(role,[])
+           'answer':['answer'],'feedback':['worked-solution','answer'],'tutorial':['content','tutorial']}.get(role,[])
     for preferred_role in roles:
         matches=[r for r in records if r['record'].get('role')==preferred_role]
         if matches:return matches,True
@@ -249,7 +282,7 @@ def feature_losses(source,current):
                 losses.append((kind,pos,expected,observed))
     for boundary,size in source.spaces.items():
         observed=current.spaces.get(boundary,0.)
-        if abs(observed-size)>1e-6:
+        if abs(observed-size)>.001:
             kind='space' if size>=.75 and observed<size else 'space_minor'
             losses.append((kind,boundary,round(size,6),round(observed,6)))
     return losses
@@ -269,7 +302,7 @@ def source_evidence(items):
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--current',type=Path,default=DEFAULT/'current.json')
-    parser.add_argument('--sources',type=Path,default=DEFAULT/'source-formulas.jsonl')
+    parser.add_argument('--sources',type=Path,action='append',help='Repeat for capture and external original-source streams; defaults to source-formulas.jsonl.')
     parser.add_argument('--output-dir',type=Path,default=DEFAULT)
     parser.add_argument('--self-test',action='store_true')
     args=parser.parse_args(argv)
@@ -283,18 +316,22 @@ def main(argv=None):
     db.execute('PRAGMA journal_mode=OFF');db.execute('PRAGMA synchronous=OFF')
     db.execute('DROP TABLE IF EXISTS source_formulas')
     db.execute('CREATE TABLE source_formulas (identity TEXT, signature TEXT, item TEXT)')
-    with args.sources.open() as handle:
-        for line in handle:
-            if not line.strip():continue
-            record=json.loads(line);source_count+=1;result=parse(record.get('source_tex',''))
-            record_errors=record.get('errors') or []
-            record={k:v for k,v in record.items() if k not in ('raw_mathml','features')}
-            item={'record':record,'parsed':result.__dict__,'errors':[*record_errors,*result.errors]}
-            if item['errors']:source_errors+=1
-            if result.tokens or result.spaces:
-                signature=hashlib.sha256('\x1f'.join(result.tokens).encode()).hexdigest()
-                db.execute('INSERT INTO source_formulas VALUES (?,?,?)',(identity(record.get('math_academy_id',record.get('ma_id'))),signature,json.dumps(item,ensure_ascii=False)))
-            if source_count%10000==0:db.commit()
+    source_paths=args.sources or [DEFAULT/'source-formulas.jsonl']
+    def source_lines():
+        for path in source_paths:
+            with path.open() as handle:
+                yield from handle
+    for line in source_lines():
+        if not line.strip():continue
+        record=json.loads(line);source_count+=1;result=parse(record.get('source_tex',''))
+        record_errors=record.get('errors') or []
+        record={k:v for k,v in record.items() if k not in ('raw_mathml','features')}
+        item={'record':record,'parsed':result.__dict__,'errors':[*record_errors,*result.errors]}
+        if item['errors']:source_errors+=1
+        if result.tokens or result.spaces:
+            signature=hashlib.sha256('\x1f'.join(result.tokens).encode()).hexdigest()
+            db.execute('INSERT INTO source_formulas VALUES (?,?,?)',(identity(record.get('math_academy_id',record.get('ma_id'))),signature,json.dumps(item,ensure_ascii=False)))
+        if source_count%10000==0:db.commit()
     db.execute('CREATE INDEX identity_signature ON source_formulas(identity,signature)');db.commit()
     def owner_sources(mid):
         result=defaultdict(list)
@@ -312,19 +349,33 @@ def main(argv=None):
         key=(row['entity'],row['attribute'],row.get('formula_hash'),row['status'],row.get('feature'),str(row.get('expected')),str(row.get('observed')),tuple(row.get('positions',[])))
         if key in seen:
             existing=seen[key];existing['occurrences'].extend(row['occurrences'])
+            for label in ('topics','knowledge_points','sources'):
+                for item in row.get(label,[]):
+                    if item not in existing.setdefault(label,[]):existing[label].append(item)
+            for label in ('question_entities','ma_ids'):
+                for item in row.get(label,[]):
+                    if item not in existing.setdefault(label,[]):existing[label].append(item)
             return
         seen[key]=row;findings.append(row)
     for owner in owners:
         mid=identity(owner.get('ma_id'));candidates=owner_sources(mid)
         owner_unmatched=Counter()
         coverage['owners']+=1
-        if not candidates:coverage['owners_without_source']+=1
+        if not candidates:
+            coverage['owners_without_source']+=1
+            coverage['fields']+=len(owner.get('fields',[]))
+            coverage['fields_without_source_identity']+=len(owner.get('fields',[]))
+            count=sum(len(formulas(f)) for f in owner.get('fields',[]))
+            counters['current_formulas']+=count;counters['unmatched_formulas']+=count
+            gaps.append({'entity':owner['entity'],'ma_id':owner.get('ma_id'),'topics':owner.get('topics',[]),'counts':{'no_source_identity':count},'fields':len(owner.get('fields',[]))})
+            continue
         for f in owner.get('fields',[]):
             coverage['fields']+=1
             for occurrence,formula in enumerate(formulas(f)):
                 counters['current_formulas']+=1;parsed=parse(formula['tex'])
                 digest=hashlib.sha256('\x1f'.join(parsed.tokens).encode()).hexdigest()
                 base={'entity':f.get('entity',owner['entity']),'question_entity':owner['entity'],'ma_id':owner.get('ma_id'),
+                      'question_entities':[owner['entity']],'ma_ids':[owner.get('ma_id')],
                       'attribute':f.get('attribute'),'role':f.get('role'),'retired':owner.get('retired',False),
                       'topics':owner.get('topics',[]),'knowledge_points':owner.get('knowledge_points',[]),
                       'formula_hash':digest,'current_tex':formula['tex'],'occurrences':[{'index':occurrence,'start':formula['start'],'end':formula['end']}]}
@@ -368,9 +419,11 @@ def main(argv=None):
             simple['source_paths']=' | '.join(dict.fromkeys(s.get('path','') or '' for s in row.get('sources',[])))
             for key in ('positions','source_tex'):simple[key]=json.dumps(row.get(key,[]),ensure_ascii=False)
             writer.writerow(simple)
-    summary={'basis':current.get('basis'),'source_formulas':source_count,'source_formula_parse_errors':source_errors,
+    summary={'basis':current.get('basis'),'source_inputs':[{'path':str(path),'bytes':path.stat().st_size} for path in source_paths],'source_formulas':source_count,'source_formula_parse_errors':source_errors,
              'coverage':dict(coverage),'formula_counts':dict(counters),'findings_by_status':dict(Counter(f['status'] for f in findings)),
              'confirmed_by_feature':dict(Counter(f['feature'] for f in findings if f['status']=='confirmed_loss')),
+             'confirmed_by_expected_style':dict(Counter(f["feature"]+":"+str(f["expected"]) for f in findings if f['status']=='confirmed_loss')),
+             'minor_spacing_differences':sum(f['status']=='confirmed_spacing_difference' for f in findings),
              'affected_questions':len({f['question_entity'] for f in findings if f['status']=='confirmed_loss'}),
              'affected_attributes':len({(f['entity'],f['attribute']) for f in findings if f['status']=='confirmed_loss'}),
              'runtime_seconds':round(time.monotonic()-started,2),'peak_memory_mib':round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,1),
@@ -386,6 +439,15 @@ def self_test():
         aa,bb=parse(a),parse(b);assert not aa.errors,(a,aa.errors);assert not bb.errors,(b,bb.errors);assert aa.tokens==bb.tokens,(a,b,aa.tokens,bb.tokens);return aa,bb
     a,b=pair(r'0\cdot\mathbf{v}=\mathbf{0}',r'0\cdot v=0')
     assert [(x[1],x[2]) for x in feature_losses(a,b)]==[(2,'bold'),(4,'bold')]
+    a,b=pair(r'\mathbb{R}', 'ℝ');assert not feature_losses(a,b)
+    a,b=pair(r'\mathbf{v}', '𝐯');assert not feature_losses(a,b)
+    a,b=pair(r'\mathbfit{x}',r'\boldsymbol{x}');assert not feature_losses(a,b)
+    a,b=pair(r'\mathbf{x}',r'\boldsymbol{x}');assert feature_losses(a,b)==[('font',0,'bold','bold-italic')]
+    a,b=pair(r'\mathrm{π}',r'\mathrm{\pi}');assert feature_losses(a,b)==[('font',0,'normal','italic')]
+    a,b=pair(r'\mathbf{α}',r'\mathbf{\alpha}');assert feature_losses(a,b)==[('font',0,'bold','italic')]
+    a,b=pair(r'\mathbf{Π}',r'\mathbf{\Pi}');assert not feature_losses(a,b)
+    a,b=pair(r'\left[\begin{array}{c}x\\y\end{array}\right]',r'\begin{bmatrix}x\\y\end{bmatrix}');assert not feature_losses(a,b)
+    a,b=pair(r'x\hspace{0.167em}y',r'x\,y');assert not feature_losses(a,b)
     a,b=pair(r'\mathrm{Π}',r'\Pi');assert not feature_losses(a,b)
     a,b=pair(r'\mathrm{Π}','Π');assert feature_losses(a,b)==[('font',0,'normal','italic')]
     a,b=pair(r'x=0\quad{\color{red}\times}',r'x=0\,\times')
@@ -396,9 +458,14 @@ def self_test():
     a,b=pair(r'x\hspace{0em}y',r'x\,y');assert feature_losses(a,b)==[('space_minor',1,0.,round(1/6,6))]
     a,b=pair(r'x\hspace{-0.167em}y',r'x\,y');assert feature_losses(a,b)==[('space_minor',1,-.167,round(1/6,6))]
     a,b=pair(r'\mathit{Π}',r'\Pi');assert feature_losses(a,b)==[('font',0,'italic','normal')]
+    assert parse(r'x+1').tokens!=parse(r'x+2').tokens
     assert parse(r'\frac{a}{bc}').tokens!=parse(r'\frac{ab}{c}').tokens
     a,b=pair(r'\mathbf{a}+b',r'a+\mathbf{b}');assert feature_losses(a,b)[0][1]==0
     a,b=pair(r'{\color{red}x}+y',r'x+{\color{red}y}');assert feature_losses(a,b)==[('color',0,'#ff0000',None)]
+    a,b=pair(r'{\color{red}\frac{a}{b}}',r'\frac{{\color{red}a}}{{\color{red}b}}');assert feature_losses(a,b)==[('color',0,'#ff0000',None)]
+    assert preferred([{'record':{'role':'worked-solution'}}],'prompt')[1] is False
+    assert preferred([{'record':{'role':'problem'}}],'label')[1] is True
+    assert not formulas({'value':'```latex\n$x$\n```\n'})
     print('Self-test passed: scoped fonts/colors, default Greek, spacing equivalence, and fraction structure.')
 
 if __name__=='__main__':main()

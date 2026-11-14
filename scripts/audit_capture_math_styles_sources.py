@@ -31,7 +31,7 @@ SOURCE_ROOTS = ['capture', 'question-capture', 'question-capture-workers',
                 'progress-history-2026-10-04']
 EXCLUDED_PARTS = {'solver', 'edb-import', 'database', 'normalized', 'repairs',
                   'capture-repair', 'repair-staging', 'queue', 'knowledge-state'}
-STYLE = re.compile(r'mathvariant|mathcolor|mathbackground|<mspace\b|\\(?:math(?:bf|bb|cal|frak|sf|tt|it|rm|bfit)|boldsymbol|color|textcolor|bbox|quad|qquad|hspace|kern|mkern|checkmark)\b', re.I)
+STYLE = re.compile(r'mathvariant|mathcolor|mathbackground|<mspace\b|\\(?:math(?:bf|bb|cal|frak|sf|tt|it|rm|bfit)|boldsymbol|color|textcolor|bbox|quad|qquad|hspace|kern|mkern|checkmark|Gamma|Delta|Theta|Lambda|Xi|Pi|Sigma|Upsilon|Phi|Psi|Omega)\b', re.I)
 STYLE_BYTES = re.compile(STYLE.pattern.encode(), re.I)
 HTML_VALUE = re.compile(r'<(?:div|span|math|mjx-container|svg|body|html|p|table)\b', re.I)
 STRIP = re.compile(r'<(script|style)\b[^>]*>[\s\S]*?</\1\s*>', re.I)
@@ -53,9 +53,13 @@ def dump(value):
 def canon_id(value, kind=None):
     s = str(value or '')
     if s.isdigit():
-        return ('tutorial-' if kind == 'tutorial' else 'e-' if kind == 'example' else 'q-') + s
+        return ('tutorial-' if kind == 'tutorial' else 'e-' if kind == 'example' else 'q-') + s if kind else None
     if s.startswith('tutorial-'):
-        return s
+        match = re.match(r'tutorial-(\d+)', s)
+        return 'tutorial-' + match[1] if match else None
+    full_name = re.match(r'(example|question)-(\d+)', s)
+    if full_name:
+        return ('e-' if full_name[1] == 'example' else 'q-') + full_name[2]
     m = IDENTITY.search(s)
     return (('tutorial-' if m[1] == 't' else m[1] + '-') + m[2]) if m else None
 
@@ -126,9 +130,9 @@ def identity_and_role(stack, fallback, mappings):
         if ident:
             locator.append('#' + ident)
         if role is None:
-            if any(x in classes or x in ident_l for x in ('questionexplanation', 'exampleexplanation', 'workedsolution', 'worked-solution', 'examplesolution')):
+            if any(x in classes or x in ident_l for x in ('questionexplanation', 'exampleexplanation', 'workedsolution', 'worked-solution', 'examplesolution', 'questionwidget-explanation')):
                 role = 'worked-solution'
-            elif any(x in classes for x in ('answerchoice', 'selectlist', 'freeresponsetextbox', 'radiooption', 'checkboxoption')):
+            elif any(x in classes for x in ('answerchoice', 'selectlist', 'freeresponsetextbox', 'radiooption', 'checkboxoption', 'questionwidget-choicetext')):
                 role = 'answer'
             elif any(x in classes for x in ('questiontext', 'questionwidget-text', 'examplequestion', 'question-text')):
                 role = 'problem'
@@ -185,9 +189,13 @@ def walk_html(value, locator='$', fallback=None, mappings=None):
     fallback = dict(fallback or {})
     mappings = mappings if mappings is not None else {}
     if isinstance(value, dict):
-        kind = 'tutorial' if '.tutorials[' in locator else 'example' if '.canonical_examples[' in locator else None
-        identity = canon_id(value.get('math_academy_id') or value.get('ma_id'), kind)
-        identity = identity or canon_id(value.get('dom_id')) or canon_id(value.get('source_example_id'), 'example')
+        kind = value.get('type') or value.get('kind') or ('tutorial' if '.tutorial' in locator else 'example' if '.canonical_examples[' in locator or '.example' in locator else None)
+        source_step = value.get('source_step') if isinstance(value.get('source_step'), dict) else {}
+        identity = canon_id(value.get('dom_id')) or canon_id(source_step.get('dom_id'))
+        # Lesson-definition math_academy_id is a placement ID, not content ID.
+        identity = identity or (canon_id(value.get('content_id'), kind) if kind in ('tutorial', 'example', 'question') else None)
+        identity = identity or canon_id(value.get('math_academy_id') or value.get('ma_id'), kind)
+        identity = identity or canon_id(value.get('source_example_id'), 'example')
         if identity:
             fallback['identity'] = identity
             for dom in [value.get('dom_id'), (value.get('source_step') or {}).get('dom_id') if isinstance(value.get('source_step'), dict) else None]:
@@ -218,6 +226,7 @@ def main():
     parser.add_argument('--out', type=Path, default=DEFAULT_OUT)
     parser.add_argument('--roots', nargs='+', type=Path)
     parser.add_argument('--limit', type=int)
+    parser.add_argument('--files', type=Path, help='Preselected source file list; census is maintained by the caller.')
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     roots = args.roots or [ROOT / 'reference/mathacademy' / name for name in SOURCE_ROOTS]
@@ -229,11 +238,11 @@ def main():
     math_cache = {}
     inode_cache = {}
     start = time.time()
-    handles = {name: (args.out / name).open('w') for name in ['source-inventory.jsonl', 'source-unknowns.jsonl', 'source-evidence.jsonl']}
+    handles = {name: (args.out / name).open('w') for name in ['source-inventory.jsonl', 'source-unknowns.jsonl', 'source-evidence.jsonl', 'source-formulas.partial.jsonl']}
     def ledger(name, obj):
         handles[name].write(dump(obj) + '\n')
     try:
-        for p in paths(roots):
+        for p in (map(lambda s: Path(s.strip()).resolve(), args.files.open()) if args.files else paths(roots)):
             if args.limit and counts['files_enumerated'] >= args.limit:
                 break
             rel = str(p.relative_to(ROOT)) if p.is_absolute() and p.is_relative_to(ROOT) else str(p)
@@ -307,6 +316,7 @@ def main():
                             records[key] = {**formula, 'formula_hash': key, 'kind': 'tutorial' if identity.startswith('tutorial-') else 'example' if identity.startswith('e-') else 'question',
                                             'source_path': rel, 'locator': evidence['locator'], 'evidence': [], 'evidence_count': 0,
                                             'coverage': 'all formulas within style-bearing original HTML fragments'}
+                            ledger('source-formulas.partial.jsonl', records[key])
                         record = records[key]
                         record['evidence_count'] += 1
                         if len(record['evidence']) < 12 and evidence not in record['evidence']:
@@ -326,7 +336,7 @@ def main():
         with (args.out / 'source-formulas.jsonl').open('w') as output:
             for key in sorted(records):
                 output.write(dump(records[key]) + '\n')
-        summary = {'complete': not args.limit, 'elapsed_seconds': round(time.time() - start, 2), 'roots': list(map(str, roots)),
+        summary = {'complete': not args.limit, 'elapsed_seconds': round(time.time() - start, 2), 'roots': list(map(str, roots)), 'preselected_file_list': str(args.files) if args.files else None,
                    'counts': dict(counts), 'root_counts': {k: dict(v) for k, v in root_counts.items()},
                    'unique_formulas': len(records), 'unique_styled_formulas': sum(r['styled'] for r in records.values()),
                    'identities': len({r['math_academy_id'] for r in records.values()}),
