@@ -3,8 +3,8 @@
 `course-academy-engine` is the library; `fire` is the command-line binary. Both
 implement FIRe and activity completion, including
 lesson KPs that advance on two consecutive correct answers, fail the lesson on
-two consecutive incorrect answers or skips, and advance after five questions
-when neither streak occurs; reviews that finish early on two consecutive correct
+the third incorrect answer or skip within a KP (consecutive or separated), and
+advance after five questions when neither mastery nor failure occurs; reviews that finish early on two consecutive correct
 answers after at least three questions, or successfully complete after all five
 regardless of the answer sequence; accepted earned-XP rules,
 and completed diagnostic retries replacing the original placement evidence.

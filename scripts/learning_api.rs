@@ -1037,7 +1037,7 @@ fn home_with_candidates(
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"studyGate":gate,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"studyGate":gate,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; three incorrect answers or skips within the same skill fail the lesson, even if separated by correct answers. After five questions without mastery or failure, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
     )
 }
 

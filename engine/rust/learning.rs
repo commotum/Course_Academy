@@ -4787,13 +4787,15 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn adaptive_practice_fails_after_two_wrong_and_never_reuses_other_task_questions() {
+    fn adaptive_practice_fails_after_three_wrong_and_never_reuses_other_task_questions() {
         let mut s = fixture();
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
         for q in 100..102 {
             present(&mut s, q, "incorrect");
         }
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(102));
+        present(&mut s, 102, "incorrect");
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), None);
         assert!(!lesson_passed(&s, 20, &items(&s)).unwrap());
 
@@ -4837,14 +4839,14 @@ pub(crate) mod tests {
 
     #[test]
     fn lesson_advances_after_correct_streak_or_five_and_resets_at_the_next_kp() {
-        for outcomes in [vec![true, true], vec![true, false, true, false, true], vec![false, true, false, true, false]] {
+        for outcomes in [vec![true, true], vec![true, false, true, false, true], vec![false, false, true, true]] {
             let mut s = fixture();
             s.entities.get_mut(&31).unwrap().insert("step/next".into(), json!(32));
             s.entities.get_mut(&20).unwrap().insert("activity/steps".into(), json!([30, 31, 32]));
             put(&mut s.entities, 32, json!({"step/id":id(32),"step/content":44}));
-            put(&mut s.entities, 44, json!({"knowledge-point/id":id(44),"knowledge-point/canonical-example":43,"knowledge-point/questions":[105,106]}));
+            put(&mut s.entities, 44, json!({"knowledge-point/id":id(44),"knowledge-point/canonical-example":43,"knowledge-point/questions":[105,106,107]}));
             put(&mut s.entities, 43, json!({"question/id":id(43),"question/problem":"Next example","question/worked-solution":"Explanation"}));
-            for q in [105, 106] {
+            for q in [105, 106, 107] {
                 put(&mut s.entities, q, json!({"question/id":id(q),"question/problem":"Next question","question/answer-fields":[200]}));
             }
             s = EntitySnapshot::new(s.entities.clone().into(), s.basis_t).unwrap();
@@ -4859,10 +4861,39 @@ pub(crate) mod tests {
             assert!(p.deferred.is_empty());
             present(&mut s, 43, "completed");
             assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(105));
-            present(&mut s, 105, "correct");
+            // This may be the third miss in the lesson, but only the first in
+            // this KP. The prior KP's misses must not cause a failure here.
+            present(&mut s, 105, "incorrect");
             assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(106));
             present(&mut s, 106, "correct");
+            assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(107));
+            present(&mut s, 107, "correct");
             assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
+        }
+    }
+
+    #[test]
+    fn lesson_remains_resumable_after_two_misses_and_fails_on_the_third() {
+        for statuses in [
+            vec!["incorrect", "incorrect", "correct", "incorrect"],
+            vec!["incorrect", "correct", "incorrect", "correct", "incorrect"],
+        ] {
+            let mut s = fixture();
+            present(&mut s, 40, "completed");
+            present(&mut s, 42, "completed");
+            for (n, status) in statuses.iter().enumerate() {
+                present(&mut s, 100 + n as u64, status);
+                let p = position(&s, 20, &items(&s)).unwrap();
+                if n + 1 == statuses.len() {
+                    assert!(p.failed);
+                    assert!(!p.passed);
+                    assert_eq!(p.next, None);
+                } else {
+                    assert!(!p.failed);
+                    assert!(p.next.is_some());
+                    assert_eq!(lesson_xp(&s, 20, &items(&s), 12).unwrap(), 0);
+                }
+            }
         }
     }
 
@@ -5691,8 +5722,9 @@ pub(crate) mod tests {
         for (outcomes, expected) in [
             (vec![true, true], 15),
             (vec![false, true, true], 8),
-            (vec![true, false, false], -1),
-            (vec![false; 2], -1),
+            (vec![true, false, false, false], -1),
+            (vec![false; 3], -1),
+            (vec![false, true, false, true, false], -1),
             (vec![true, false, true, false, true], 7),
         ] {
             let mut s = fixture();

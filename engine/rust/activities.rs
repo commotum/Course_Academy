@@ -39,7 +39,7 @@ fn practice_prefix(
         correct: 0,
         streak: 0,
     };
-    let mut incorrect_streak = 0;
+    let mut incorrect = 0;
     for outcome in outcomes {
         if decision.complete() {
             return Err("outcomes continue beyond the first terminal prefix".into());
@@ -48,15 +48,14 @@ fn practice_prefix(
         if *outcome == Some(true) {
             decision.correct += 1;
             decision.streak += 1;
-            incorrect_streak = 0;
         } else {
             decision.streak = 0;
-            incorrect_streak += 1;
+            incorrect += 1;
         }
         decision.status = if decision.streak >= required_streak
             && (lesson || decision.attempted >= 3) {
             "passed"
-        } else if lesson && incorrect_streak == 2 {
+        } else if lesson && incorrect == 3 {
             "failed"
         } else if decision.attempted == 5 {
             "exhausted"
@@ -69,7 +68,8 @@ fn practice_prefix(
 }
 pub fn evaluate_kp_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
     // A lesson stage advances on CC or at five presentations, and fails on
-    // two consecutive negative outcomes (incorrect answers or explicit skips).
+    // the third negative outcome within this KP (incorrect answers or explicit
+    // skips), whether consecutive or separated by correct answers.
     practice_prefix(outcomes, 2, true)
 }
 pub fn evaluate_review_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
@@ -401,21 +401,16 @@ impl DiagnosticBalance {
 mod tests {
     use super::*;
     #[test]
-    fn lesson_stopping_checks_streaks_before_the_five_question_limit() {
+    fn lesson_stopping_checks_mastery_and_third_miss_before_the_five_question_limit() {
         // Check every C/W prefix, including all terminal prefixes at slot five.
         for length in 0..=6 {
             for mask in 0..(1 << length) {
                 let outcomes: Vec<_> = (0..length).map(|n| Some(mask & (1 << n) != 0)).collect();
                 let terminal = (1..=length).find_map(|n| {
-                    if n >= 2 && outcomes[n - 1] == outcomes[n - 2] {
-                        Some((
-                            n,
-                            if outcomes[n - 1] == Some(true) {
-                                "passed"
-                            } else {
-                                "failed"
-                            },
-                        ))
+                    if n >= 2 && outcomes[n - 2..n] == [Some(true), Some(true)] {
+                        Some((n, "passed"))
+                    } else if outcomes[..n].iter().filter(|&&o| o == Some(false)).count() == 3 {
+                        Some((n, "failed"))
                     } else if n == 5 {
                         Some((n, "exhausted"))
                     } else {
@@ -435,6 +430,31 @@ mod tests {
                     );
                 }
             }
+        }
+    }
+
+    #[test]
+    fn lessons_allow_two_misses_and_fail_on_the_third_including_at_question_five() {
+        let decode = |pattern: &str| {
+            pattern.chars().map(|c| match c {
+                'C' => Some(true),
+                'W' => Some(false),
+                'S' => None,
+                _ => panic!("bad pattern"),
+            }).collect::<Vec<_>>()
+        };
+        for pattern in ["WW", "CWW", "WCW", "WWC", "WCWC", "SS", "WCS"] {
+            assert!(!evaluate_kp_prefix(&decode(pattern)).unwrap().complete(), "{pattern}");
+        }
+        for pattern in ["WWW", "CWWW", "WCWW", "WWCW", "CWCWW", "CWWCW", "WCWCW", "SSS", "WCSCW"] {
+            let outcomes = decode(pattern);
+            for prefix in 0..outcomes.len() {
+                assert!(!evaluate_kp_prefix(&outcomes[..prefix]).unwrap().complete(), "{pattern}: {prefix}");
+            }
+            assert_eq!(evaluate_kp_prefix(&outcomes).unwrap().passed(), Some(false), "{pattern}");
+        }
+        for pattern in ["WWCC", "CWWCC", "WCWCC", "CWCWC"] {
+            assert_eq!(evaluate_kp_prefix(&decode(pattern)).unwrap().passed(), Some(true), "{pattern}");
         }
     }
 

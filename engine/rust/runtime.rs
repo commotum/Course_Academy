@@ -1674,7 +1674,8 @@ mod tests {
         f.answer(210, None);
         f.answer(200, None);
         assert!(!f.answer(100, Some(false)).delivery.complete);
-        assert_eq!(f.answer(101, Some(false)).delivery.passed, Some(false));
+        assert!(!f.answer(101, Some(false)).delivery.complete);
+        assert_eq!(f.answer(102, Some(false)).delivery.passed, Some(false));
         assert!(!f.state(20).learned);
         let mut f = Fixture::new("lesson");
         f.set(40, "knowledge-point/questions", json!([100]));
@@ -2030,7 +2031,7 @@ mod tests {
     fn default_xp_scores_unsuccessful_answers_independently_of_completion() {
         for (kind, outcomes, expected) in [
             ("lesson", vec![true, false, true, false, true], 4),
-            ("lesson", vec![false; 2], -1),
+            ("lesson", vec![false; 3], -1),
             ("review", vec![true, false, true, false, true], 4),
             ("review", vec![true, true, false, true, false], 0),
             ("review", vec![true, false, true, false, false], -1),
